@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "67033984542",
+    "firebase_url": "https://student-assistant-edafc.firebaseio.com",
+    "project_id": "student-assistant-edafc",
+    "storage_bucket": "student-assistant-edafc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67033984542:android:c6100d376e82ecc1",
+        "android_client_info": {
+          "package_name": "com.lonn.studentassistant"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67033984542-pb6c7fo5fhrgfo20259trktevringlfd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM5z6XOOpIPLusFEoc05874UUrEf6V3KE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
