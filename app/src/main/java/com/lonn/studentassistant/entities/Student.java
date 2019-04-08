@@ -3,10 +3,12 @@ package com.lonn.studentassistant.entities;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @IgnoreExtraProperties
-public class Student{
+public class Student implements Serializable
+{
     @Exclude
     public String numarMatricol;
 
@@ -17,6 +19,7 @@ public class Student{
     public String numarTelefon;
     public int an;
     public String grupa;
+    public String accountId;
 
     public Student(String numarMatricol, String nume, String prenume, String initialaTatalui, String email,
                    String numarTelefon, int an, String grupa)

@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public interface IDatabaseController<T>
 {
-    List<T> getAll();
+    void setAll(List<T> items);
     void update(T item);
     void add(T item);
     void remove(T item);

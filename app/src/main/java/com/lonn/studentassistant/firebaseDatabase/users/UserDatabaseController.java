@@ -25,20 +25,8 @@ public class UserDatabaseController implements IDatabaseController<User>
         databaseReference = database.getReference("users");
     }
 
-    public List<User> getAll()
+    public void setAll(List<User> items)
     {
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("User:", dataSnapshot.getValue(User.class).toString());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.e("User get all", databaseError.getMessage());
-            }
-        });
-        return null;
     }
 
     public void add(User user)
@@ -48,11 +36,11 @@ public class UserDatabaseController implements IDatabaseController<User>
 
     public void remove(User user)
     {
-
+        databaseReference.child(Utils.convertEmail(user.email)).removeValue();
     }
 
     public void update(User user)
     {
-
+        databaseReference.child(Utils.convertEmail(user.email)).setValue(user);
     }
 }

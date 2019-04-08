@@ -2,10 +2,8 @@ package com.lonn.studentassistant.firebaseDatabase.students;
 
 import com.lonn.studentassistant.common.interfaces.IRepository;
 import com.lonn.studentassistant.entities.Student;
-import com.lonn.studentassistant.entities.User;
 
 import java.util.List;
-import java.util.UUID;
 
 public class StudentRepository extends IRepository<Student>
 {

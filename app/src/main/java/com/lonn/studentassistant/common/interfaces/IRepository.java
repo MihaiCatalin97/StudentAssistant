@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.common.interfaces;
 
+import android.util.Log;
+
 import com.lonn.studentassistant.entities.BaseEntity;
 
 import java.util.List;
@@ -13,6 +15,8 @@ public abstract class IRepository<T>
     protected IRepository (IDatabaseController<T> databaseController)
     {
         this.databaseController = databaseController;
+        databaseController.setAll(items);
+        Log.e("Got students",Integer.toString(items.size()));
     }
 
     public abstract T getById(Object id);

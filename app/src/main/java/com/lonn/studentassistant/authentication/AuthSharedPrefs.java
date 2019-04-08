@@ -1,7 +1,8 @@
-package com.lonn.studentassistant.authentification.dataLayer;
+package com.lonn.studentassistant.authentication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,14 +10,11 @@ import java.util.Set;
 
 public class AuthSharedPrefs
 {
-    private SharedPreferences sharedPref;
-    private com.lonn.studentassistant.authentification.dataLayer.AuthService authService;
+    private static SharedPreferences sharedPref;
 
-    AuthSharedPrefs(com.lonn.studentassistant.authentification.dataLayer.AuthService authService)
+    static void init(Context context)
     {
-        this.authService = authService;
-
-        sharedPref = authService.getActivity().getBaseContext().getSharedPreferences("studentassistant-auth", Context.MODE_PRIVATE);
+        sharedPref = context.getSharedPreferences("studentassistant-auth", Context.MODE_PRIVATE);
     }
 
     public void deleteCredentials()
@@ -26,6 +24,8 @@ public class AuthSharedPrefs
         editor.remove("email");
         editor.remove("password");
         editor.apply();
+
+        Log.e("Delete", "true");
     }
 
     public void rememberCredentials(final String email, final String password)
@@ -36,31 +36,40 @@ public class AuthSharedPrefs
         editor.putString("password", password);
         editor.apply();
 
-        authService.getActivity().setLoginFields(new HashMap<String,String>() {{ put("remember", "true"); put("email", email); put("password", password); }});
+        Log.e("Remember", "true");
     }
 
-    public boolean hasSavedCredentials()
+    boolean hasSavedCredentials()
     {
-        String remember = Boolean.toString(sharedPref.getBoolean("remember", false));
+        boolean remember = sharedPref.getBoolean("remember", false);
 
-        return remember.equals("true");
+        Log.e("Saved", Boolean.toString(remember));
+        Log.e("Count", Integer.toString(sharedPref.getAll().size()));
+
+        return remember;
     }
 
-    public Map<String,String> getCredentials()
+    Map<String,String> getCredentials()
     {
         Map<String, String> creds = new HashMap<>();
 
         Set<String> keys = sharedPref.getAll().keySet();
 
-        for (String key : keys)
+        /*for (String key : keys)
         {
             Object aux = sharedPref.getAll().get("key");
+
+            Log.e("Key", key);
+            Log.e("Val", aux.toString());
 
             if (aux instanceof String)
                 creds.put(key, (String) aux);
             else if (aux instanceof Boolean)
                 creds.put(key, Boolean.toString((boolean) aux));
-        }
+        }*/
+        creds.put("email", sharedPref.getString("email",""));
+        creds.put("password", sharedPref.getString("password",""));
+        creds.put("remember", Boolean.toString(sharedPref.getBoolean("remember",false)));
 
         return creds;
     }
