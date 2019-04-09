@@ -15,9 +15,14 @@ public class Utils
         return new String(Base64.decode(input, Base64.DEFAULT));
     }
 
-    public static String convertEmail(String email)
+    public static String emailToKey(String email)
     {
-        return email.replace(".","");
+        return email.replace(".",",");
+    }
+
+    public static String keyToEmail(String key)
+    {
+        return key.replace(",",".");
     }
 
     public static boolean isValidStudentId(String studentId)

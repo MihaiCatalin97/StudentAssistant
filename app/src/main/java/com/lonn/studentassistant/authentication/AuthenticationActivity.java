@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.authentication.services.CredentialsCheckService;
+import com.lonn.studentassistant.common.DatabasePopulator;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.authentication.services.LoginService;
@@ -29,6 +29,7 @@ public class AuthenticationActivity extends AppCompatActivity {
     private Student registeringStudent;
     private CredentialsCheckReceiver credentialsReceiver;
     private String privileges;
+    private DatabasePopulator populator = new DatabasePopulator();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,17 +182,17 @@ public class AuthenticationActivity extends AppCompatActivity {
 
         if (email.length() == 0)
         {
-            Toast.makeText(getBaseContext(),"Invalid email!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),getResources().getString(R.string.invalid_email),Toast.LENGTH_SHORT).show();
             return;
         }
         if (password.length() == 0)
         {
-            Toast.makeText(getBaseContext(),"Invalid password!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),getResources().getString(R.string.invalid_password),Toast.LENGTH_SHORT).show();
             return;
         }
         if (!password.equals(password2))
         {
-            Toast.makeText(getBaseContext(),"Passwords don't match!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getBaseContext(),getResources().getString(R.string.invalid_password_match),Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -203,6 +204,37 @@ public class AuthenticationActivity extends AppCompatActivity {
         registerIntent.putExtra("privileges", privileges);
         registerIntent.putExtra("registeringStudent", registeringStudent);
         startService(registerIntent);
+    }
+
+    public void showDebugLayout(View v)
+    {
+        findViewById(R.id.layoutLogin).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layoutRegister1).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layoutRegister2).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layoutRegister3).setVisibility(View.INVISIBLE);
+        findViewById(R.id.layoutDebug).setVisibility(View.VISIBLE);
+    }
+
+    public void debugButton(View v)
+    {
+        switch(v.getId())
+        {
+            case R.id.deleteStudents:
+            {
+                populator.deleteStudentsTable();
+                break;
+            }
+            case R.id.populateStudents:
+            {
+                populator.populateStudentsTable();
+                break;
+            }
+            case R.id.deleteUsers:
+            {
+                populator.deleteUsersTable();
+                break;
+            }
+        }
     }
 
     public void tapRegistrationButton(View v)
@@ -266,7 +298,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
             if (result.equals("success"))
             {
-                Toast.makeText(getBaseContext(), "Authentication success.",
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
                         Toast.LENGTH_SHORT).show();
 
                 final String email = intent.getStringExtra("email");
@@ -298,7 +330,7 @@ public class AuthenticationActivity extends AppCompatActivity {
 
             if (result.equals("success"))
             {
-                Toast.makeText(getBaseContext(), "Account created successfully!",
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.account_create_success),
                         Toast.LENGTH_SHORT).show();
 
                 final String email = intent.getStringExtra("email");

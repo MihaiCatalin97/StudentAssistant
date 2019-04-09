@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome to Student Assistant!"
+        android:text="@string/app_title"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,7 +22,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Login"
+        android:text="@string/login"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:text="Email: "
+        android:text="@string/email"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.175"
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
-        android:text="Password: "
+        android:text="@string/password"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="@+id/loginEmailTextView"
@@ -62,6 +62,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textEmailAddress"
+        android:hint="@string/email_hint"
         app:layout_constraintBottom_toBottomOf="@+id/loginEmailTextView"
         app:layout_constraintLeft_toRightOf="@+id/loginEmailTextView" />
 
@@ -71,6 +72,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
+        android:hint="@string/password_hint"
         app:layout_constraintBottom_toBottomOf="@+id/loginPasswordTextView"
         app:layout_constraintLeft_toRightOf="@+id/loginPasswordTextView" />
 
@@ -80,7 +82,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="login"
-        android:text="Login"
+        android:text="@string/login"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginRememberCheckBox" />
@@ -91,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="tapRegistrationButton"
-        android:text="Sign Up"
+        android:text="@string/sign_up"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
@@ -101,11 +103,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Forgot Password"
+        android:text="@string/forgot_password"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signUpButton" />
+
+    <Button
+        android:id="@+id/debugButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="showDebugLayout"
+        android:text="Debug"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordButton" />
 
     <CheckBox
         android:id="@+id/loginRememberCheckBox"
@@ -113,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="tapRememberCheckBox"
-        android:text="Remember me?"
+        android:text="@string/remember"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordTextView" />

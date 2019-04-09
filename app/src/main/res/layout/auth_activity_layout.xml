@@ -30,4 +30,11 @@
         android:visibility="invisible"
         android:id="@+id/layoutRegister3"/>
 
+    <include
+        layout="@layout/debug_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"
+        android:id="@+id/layoutDebug"/>
+
 </RelativeLayout>

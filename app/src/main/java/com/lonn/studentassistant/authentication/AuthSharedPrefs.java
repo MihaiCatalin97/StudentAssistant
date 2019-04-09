@@ -55,18 +55,6 @@ public class AuthSharedPrefs
 
         Set<String> keys = sharedPref.getAll().keySet();
 
-        /*for (String key : keys)
-        {
-            Object aux = sharedPref.getAll().get("key");
-
-            Log.e("Key", key);
-            Log.e("Val", aux.toString());
-
-            if (aux instanceof String)
-                creds.put(key, (String) aux);
-            else if (aux instanceof Boolean)
-                creds.put(key, Boolean.toString((boolean) aux));
-        }*/
         creds.put("email", sharedPref.getString("email",""));
         creds.put("password", sharedPref.getString("password",""));
         creds.put("remember", Boolean.toString(sharedPref.getBoolean("remember",false)));

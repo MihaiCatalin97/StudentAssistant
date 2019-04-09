@@ -2,7 +2,6 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -12,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:onClick="showLoginLayout"
-        android:text="Back to login"
+        android:text="@string/back_to_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -21,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
-        android:text="Choose the account type:"
+        android:text="@string/choose_account_type"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegisterStudent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:onClick="tapRegistrationButton"
-        android:text="Student"
+        android:text="@string/student"
         app:layout_constraintBottom_toTopOf="@+id/buttonRegisterProfessor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -44,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="tapRegistrationButton"
-        android:text="Administrator"
+        android:text="@string/administrator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonRegisterProfessor" />
@@ -54,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="tapRegistrationButton"
-        android:text="Professor"
+        android:text="@string/professor"
         app:layout_constraintBottom_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

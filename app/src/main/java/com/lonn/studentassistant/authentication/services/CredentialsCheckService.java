@@ -2,9 +2,8 @@ package com.lonn.studentassistant.authentication.services;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.globalServices.studentService.StudentService;
 
@@ -46,13 +45,13 @@ public class CredentialsCheckService extends IntentService
                     if (inputStudent.equals(databaseStudent))
                         intent1.putExtra("result","success");
                     else
-                        intent1.putExtra("result","Invalid credentials!");
+                        intent1.putExtra("result",getResources().getString(R.string.invalid_credentials));
                 }
                 else
-                    intent1.putExtra("result","Student already has an account!");
+                    intent1.putExtra("result",getResources().getString(R.string.account_exists));
             }
             else
-                intent1.putExtra("result","Invalid credentials!");
+                intent1.putExtra("result",getResources().getString(R.string.invalid_credentials));
 
             sendBroadcast(intent1);
         }

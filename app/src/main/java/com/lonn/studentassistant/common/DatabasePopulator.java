@@ -1,24 +1,55 @@
 package com.lonn.studentassistant.common;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.entities.Student;
+import com.lonn.studentassistant.entities.User;
 import com.lonn.studentassistant.firebaseDatabase.students.StudentDatabaseController;
 import com.lonn.studentassistant.firebaseDatabase.students.StudentRepository;
+import com.lonn.studentassistant.firebaseDatabase.users.UserDatabaseController;
+import com.lonn.studentassistant.firebaseDatabase.users.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabasePopulator
 {
-    StudentRepository studentRepository;
+    private StudentRepository studentRepository;
+    private UserRepository userRepository;
 
     public DatabasePopulator()
     {
         studentRepository = new StudentRepository(new StudentDatabaseController());
+        userRepository = new UserRepository(new UserDatabaseController());
     }
+
+    public void deleteStudentsTable()
+    {
+        List<Student> students = new ArrayList<>(studentRepository.getAll());
+
+        studentRepository.remove(students);
+    }
+
+    public void deleteUsersTable()
+    {
+        List<User> users = userRepository.getAll();
+
+        for(int i=0;i<users.size();i++)
+        {
+            userRepository.remove(users.get(i));
+        }
+    }
+
 
     public void populateStudentsTable()
     {
-        studentRepository.add(new Student("1", "Nume", "Prenume", "R", "student@ceva.com", "+406523323", 1, "B5"));
-        studentRepository.add(new Student("2", "Mihai", "Marius-Catalin", "R", "mihai.catalin197@gmail.com", "0742664239", 3, "B5"));
-        studentRepository.add(new Student("3", "Nume", "Prenume", "R", "student@ceva.com", "+406523323", 1, "B5"));
-        studentRepository.add(new Student("4", "Nume", "Prenume", "R", "student@ceva.com", "+406523323", 1, "B5"));
+        List<Student> newStudents = new ArrayList<>();
+
+        newStudents.add(new Student("1", "Mihai", "Catalin", "R", "cmihai@gmail.com", "0742664239", 3, "B5"));
+        newStudents.add(new Student("2", "Tanasuca", "Bogdan", "R", "btanasuca@gmail.com", "0742664239", 3, "B5"));
+        newStudents.add(new Student("3", "Cretu", "Marius", "R", "mcretu@gmail.com", "0742664239", 3, "B5"));
+        newStudents.add(new Student("4", "Borceanu", "Florin", "R", "bflorin@gmail.com", "0742664239", 3, "B5"));
+        newStudents.add(new Student("5", "Andro", "Bianca", "R", "bandro@gmail.com", "0742664239", 3, "B5"));
+        newStudents.add(new Student("6", "Hurbea", "Razvan", "R", "rhurbea@gmail.com", "0742664239", 3, "A1"));
+
+        studentRepository.add(newStudents);
     }
 }

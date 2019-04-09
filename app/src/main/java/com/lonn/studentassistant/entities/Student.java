@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @IgnoreExtraProperties
-public class Student implements Serializable
+public class Student extends BaseEntity
 {
     @Exclude
     public String numarMatricol;
@@ -45,16 +45,23 @@ public class Student implements Serializable
 
         Student x = (Student)s;
 
-        if (!x.numarMatricol.equals(this.numarMatricol) ||
-            !x.nume.equals(this.nume) ||
-            !x.prenume.equals(this.prenume) ||
-            !x.numarTelefon.equals(this.numarTelefon) ||
-            !x.email.equals(this.email) ||
-            !x.initialaTatalui.equals(this.initialaTatalui) ||
-            !x.grupa.equals(this.grupa) ||
-            x.an != this.an)
-            return false;
+        return x.numarMatricol.equals(this.numarMatricol) &&
+                x.nume.equals(this.nume) &&
+                x.prenume.equals(this.prenume) &&
+                x.numarTelefon.equals(this.numarTelefon) &&
+                x.email.equals(this.email) &&
+                x.initialaTatalui.equals(this.initialaTatalui) &&
+                x.grupa.equals(this.grupa) &&
+                x.an == this.an;
+    }
 
-        return true;
+    public String getKey()
+    {
+        return numarMatricol;
+    }
+
+    public void setKey(String key)
+    {
+        numarMatricol = key;
     }
 }

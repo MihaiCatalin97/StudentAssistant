@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.authentication.AuthSharedPrefs;
 
 public class LoginService extends IntentService
@@ -44,8 +45,7 @@ public class LoginService extends IntentService
                         }
                         else {
                             authSharedPrefs.deleteCredentials();
-
-                            intent1.putExtra("result", "Invalid credentials!");
+                            intent1.putExtra("result", getResources().getString(R.string.invalid_credentials));
                         }
 
                         intent1.putExtra("email", email);

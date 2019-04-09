@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">Welcome to Student Assistant!</string>
+
+    <string name="login">Login</string>
+    <string name="sign_up">Sign up</string>
+    <string name="new_account">New Account</string>
+
+    <string name="password">Password: </string>
+    <string name="password_hint">Enter password</string>
+    <string name="email">Email: </string>
+    <string name="email2">Email</string>
+    <string name="email_hint">Enter email</string>
+    <string name="repeat_password">Repeat password: </string>
+    <string name="repeat_password_hint">Repeat password</string>
+    <string name="student_id">Student Id</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="father_initial">Father\'s initial</string>
+    <string name="phone_number">Phone number</string>
+    <string name="year">Year</string>
+    <string name="group">Group</string>
+
+    <string name="remember">Remember me?</string>
+    <string name="forgot_password">Forgot password</string>
+
+    <string name="choose_account_type">Choose the account type:</string>
+    <string name="enter_credentials">Please enter your credentials:</string>
+
+    <string name="student">Student</string>
+    <string name="professor">Professor</string>
+    <string name="administrator">Administrator</string>
+    <string name="student_account">Student Account</string>
+
+    <string name="back_to_login">Back to login</string>
+    <string name="continue_step">Continue</string>
+
+    <string name="invalid_student_Id">Invalid Student ID!</string>
+    <string name="invalid_year">Invalid year!</string>
+    <string name="account_exists">Student already has an account!</string>
+    <string name="invalid_credentials">Invalid credentials!</string>
+    <string name="invalid_email">Invalid email!</string>
+    <string name="invalid_password">Invalid password!</string>
+    <string name="invalid_password_match">Passwords don\'t match!</string>
+
+    <string name="account_create_success">Account created successfully!</string>
+    <string name="login_success">Authentication success!</string>
+</resources>

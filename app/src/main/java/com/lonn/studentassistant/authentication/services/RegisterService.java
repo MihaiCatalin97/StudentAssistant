@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.entities.User;
@@ -48,14 +49,14 @@ public class RegisterService extends IntentService
 
                         if (task.isSuccessful())
                         {
-                            userRepository.add(new User(email, privileges));
+                            userRepository.add(new User(email, registeringStudent.numarMatricol, privileges));
                             studentRepository.add(registeringStudent);
 
                             authSharedPrefs.rememberCredentials(email, password);
                             intent1.putExtra("result", "success");
                         }
                         else {
-                            intent1.putExtra("result", "Invalid email!");
+                            intent1.putExtra("result", getResources().getString(R.string.invalid_email));
                         }
 
                         intent1.putExtra("success", task.isSuccessful());
