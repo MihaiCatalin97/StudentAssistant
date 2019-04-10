@@ -1,5 +1,6 @@
-package com.lonn.studentassistant.common.interfaces;
+package com.lonn.studentassistant.common.abstractClasses;
 
+import com.lonn.studentassistant.common.interfaces.IDatabaseController;
 import com.lonn.studentassistant.entities.BaseEntity;
 
 import java.util.ArrayList;

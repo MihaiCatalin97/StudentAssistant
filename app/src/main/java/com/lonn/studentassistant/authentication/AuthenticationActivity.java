@@ -18,6 +18,7 @@ import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.authentication.services.LoginService;
 import com.lonn.studentassistant.authentication.services.RegisterService;
+import com.lonn.studentassistant.student.StudentActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -234,6 +235,9 @@ public class AuthenticationActivity extends AppCompatActivity {
                 populator.deleteUsersTable();
                 break;
             }
+            case R.id.populateCourses:
+                populator.populateCoursesTable();
+                break;
         }
     }
 
@@ -304,6 +308,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 final String email = intent.getStringExtra("email");
                 final String password = intent.getStringExtra("password");
                 boolean remember = intent.getBooleanExtra("remember", false);
+                final String privileges = intent.getStringExtra("accountType");
 
                 if (remember)
                 {
@@ -313,6 +318,12 @@ public class AuthenticationActivity extends AppCompatActivity {
                         put("email", email);
                         put("password", password);
                     }});
+                }
+
+                if (privileges.equals("student"))
+                {
+                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
+                    startActivity(studentActivityIntent);
                 }
             }
             else

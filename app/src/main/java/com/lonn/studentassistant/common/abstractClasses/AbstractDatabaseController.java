@@ -1,5 +1,6 @@
-package com.lonn.studentassistant.common.interfaces;
+package com.lonn.studentassistant.common.abstractClasses;
 
+import android.app.Service;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -8,7 +9,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lonn.studentassistant.common.interfaces.IDatabaseController;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.globalServices.coursesService.CourseService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +22,12 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
     private Class<T> type;
     protected FirebaseDatabase database;
     protected DatabaseReference databaseReference;
+    private Service boundService;
 
-    public AbstractDatabaseController(Class<T> type)
+    public AbstractDatabaseController(Class<T> type, Service boundService)
     {
         this.type = type;
+        this.boundService = boundService;
     }
 
     public void setAll(final List<T> list)
@@ -30,7 +35,6 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.e("Snap count", Long.toString(dataSnapshot.getChildrenCount()));
                 for(DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
                     int index = -1;
@@ -45,22 +49,19 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                     }
 
                     T item = snapshot.getValue(type);
-                    if (snapshot.exists() && item != null)
+                    //if (snapshot.exists() && item != null)
                     {
                         item.setKey(snapshot.getKey());
 
-                        if (!list.contains(item))
-                        {
                             if (index >= 0)
                             {
                                 list.set(index, item);
-                                Log.e("Updating item", item.getKey());
+                                Log.e("Updating " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                             }
                             else {
                                 list.add(item);
-                                Log.e("Adding item " + Integer.toString(list.size()), item.getKey());
+                                Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                             }
-                        }
                     }
                 }
 
@@ -80,17 +81,24 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
 
                     if (!found)
                     {
-                        Log.e("Removing item", item.getKey());
+                        Log.e("Removing " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                         list.remove(item);
                         i--;
                     }
                 }
+
+                notifyDataChanged();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+    }
+
+    private String getItemType()
+    {
+        return type.getSimpleName();
     }
 
     public void add(T item)
@@ -142,5 +150,11 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         }
 
         databaseReference.updateChildren(itemMap);
+    }
+
+    private void notifyDataChanged()
+    {
+        if (boundService != null)
+            ((CourseService) boundService).getAll();
     }
 }

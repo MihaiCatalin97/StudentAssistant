@@ -1,6 +1,6 @@
-package com.lonn.studentassistant.firebaseDatabase.students;
+package com.lonn.studentassistant.globalServices.studentService.dataAccessLayer;
 
-import com.lonn.studentassistant.common.interfaces.AbstractRepository;
+import com.lonn.studentassistant.common.abstractClasses.AbstractRepository;
 import com.lonn.studentassistant.entities.Student;
 
 public class StudentRepository extends AbstractRepository<Student>

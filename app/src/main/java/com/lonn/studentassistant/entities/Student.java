@@ -55,11 +55,13 @@ public class Student extends BaseEntity
                 x.an == this.an;
     }
 
+    @Exclude
     public String getKey()
     {
         return numarMatricol;
     }
 
+    @Exclude
     public void setKey(String key)
     {
         numarMatricol = key;

@@ -30,11 +30,13 @@ public class User extends BaseEntity
         return privileges;
     }
 
+    @Exclude
     public String getKey()
     {
         return Utils.emailToKey(email);
     }
 
+    @Exclude
     public void setKey(String key)
     {
         email = Utils.keyToEmail(key);

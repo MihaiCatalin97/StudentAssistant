@@ -10,10 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".authentication.AuthenticationActivity">
+        <activity
+            android:name=".authentication.AuthenticationActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -21,17 +23,22 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="www"
                     android:host="lonn" />
-
             </intent-filter>
+
         </activity>
+
+        <activity
+            android:name=".student.StudentActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".authentication.AuthenticationActivity"/>
 
         <service android:name=".authentication.services.LoginService" />
         <service android:name=".authentication.services.RegisterService" />
         <service android:name=".authentication.services.CredentialsCheckService" />
         <service android:name=".globalServices.studentService.StudentService" />
+        <service android:name=".globalServices.coursesService.CourseService" />
     </application>
 
 </manifest>

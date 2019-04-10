@@ -12,10 +12,10 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.firebaseDatabase.students.StudentDatabaseController;
-import com.lonn.studentassistant.firebaseDatabase.students.StudentRepository;
-import com.lonn.studentassistant.firebaseDatabase.users.UserDatabaseController;
-import com.lonn.studentassistant.firebaseDatabase.users.UserRepository;
+import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentDatabaseController;
+import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentRepository;
+import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserDatabaseController;
+import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserRepository;
 
 public class RegisterService extends IntentService
 {

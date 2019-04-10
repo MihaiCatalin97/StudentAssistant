@@ -1,11 +1,14 @@
 package com.lonn.studentassistant.common;
 
+import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.firebaseDatabase.students.StudentDatabaseController;
-import com.lonn.studentassistant.firebaseDatabase.students.StudentRepository;
-import com.lonn.studentassistant.firebaseDatabase.users.UserDatabaseController;
-import com.lonn.studentassistant.firebaseDatabase.users.UserRepository;
+import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentDatabaseController;
+import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentRepository;
+import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserDatabaseController;
+import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserRepository;
+import com.lonn.studentassistant.globalServices.coursesService.dataAccessLayer.CourseDatabaseController;
+import com.lonn.studentassistant.globalServices.coursesService.dataAccessLayer.CourseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +17,13 @@ public class DatabasePopulator
 {
     private StudentRepository studentRepository;
     private UserRepository userRepository;
+    private CourseRepository courseRepository;
 
     public DatabasePopulator()
     {
         studentRepository = new StudentRepository(new StudentDatabaseController());
         userRepository = new UserRepository(new UserDatabaseController());
+        courseRepository = new CourseRepository(new CourseDatabaseController(null));
     }
 
     public void deleteStudentsTable()
@@ -38,7 +43,6 @@ public class DatabasePopulator
         }
     }
 
-
     public void populateStudentsTable()
     {
         List<Student> newStudents = new ArrayList<>();
@@ -51,5 +55,18 @@ public class DatabasePopulator
         newStudents.add(new Student("6", "Hurbea", "Razvan", "R", "rhurbea@gmail.com", "0742664239", 3, "A1"));
 
         studentRepository.add(newStudents);
+    }
+
+    public void populateCoursesTable()
+    {
+        List<Course> newCourses = new ArrayList<>();
+
+        newCourses.add(new Course("Java", 2, 2));
+        newCourses.add(new Course("TSP.Net", 3, 2));
+        newCourses.add(new Course("Securitatea Informatiei", 3, 1));
+        newCourses.add(new Course("Logica", 1, 1));
+        newCourses.add(new Course("POO", 1, 2));
+
+        courseRepository.add(newCourses);
     }
 }
