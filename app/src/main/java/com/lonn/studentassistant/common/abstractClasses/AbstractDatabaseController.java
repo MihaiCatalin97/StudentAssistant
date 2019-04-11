@@ -11,10 +11,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.common.interfaces.IDatabaseController;
 import com.lonn.studentassistant.entities.BaseEntity;
-import com.lonn.studentassistant.globalServices.coursesService.CourseService;
+import com.lonn.studentassistant.entities.lists.CustomList;
+import com.lonn.studentassistant.services.coursesService.CourseService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDatabaseController<T extends BaseEntity> implements IDatabaseController<T>
@@ -30,56 +30,35 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         this.boundService = boundService;
     }
 
-    public void setAll(final List<T> list)
+    public void setAll(final CustomList<T> list)
     {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren())
                 {
-                    int index = -1;
-
-                    for (int i=0;i<list.size();i++)
-                    {
-                        if (list.get(i).getKey().equals(snapshot.getKey()))
-                        {
-                            index = i;
-                            break;
-                        }
-                    }
+                    String key = snapshot.getKey();
+                    int index = list.getIndexByKey(key);
 
                     T item = snapshot.getValue(type);
-                    //if (snapshot.exists() && item != null)
-                    {
-                        item.setKey(snapshot.getKey());
+                    item.setKey(key);
 
-                            if (index >= 0)
-                            {
-                                list.set(index, item);
-                                Log.e("Updating " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
-                            }
-                            else {
-                                list.add(item);
-                                Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
-                            }
+                    if (index >= 0)
+                    {
+                        list.set(index, item);
+                        Log.e("Updating " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
+                    }
+                    else {
+                        list.add(item);
+                        Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                     }
                 }
 
                 for (int i=0;i<list.size();i++)
                 {
                     T item = list.get(i);
-                    boolean found = false;
 
-                    for (DataSnapshot snap : dataSnapshot.getChildren())
-                    {
-                        if (item.getKey().equals(snap.getKey()))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (!found)
+                    if (!dataSnapshot.hasChild(item.getKey()))
                     {
                         Log.e("Removing " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                         list.remove(item);
@@ -106,7 +85,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         databaseReference.child(item.getKey()).setValue(item);
     }
 
-    public void add(List<T> items)
+    public void add(CustomList<T> items)
     {
         Map<String, Object> itemMap = new HashMap<>();
 
@@ -123,7 +102,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         databaseReference.child(item.getKey()).setValue(null);
     }
 
-    public void remove(List<T> items)
+    public void remove(CustomList<T> items)
     {
         HashMap<String, Object> itemMap = new HashMap<>();
 
@@ -140,7 +119,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         databaseReference.child(item.getKey()).setValue(item);
     }
 
-    public void update(List<T> items)
+    public void update(CustomList<T> items)
     {
         Map<String, Object> itemMap = new HashMap<>();
 

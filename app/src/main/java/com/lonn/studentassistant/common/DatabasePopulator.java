@@ -3,12 +3,14 @@ package com.lonn.studentassistant.common;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentDatabaseController;
-import com.lonn.studentassistant.globalServices.studentService.dataAccessLayer.StudentRepository;
-import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserDatabaseController;
-import com.lonn.studentassistant.globalServices.userService.dataAccessLayer.UserRepository;
-import com.lonn.studentassistant.globalServices.coursesService.dataAccessLayer.CourseDatabaseController;
-import com.lonn.studentassistant.globalServices.coursesService.dataAccessLayer.CourseRepository;
+import com.lonn.studentassistant.entities.lists.CustomCoursesList;
+import com.lonn.studentassistant.entities.lists.CustomStudentList;
+import com.lonn.studentassistant.services.studentService.dataAccessLayer.StudentDatabaseController;
+import com.lonn.studentassistant.services.studentService.dataAccessLayer.StudentRepository;
+import com.lonn.studentassistant.services.userService.dataAccessLayer.UserDatabaseController;
+import com.lonn.studentassistant.services.userService.dataAccessLayer.UserRepository;
+import com.lonn.studentassistant.services.coursesService.dataAccessLayer.CourseDatabaseController;
+import com.lonn.studentassistant.services.coursesService.dataAccessLayer.CourseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class DatabasePopulator
 
     public void deleteStudentsTable()
     {
-        List<Student> students = new ArrayList<>(studentRepository.getAll());
+        CustomStudentList students = (CustomStudentList) studentRepository.getAll();
 
         studentRepository.remove(students);
     }
@@ -45,7 +47,7 @@ public class DatabasePopulator
 
     public void populateStudentsTable()
     {
-        List<Student> newStudents = new ArrayList<>();
+        CustomStudentList newStudents = new CustomStudentList();
 
         newStudents.add(new Student("1", "Mihai", "Catalin", "R", "cmihai@gmail.com", "0742664239", 3, "B5"));
         newStudents.add(new Student("2", "Tanasuca", "Bogdan", "R", "btanasuca@gmail.com", "0742664239", 3, "B5"));
@@ -59,7 +61,7 @@ public class DatabasePopulator
 
     public void populateCoursesTable()
     {
-        List<Course> newCourses = new ArrayList<>();
+        CustomCoursesList newCourses = new CustomCoursesList();
 
         newCourses.add(new Course("Java", 2, 2));
         newCourses.add(new Course("TSP.Net", 3, 2));

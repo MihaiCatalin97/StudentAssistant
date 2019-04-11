@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".authentication.AuthenticationActivity"
+            android:name=".activities.authentication.AuthenticationActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -30,15 +30,15 @@
         </activity>
 
         <activity
-            android:name=".student.StudentActivity"
+            android:name=".activities.student.StudentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".authentication.AuthenticationActivity"/>
+            android:parentActivityName=".activities.authentication.AuthenticationActivity"/>
 
-        <service android:name=".authentication.services.LoginService" />
-        <service android:name=".authentication.services.RegisterService" />
-        <service android:name=".authentication.services.CredentialsCheckService" />
-        <service android:name=".globalServices.studentService.StudentService" />
-        <service android:name=".globalServices.coursesService.CourseService" />
+        <service android:name=".services.loginService.LoginService" />
+        <service android:name=".services.registerService.RegisterService" />
+        <service android:name=".services.credentialsCheckService.CredentialsCheckService" />
+        <service android:name=".services.studentService.StudentService" />
+        <service android:name=".services.coursesService.CourseService" />
     </application>
 
 </manifest>

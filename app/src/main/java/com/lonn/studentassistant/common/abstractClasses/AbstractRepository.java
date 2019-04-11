@@ -2,18 +2,16 @@ package com.lonn.studentassistant.common.abstractClasses;
 
 import com.lonn.studentassistant.common.interfaces.IDatabaseController;
 import com.lonn.studentassistant.entities.BaseEntity;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.lonn.studentassistant.entities.lists.CustomList;
 
 public abstract class AbstractRepository<T extends BaseEntity>
 {
     private IDatabaseController<T> databaseController;
-    private List<T> items;
+    private CustomList<T> items;
 
     protected AbstractRepository(IDatabaseController<T> databaseController)
     {
-        items = new ArrayList<T>();
+        items = new CustomList<>();
         this.databaseController = databaseController;
         reload();
     }
@@ -35,7 +33,7 @@ public abstract class AbstractRepository<T extends BaseEntity>
         return null;
     }
 
-    public List<T> getAll()
+    public CustomList<T> getAll()
     {
         return items;
     }
@@ -51,9 +49,9 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
     }
 
-    public void update(List<T> items)
+    public void update(CustomList<T> items)
     {
-        List<T> resultList = new ArrayList<>();
+        CustomList<T> resultList = new CustomList<>(null);
 
         for (T item : items)
         {
@@ -77,9 +75,9 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
     }
 
-    public void add(List<T> items)
+    public void add(CustomList<T> items)
     {
-        List<T> resultList = new ArrayList<>();
+        CustomList<T> resultList = new CustomList<>();
 
         for (T item : items)
         {
@@ -102,9 +100,9 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
     }
 
-    public void remove(List<T> items)
+    public void remove(CustomList<T> items)
     {
-        List<T> resultList = new ArrayList<>();
+        CustomList<T> resultList = new CustomList<>();
 
         for (T item : items)
         {
