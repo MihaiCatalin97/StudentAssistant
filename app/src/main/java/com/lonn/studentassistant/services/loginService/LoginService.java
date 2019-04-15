@@ -1,92 +1,111 @@
 package com.lonn.studentassistant.services.loginService;
 
-import android.app.IntentService;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.authentication.AuthSharedPrefs;
+import com.lonn.studentassistant.common.ActivityServiceConnections;
+import com.lonn.studentassistant.common.responses.LoginResponse;
+import com.lonn.studentassistant.common.responses.Response;
+import com.lonn.studentassistant.common.interfaces.IServiceCallback;
+import com.lonn.studentassistant.common.requests.DatabaseRequest;
+import com.lonn.studentassistant.common.requests.LoginRequest;
+import com.lonn.studentassistant.common.requests.Request;
 import com.lonn.studentassistant.common.Utils;
+import com.lonn.studentassistant.common.abstractClasses.BasicService;
 import com.lonn.studentassistant.entities.User;
+import com.lonn.studentassistant.services.userService.UserService;
 
-public class LoginService extends IntentService
+public class LoginService extends BasicService implements IServiceCallback
 {
+    protected ActivityServiceConnections serviceConnections;
     private AuthSharedPrefs authSharedPrefs;
+    private LoginRequest request;
 
-    public LoginService()
+    @Override
+    public void onCreate()
     {
-        super("Login Service");
+        super.onCreate();
+
         authSharedPrefs = new AuthSharedPrefs();
+        serviceConnections = new ActivityServiceConnections(UserService.class);
+        serviceConnections.bind(this);
     }
 
     @Override
-    public void onHandleIntent(Intent intent) {
-        final String email = intent.getStringExtra("email");
-        final String password = intent.getStringExtra("password");
-        final boolean remember = intent.getBooleanExtra("remember", false);
-
-        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(Utils.emailToKey(email));
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final User user = dataSnapshot.getValue(User.class);
-
-                if (user != null)
-                {
-                    mAuth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful())
-                                    {
-                                        if (remember)
-                                            authSharedPrefs.rememberCredentials(email, password);
-
-                                        sendBroadcastResult("success", email, password, remember, user.getPrivileges());
-                                    }
-                                    else {
-                                        authSharedPrefs.deleteCredentials();
-
-                                        sendBroadcastResult(
-                                                getResources().getString(R.string.invalid_credentials),
-                                                null, null, false, null);
-                                    }
-                                }
-                            });
-                }
-                else
-                    sendBroadcastResult(
-                            getResources().getString(R.string.invalid_credentials),
-                            null, null, false, null);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
+    public void onDestroy()
+    {
+        super.onDestroy();
+        serviceConnections.unbind(this);
     }
 
-    private void sendBroadcastResult(String result, String email, String password, boolean remember, String accountType)
+    public void postRequest(Request incomingRequest)
     {
-        Intent intent1 = new Intent("login");
+        if (request != null)
+        {
+            sendResponse(new Response<User>(User.class, "login", "A login already is in progress!", null));
+        }
+        else if (incomingRequest.action.equals("login") && incomingRequest instanceof LoginRequest)
+        {
+            request = (LoginRequest)incomingRequest;
+            serviceConnections.getServiceByClass(UserService.class).postRequest(new DatabaseRequest("getById", Utils.emailToKey(request.email)));
+        }
+    }
 
-        intent1.putExtra("result", result);
-        intent1.putExtra("email", email);
-        intent1.putExtra("password", password);
-        intent1.putExtra("remember", remember);
-        intent1.putExtra("accountType", accountType);
+    public void processResponse(Response response)
+    {
+        if (response.action.equals("getById") && response.type.equals(User.class))
+        {
+            if (response.result.equals("success"))
+            {
+                if (response.items.size() == 1)
+                {
+                    signIn((User)response.items.get(0));
+                }
+                else
+                {
+                    sendResponse(new Response<User>(User.class, "login", "fail", null));
+                    request = null;
+                }
+            }
+            else
+            {
+                sendResponse(new Response<User>(User.class, "login", "fail", null));
+                request = null;
+            }
+        }
+    }
 
-        sendBroadcast(intent1);
+    private void signIn(final User user)
+    {
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signInWithEmailAndPassword(request.email, request.password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>()
+                {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task)
+                    {
+                        if (task.isSuccessful())
+                        {
+                            if (request.remember)
+                            {
+                                authSharedPrefs.rememberCredentials(request.email, request.password);
+                            }
+
+                            sendResponse(new LoginResponse(request.email, request.password, request.remember, user.getPrivileges()));
+                        }
+                        else
+                        {
+                            authSharedPrefs.deleteCredentials();
+
+                            sendResponse(new LoginResponse(getResources().getString(R.string.invalid_credentials)));
+                        }
+                    }
+                });
     }
 }

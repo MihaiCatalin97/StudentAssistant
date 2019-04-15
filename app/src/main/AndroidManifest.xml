@@ -34,11 +34,17 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.authentication.AuthenticationActivity"/>
 
+        <activity
+            android:name=".activities.debug.DebugActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".activities.authentication.AuthenticationActivity"/>
+
         <service android:name=".services.loginService.LoginService" />
         <service android:name=".services.registerService.RegisterService" />
         <service android:name=".services.credentialsCheckService.CredentialsCheckService" />
         <service android:name=".services.studentService.StudentService" />
         <service android:name=".services.coursesService.CourseService" />
+        <service android:name=".services.userService.UserService" />
     </application>
 
 </manifest>

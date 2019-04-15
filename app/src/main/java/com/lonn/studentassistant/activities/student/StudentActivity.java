@@ -3,6 +3,7 @@ package com.lonn.studentassistant.activities.student;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,25 +12,24 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.entities.lists.CustomCoursesList;
-import com.lonn.studentassistant.entities.lists.CustomStudentList;
+import com.lonn.studentassistant.common.requests.Request;
+import com.lonn.studentassistant.common.interfaces.IServiceCallback;
+import com.lonn.studentassistant.common.responses.Response;
 import com.lonn.studentassistant.common.abstractClasses.NavBarActivity;
-import com.lonn.studentassistant.common.interfaces.ICoursesCallback;
-import com.lonn.studentassistant.common.interfaces.IStudentCallback;
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.services.coursesService.CourseService;
+import com.lonn.studentassistant.services.studentService.StudentService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentActivity extends NavBarActivity implements IStudentCallback, ICoursesCallback
+public class StudentActivity extends NavBarActivity implements IServiceCallback
 {
     private CourseAdapter courseAdapter;
 
     public StudentActivity()
     {
-        super(Course.class, Student.class);
+        super(CourseService.class, StudentService.class);
     }
 
     @Override
@@ -44,7 +44,26 @@ public class StudentActivity extends NavBarActivity implements IStudentCallback,
     {
         showSnackbar("Loading courses");
         courseAdapter.clear();
-        ((CourseService) serviceConnections.getServiceByClass(Course.class)).getAll();
+        serviceConnections.getServiceByClass(CourseService.class).postRequest(new Request("getAll"));
+    }
+
+    public void processResponse(Response response)
+    {
+        hideSnackbar();
+
+        if(!response.result.equals("success"))
+            showSnackbar("Fail");
+
+        Log.e("Received response " + response.type.getName(), response.result + " " + response.action);
+        if(response.type.equals(Course.class))
+        {
+            Log.e("Received response " + response.type.getName(), response.result + " " + response.action);
+            if(response.action.equals("getAll"))
+            {
+                Log.e("Received response " + response.type.getName(), response.result + " " + response.action + " " + response.items.size());
+                courseAdapter.addAll(response.items);
+            }
+        }
     }
 
     public class CourseAdapter extends ArrayAdapter<Course> {
@@ -68,26 +87,5 @@ public class StudentActivity extends NavBarActivity implements IStudentCallback,
 
             return convertView;
         }
-    }
-
-    public void resultGetAll(CustomCoursesList courses)
-    {
-        hideSnackbar();
-        courseAdapter.addAll(courses);
-    }
-
-    public void resultGetById(Course course)
-    {
-
-    }
-
-    public void resultGetAll(CustomStudentList students)
-    {
-        hideSnackbar();
-    }
-
-    public void resultGetById(Student student)
-    {
-
     }
 }

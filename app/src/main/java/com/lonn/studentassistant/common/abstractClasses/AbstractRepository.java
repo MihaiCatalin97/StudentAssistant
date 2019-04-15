@@ -6,23 +6,31 @@ import com.lonn.studentassistant.entities.lists.CustomList;
 
 public abstract class AbstractRepository<T extends BaseEntity>
 {
-    private IDatabaseController<T> databaseController;
+    protected IDatabaseController<T> databaseController;
     private CustomList<T> items;
 
     protected AbstractRepository(IDatabaseController<T> databaseController)
     {
         items = new CustomList<>();
         this.databaseController = databaseController;
-        reload();
     }
 
-    private void reload()
+    Class getType()
     {
-        items.clear();
-        databaseController.setAll(items);
+        return databaseController.getType();
     }
 
-    private T getById(String id)
+    public void populateRepository()
+    {
+        databaseController.populateRepository(items);
+    }
+
+    public void populateRepository(String child)
+    {
+        databaseController.populateRepository(items, child);
+    }
+
+    public T getById(String id)
     {
         for (T u : items)
         {

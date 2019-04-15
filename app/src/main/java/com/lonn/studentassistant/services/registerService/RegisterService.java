@@ -26,8 +26,8 @@ public class RegisterService extends IntentService
     public RegisterService()
     {
         super("Register Service");
-        userRepository = new UserRepository(new UserDatabaseController());
-        studentRepository = new StudentRepository(new StudentDatabaseController());
+        userRepository = UserRepository.getInstance(null);
+        studentRepository = StudentRepository.getInstance(null);
 
         authSharedPrefs = new AuthSharedPrefs();
     }

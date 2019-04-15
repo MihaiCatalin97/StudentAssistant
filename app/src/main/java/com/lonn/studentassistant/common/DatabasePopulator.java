@@ -23,14 +23,14 @@ public class DatabasePopulator
 
     public DatabasePopulator()
     {
-        studentRepository = new StudentRepository(new StudentDatabaseController());
-        userRepository = new UserRepository(new UserDatabaseController());
-        courseRepository = new CourseRepository(new CourseDatabaseController(null));
+        studentRepository = StudentRepository.getInstance(null);
+        userRepository = UserRepository.getInstance(null);
+        courseRepository = CourseRepository.getInstance(null);
     }
 
     public void deleteStudentsTable()
     {
-        CustomStudentList students = (CustomStudentList) studentRepository.getAll();
+        CustomStudentList students = new CustomStudentList(studentRepository.getAll());
 
         studentRepository.remove(students);
     }

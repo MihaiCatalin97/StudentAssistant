@@ -7,9 +7,9 @@ import com.lonn.studentassistant.services.coursesService.CourseService;
 
 public class CourseDatabaseController extends AbstractDatabaseController<Course>
 {
-    public CourseDatabaseController(CourseService courseService)
+    public CourseDatabaseController()
     {
-        super(Course.class, courseService);
+        super(Course.class);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("courses");
     }

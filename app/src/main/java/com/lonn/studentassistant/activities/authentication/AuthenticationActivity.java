@@ -11,11 +11,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.entities.lists.CustomStudentList;
+import com.lonn.studentassistant.activities.debug.DebugActivity;
+import com.lonn.studentassistant.common.responses.LoginResponse;
+import com.lonn.studentassistant.common.responses.Response;
+import com.lonn.studentassistant.common.requests.LoginRequest;
+import com.lonn.studentassistant.entities.User;
 import com.lonn.studentassistant.common.abstractClasses.ServiceBoundActivity;
-import com.lonn.studentassistant.common.interfaces.IStudentCallback;
 import com.lonn.studentassistant.services.credentialsCheckService.CredentialsCheckService;
-import com.lonn.studentassistant.common.DatabasePopulator;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.services.loginService.LoginService;
@@ -25,15 +27,18 @@ import com.lonn.studentassistant.activities.student.StudentActivity;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthenticationActivity extends ServiceBoundActivity implements IStudentCallback
+public class AuthenticationActivity extends ServiceBoundActivity
 {
     private AuthSharedPrefs authSharedPrefs;
-    private LoginReceiver loginReceiver;
     private RegisterReceiver registerReceiver;
     private Student registeringStudent;
     private CredentialsCheckReceiver credentialsReceiver;
     private String privileges;
-    private DatabasePopulator populator = new DatabasePopulator();
+
+    public AuthenticationActivity()
+    {
+        super(LoginService.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +62,6 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
     {
         super.onResume();
 
-        if (loginReceiver == null)
-        {
-            loginReceiver = new LoginReceiver();
-            registerReceiver(loginReceiver, new IntentFilter("login"));
-        }
-
         if (registerReceiver == null)
         {
             registerReceiver = new RegisterReceiver();
@@ -81,14 +80,11 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
     {
         super.onPause();
 
-        if (loginReceiver != null)
-            unregisterReceiver(loginReceiver);
         if (registerReceiver != null)
             unregisterReceiver(registerReceiver);
         if (credentialsReceiver != null)
             unregisterReceiver(credentialsReceiver);
 
-        loginReceiver = null;
         registerReceiver = null;
         credentialsReceiver = null;
     }
@@ -110,13 +106,7 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
             return;
         }
 
-        Intent loginIntent = new Intent(this, LoginService.class);
-
-        loginIntent.putExtra("email", email);
-        loginIntent.putExtra("password", password);
-        loginIntent.putExtra("remember", remember);
-
-        startService(loginIntent);
+        serviceConnections.getServiceByClass(LoginService.class).postRequest(new LoginRequest(email, password, remember));
     }
 
     public void showRegistrationStep(int step)
@@ -212,35 +202,41 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
 
     public void showDebugLayout(View v)
     {
-        findViewById(R.id.layoutLogin).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutRegister1).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutRegister2).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutRegister3).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutDebug).setVisibility(View.VISIBLE);
+        Intent debugIntent = new Intent(this, DebugActivity.class);
+        startActivity(debugIntent);
     }
 
-    public void debugButton(View v)
+    public void processResponse(Response response)
     {
-        switch(v.getId())
+        if(response.action.equals("login"))
         {
-            case R.id.deleteStudents:
+            if(response.result.equals("success"))
             {
-                populator.deleteStudentsTable();
-                break;
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
+                        Toast.LENGTH_SHORT).show();
+
+                final LoginResponse res = (LoginResponse) response;
+                if (res.remember)
+                {
+                    setLoginFields(new HashMap<String,String>()
+                    {{
+                        put("remember", "true");
+                        put("email", res.email);
+                        put("password", res.password);
+                    }});
+                }
+
+                if (res.privileges.equals("student"))
+                {
+                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
+                    startActivity(studentActivityIntent);
+                }
             }
-            case R.id.populateStudents:
+            else
             {
-                populator.populateStudentsTable();
-                break;
+                Toast.makeText(getBaseContext(), response.result,
+                        Toast.LENGTH_SHORT).show();
             }
-            case R.id.deleteUsers:
-            {
-                populator.deleteUsersTable();
-                break;
-            }
-            case R.id.populateCourses:
-                populator.populateCoursesTable();
-                break;
         }
     }
 
@@ -298,45 +294,6 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
         }
     }
 
-    private class LoginReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String result = intent.getStringExtra("result");
-
-            if (result.equals("success"))
-            {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
-                        Toast.LENGTH_SHORT).show();
-
-                final String email = intent.getStringExtra("email");
-                final String password = intent.getStringExtra("password");
-                boolean remember = intent.getBooleanExtra("remember", false);
-                final String privileges = intent.getStringExtra("accountType");
-
-                if (remember)
-                {
-                    setLoginFields(new HashMap<String,String>()
-                    {{
-                        put("remember", "true");
-                        put("email", email);
-                        put("password", password);
-                    }});
-                }
-
-                if (privileges.equals("student"))
-                {
-                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
-                    startActivity(studentActivityIntent);
-                }
-            }
-            else
-            {
-                Toast.makeText(getBaseContext(), result,
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
     private class RegisterReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -381,8 +338,4 @@ public class AuthenticationActivity extends ServiceBoundActivity implements IStu
             }
         }
     }
-
-    public void resultGetAll(CustomStudentList students){}
-
-    public void resultGetById(Student student) {}
 }

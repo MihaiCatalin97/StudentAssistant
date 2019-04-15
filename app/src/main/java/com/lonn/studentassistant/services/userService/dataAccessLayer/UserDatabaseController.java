@@ -8,7 +8,7 @@ public class UserDatabaseController extends AbstractDatabaseController<User>
 {
     public UserDatabaseController()
     {
-        super(User.class, null);
+        super(User.class);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("users");
     }

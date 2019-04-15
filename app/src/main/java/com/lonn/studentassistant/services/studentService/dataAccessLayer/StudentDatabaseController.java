@@ -6,9 +6,9 @@ import com.lonn.studentassistant.entities.Student;
 
 public class StudentDatabaseController extends AbstractDatabaseController<Student>
 {
-    public StudentDatabaseController()
+    StudentDatabaseController()
     {
-        super(Student.class, null);
+        super(Student.class);
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("students");
     }

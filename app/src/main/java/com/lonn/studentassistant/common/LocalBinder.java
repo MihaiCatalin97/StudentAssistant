@@ -2,18 +2,19 @@ package com.lonn.studentassistant.common;
 
 import android.os.Binder;
 
+import com.lonn.studentassistant.common.abstractClasses.BasicService;
 import com.lonn.studentassistant.common.abstractClasses.LocalService;
 import com.lonn.studentassistant.entities.BaseEntity;
 
 public class LocalBinder<T extends BaseEntity> extends Binder
 {
-    private LocalService<T> service;
+    private BasicService service;
 
-    public LocalBinder(LocalService<T> service)
+    public LocalBinder(BasicService service)
     {
         this.service = service;
     }
-    public LocalService<T> getService() {
+    public BasicService getService() {
         return service;
     }
 }

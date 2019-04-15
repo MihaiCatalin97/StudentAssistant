@@ -14,7 +14,9 @@ import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.lists.CustomList;
 import com.lonn.studentassistant.services.coursesService.CourseService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class AbstractDatabaseController<T extends BaseEntity> implements IDatabaseController<T>
@@ -22,55 +24,81 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
     private Class<T> type;
     protected FirebaseDatabase database;
     protected DatabaseReference databaseReference;
-    private Service boundService;
+    private List<LocalService<T>> boundServices = new ArrayList<>();
 
-    public AbstractDatabaseController(Class<T> type, Service boundService)
+    public AbstractDatabaseController(Class<T> type)
     {
         this.type = type;
-        this.boundService = boundService;
     }
 
-    public void setAll(final CustomList<T> list)
+    public Class getType()
     {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        return type;
+    }
+
+    public void populateRepository(final CustomList<T> list, final String child)
+    {
+        databaseReference.child(child).addListenerForSingleValueEvent(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot : dataSnapshot.getChildren())
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                T item = dataSnapshot.getValue(type);
+                item.setKey(dataSnapshot.getKey());
+                list.add(item);
+                Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
+
+                for (LocalService<T> service : boundServices)
                 {
-                    String key = snapshot.getKey();
-                    int index = list.getIndexByKey(key);
+                    service.respondOneItem("getById", "success", list.getByKey(child));
+                }
+            }
 
-                    T item = snapshot.getValue(type);
-                    item.setKey(key);
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+                for (LocalService<T> service : boundServices)
+                {
+                    service.respondOneItem("getById", "Get by id failed", null);
+                }
+            }
+        });
+    }
 
-                    if (index >= 0)
+    public void populateRepository(final CustomList<T> list)
+    {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                for (DataSnapshot snapsot : dataSnapshot.getChildren())
+                {
+                    String key = snapsot.getKey();
+                    T item = snapsot.getValue(type);
+
+                    if (item != null)
                     {
-                        list.set(index, item);
-                        Log.e("Updating " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
-                    }
-                    else {
+                        item.setKey(key);
+
                         list.add(item);
                         Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                     }
                 }
 
-                for (int i=0;i<list.size();i++)
+                for (LocalService<T> service : boundServices)
                 {
-                    T item = list.get(i);
-
-                    if (!dataSnapshot.hasChild(item.getKey()))
-                    {
-                        Log.e("Removing " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
-                        list.remove(item);
-                        i--;
-                    }
+                    service.respondMultipleItems("getAll", "success", list);
                 }
-
-                notifyDataChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+                for (LocalService<T> service : boundServices)
+                {
+                    service.respondMultipleItems("getAll", "Get all failed", null);
+                }
             }
         });
     }
@@ -131,9 +159,19 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         databaseReference.updateChildren(itemMap);
     }
 
-    private void notifyDataChanged()
+    public void bindService(LocalService service)
     {
-        if (boundService != null)
-            ((CourseService) boundService).getAll();
+        if (service != null)
+        {
+            boundServices.add(service);
+        }
+    }
+
+    public void unbindService(LocalService service)
+    {
+        if (service != null)
+        {
+            boundServices.remove(service);
+        }
     }
 }
