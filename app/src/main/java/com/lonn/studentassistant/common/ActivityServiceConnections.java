@@ -1,7 +1,5 @@
 package com.lonn.studentassistant.common;
 
-import android.app.Activity;
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -10,8 +8,9 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.lonn.studentassistant.common.abstractClasses.BasicService;
-import com.lonn.studentassistant.common.interfaces.IServiceCallback;
+import com.lonn.studentassistant.common.abstractions.Response;
+import com.lonn.studentassistant.services.abstractions.BasicService;
+import com.lonn.studentassistant.activities.abstractions.ICallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,50 +26,52 @@ public class ActivityServiceConnections
         serviceClasses.addAll(Arrays.asList(classes));
     }
 
-    public void bind(final IServiceCallback activity)
+    public <T extends Response> void bind(ICallback<T> callback, ContextWrapper contextWrapper)
     {
-        for (final Class c : serviceClasses)
+        for (Class c : serviceClasses)
         {
-            CustomServiceConnection connection = new CustomServiceConnection(c, activity);
+            CustomServiceConnection<T> connection = new CustomServiceConnection<>(c, callback);
 
-            Intent intent = new Intent((ContextWrapper)activity, c);
+            Intent intent = new Intent(contextWrapper, c);
 
-            ((ContextWrapper)activity).bindService(intent, connection, Context.BIND_AUTO_CREATE);
+            contextWrapper.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
             serviceConnections.add(connection);
         }
     }
 
-    public void unbind(IServiceCallback activity)
+    @SuppressWarnings("unchecked")
+    public <T extends Response> void unbind(ICallback<T> callback, ContextWrapper wrapper)
     {
-        for (CustomServiceConnection connection : serviceConnections)
+        for (CustomServiceConnection<T> connection : serviceConnections)
         {
             if (connection.service != null) {
-                connection.service.removeCallback(activity);
+                connection.service.removeCallback(callback);
                 connection.service = null;
 
-                ((ContextWrapper)activity).unbindService(connection);
+                wrapper.unbindService(connection);
             }
         }
     }
 
-    private class CustomServiceConnection implements ServiceConnection
+    private class CustomServiceConnection<T extends Response> implements ServiceConnection
     {
-        BasicService service;
+        BasicService<T> service;
         private Class serviceClass;
-        private IServiceCallback callback;
+        private ICallback<T> callback;
 
-        CustomServiceConnection(Class serviceClass, IServiceCallback callback)
+        CustomServiceConnection(Class serviceClass, ICallback<T> callback)
         {
             this.serviceClass = serviceClass;
             this.callback = callback;
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public void onServiceConnected(ComponentName name, IBinder binder) {
             Log.e(serviceClass.getSimpleName() + " SERVICE CONNECT","!!!!!!!!!!!");
 
-            service = ((LocalBinder)binder).getService();
+            service = ((LocalBinder<T>)binder).getService();
             service.addCallback(callback);
         }
 

@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.common.requests;
 
+import com.lonn.studentassistant.common.abstractions.Request;
+
 public class LoginRequest extends Request
 {
     public String email;

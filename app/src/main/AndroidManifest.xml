@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.authentication.AuthenticationActivity"
+            android:name=".activities.implementations.authentication.AuthenticationActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -30,21 +30,21 @@
         </activity>
 
         <activity
-            android:name=".activities.student.StudentActivity"
+            android:name=".activities.implementations.student.StudentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.authentication.AuthenticationActivity"/>
+            android:parentActivityName=".activities.implementations.authentication.AuthenticationActivity"/>
 
         <activity
-            android:name=".activities.debug.DebugActivity"
+            android:name=".activities.implementations.debug.DebugActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.authentication.AuthenticationActivity"/>
+            android:parentActivityName=".activities.implementations.authentication.AuthenticationActivity"/>
 
-        <service android:name=".services.loginService.LoginService" />
-        <service android:name=".services.registerService.RegisterService" />
-        <service android:name=".services.credentialsCheckService.CredentialsCheckService" />
-        <service android:name=".services.studentService.StudentService" />
-        <service android:name=".services.coursesService.CourseService" />
-        <service android:name=".services.userService.UserService" />
+        <service android:name=".services.implementations.loginService.LoginService" />
+        <service android:name=".services.implementations.registerService.RegisterService" />
+        <service android:name=".services.implementations.credentialsCheckService.CredentialsCheckService" />
+        <service android:name=".services.implementations.studentService.StudentService" />
+        <service android:name=".services.implementations.coursesService.CourseService" />
+        <service android:name=".services.implementations.userService.UserService" />
     </application>
 
 </manifest>

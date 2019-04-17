@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.common.responses;
 
+import com.lonn.studentassistant.common.abstractions.Response;
+
 public class LoginResponse extends Response
 {
     public String email;
