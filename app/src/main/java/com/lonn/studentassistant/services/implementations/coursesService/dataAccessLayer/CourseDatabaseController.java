@@ -4,9 +4,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractDatabaseController;
 import com.lonn.studentassistant.entities.Course;
 
-public class CourseDatabaseController extends AbstractDatabaseController<Course>
+class CourseDatabaseController extends AbstractDatabaseController<Course>
 {
-    public CourseDatabaseController()
+    CourseDatabaseController()
     {
         super(Course.class);
         database = FirebaseDatabase.getInstance();

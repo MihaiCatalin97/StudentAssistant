@@ -14,11 +14,11 @@ import java.util.List;
 
 public abstract class BasicService<T extends Response> extends Service
 {
-    private final LocalBinder<T> binder = new LocalBinder<>(this);
+    private final IBinder binder = new LocalBinder<>(this);
     protected List<ICallback<T>> serviceCallbacks = new ArrayList<>(0);
 
     @Override
-    public LocalBinder<T> onBind(Intent intent) {
+    public IBinder onBind(Intent intent) {
         return binder;
     }
 

@@ -71,7 +71,7 @@ public class ActivityServiceConnections
         public void onServiceConnected(ComponentName name, IBinder binder) {
             Log.e(serviceClass.getSimpleName() + " SERVICE CONNECT","!!!!!!!!!!!");
 
-            service = ((LocalBinder<T>)binder).getService();
+            service = ((LocalBinder) binder).getService();
             service.addCallback(callback);
         }
 

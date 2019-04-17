@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lonn.studentassistant">
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -45,6 +47,13 @@
         <service android:name=".services.implementations.studentService.StudentService" />
         <service android:name=".services.implementations.coursesService.CourseService" />
         <service android:name=".services.implementations.userService.UserService" />
+
+        <receiver android:name=".services.StartupReceiver" >
+            <intent-filter>
+                <action android:name="RestartService" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

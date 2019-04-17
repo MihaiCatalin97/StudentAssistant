@@ -1,6 +1,9 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.entities.CustomList;
+import com.lonn.studentassistant.services.abstractions.DatabaseService;
+import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +11,13 @@ import java.util.List;
 public abstract class AbstractRepository<T extends BaseEntity>
 {
     protected IDatabaseController<T> databaseController;
-    private List<T> items;
+    private CustomList<T> items;
 
     protected AbstractRepository(IDatabaseController<T> databaseController)
     {
-        items = new ArrayList<>();
+        items = new CustomList<>();
         this.databaseController = databaseController;
+        populateRepository();
     }
 
     public void populateRepository()
@@ -118,5 +122,10 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
 
         databaseController.remove(resultList);
+    }
+
+    public void unbindService(DatabaseService<T> service)
+    {
+        databaseController.unbindService(service);
     }
 }

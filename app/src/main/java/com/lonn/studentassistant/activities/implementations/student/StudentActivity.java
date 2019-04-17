@@ -35,7 +35,7 @@ public class StudentActivity extends NavBarActivity
 
     public StudentActivity()
     {
-        super(CourseService.class, StudentService.class);
+        super(CourseService.class);
     }
 
     @Override

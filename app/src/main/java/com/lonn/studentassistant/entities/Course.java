@@ -32,4 +32,15 @@ public class Course extends BaseEntity
     {
         courseName = key.replace("~", ".");
     }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof Course))
+            return false;
+
+        Course c = (Course) o;
+
+        return c.semester == semester && c.year == year && c.courseName.equals(courseName);
+    }
 }

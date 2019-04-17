@@ -8,9 +8,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.entities.CustomList;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
     private Class<T> type;
     protected FirebaseDatabase database;
     protected DatabaseReference databaseReference;
-    private List<DatabaseService<T>> boundServices = new ArrayList<>();
+    private DatabaseService<T> boundService;
 
     public AbstractDatabaseController(Class<T> type)
     {
@@ -35,7 +37,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         return type;
     }
 
-    public void populateRepository(final List<T> list, final String child)
+    public void populateRepository(final CustomList<T> list, final String child)
     {
         Log.e("Setting listener on", databaseReference.getKey() + "/" + child);
 
@@ -48,34 +50,25 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
 
                 if (item == null)
                 {
-                    for (DatabaseService<T> service : boundServices)
-                    {
-                        service.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
-                    }
+                    boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
                     return;
                 }
 
                 item.setKey(dataSnapshot.getKey());
                 list.add(item);
 
-                for (DatabaseService<T> service : boundServices)
-                {
-                    service.sendResponse(new GetByIdResponse<>("success", item));
-                }
+                boundService.sendResponse(new GetByIdResponse<>("success", item));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
-                for (DatabaseService<T> service : boundServices)
-                {
-                    service.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
-                }
+                boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
             }
         });
     }
 
-    public void populateRepository(final List<T> list)
+    public void populateRepository(final CustomList<T> list)
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -96,21 +89,60 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                     }
                 }
 
-                for (DatabaseService<T> service : boundServices)
-                {
-                    service.sendResponse(new GetAllResponse<>("success", list));
-                }
+                listenForChanges(list);
+                boundService.sendResponse(new GetAllResponse<>("success", list));
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
-                for (DatabaseService<T> service : boundServices)
-                {
-                    service.sendResponse(new GetAllResponse<>("Get all failed", (T)null));
-                }
+                boundService.sendResponse(new GetAllResponse<>("Get all failed", (T)null));
             }
         });
+    }
+
+    private void listenForChanges(final CustomList<T> list)
+    {
+        for(T item : list)
+        {
+            databaseReference.child(item.getKey()).addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                {
+                    T item = dataSnapshot.getValue(type);
+
+                    if (item != null)
+                    {
+                        item.setKey(dataSnapshot.getKey());
+
+                        if (!list.contains(item))
+                        {
+                            Log.e("Data changed", dataSnapshot.getKey());
+
+                            int indexOfKey = list.indexOfKey(item.getKey());
+
+                            if(indexOfKey== -1)
+                            {
+                                list.remove(indexOfKey);
+                            }
+                            else
+                            {
+                                list.set(indexOfKey, item);
+
+                                boundService.sendResponse(new EditResponse<T>("success", item));
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError)
+                {
+
+                }
+            });
+        }
     }
 
     private String getItemType()
@@ -171,17 +203,17 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
 
     public void bindService(DatabaseService<T> service)
     {
-        if (service != null)
+        if (service != null && (boundService == null || !boundService.equals(service)))
         {
-            boundServices.add(service);
+            boundService = service;
         }
     }
 
     public void unbindService(DatabaseService<T> service)
     {
-        if (service != null)
+        if (boundService != null && boundService.equals(service))
         {
-            boundServices.remove(service);
+            boundService = service;
         }
     }
 }

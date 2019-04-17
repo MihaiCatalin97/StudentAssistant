@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.entities.CustomList;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.List;
 public interface IDatabaseController<T extends BaseEntity>
 {
     Class getType();
-    void populateRepository(List<T> list, String child);
-    void populateRepository(List<T> list);
+    void populateRepository(CustomList<T> list, String child);
+    void populateRepository(CustomList<T> list);
     void update(T item);
     void update(List<T> items);
     void add(T item);
