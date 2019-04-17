@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.services.abstractions;
+package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import com.lonn.studentassistant.entities.BaseEntity;
 
@@ -16,17 +16,17 @@ public abstract class AbstractRepository<T extends BaseEntity>
         this.databaseController = databaseController;
     }
 
-    void populateRepository()
+    public void populateRepository()
     {
         databaseController.populateRepository(items);
     }
 
-    void populateRepository(String child)
+    public void populateRepository(String child)
     {
         databaseController.populateRepository(items, child);
     }
 
-    T getById(String id)
+    public T getById(String id)
     {
         for (T u : items)
         {
@@ -53,7 +53,7 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
     }
 
-    void update(List<T> items)
+    public void update(List<T> items)
     {
         List<T> resultList = new ArrayList<>();
 

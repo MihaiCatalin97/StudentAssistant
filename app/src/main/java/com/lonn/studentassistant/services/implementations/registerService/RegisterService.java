@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.services.registerService;
+package com.lonn.studentassistant.services.implementations.registerService;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -9,13 +9,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.authentication.AuthSharedPrefs;
+import com.lonn.studentassistant.activities.implementations.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.services.studentService.dataAccessLayer.StudentDatabaseController;
-import com.lonn.studentassistant.services.studentService.dataAccessLayer.StudentRepository;
-import com.lonn.studentassistant.services.userService.dataAccessLayer.UserDatabaseController;
-import com.lonn.studentassistant.services.userService.dataAccessLayer.UserRepository;
+import com.lonn.studentassistant.services.implementations.studentService.dataAccessLayer.StudentRepository;
+import com.lonn.studentassistant.services.implementations.userService.dataAccessLayer.UserRepository;
 
 public class RegisterService extends IntentService
 {

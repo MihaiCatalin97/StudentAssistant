@@ -1,10 +1,8 @@
-package com.lonn.studentassistant.services.coursesService.dataAccessLayer;
+package com.lonn.studentassistant.services.implementations.coursesService.dataAccessLayer;
 
-import com.lonn.studentassistant.common.abstractClasses.AbstractRepository;
+import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.services.coursesService.CourseService;
-
-import java.util.ArrayList;
+import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 
 public class CourseRepository extends AbstractRepository<Course>
 {

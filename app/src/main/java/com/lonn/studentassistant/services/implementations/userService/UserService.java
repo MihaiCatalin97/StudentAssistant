@@ -1,10 +1,10 @@
-package com.lonn.studentassistant.services.userService;
+package com.lonn.studentassistant.services.implementations.userService;
 
-import com.lonn.studentassistant.common.abstractClasses.LocalService;
+import com.lonn.studentassistant.services.abstractions.DatabaseService;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.services.userService.dataAccessLayer.UserRepository;
+import com.lonn.studentassistant.services.implementations.userService.dataAccessLayer.UserRepository;
 
-public class UserService extends LocalService<User>
+public class UserService extends DatabaseService<User>
 {
     public UserRepository instantiateRepository()
     {

@@ -1,8 +1,8 @@
-package com.lonn.studentassistant.services.userService.dataAccessLayer;
+package com.lonn.studentassistant.services.implementations.userService.dataAccessLayer;
 
-import com.lonn.studentassistant.common.abstractClasses.AbstractRepository;
+import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.services.userService.UserService;
+import com.lonn.studentassistant.services.implementations.userService.UserService;
 
 public class UserRepository extends AbstractRepository<User>
 {

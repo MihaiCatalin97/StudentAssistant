@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.services.abstractions;
+package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -11,6 +11,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +95,6 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                         Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                     }
                 }
-
 
                 for (DatabaseService<T> service : boundServices)
                 {

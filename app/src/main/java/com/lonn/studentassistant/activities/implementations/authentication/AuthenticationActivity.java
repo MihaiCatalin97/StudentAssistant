@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.authentication;
+package com.lonn.studentassistant.activities.implementations.authentication;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,17 +11,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.debug.DebugActivity;
+import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
 import com.lonn.studentassistant.common.responses.LoginResponse;
-import com.lonn.studentassistant.common.responses.Response;
 import com.lonn.studentassistant.common.requests.LoginRequest;
-import com.lonn.studentassistant.common.abstractClasses.ServiceBoundActivity;
+import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.services.implementations.credentialsCheckService.CredentialsCheckService;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.services.implementations.loginService.LoginService;
 import com.lonn.studentassistant.services.implementations.registerService.RegisterService;
-import com.lonn.studentassistant.activities.student.StudentActivity;
+import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,6 +54,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
     @Override
     public void onStart() {
         super.onStart();
+        serviceConnections.bind(loginCallback, this);
     }
 
     @Override
@@ -88,6 +89,13 @@ public class AuthenticationActivity extends ServiceBoundActivity
         credentialsReceiver = null;
     }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        serviceConnections.unbind(loginCallback, this);
+    }
+
     public void login(View v)
     {
         String email = ((EditText)findViewById(R.id.loginEditTextEmail)).getText().toString();
@@ -105,7 +113,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
             return;
         }
 
-        serviceConnections.getServiceByClass(LoginService.class).postRequest(new LoginRequest(email, password, remember));
+        ((LoginService)serviceConnections.getServiceByClass(LoginService.class)).postRequest(new LoginRequest(email, password, remember));
     }
 
     public void showRegistrationStep(int step)
@@ -205,39 +213,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
         startActivity(debugIntent);
     }
 
-    public void processResponse(Response response)
-    {
-        if(response.action.equals("login"))
-        {
-            if(response.result.equals("success"))
-            {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
-                        Toast.LENGTH_SHORT).show();
 
-                final LoginResponse res = (LoginResponse) response;
-                if (res.remember)
-                {
-                    setLoginFields(new HashMap<String,String>()
-                    {{
-                        put("remember", "true");
-                        put("email", res.email);
-                        put("password", res.password);
-                    }});
-                }
-
-                if (res.privileges.equals("student"))
-                {
-                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
-                    startActivity(studentActivityIntent);
-                }
-            }
-            else
-            {
-                Toast.makeText(getBaseContext(), response.result,
-                        Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     public void tapRegistrationButton(View v)
     {
@@ -337,4 +313,37 @@ public class AuthenticationActivity extends ServiceBoundActivity
             }
         }
     }
+
+    private ICallback<LoginResponse> loginCallback = new ICallback<LoginResponse>()
+    {
+        public void processResponse(final  LoginResponse response)
+        {
+            if(response.getResult().equals("success"))
+            {
+                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
+                        Toast.LENGTH_SHORT).show();
+
+                if (response.remember)
+                {
+                    setLoginFields(new HashMap<String,String>()
+                    {{
+                        put("remember", "true");
+                        put("email", response.email);
+                        put("password", response.password);
+                    }});
+                }
+
+                if (response.privileges.equals("student"))
+                {
+                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
+                    startActivity(studentActivityIntent);
+                }
+            }
+            else
+            {
+                Toast.makeText(getBaseContext(), response.getResult(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 }

@@ -1,11 +1,8 @@
-package com.lonn.studentassistant.services.studentService.dataAccessLayer;
+package com.lonn.studentassistant.services.implementations.studentService.dataAccessLayer;
 
-import com.lonn.studentassistant.common.abstractClasses.AbstractRepository;
-import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
 import com.lonn.studentassistant.entities.Student;
-import com.lonn.studentassistant.services.coursesService.dataAccessLayer.CourseDatabaseController;
-import com.lonn.studentassistant.services.coursesService.dataAccessLayer.CourseRepository;
-import com.lonn.studentassistant.services.studentService.StudentService;
+import com.lonn.studentassistant.services.implementations.studentService.StudentService;
 
 public class StudentRepository extends AbstractRepository<Student>
 {

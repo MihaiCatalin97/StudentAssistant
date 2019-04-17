@@ -1,6 +1,7 @@
-package com.lonn.studentassistant.services.abstractions;
+package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.services.loginService;
+package com.lonn.studentassistant.services.implementations.loginService;
 
 import android.support.annotation.NonNull;
 
@@ -7,22 +7,26 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.authentication.AuthSharedPrefs;
+import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.implementations.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.common.ActivityServiceConnections;
+import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
+import com.lonn.studentassistant.common.requests.GetByIdRequest;
+import com.lonn.studentassistant.common.responses.CreateResponse;
+import com.lonn.studentassistant.common.responses.DeleteResponse;
+import com.lonn.studentassistant.common.responses.EditResponse;
+import com.lonn.studentassistant.common.responses.GetAllResponse;
+import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.common.responses.LoginResponse;
-import com.lonn.studentassistant.common.responses.Response;
-import com.lonn.studentassistant.common.interfaces.IServiceCallback;
-import com.lonn.studentassistant.common.requests.DatabaseRequest;
 import com.lonn.studentassistant.common.requests.LoginRequest;
-import com.lonn.studentassistant.common.requests.Request;
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.common.abstractClasses.BasicService;
+import com.lonn.studentassistant.services.abstractions.BasicService;
 import com.lonn.studentassistant.entities.User;
-import com.lonn.studentassistant.services.userService.UserService;
+import com.lonn.studentassistant.services.implementations.userService.UserService;
 
-public class LoginService extends BasicService implements IServiceCallback
+public class LoginService extends BasicService<LoginResponse>
 {
-    protected ActivityServiceConnections serviceConnections;
+    protected ActivityServiceConnections serviceConnections = new ActivityServiceConnections(UserService.class);
     private AuthSharedPrefs authSharedPrefs;
     private LoginRequest request;
 
@@ -30,53 +34,27 @@ public class LoginService extends BasicService implements IServiceCallback
     public void onCreate()
     {
         super.onCreate();
-
         authSharedPrefs = new AuthSharedPrefs();
-        serviceConnections = new ActivityServiceConnections(UserService.class);
-        serviceConnections.bind(this);
+        serviceConnections.bind(userCallback, this);
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        serviceConnections.unbind(this);
+        serviceConnections.unbind(userCallback, this);
     }
 
-    public void postRequest(Request incomingRequest)
+    public void postRequest(LoginRequest incomingRequest)
     {
         if (request != null)
         {
-            sendResponse(new Response<User>(User.class, "login", "A login already is in progress!", null));
+            sendResponse(new LoginResponse("login", "A login already is in progress!",false, null));
         }
-        else if (incomingRequest.action.equals("login") && incomingRequest instanceof LoginRequest)
+        else
         {
-            request = (LoginRequest)incomingRequest;
-            serviceConnections.getServiceByClass(UserService.class).postRequest(new DatabaseRequest("getById", Utils.emailToKey(request.email)));
-        }
-    }
-
-    public void processResponse(Response response)
-    {
-        if (response.action.equals("getById") && response.type.equals(User.class))
-        {
-            if (response.result.equals("success"))
-            {
-                if (response.items.size() == 1)
-                {
-                    signIn((User)response.items.get(0));
-                }
-                else
-                {
-                    sendResponse(new Response<User>(User.class, "login", "fail", null));
-                    request = null;
-                }
-            }
-            else
-            {
-                sendResponse(new Response<User>(User.class, "login", "fail", null));
-                request = null;
-            }
+            request = incomingRequest;
+            ((UserService)serviceConnections.getServiceByClass(UserService.class)).postRequest(new GetByIdRequest<User>(Utils.emailToKey(request.email)));
         }
     }
 
@@ -108,4 +86,34 @@ public class LoginService extends BasicService implements IServiceCallback
                     }
                 });
     }
+
+    private IDatabaseCallback<User> userCallback = new IDatabaseCallback<User>()
+    {
+        public void processResponse(DatabaseResponse<User> response) {}
+        public void processResponse(CreateResponse<User> response){}
+        public void processResponse(EditResponse<User> response){}
+        public void processResponse(DeleteResponse<User> response){}
+        public void processResponse(GetAllResponse<User> response){}
+
+        public void processResponse(GetByIdResponse<User> response)
+        {
+                if (response.getResult().equals("success"))
+                {
+                    if (response.getItems().size() == 1)
+                    {
+                        signIn(response.getItems().get(0));
+                    }
+                    else
+                    {
+                        sendResponse(new LoginResponse("Invalid credentials"));
+                        request = null;
+                    }
+                }
+                else
+                {
+                    sendResponse(new LoginResponse("Invalid credentials"));
+                    request = null;
+                }
+        }
+    };
 }

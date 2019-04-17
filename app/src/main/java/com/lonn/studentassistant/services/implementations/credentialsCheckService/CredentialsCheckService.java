@@ -1,11 +1,11 @@
-package com.lonn.studentassistant.services.credentialsCheckService;
+package com.lonn.studentassistant.services.implementations.credentialsCheckService;
 
 import android.app.IntentService;
 import android.content.Intent;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.entities.Student;
-import com.lonn.studentassistant.services.studentService.StudentService;
+import com.lonn.studentassistant.services.implementations.studentService.StudentService;
 
 public class CredentialsCheckService extends IntentService
 {

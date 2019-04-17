@@ -1,28 +1,74 @@
 package com.lonn.studentassistant.services.abstractions;
 
+import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
 import com.lonn.studentassistant.common.requests.GetAllRequest;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
-import com.lonn.studentassistant.activities.abstractions.IServiceCallback;
-import com.lonn.studentassistant.common.requests.UpdateRequest;
-import com.lonn.studentassistant.common.abstractions.Response;
+import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.common.requests.EditRequest;
+import com.lonn.studentassistant.common.responses.CreateResponse;
+import com.lonn.studentassistant.common.responses.DeleteResponse;
+import com.lonn.studentassistant.common.responses.EditResponse;
+import com.lonn.studentassistant.common.responses.GetAllResponse;
+import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class LocalService<T extends BaseEntity> extends BasicService implements IService<T>
+public abstract class DatabaseService<T extends BaseEntity> extends BasicService<DatabaseResponse<T>> implements IDatabaseService<T>
 {
     protected AbstractRepository<T> repository;
 
-    public void addCallback(IServiceCallback callback) {
+    public void addCallback(ICallback<DatabaseResponse<T>> callback) {
         super.addCallback(callback);
 
         if (repository == null)
         {
             repository = instantiateRepository();
+        }
+    }
+
+    public void sendResponse(CreateResponse<T> response)
+    {
+        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
+        {
+            ((IDatabaseCallback<T>)callback).processResponse(response);
+        }
+    }
+
+    public void sendResponse(DeleteResponse<T> response)
+    {
+        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
+        {
+            ((IDatabaseCallback<T>)callback).processResponse(response);
+        }
+    }
+
+    public void sendResponse(EditResponse<T> response)
+    {
+        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
+        {
+            ((IDatabaseCallback<T>)callback).processResponse(response);
+        }
+    }
+
+    public void sendResponse(GetAllResponse<T> response)
+    {
+        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
+        {
+            ((IDatabaseCallback<T>)callback).processResponse(response);
+        }
+    }
+
+    public void sendResponse(GetByIdResponse<T> response)
+    {
+        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
+        {
+            ((IDatabaseCallback<T>)callback).processResponse(response);
         }
     }
 
@@ -36,7 +82,7 @@ public abstract class LocalService<T extends BaseEntity> extends BasicService im
         }
         else
         {
-            respondMultipleItems(request.action,"success", new ArrayList<>(result));
+            sendResponse(new GetAllResponse<>("success", new ArrayList<T>(result)));
         }
     }
 
@@ -50,45 +96,27 @@ public abstract class LocalService<T extends BaseEntity> extends BasicService im
         }
         else
         {
-            respondOneItem(request.action, "success", result);
+            sendResponse(new GetByIdResponse<>("success", result));
         }
     }
 
-    public void postRequest(UpdateRequest<T> request)
+    public void postRequest(EditRequest<T> request)
     {
         repository.update(request.getItems());
-        respondMultipleItems(request.action, "success", request.getItems());
+        sendResponse(new EditResponse<>("success", request.getItems()));
     }
 
     public void postRequest(CreateRequest<T> request)
     {
         repository.add(request.getItems());
-        respondMultipleItems(request.action, "success", request.getItems());
+        sendResponse(new CreateResponse<>("success", request.getItems()));
     }
 
     public void postRequest(DeleteRequest<T> request)
     {
         repository.remove(request.getItems());
-        respondMultipleItems(request.action, "success", request.getItems());
+        sendResponse(new DeleteResponse<>("success", request.getItems()));
     }
-
-    public void respondMultipleItems(String action, String result, List<T> items)
-    {
-        DatabaseResponse<T> response = createResponse(action, result, items);
-        sendResponse(response);
-    }
-
-    public void respondOneItem(String action, String result, final T item)
-    {
-        DatabaseResponse<T> response = createResponse(action, result, new ArrayList<T>()
-        {{
-            add(item);
-        }});
-
-        sendResponse(response);
-    }
-
-    protected abstract DatabaseResponse<T> createResponse(String action, String result, List<T> items);
 
     protected abstract AbstractRepository<T> instantiateRepository();
 }
