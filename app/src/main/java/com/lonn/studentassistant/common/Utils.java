@@ -15,6 +15,63 @@ public class Utils
         return new String(Base64.decode(input, Base64.DEFAULT));
     }
 
+    static int groupToYear(String group)
+    {
+        if(group.startsWith("III"))
+            return 3;
+        if(group.startsWith("II"))
+            return 2;
+        return 1;
+    }
+
+    static String getTagValue(String tag)
+    {
+        if(tag.split(">").length > 1)
+            return tag.split(">")[1].split("<")[0].trim();
+        return tag.split(">")[0].split("<")[0].trim();
+    }
+
+    static int dayToInt(String day)
+    {
+        switch (day)
+        {
+            case "Monday":
+            case "Luni":
+            {
+                return 1;
+            }
+            case "Tuesday":
+            case "Marti":
+            {
+                return 2;
+            }
+            case "Wednesday":
+            case "Miercuri":
+            {
+                return 3;
+            }
+            case "Thursday":
+            case "Joi":
+            {
+                return 4;
+            }
+            case "Friday":
+            case "Vineri":
+            {
+                return 5;
+            }
+            case "Saturday":
+            case "Sambata":
+            {
+                return 6;
+            }
+            default:
+            {
+                return 0;
+            }
+        }
+    }
+
     public static String emailToKey(String email)
     {
         return email.replace(".",",");

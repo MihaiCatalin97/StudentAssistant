@@ -10,9 +10,13 @@ import com.lonn.studentassistant.services.implementations.coursesService.CourseS
 public class StartupReceiver extends BroadcastReceiver
 {
     @Override
-    public void onReceive(Context context, Intent intent)
+    public void onReceive(final Context context, Intent intent)
     {
         Log.e("Receiver", "Boot");
-        context.startService(new Intent(context, CourseService.class));
+
+        if (intent.getAction() != null && !intent.getAction().equals(""))
+        {
+            context.startService(new Intent(context, CourseService.class));
+        }
     }
 }

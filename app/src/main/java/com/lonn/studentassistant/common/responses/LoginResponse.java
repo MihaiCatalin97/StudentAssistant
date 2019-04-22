@@ -1,21 +1,20 @@
 package com.lonn.studentassistant.common.responses;
 
 import com.lonn.studentassistant.common.abstractions.Response;
+import com.lonn.studentassistant.entities.User;
 
 public class LoginResponse extends Response
 {
-    public String email;
+    public User user;
     public String password;
     public boolean remember;
-    public String privileges;
 
-    public LoginResponse(String email, String password, boolean remember, String privileges)
+    public LoginResponse(User user, String password, boolean remember)
     {
         super("login", "success");
-        this.email = email;
+        this.user = user;
         this.password = password;
         this.remember = remember;
-        this.privileges = privileges;
     }
 
     public LoginResponse(String result)

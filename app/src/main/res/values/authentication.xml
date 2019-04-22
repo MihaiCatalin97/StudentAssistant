@@ -37,7 +37,7 @@
 
     <string name="invalid_student_Id">Invalid Student ID!</string>
     <string name="invalid_year">Invalid year!</string>
-    <string name="account_exists">Student already has an account!</string>
+    <string name="account_exists">Student already has year account!</string>
     <string name="invalid_credentials">Invalid credentials!</string>
     <string name="invalid_email">Invalid email!</string>
     <string name="invalid_password">Invalid password!</string>

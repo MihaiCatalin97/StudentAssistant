@@ -11,6 +11,7 @@ import android.util.Log;
 import com.lonn.studentassistant.common.abstractions.Response;
 import com.lonn.studentassistant.services.abstractions.BasicService;
 import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,17 +27,20 @@ public class ActivityServiceConnections
         serviceClasses.addAll(Arrays.asList(classes));
     }
 
-    public <T extends Response> void bind(ICallback<T> callback, ContextWrapper contextWrapper)
+    public <T extends Response> void bind(Class serviceClass, ICallback<T> callback, ContextWrapper contextWrapper)
     {
         for (Class c : serviceClasses)
         {
-            CustomServiceConnection<T> connection = new CustomServiceConnection<>(c, callback);
+            if (serviceClass.equals(c))
+            {
+                CustomServiceConnection<T> connection = new CustomServiceConnection<>(c, callback);
 
-            Intent intent = new Intent(contextWrapper, c);
+                Intent intent = new Intent(contextWrapper, c);
 
-            contextWrapper.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+                contextWrapper.bindService(intent, connection, Context.BIND_AUTO_CREATE);
 
-            serviceConnections.add(connection);
+                serviceConnections.add(connection);
+            }
         }
     }
 
@@ -73,6 +77,9 @@ public class ActivityServiceConnections
 
             service = ((LocalBinder) binder).getService();
             service.addCallback(callback);
+
+            if(service instanceof DatabaseService)
+                ((DatabaseService) service).onConnected();
         }
 
         @Override

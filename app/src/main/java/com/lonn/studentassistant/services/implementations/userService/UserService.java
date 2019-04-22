@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.services.implementations.userService;
 
+import com.lonn.studentassistant.common.requests.GetAllRequest;
+import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.notifications.abstractions.NotificationCreator;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
 import com.lonn.studentassistant.entities.User;
@@ -16,4 +18,11 @@ public class UserService extends DatabaseService<User>
     {
         return null;
     }
+
+    public void onConnected()
+    {
+
+    }
+
+    public void handleDestroy() {}
 }

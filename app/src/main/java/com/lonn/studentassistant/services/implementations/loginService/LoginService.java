@@ -35,7 +35,7 @@ public class LoginService extends BasicService<LoginResponse>
     {
         super.onCreate();
         authSharedPrefs = new AuthSharedPrefs();
-        serviceConnections.bind(userCallback, this);
+        serviceConnections.bind(UserService.class, userCallback, this);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LoginService extends BasicService<LoginResponse>
     {
         if (request != null)
         {
-            sendResponse(new LoginResponse("login", "A login already is in progress!",false, null));
+            sendResponse(new LoginResponse(null, "A login already is in progress!",false));
         }
         else
         {
@@ -75,7 +75,7 @@ public class LoginService extends BasicService<LoginResponse>
                                 authSharedPrefs.rememberCredentials(request.email, request.password);
                             }
 
-                            sendResponse(new LoginResponse(request.email, request.password, request.remember, user.getPrivileges()));
+                            sendResponse(new LoginResponse(user, request.password, request.remember));
                         }
                         else
                         {

@@ -17,7 +17,7 @@ public abstract class AbstractRepository<T extends BaseEntity>
     {
         items = new CustomList<>();
         this.databaseController = databaseController;
-        populateRepository();
+        //populateRepository();
     }
 
     public void populateRepository()
@@ -43,7 +43,7 @@ public abstract class AbstractRepository<T extends BaseEntity>
 
     public List<T> getAll()
     {
-        return items;
+        return new ArrayList<>(items);
     }
 
     public void update(T item)
@@ -122,10 +122,5 @@ public abstract class AbstractRepository<T extends BaseEntity>
         }
 
         databaseController.remove(resultList);
-    }
-
-    public void unbindService(DatabaseService<T> service)
-    {
-        databaseController.unbindService(service);
     }
 }

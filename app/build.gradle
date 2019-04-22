@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.lonn.studentassistant"
-        minSdkVersion 24
+        minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -20,9 +20,12 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/layouts/activities/authenticationActivity',
+                            'src/main/res/layouts/activities/debugActivity',
+                            'src/main/res/layouts/activities/studentActivity',
+                            'src/main/res/layouts/activities',
                             'src/main/res/layouts/inputs',
                             'src/main/res/layouts/others',
-                            'src/main/res/layouts/activities',
                             'src/main/res/layouts/fragments',
                             'src/main/res/layouts/adapters',
                             'src/main/res/layouts',

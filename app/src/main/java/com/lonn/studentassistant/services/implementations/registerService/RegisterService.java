@@ -47,7 +47,7 @@ public class RegisterService extends IntentService
 
                         if (task.isSuccessful())
                         {
-                            userRepository.add(new User(email, registeringStudent.numarMatricol, privileges));
+                            userRepository.add(new User(email, registeringStudent.studentId, privileges));
                             studentRepository.add(registeringStudent);
 
                             authSharedPrefs.rememberCredentials(email, password);

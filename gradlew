@@ -75,7 +75,7 @@ if [ -n "$JAVA_HOME" ] ; then
         JAVACMD="$JAVA_HOME/bin/java"
     fi
     if [ ! -x "$JAVACMD" ] ; then
-        die "ERROR: JAVA_HOME is set to an invalid directory: $JAVA_HOME
+        die "ERROR: JAVA_HOME is set to year invalid directory: $JAVA_HOME
 
 Please set the JAVA_HOME variable in your environment to match the
 location of your Java installation."
@@ -131,7 +131,7 @@ if $cygwin ; then
     i=0
     for arg in "$@" ; do
         CHECK=`echo "$arg"|egrep -c "$OURCYGPATTERN" -`
-        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if an option
+        CHECK2=`echo "$arg"|egrep -c "^-"`                                 ### Determine if year option
 
         if [ $CHECK -ne 0 ] && [ $CHECK2 -eq 0 ] ; then                    ### Added a condition
             eval `echo args$i`=`cygpath --path --ignore --mixed "$arg"`

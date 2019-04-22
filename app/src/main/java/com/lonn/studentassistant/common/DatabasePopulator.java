@@ -1,8 +1,12 @@
 package com.lonn.studentassistant.common;
 
+import android.util.Log;
+
 import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.entities.Student;
-import com.lonn.studentassistant.entities.User;
+import com.lonn.studentassistant.services.implementations.gradeService.dataAccessLayer.GradeRepository;
+import com.lonn.studentassistant.services.implementations.professorService.dataAccessLayer.ProfessorRepository;
 import com.lonn.studentassistant.services.implementations.studentService.dataAccessLayer.StudentRepository;
 import com.lonn.studentassistant.services.implementations.userService.dataAccessLayer.UserRepository;
 import com.lonn.studentassistant.services.implementations.coursesService.dataAccessLayer.CourseRepository;
@@ -15,29 +19,21 @@ public class DatabasePopulator
     private StudentRepository studentRepository;
     private UserRepository userRepository;
     private CourseRepository courseRepository;
+    private GradeRepository gradeRepository;
+    private ProfessorRepository professorRepository;
 
     public DatabasePopulator()
     {
         studentRepository = StudentRepository.getInstance(null);
         userRepository = UserRepository.getInstance(null);
         courseRepository = CourseRepository.getInstance(null);
-    }
-
-    public void deleteStudentsTable()
-    {
-        List<Student> students = new ArrayList<>(studentRepository.getAll());
-
-        studentRepository.remove(students);
+        gradeRepository = GradeRepository.getInstance(null);
+        professorRepository = ProfessorRepository.getInstance(null);
     }
 
     public void deleteUsersTable()
     {
-        List<User> users = userRepository.getAll();
-
-        for(int i=0;i<users.size();i++)
-        {
-            userRepository.remove(users.get(i));
-        }
+        userRepository.remove(userRepository.getAll());
     }
 
     public void populateStudentsTable()
@@ -51,19 +47,34 @@ public class DatabasePopulator
         newStudents.add(new Student("5", "Andro", "Bianca", "R", "bandro@gmail.com", "0742664239", 3, "B5"));
         newStudents.add(new Student("6", "Hurbea", "Razvan", "R", "rhurbea@gmail.com", "0742664239", 3, "A1"));
 
+        newStudents.get(0).addCourse("TSP~Net");
+
         studentRepository.add(newStudents);
     }
 
-    public void populateCoursesTable()
+    public void deleteStudentsTable()
     {
-        List<Course> newCourses = new ArrayList<>();
+        studentRepository.remove(studentRepository.getAll());
+    }
 
-        newCourses.add(new Course("Java", 2, 2));
-        newCourses.add(new Course("TSP.Net", 3, 2));
-        newCourses.add(new Course("Securitatea Informatiei", 3, 1));
-        newCourses.add(new Course("Logica", 1, 1));
-        newCourses.add(new Course("POO", 1, 2));
+    public void deleteCoursesTable()
+    {
+        courseRepository.remove(courseRepository.getAll());
+    }
 
-        courseRepository.add(newCourses);
+    public void deleteProfessorsTable()
+    {
+        professorRepository.remove(professorRepository.getAll());
+    }
+
+    public void populateGradesTable()
+    {
+
+    }
+
+    public void parseSchedule()
+    {
+        URLParser conn = new URLParser("https://profs.info.uaic.ro/~orar/orar_profesori.html");
+        conn.parse();
     }
 }

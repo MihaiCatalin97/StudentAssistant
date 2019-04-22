@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.activities.implementations.student;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -63,7 +64,7 @@ public class StudentActivity extends NavBarActivity
     @Override
     public void onStart() {
         super.onStart();
-        serviceConnections.bind(courseCallback, this);
+        serviceConnections.bind(CourseService.class, courseCallback, this);
     }
 
     public class CourseAdapter extends ArrayAdapter<Course> {
@@ -86,6 +87,24 @@ public class StudentActivity extends NavBarActivity
             }
 
             return convertView;
+        }
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    public void handleNavBarAction(int id)
+    {
+        if (id == R.id.nav_schedule) {
+            // Handle the camera action
+        } else if (id == R.id.nav_grades) {
+
+        } else if (id == R.id.nav_messages) {
+
+        } else if (id == R.id.nav_professors) {
+
+        } else if (id == R.id.nav_courses) {
+
+        } else if (id == R.id.nav_administrative) {
+
         }
     }
 
@@ -119,7 +138,7 @@ public class StudentActivity extends NavBarActivity
         public void processResponse(GetAllResponse<Course> response)
         {
             hideSnackbar();
-            Log.e("Received response Course", response.getResult() + " " + response.getAction() + " " + response.getItems().size());
+            Log.e("Received responseCourse", response.getResult() + " " + response.getAction() + " " + response.getItems().size());
 
             if(!response.getResult().equals("success"))
                 showSnackbar("Fail");

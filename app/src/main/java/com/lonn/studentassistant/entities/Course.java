@@ -3,6 +3,9 @@ package com.lonn.studentassistant.entities;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @IgnoreExtraProperties
 public class Course extends BaseEntity
 {
@@ -10,15 +13,42 @@ public class Course extends BaseEntity
     public String courseName;
     public int year;
     public int semester;
+    public int pack;
+    public List<String> professors = new ArrayList<>();
 
     public Course()
     {}
 
-    public Course(String courseName, int year, int semester)
+    public Course(String courseName, int year, int semester, int pack, List<Professor> professors)
     {
         this.courseName = courseName;
         this.year = year;
         this.semester = semester;
+        this.pack = pack;
+
+        if(professors != null)
+        {
+            for(int i=0;i<professors.size();i++)
+                this.professors.add(professors.get(i).getKey());
+        }
+    }
+
+    public void addProfessor(Professor professor)
+    {
+        professors.add(professor.getKey());
+    }
+
+    public void addProfessor(String professorKey)
+    {
+        professors.add(professorKey);
+    }
+
+    public Course(String courseName, int year, int semester, int pack)
+    {
+        this.courseName = courseName;
+        this.year = year;
+        this.semester = semester;
+        this.pack = pack;
     }
 
     @Exclude

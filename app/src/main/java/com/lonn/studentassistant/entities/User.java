@@ -13,14 +13,19 @@ public class User extends BaseEntity
     @Exclude
     public String email;
 
-    private String studentId;
+    private String personId;
     private String privileges;
 
-    public User(String email, String studentId, String privileges)
+    public User(String email, String personId, String privileges)
     {
-        this.studentId = studentId;
+        this.personId = personId;
         this.email = email;
         this.privileges = privileges;
+    }
+
+    public String getPersonId()
+    {
+        return personId;
     }
 
     public User()

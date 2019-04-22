@@ -2,16 +2,15 @@ package com.lonn.studentassistant.services.abstractions;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
-import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
@@ -27,8 +26,8 @@ import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.notifications.abstractions.NotificationCreator;
 import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
+import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -42,6 +41,7 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
     public void onCreate()
     {
         super.onCreate();
+        FirebaseApp.initializeApp(getBaseContext());
 
         if (notificationCreator == null)
             notificationCreator = instantiateCreator();
@@ -51,9 +51,35 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
     }
 
     @Override
+    public int onStartCommand(Intent i, int flags, int startId)
+    {
+        Log.e("Start command", this.getClass().getSimpleName());
+
+
+        /*Notification notification = new NotificationCompat.Builder(getBaseContext(), "1")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Database Service")
+                .setContentText(this.getClass().getSimpleName())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .build();
+
+        startForeground(0, notification);
+        */
+
+        return START_STICKY;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent intent)
+    {
+        super.onTaskRemoved(intent);
+        handleDestroy();
+    }
+
+    @Override
     public void onDestroy()
     {
-        Log.e("Service Destroying", "CourseService");
+        handleDestroy();
         super.onDestroy();
     }
 
@@ -133,7 +159,7 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
         }
         else
         {
-            sendResponse(new GetAllResponse<>("success", new ArrayList<T>(result)));
+            sendResponse(new GetAllResponse<>("success", new ArrayList<>(result)));
         }
     }
 
@@ -169,6 +195,8 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
         sendResponse(new DeleteResponse<>("success", request.getItems()));
     }
 
+    public abstract void onConnected();
+    protected abstract void handleDestroy();
     protected abstract AbstractRepository<T> instantiateRepository();
     protected abstract NotificationCreator<T> instantiateCreator();
 }

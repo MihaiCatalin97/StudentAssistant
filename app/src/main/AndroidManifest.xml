@@ -3,6 +3,8 @@
     package="com.lonn.studentassistant">
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="false"
@@ -45,12 +47,17 @@
         <service android:name=".services.implementations.registerService.RegisterService" />
         <service android:name=".services.implementations.credentialsCheckService.CredentialsCheckService" />
         <service android:name=".services.implementations.studentService.StudentService" />
-        <service android:name=".services.implementations.coursesService.CourseService" />
+        <service android:name=".services.implementations.coursesService.CourseService"
+            android:stopWithTask="false"/>
         <service android:name=".services.implementations.userService.UserService" />
+        <service android:name=".services.implementations.professorService.ProfessorService" />
+        <service android:name=".services.implementations.gradeService.GradeService" />
+        <service android:name=".services.implementations.scheduleService.ScheduleService" />
 
         <receiver android:name=".services.StartupReceiver" >
             <intent-filter>
-                <action android:name="RestartService" />
+                <action android:name="RestartStudentService" />
+                <action android:name="RestartCourseService" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>

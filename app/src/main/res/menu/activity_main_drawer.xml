@@ -3,35 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <item android:title="Personal">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_schedule"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Schedule" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_grades"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Grades" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Messages" />
+    </item>
 
-    <item android:title="Communicate">
+    <item android:title="Information">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_professors"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:title="Professors"/>
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_courses"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Courses" />
+            <item
+                android:id="@+id/nav_administrative"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Administrative" />
         </menu>
     </item>
 
