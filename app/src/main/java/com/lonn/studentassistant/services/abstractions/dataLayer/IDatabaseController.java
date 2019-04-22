@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.services.interfaces;
+package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.CustomList;
