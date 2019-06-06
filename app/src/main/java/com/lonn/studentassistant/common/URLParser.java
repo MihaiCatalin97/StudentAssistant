@@ -2,6 +2,7 @@ package com.lonn.studentassistant.common;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Exam;
@@ -163,6 +164,7 @@ class URLParser
 
         if (course == null)
         {
+            Log.e("Course groups", row.groups.get(0));
             course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, null);
             course.addProfessor(professor);
             courseRepository.add(course);
@@ -349,7 +351,7 @@ class URLParser
             this.day = day;
             startHour = Integer.parseInt(pairs.get(0).value.replace(":",""));
             endHour = Integer.parseInt(pairs.get(1).value.replace(":",""));
-            courseKey = pairs.get(2).value;
+            courseKey = pairs.get(2).value.replace("/","&");
             type = pairs.get(3).value;
             groups = Arrays.asList(pairs.get(4).value.split(","));
             rooms = Arrays.asList(pairs.get(5).value.split(","));

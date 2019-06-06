@@ -23,9 +23,9 @@ import com.lonn.studentassistant.R;
 public abstract class NavBarActivity extends ServiceBoundActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int logoutCount = 0;
 
-    public NavBarActivity(Class... classes)
+    public NavBarActivity()
     {
-        super(classes);
+        super();
     }
 
     @Override
@@ -105,6 +105,7 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
             else
             {
                 logoutCount = 0;
+                unbindServices();
                 super.onBackPressed();
             }
         }
@@ -134,6 +135,5 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 }

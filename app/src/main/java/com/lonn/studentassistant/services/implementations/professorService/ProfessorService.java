@@ -2,6 +2,8 @@ package com.lonn.studentassistant.services.implementations.professorService;
 
 import android.content.Intent;
 
+import com.lonn.studentassistant.common.requests.GetAllRequest;
+import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.notifications.implementations.ProfessorNotificationCreator;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
@@ -21,6 +23,7 @@ public class ProfessorService extends DatabaseService<Professor>
 
     public void onConnected()
     {
+        postRequest(new GetAllRequest<Professor>());
     }
 
     public void handleDestroy()

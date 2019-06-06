@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.services.implementations.loginService;
 
+import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -9,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthSharedPrefs;
-import com.lonn.studentassistant.common.ActivityServiceConnections;
+import com.lonn.studentassistant.common.ConnectionBundle;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.common.responses.CreateResponse;
@@ -26,7 +27,7 @@ import com.lonn.studentassistant.services.implementations.userService.UserServic
 
 public class LoginService extends BasicService<LoginResponse>
 {
-    protected ActivityServiceConnections serviceConnections = new ActivityServiceConnections(UserService.class);
+    protected ConnectionBundle serviceConnections;
     private AuthSharedPrefs authSharedPrefs;
     private LoginRequest request;
 
@@ -35,26 +36,29 @@ public class LoginService extends BasicService<LoginResponse>
     {
         super.onCreate();
         authSharedPrefs = new AuthSharedPrefs();
-        serviceConnections.bind(UserService.class, userCallback, this);
+
+        serviceConnections = new ConnectionBundle(getBaseContext());
+        serviceConnections.bind(UserService.class, userCallback);
     }
 
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
         serviceConnections.unbind(userCallback, this);
+        super.onDestroy();
     }
 
     public void postRequest(LoginRequest incomingRequest)
     {
         if (request != null)
         {
-            sendResponse(new LoginResponse(null, "A login already is in progress!",false));
+            sendResponse(new LoginResponse("A login already is in progress!"));
         }
         else
         {
             request = incomingRequest;
-            ((UserService)serviceConnections.getServiceByClass(UserService.class)).postRequest(new GetByIdRequest<User>(Utils.emailToKey(request.email)));
+
+            serviceConnections.postRequest(UserService.class, new GetByIdRequest<User>(Utils.emailToKey(request.email)));
         }
     }
 

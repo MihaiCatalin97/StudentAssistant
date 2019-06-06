@@ -37,7 +37,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
 
     public AuthenticationActivity()
     {
-        super(LoginService.class, CredentialsCheckService.class);
+        super();
     }
 
     @Override
@@ -50,13 +50,15 @@ public class AuthenticationActivity extends ServiceBoundActivity
 
         if (authSharedPrefs.hasSavedCredentials())
             setLoginFields(authSharedPrefs.getCredentials());
+
+        Utils.init(this);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        serviceConnections.bind(LoginService.class, loginCallback, this);
-        serviceConnections.bind(CredentialsCheckService.class, credentialsCallback, this);
+        serviceConnections.bind(LoginService.class, loginCallback);
+        serviceConnections.bind(CredentialsCheckService.class, credentialsCallback);
     }
 
     @Override
@@ -80,14 +82,6 @@ public class AuthenticationActivity extends ServiceBoundActivity
             unregisterReceiver(registerReceiver);
 
         registerReceiver = null;
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-        serviceConnections.unbind(loginCallback, this);
-        serviceConnections.unbind(credentialsCallback, this);
     }
 
     public void login(View v)
@@ -335,4 +329,10 @@ public class AuthenticationActivity extends ServiceBoundActivity
             }
         }
     };
+
+    protected void unbindServices()
+    {
+        serviceConnections.unbind(loginCallback, this);
+        serviceConnections.unbind(credentialsCallback, this);
+    }
 }

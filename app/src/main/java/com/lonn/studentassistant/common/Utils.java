@@ -1,12 +1,21 @@
 package com.lonn.studentassistant.common;
 
+import android.app.Activity;
+import android.graphics.Point;
 import android.util.Base64;
+import android.view.Display;
+import android.view.View;
+import android.view.ViewGroup;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils
 {
+    public static int displayHeight, displayWidth;
+
     public static String encrypt(String input) {
         return Base64.encodeToString(input.getBytes(), Base64.DEFAULT);
     }
@@ -17,10 +26,18 @@ public class Utils
 
     static int groupToYear(String group)
     {
-        if(group.startsWith("III"))
+        if(group.startsWith("I3") || group.startsWith("III"))
             return 3;
-        if(group.startsWith("II"))
+        if(group.startsWith("I2") || group.startsWith("II"))
             return 2;
+        if(group.startsWith("I1") || group.startsWith("I"))
+            return 1;
+        if(group.startsWith("M"))
+        {
+            if(group.endsWith("2"))
+                return 5;
+            return 4;
+        }
         return 1;
     }
 
@@ -90,5 +107,38 @@ public class Utils
         Matcher m = pattern.matcher(studentId);
 
         return m.matches();
+    }
+
+    public static List<View> getVisibleChildren(ViewGroup v)
+    {
+        List<View> result = new LinkedList<>();
+
+        for (int i=0;i<v.getChildCount();i++)
+        {
+            View child = v.getChildAt(i);
+
+            if(child.getVisibility() == View.VISIBLE)
+                result.add(child);
+        }
+
+        return result;
+    }
+
+    public static void hideViews(List<View> views)
+    {
+        for(View visibleView : views)
+        {
+            visibleView.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public static void init(Activity activity)
+    {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        displayWidth = size.x;
+        displayHeight = size.y;
     }
 }

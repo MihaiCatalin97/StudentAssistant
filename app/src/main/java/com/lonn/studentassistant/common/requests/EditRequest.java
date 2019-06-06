@@ -1,12 +1,13 @@
 package com.lonn.studentassistant.common.requests;
 
+import com.lonn.studentassistant.common.abstractions.DatabaseRequest;
 import com.lonn.studentassistant.common.abstractions.Request;
 import com.lonn.studentassistant.entities.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditRequest<T extends BaseEntity> extends Request
+public class EditRequest<T extends BaseEntity> extends DatabaseRequest
 {
     private List<T> items;
 
