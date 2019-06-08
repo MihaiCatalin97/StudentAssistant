@@ -10,21 +10,24 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:background="@drawable/solid_background"
+        android:layout_marginBottom="16dp"
+        android:padding="8dp">
 
         <ImageView
             android:id="@+id/professorImage"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="#FF0000"
             android:contentDescription="Professor Image"
             android:scaleType="fitCenter"
             android:layout_marginTop="24dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@{professor.professorImage}" />
 
         <TextView
+            style="@style/DarkBlueTitle"
             android:id="@+id/professorName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -38,6 +41,7 @@
             android:textStyle="bold"/>
 
         <TextView
+            style="@style/DarkBlueTextView"
             android:id="@+id/professorEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -46,9 +50,11 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/professorName"
             android:text="@{`Email: ` + professor.email}"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:visibility="@{professor.emailVisible}"/>
 
         <TextView
+            style="@style/DarkBlueTextView"
             android:id="@+id/professorPhoneNumber"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -56,29 +62,35 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/professorEmail"
             android:text="@{`Phone number: ` + professor.phoneNumber}"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:visibility="@{professor.phoneNumberVisible}"/>
 
         <TextView
+            style="@style/DarkBlueTextView"
             android:id="@+id/professorWebsite"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/professorPhoneNumber"
-            android:text="Website: "
-            android:textSize="18sp"/>
+            android:text="@{`Website: ` + professor.website}"
+            android:textSize="18sp"
+            android:visibility="@{professor.websiteVisible}"/>
 
         <TextView
+            style="@style/DarkBlueTextView"
             android:id="@+id/professorCabinet"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/professorWebsite"
-            android:text="Cabinet: "
-            android:textSize="18sp"/>
+            android:text="@{`Cabinet: ` + professor.cabinet}"
+            android:textSize="18sp"
+            android:visibility="@{professor.cabinetVisible}"/>
 
         <TextView
+            style="@style/DarkBlueTextView"
             android:id="@+id/professorCoursesTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

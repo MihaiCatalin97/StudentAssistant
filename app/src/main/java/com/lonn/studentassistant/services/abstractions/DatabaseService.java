@@ -106,8 +106,14 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
                 notificationCreator.showNotification(this, response);
             return;
         }
-
-        ((IDatabaseCallback<T>)callback).processResponse(response);
+        else
+        {
+            if (callback != null)
+                ((IDatabaseCallback<T>) callback).processResponse(response);
+            else
+                for(ICallback<DatabaseResponse<T>> callback1 : serviceCallbacks)
+                    ((IDatabaseCallback<T>) callback1).processResponse(response);
+        }
     }
 
     public void sendResponse(GetAllResponse<T> response, ICallback<DatabaseResponse<T>> callback)

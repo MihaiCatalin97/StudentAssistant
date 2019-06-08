@@ -23,8 +23,6 @@ public class AuthSharedPrefs
         editor.remove("email");
         editor.remove("password");
         editor.apply();
-
-        Log.e("Delete", "true");
     }
 
     public void rememberCredentials(final String email, final String password)
@@ -34,18 +32,11 @@ public class AuthSharedPrefs
         editor.putString("email", email);
         editor.putString("password", password);
         editor.apply();
-
-        Log.e("Remember", "true");
     }
 
     boolean hasSavedCredentials()
     {
-        boolean remember = sharedPref.getBoolean("remember", false);
-
-        Log.e("Saved", Boolean.toString(remember));
-        Log.e("Count", Integer.toString(sharedPref.getAll().size()));
-
-        return remember;
+        return sharedPref.getBoolean("remember", false);
     }
 
     Map<String,String> getCredentials()

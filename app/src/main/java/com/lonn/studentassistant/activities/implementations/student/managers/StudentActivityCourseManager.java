@@ -14,8 +14,18 @@ public class StudentActivityCourseManager
         this.categoriesLayout = categoriesLayout;
     }
 
-    public void notifyCoursesChanged(List<Course> newCourses)
+    public void notifyGetAll(List<Course> newCourses)
     {
-        categoriesLayout.update(newCourses);
+        categoriesLayout.add(newCourses);
+    }
+
+    public void notifyEdit(Course course)
+    {
+        categoriesLayout.update(course);
+    }
+
+    public void notifyDelete(Course course)
+    {
+        categoriesLayout.delete(course);
     }
 }

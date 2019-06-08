@@ -1,11 +1,11 @@
-package com.lonn.studentassistant.activities.implementations.student.customViews;
+package com.lonn.studentassistant.views.implementations;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.customViews.abstractions.ScrollViewLayout;
+import com.lonn.studentassistant.views.abstractions.ScrollViewLayout;
 import com.lonn.studentassistant.entities.Course;
 
 import java.util.LinkedList;
@@ -35,7 +35,7 @@ public class CoursesScrollViewLayout extends ScrollViewLayout<Course>
         categoryContentLayout = findViewById(R.id.layoutCategoryContent);
     }
 
-    public void update(List<Course> newCourses)
+    public void add(List<Course> newCourses)
     {
         List<List<Course>> categoriesLists = new LinkedList<>();
 
@@ -59,15 +59,25 @@ public class CoursesScrollViewLayout extends ScrollViewLayout<Course>
             {
                 category = new CourseYearCategory(getContext());
                 category.setCategory(i + 1);
-                category.update(categoriesLists.get(i));
+                category.add(categoriesLists.get(i));
 
                 categoryContentLayout.addView(category);
                 categories.put(i, category);
             }
             else
             {
-                category.update(categoriesLists.get(i));
+                category.add(categoriesLists.get(i));
             }
         }
+    }
+
+    public void update(Course course)
+    {
+        categories.get(course.year).update(course);
+    }
+
+    public void delete(Course course)
+    {
+        categories.get(course.year).delete(course);
     }
 }

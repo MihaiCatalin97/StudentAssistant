@@ -2,6 +2,8 @@ package com.lonn.studentassistant.activities.abstractions;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -15,9 +17,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
+import com.lonn.studentassistant.services.abstractions.BasicService;
 
 
 public abstract class NavBarActivity extends ServiceBoundActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -32,6 +39,9 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initializeNavBar();
+
+        if(FirebaseAuth.getInstance().getCurrentUser() == null)
+            NavUtils.navigateUpFromSameTask(this);
     }
 
     public abstract void handleNavBarAction(int id);
@@ -86,6 +96,7 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
             }
             case R.id.action_logout:
             {
+                FirebaseAuth.getInstance().signOut();
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             }
@@ -105,12 +116,15 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
             else
             {
                 logoutCount = 0;
+                FirebaseAuth.getInstance().signOut();
                 unbindServices();
                 super.onBackPressed();
             }
         }
         logoutCount++;
     }
+
+    protected abstract void refreshAll();
 
     private void initializeNavBar()
     {
@@ -121,8 +135,9 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showSnackbar("Refreshing everything...");
+
+                refreshAll();
             }
         });
 
@@ -135,5 +150,20 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
+        binding.setPassedUsed(new UserObservable(FirebaseAuth.getInstance().getCurrentUser()));
+    }
+
+    public class UserObservable extends BaseObservable
+    {
+        @Bindable
+        public String email, name;
+
+        UserObservable(FirebaseUser user)
+        {
+            this.email = user.getEmail();
+            this.name = user.getDisplayName();
+        }
     }
 }

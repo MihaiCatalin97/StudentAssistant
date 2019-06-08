@@ -10,24 +10,24 @@ import android.view.View;
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.professorEntity.ProfessorEntityActivity;
-import com.lonn.studentassistant.databinding.CourseViewBinding;
+import com.lonn.studentassistant.databinding.CourseViewFullBinding;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.viewModels.CourseViewModel;
 import com.lonn.studentassistant.views.abstractions.EntityView;
 
-public class CourseView extends EntityView<Course>
+public class CourseViewFull extends EntityView<Course>
 {
-    CourseViewBinding binding;
+    CourseViewFullBinding binding;
 
     private CourseViewModel model;
     private Course entity;
 
-    public CourseView(Context context)
+    public CourseViewFull(Context context)
     {
         super(context);
     }
 
-    public CourseView(Context context, Course course)
+    public CourseViewFull(Context context, Course course)
     {
         super(context);
         entity = course;
@@ -37,7 +37,7 @@ public class CourseView extends EntityView<Course>
 
     public void inflateLayout(final Context context)
     {
-        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.course_view, this, true);
+        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.course_view_full, this, true);
 
         this.setOnClickListener(new OnClickListener()
         {

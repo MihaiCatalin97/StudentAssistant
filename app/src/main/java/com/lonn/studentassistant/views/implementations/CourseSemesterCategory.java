@@ -69,7 +69,7 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
         initContent();
     }
 
-    public void update(List<Course> newCourses)
+    public void add(List<Course> newCourses)
     {
         for(Course course : newCourses)
         {
@@ -78,13 +78,11 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
             if (courseTextView == null)
             {
                 courseTextView = new TextView(getContext());
-                courseTextView.setText(course.courseName);
-
                 categoryContentLayout.addView(courseTextView);
                 courses.put(course.getKey(), courseTextView);
             }
-            else
-                courseTextView.setText(course.courseName);
+
+            update(course);
         }
 
         if (newCourses.size() > 0)
@@ -94,5 +92,19 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
     public int getCategory()
     {
         return categoryInt;
+    }
+
+    public void delete(Course course)
+    {
+        categoryContentLayout.removeView(courses.get(course.getKey()));
+        courses.remove(course.getKey());
+    }
+
+    public void update(Course course)
+    {
+        if(courses.containsKey(course.getKey()))
+        {
+            courses.get(course.getKey()).setText(course.courseName);
+        }
     }
 }

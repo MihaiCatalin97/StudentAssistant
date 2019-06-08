@@ -14,7 +14,7 @@ import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.views.entityViews.CourseView;
+import com.lonn.studentassistant.views.entityViews.CourseViewFull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ProfessorEntityActivity extends ServiceBoundActivity
     private boolean editPrivilege;
     public ProfessorViewModel professorModel;
     private Professor professor;
-    private List<CourseView> courseViews;
+    private List<CourseViewFull> courseViews;
     private CourseCallback courseCallback = new CourseCallback(this);
 
     @Override
@@ -47,7 +47,7 @@ public class ProfessorEntityActivity extends ServiceBoundActivity
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
         if(!loadedCourses)
@@ -90,7 +90,7 @@ public class ProfessorEntityActivity extends ServiceBoundActivity
         }
         else
         {
-            CourseView newCourseView = new CourseView(getBaseContext(), course);
+            CourseViewFull newCourseView = new CourseViewFull(getBaseContext(), course);
             courseViews.add(newCourseView);
             ((LinearLayout)findViewById(R.id.layoutProfessorCourses)).addView(newCourseView);
         }

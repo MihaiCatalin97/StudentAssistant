@@ -67,6 +67,4 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
             }
         });
     }
-
-
 }

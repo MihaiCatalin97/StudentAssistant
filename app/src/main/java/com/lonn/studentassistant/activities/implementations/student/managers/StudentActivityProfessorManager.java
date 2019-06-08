@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.student.managers;
 
+import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.views.implementations.ProfessorsScrollViewLayout;
 import com.lonn.studentassistant.entities.Professor;
 
@@ -14,8 +15,18 @@ public class StudentActivityProfessorManager
         this.professorsLayout = professorsLayout;
     }
 
-    public void notifyProfessorsChanged(List<Professor> newProfessors)
+    public void notifyGetAll(List<Professor> professors)
     {
-        professorsLayout.update(newProfessors);
+        professorsLayout.add(professors);
+    }
+
+    public void notifyEdit(Professor professor)
+    {
+        professorsLayout.update(professor);
+    }
+
+    public void notifyDelete(Professor professor)
+    {
+        professorsLayout.delete(professor);
     }
 }

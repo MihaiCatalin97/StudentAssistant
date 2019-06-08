@@ -33,6 +33,4 @@ public abstract class ScrollViewLayout<T extends BaseEntity> extends ScrollViewI
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
-
-    public abstract void update(List<T> newCourses);
 }

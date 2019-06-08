@@ -82,12 +82,14 @@ public class LoginService extends BasicService<LoginResponse>
                             }
 
                             sendResponse(new LoginResponse(user, request.password, request.remember), callback);
+                            request = null;
                         }
                         else
                         {
                             authSharedPrefs.deleteCredentials();
 
                             sendResponse(new LoginResponse(getResources().getString(R.string.invalid_credentials)), callback);
+                            request = null;
                         }
                     }
                 });

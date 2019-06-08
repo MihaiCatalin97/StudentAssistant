@@ -165,7 +165,7 @@ class URLParser
         if (course == null)
         {
             Log.e("Course groups", row.groups.get(0));
-            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course description",  null);
+            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course description", "https://profs.info.uaic.ro/~ancai/CN/", null);
             course.addProfessor(professor);
             courseRepository.add(course);
         }
@@ -300,7 +300,8 @@ class URLParser
             String lastName = parseLastName(value);
             String rank = parseRank(value);
 
-            Professor professor = new Professor(firstName, lastName, generateEmail(firstName, lastName), "0742664239", rank, null);
+            Professor professor = new Professor(firstName, lastName, generateEmail(firstName, lastName), "0742664239", rank,
+                    "https://profs.info.uaic.ro/~" + firstName.toLowerCase().charAt(0) + lastName.toLowerCase(), "C310");
             professor.scheduleLink = "https://profs.info.uaic.ro/~orar/" + link;
 
             return  professor;

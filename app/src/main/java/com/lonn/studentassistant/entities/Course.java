@@ -16,13 +16,14 @@ public class Course extends BaseEntity
     public int pack;
     public List<String> professors = new ArrayList<>();
     public String description = "";
+    public String website;
     @Exclude
     public List<Professor> professorEntities = new ArrayList<>();
 
     public Course()
     {}
 
-    public Course(String courseName, int year, int semester, int pack, String description, List<Professor> professors)
+    public Course(String courseName, int year, int semester, int pack, String description, String website, List<Professor> professors)
     {
         this.courseName = courseName;
         this.year = year;

@@ -28,22 +28,63 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
 
     public void processResponse(CreateResponse<Professor> response)
     {
+        activity.hideSnackbar();
 
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Failed creating professor");
+        else
+        {
+            if (response.getAction().equals("create"))
+            {
+                activity.professorManager.notifyGetAll(response.getItems());
+            }
+        }
     }
 
     public void processResponse(DeleteResponse<Professor> response)
     {
+        activity.hideSnackbar();
 
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Failed deleting professor");
+        else
+        {
+            if (response.getAction().equals("delete"))
+            {
+                activity.professorManager.notifyDelete(response.getItems().get(0));
+            }
+        }
     }
 
     public void processResponse(EditResponse<Professor> response)
     {
+        activity.hideSnackbar();
+        Log.e("Editing", response.getItems().get(0).getKey());
 
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Failed editing professor");
+        else
+        {
+            if (response.getAction().equals("edit"))
+            {
+                activity.professorManager.notifyEdit(response.getItems().get(0));
+            }
+        }
     }
 
     public void processResponse(GetByIdResponse<Professor> response)
     {
+        activity.hideSnackbar();
 
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Failed loading professor");
+        else
+        {
+            if (response.getAction().equals("getById"))
+            {
+                activity.professorManager.notifyGetAll(response.getItems());
+            }
+        }
     }
 
     public void processResponse(GetAllResponse<Professor> response)
@@ -51,12 +92,12 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         activity.hideSnackbar();
 
         if(!response.getResult().equals("success"))
-            activity.showSnackbar("Fail");
+            activity.showSnackbar("Failed loading professors");
         else
         {
             if (response.getAction().equals("getAll"))
             {
-                activity.professorManager.notifyProfessorsChanged(response.getItems());
+                activity.professorManager.notifyGetAll(response.getItems());
             }
         }
     }

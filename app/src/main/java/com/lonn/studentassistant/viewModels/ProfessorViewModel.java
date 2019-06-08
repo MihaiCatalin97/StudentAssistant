@@ -2,8 +2,14 @@ package com.lonn.studentassistant.viewModels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.lonn.studentassistant.BR;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
 
@@ -12,7 +18,7 @@ import java.util.List;
 public class ProfessorViewModel extends BaseObservable
 {
     @Bindable
-    public String firstName, lastName, rank, email, phoneNumber;
+    public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
     public List<Course> courses;
 
     public ProfessorViewModel(Professor professor)
@@ -22,34 +28,41 @@ public class ProfessorViewModel extends BaseObservable
         this.rank = professor.level;
         this.email = professor.email;
         this.phoneNumber = professor.phoneNumber;
+        this.website = professor.website;
+        this.cabinet = professor.cabinet;
     }
 
     public void update(Professor newProfessor)
     {
-        if (!firstName.equals(newProfessor.firstName))
+        if (firstName == null || !firstName.equals(newProfessor.firstName))
         {
             this.firstName = newProfessor.firstName;
             this.notifyPropertyChanged(BR.firstName);
         }
-        if (!lastName.equals(newProfessor.lastName))
+        if (lastName == null || !lastName.equals(newProfessor.lastName))
         {
             this.lastName = newProfessor.lastName;
             this.notifyPropertyChanged(BR.lastName);
         }
-        if (!rank.equals(newProfessor.level))
+        if (rank == null || !rank.equals(newProfessor.level))
         {
             this.rank = newProfessor.level;
             this.notifyPropertyChanged(BR.rank);
         }
-        if (!email.equals(newProfessor.email))
+        if (email == null || !email.equals(newProfessor.email))
         {
             this.email = newProfessor.email;
             this.notifyPropertyChanged(BR.email);
         }
-        if (!phoneNumber.equals(newProfessor.phoneNumber))
+        if (phoneNumber == null || !phoneNumber.equals(newProfessor.phoneNumber))
         {
             this.phoneNumber = newProfessor.phoneNumber;
             this.notifyPropertyChanged(BR.phoneNumber);
+        }
+        if (website == null || !website.equals(newProfessor.website))
+        {
+            this.website = newProfessor.website;
+            this.notifyPropertyChanged(BR.website);
         }
     }
 
@@ -68,32 +81,39 @@ public class ProfessorViewModel extends BaseObservable
         return result.toString();
     }
 
-    public void updateCourse(Course course)
+    @Bindable
+    public int getEmailVisible()
     {
-        if(!courses.contains(course))
-        {
-            boolean exists = false;
-            int index = 0;
+        return (email != null && email.contains("@"))? View.VISIBLE : View.GONE;
+    }
 
-            for (int i = 0; i < courses.size(); i++)
-            {
-                if (courses.get(i).getKey().equals(course.getKey()))
-                {
-                    exists = true;
-                    index = i;
-                    break;
-                }
-            }
+    @Bindable
+    public int getWebsiteVisible()
+    {
+        return (website != null)? View.VISIBLE : View.GONE;
+    }
 
-            if (exists)
-            {
-                courses.remove(index);
-                courses.add(course);
-            }
-        }
-        else
-        {
-            courses.add(course);
-        }
+    @Bindable
+    public int getPhoneNumberVisible()
+    {
+        return (phoneNumber != null && phoneNumber.length() >= 10)? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getProfessorImage()
+    {
+        return R.drawable.ic_default_picture_person;
+    }
+
+    @Bindable
+    public int getCabinetVisible()
+    {
+        return (cabinet != null && cabinet.length() >= 2)? View.VISIBLE : View.GONE;
+    }
+
+    @BindingAdapter("srcCompat")
+    public static void bindSrcCompat(ImageView imageView, int resourceId)
+    {
+        imageView.setImageResource(resourceId);
     }
 }

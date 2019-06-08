@@ -9,10 +9,10 @@
     tools:context=".activities.implementations.authentication.AuthenticationActivity">
 
     <TextView
+        style="@style/DarkBlueTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_title"
-        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -20,59 +20,63 @@
         app:layout_constraintVertical_bias="0.12" />
 
     <TextView
+        style="@style/DarkBlueSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.345" />
+        app:layout_constraintVertical_bias="0.371" />
 
     <TextView
         android:id="@+id/loginEmailTextView"
+        style="@style/DarkBlueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:text="@string/email"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.449" />
 
     <TextView
         android:id="@+id/loginPasswordTextView"
+        style="@style/DarkBlueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="10dp"
         android:text="@string/password"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="@+id/loginEmailTextView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.546" />
+        app:layout_constraintVertical_bias="0.513" />
 
     <EditText
         android:id="@+id/loginEditTextEmail"
+        style="@style/LightBlueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:ems="10"
-        android:inputType="textEmailAddress"
         android:hint="@string/email_hint"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="@+id/loginEmailTextView"
         app:layout_constraintLeft_toRightOf="@+id/loginEmailTextView" />
 
     <EditText
         android:id="@+id/loginEditTextPassword"
+        style="@style/LightBlueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:ems="10"
-        android:inputType="textPassword"
         android:hint="@string/password_hint"
+        android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="@+id/loginPasswordTextView"
         app:layout_constraintLeft_toRightOf="@+id/loginPasswordTextView" />
 
@@ -80,7 +84,7 @@
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:onClick="login"
         android:text="@string/login"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -122,12 +126,14 @@
 
     <CheckBox
         android:id="@+id/loginRememberCheckBox"
+        style="@style/DarkBlueTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:onClick="tapRememberCheckBox"
         android:text="@string/remember"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/loginPasswordTextView" />
 

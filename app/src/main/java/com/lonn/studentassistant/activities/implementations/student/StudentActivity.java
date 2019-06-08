@@ -45,6 +45,7 @@ public class StudentActivity extends NavBarActivity
     public void onStart() {
         super.onStart();
 
+        showSnackbar("Loading...");
         serviceConnections.postRequest(CourseService.class, new GetAllRequest<Course>(), courseCallback);
         serviceConnections.postRequest(ProfessorService.class, new GetAllRequest<Professor>(), professorsCallback);
     }
@@ -92,5 +93,11 @@ public class StudentActivity extends NavBarActivity
     {
         serviceConnections.unbind(courseCallback);
         serviceConnections.unbind(professorsCallback);
+    }
+
+    protected void refreshAll()
+    {
+        serviceConnections.postRequest(CourseService.class, new GetAllRequest<Course>(), courseCallback);
+        serviceConnections.postRequest(ProfessorService.class, new GetAllRequest<Professor>(), professorsCallback);
     }
 }

@@ -84,7 +84,7 @@ public class CourseYearCategory extends ScrollViewCategory<Course>
         initContent();
     }
 
-    public void update(List<Course> newCourses)
+    public void add(List<Course> newCourses)
     {
         List<List<Course>> categoriesLists = new LinkedList<>();
 
@@ -108,16 +108,26 @@ public class CourseYearCategory extends ScrollViewCategory<Course>
             {
                 category = new CourseSemesterCategory(getContext());
                 category.setCategory(i + 1);
-                category.update(categoriesLists.get(i));
+                category.add(categoriesLists.get(i));
 
                 categoryContentLayout.addView(category);
                 categories.put(i, category);
             }
             else
             {
-                category.update(categoriesLists.get(i));
+                category.add(categoriesLists.get(i));
             }
         }
+    }
+
+    public void delete(Course course)
+    {
+        categories.get(course.year).delete(course);
+    }
+
+    public void update(Course course)
+    {
+        categories.get(course.year).update(course);
     }
 
     public int getCategory()

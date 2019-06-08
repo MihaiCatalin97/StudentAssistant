@@ -99,6 +99,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
             return;
         }
 
+        showSnackbar("Logging in...");
         serviceConnections.postRequest(LoginService.class, new LoginRequest(email, password, remember), loginCallback);
     }
 
@@ -283,11 +284,10 @@ public class AuthenticationActivity extends ServiceBoundActivity
     {
         public void processResponse(final  LoginResponse response)
         {
+            hideSnackbar();
+
             if(response.getResult().equals("success"))
             {
-                Toast.makeText(getBaseContext(), getResources().getString(R.string.login_success),
-                        Toast.LENGTH_SHORT).show();
-
                 if (response.remember)
                 {
                     setLoginFields(new HashMap<String,String>()
@@ -307,8 +307,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
             }
             else
             {
-                Toast.makeText(getBaseContext(), response.getResult(),
-                        Toast.LENGTH_SHORT).show();
+                showSnackbar(response.getResult());
             }
         }
     };
@@ -317,13 +316,14 @@ public class AuthenticationActivity extends ServiceBoundActivity
     {
         public void processResponse(final CredentialsResponse response)
         {
+            hideSnackbar();
+
             if (response.getResult().equals("success")) {
                 showRegistrationStep(2);
             }
             else
             {
-                Toast.makeText(getBaseContext(), response.getResult(),
-                        Toast.LENGTH_SHORT).show();
+                showSnackbar(response.getResult());
             }
         }
     };

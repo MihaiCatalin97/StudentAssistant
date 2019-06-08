@@ -6,19 +6,19 @@
     <item android:title="Personal">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_home"
             android:title="Home" />
         <item
             android:id="@+id/nav_schedule"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_schedule"
             android:title="Schedule" />
         <item
             android:id="@+id/nav_grades"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_grades"
             android:title="Grades" />
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_menu_send"
+            android:icon="@drawable/ic_menu_messages"
             android:title="Messages" />
     </item>
 
@@ -26,15 +26,15 @@
         <menu>
             <item
                 android:id="@+id/nav_professors"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_menu_professors"
                 android:title="Professors"/>
             <item
                 android:id="@+id/nav_courses"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_menu_courses"
                 android:title="Courses" />
             <item
                 android:id="@+id/nav_administrative"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_menu_administrative"
                 android:title="Administrative" />
         </menu>
     </item>

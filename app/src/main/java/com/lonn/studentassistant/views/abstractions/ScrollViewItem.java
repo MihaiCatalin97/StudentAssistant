@@ -44,5 +44,7 @@ public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout
         setSoundEffectsEnabled(false);
     }
 
-    public abstract void update(List<T> newEntities);
+    public abstract void update(T newEntities);
+    public abstract void delete(T newEntities);
+    public abstract void add(List<T> newEntities);
 }

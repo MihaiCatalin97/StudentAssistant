@@ -38,7 +38,7 @@ public class ProfessorsScrollViewLayout extends ScrollViewLayout<Professor>
         categoryContentLayout = findViewById(R.id.layoutCategoryContent);
     }
 
-    public void update(List<Professor> newProfessors)
+    public void add(List<Professor> newProfessors)
     {
         Collections.sort(newProfessors);
 
@@ -56,5 +56,16 @@ public class ProfessorsScrollViewLayout extends ScrollViewLayout<Professor>
             else
                 professorView.update(professor);
         }
+    }
+
+    public void update(Professor professor)
+    {
+        professors.get(professor.getKey()).update(professor);
+    }
+
+    public void delete(Professor professor)
+    {
+        categoryContentLayout.removeView(professors.get(professor.getKey()));
+        professors.remove(professor.getKey());
     }
 }

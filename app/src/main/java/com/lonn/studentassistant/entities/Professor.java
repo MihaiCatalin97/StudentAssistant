@@ -16,21 +16,22 @@ public class Professor extends BaseEntity implements Comparable<Professor>
     @Exclude
     public String scheduleLink;
 
-    public String firstName, lastName, email, phoneNumber, level, webSite;
+    public String firstName, lastName, email, phoneNumber, level, website, cabinet;
 
     public List<String> courses = new LinkedList<>();
 
     public Professor()
     {}
 
-    public Professor(String firstName, String lastName, String email, String phoneNumber, String level, String webSite)
+    public Professor(String firstName, String lastName, String email, String phoneNumber, String level, String website, String cabinet)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.level = level;
-        this.webSite = webSite;
+        this.website = website;
+        this.cabinet = cabinet;
     }
 
     public int compareTo(Professor professor)
