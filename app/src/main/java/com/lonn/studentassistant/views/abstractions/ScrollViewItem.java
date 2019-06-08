@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.implementations.student.customViews.abstractions;
+package com.lonn.studentassistant.views.abstractions;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -10,27 +10,27 @@ import com.lonn.studentassistant.entities.BaseEntity;
 
 import java.util.List;
 
-public abstract class CustomView<T extends BaseEntity> extends LinearLayout
+public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout
 {
-    public CustomView(Context context)
+    public ScrollViewItem(Context context)
     {
         super(context);
         init(context);
     }
 
-    public CustomView(Context context, AttributeSet set)
+    public ScrollViewItem(Context context, AttributeSet set)
     {
         super(context, set);
         init(context);
     }
 
-    public CustomView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ScrollViewItem(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CustomView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ScrollViewItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }

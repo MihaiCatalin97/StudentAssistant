@@ -43,6 +43,14 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".activities.implementations.authentication.AuthenticationActivity"/>
 
+        <activity
+            android:name=".activities.implementations.courseEntity.CourseActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".activities.implementations.professorEntity.ProfessorEntityActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <service android:name=".services.implementations.loginService.LoginService" />
         <service android:name=".services.implementations.registerService.RegisterService" />
         <service android:name=".services.implementations.credentialsCheckService.CredentialsCheckService" />

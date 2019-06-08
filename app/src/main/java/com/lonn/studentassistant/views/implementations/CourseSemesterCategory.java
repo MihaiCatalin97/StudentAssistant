@@ -1,22 +1,20 @@
-package com.lonn.studentassistant.activities.implementations.student.customViews;
+package com.lonn.studentassistant.views.implementations;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.SparseArray;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.customViews.abstractions.ListViewCategory;
+import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 import com.lonn.studentassistant.entities.Course;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CourseSemesterCategory extends ListViewCategory<Course>
+public class CourseSemesterCategory extends ScrollViewCategory<Course>
 {
     Map<String, TextView> courses = new HashMap<>();
 

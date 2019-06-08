@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="professor"
+            type="com.lonn.studentassistant.viewModels.ProfessorViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:scaleType="fitCenter"
+            android:background="#FF0000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:contentDescription="Professor Image"
+            android:id="@+id/professorImage"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/professorImage"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{professor.fullName}"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:id="@+id/professorName"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/professorImage"
+            app:layout_constraintTop_toBottomOf="@id/professorName"
+            android:id="@+id/professorEmail"
+            android:text="@{`Email: ` + professor.email}"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/professorImage"
+            app:layout_constraintTop_toBottomOf="@id/professorEmail"
+            android:id="@+id/professorPhoneNumber"
+            android:text="@{`Phone number: ` + professor.phoneNumber}"/>
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

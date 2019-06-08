@@ -41,6 +41,28 @@ public class Utils
         return 1;
     }
 
+    public static String yearToString(int year)
+    {
+        if (year == 1)
+            return "First year";
+        if (year == 2)
+            return "Second year";
+        if (year == 3)
+            return "Third year";
+
+        return "Unknown year";
+    }
+
+    public static String semesterToString(int semester)
+    {
+        if (semester == 1)
+            return "First semester";
+        if (semester == 2)
+            return "Second semester";
+
+        return "Unknown semester";
+    }
+
     static String getTagValue(String tag)
     {
         if(tag.split(">").length > 1)

@@ -43,7 +43,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
 
     public void processResponse(GetByIdResponse<Course> response)
     {
-
+        Log.e("Got 2" + response.getClass().getSimpleName(), response.getAction() + " " + response.getResult());
     }
 
     public void processResponse(GetAllResponse<Course> response)
@@ -56,7 +56,6 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("getAll"))
             {
-                Log.e("GetAllCalled","Ye");
                 activity.courseManager.notifyCoursesChanged(response.getItems());
             }
         }

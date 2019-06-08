@@ -1,5 +1,8 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
+import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.CustomList;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
@@ -17,17 +20,16 @@ public abstract class AbstractRepository<T extends BaseEntity>
     {
         items = new CustomList<>();
         this.databaseController = databaseController;
-        //populateRepository();
     }
 
-    public void populateRepository()
+    public void populateRepository(ICallback<DatabaseResponse<T>> callback)
     {
-        databaseController.populateRepository(items);
+        databaseController.populateRepository(items, callback);
     }
 
-    public void populateRepository(String child)
+    public void populateRepository(String child, ICallback<DatabaseResponse<T>> callback)
     {
-        databaseController.populateRepository(items, child);
+        databaseController.populateRepository(items, child, callback);
     }
 
     public T getById(String id)

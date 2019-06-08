@@ -10,43 +10,43 @@ import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
-import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.entities.Course;
 
-public class ProfessorsCallback implements IDatabaseCallback<Professor>
+public class CourseCallback implements IDatabaseCallback<Course>
 {
     private StudentActivity activity;
 
-    public ProfessorsCallback(StudentActivity activity)
+    public CourseCallback(StudentActivity activity)
     {
         this.activity = activity;
     }
 
-    public void processResponse(DatabaseResponse<Professor> res)
+    public void processResponse(DatabaseResponse<Course> res)
     {
         Log.e("Default response","Received");
     }
 
-    public void processResponse(CreateResponse<Professor> response)
+    public void processResponse(CreateResponse<Course> response)
     {
 
     }
 
-    public void processResponse(DeleteResponse<Professor> response)
+    public void processResponse(DeleteResponse<Course> response)
     {
 
     }
 
-    public void processResponse(EditResponse<Professor> response)
+    public void processResponse(EditResponse<Course> response)
     {
 
     }
 
-    public void processResponse(GetByIdResponse<Professor> response)
+    public void processResponse(GetByIdResponse<Course> response)
     {
 
     }
 
-    public void processResponse(GetAllResponse<Professor> response)
+    public void processResponse(GetAllResponse<Course> response)
     {
         activity.hideSnackbar();
 
@@ -56,7 +56,8 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("getAll"))
             {
-                activity.professorManager.notifyProfessorsChanged(response.getItems());
+                Log.e("GetAllCalled","Ye");
+                activity.courseManager.notifyCoursesChanged(response.getItems());
             }
         }
     }

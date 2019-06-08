@@ -31,13 +31,15 @@ public abstract class BasicService<T extends Response> extends Service
         serviceCallbacks.remove(callback);
     }
 
-    protected void sendResponse(T response)
+    protected void sendResponse(T response, ICallback<T> callback)
     {
         Log.e("Sending response " + response.getAction(), response.getResult());
 
-        for (ICallback<T> callback : serviceCallbacks)
-        {
-            callback.processResponse(response);
-        }
+        callback.processResponse(response);
+    }
+
+    public int getCallbackCount()
+    {
+        return serviceCallbacks.size();
     }
 }

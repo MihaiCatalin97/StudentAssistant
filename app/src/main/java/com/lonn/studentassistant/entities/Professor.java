@@ -5,8 +5,11 @@ import android.support.annotation.NonNull;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @IgnoreExtraProperties
-public class Professor extends BaseEntity
+public class Professor extends BaseEntity implements Comparable<Professor>
 {
     @Exclude
     private String professorKey;
@@ -14,6 +17,8 @@ public class Professor extends BaseEntity
     public String scheduleLink;
 
     public String firstName, lastName, email, phoneNumber, level, webSite;
+
+    public List<String> courses = new LinkedList<>();
 
     public Professor()
     {}
@@ -26,6 +31,16 @@ public class Professor extends BaseEntity
         this.phoneNumber = phoneNumber;
         this.level = level;
         this.webSite = webSite;
+    }
+
+    public int compareTo(Professor professor)
+    {
+        int result = (lastName!=null&&lastName.length()>0?lastName.charAt(0):0) - (professor.lastName!=null&&professor.lastName.length()>0?professor.lastName.charAt(0):0);
+
+        if (result == 0)
+            result = (firstName!=null&&firstName.length()>0?firstName.charAt(0):0) - (professor.firstName!=null&&professor.firstName.length()>0?professor.firstName.charAt(0):0);
+
+        return result;
     }
 
     @Exclude

@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.implementations.student.customViews;
+package com.lonn.studentassistant.views.implementations;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -6,13 +6,13 @@ import android.util.SparseArray;
 import android.widget.CheckBox;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.customViews.abstractions.ListViewCategory;
+import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 import com.lonn.studentassistant.entities.Course;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class CourseYearCategory extends ListViewCategory<Course>
+public class CourseYearCategory extends ScrollViewCategory<Course>
 {
     SparseArray<CourseSemesterCategory> categories = new SparseArray<>();
 

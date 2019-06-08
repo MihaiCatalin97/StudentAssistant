@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/titleCoursesLayout"/>
 
-    <com.lonn.studentassistant.activities.implementations.student.customViews.CoursesScrollViewLayout
+    <com.lonn.studentassistant.views.implementations.CoursesScrollViewLayout
         android:id="@+id/layoutCoursesCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"

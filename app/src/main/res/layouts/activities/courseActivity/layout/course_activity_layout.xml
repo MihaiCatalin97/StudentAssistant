@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="course"
+            type="com.lonn.studentassistant.viewModels.CourseViewModel"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <TextView
+            android:id="@+id/courseTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{course.courseName}"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/courseType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{course.courseType}"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintTop_toTopOf="@id/courseTitle"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/courseYearSemester"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{course.courseYearSemester}"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintTop_toTopOf="@id/courseType"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <TextView
+            android:id="@+id/courseDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{course.description}"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@id/courseYearSemester"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

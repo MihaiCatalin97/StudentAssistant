@@ -1,5 +1,8 @@
 package com.lonn.studentassistant.services.abstractions;
 
+import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
+import com.lonn.studentassistant.common.abstractions.Response;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
 import com.lonn.studentassistant.common.requests.GetAllRequest;
@@ -9,9 +12,9 @@ import com.lonn.studentassistant.entities.BaseEntity;
 
 public interface IDatabaseService<T extends BaseEntity>
 {
-    void postRequest(CreateRequest<T> request);
-    void postRequest(DeleteRequest<T> request);
-    void postRequest(GetAllRequest<T> request);
-    void postRequest(GetByIdRequest<T> request);
-    void postRequest(EditRequest<T> request);
+    void postRequest(CreateRequest<T> request, ICallback<DatabaseResponse<T>> callback);
+    void postRequest(DeleteRequest<T> request, ICallback<DatabaseResponse<T>> callback);
+    void postRequest(GetAllRequest<T> request, ICallback<DatabaseResponse<T>> callback);
+    void postRequest(GetByIdRequest<T> request, ICallback<DatabaseResponse<T>> callback);
+    void postRequest(EditRequest<T> request, ICallback<DatabaseResponse<T>> callback);
 }

@@ -12,6 +12,7 @@ import com.google.firebase.FirebaseApp;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
+import com.lonn.studentassistant.common.abstractions.Response;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
 import com.lonn.studentassistant.common.requests.GetAllRequest;
@@ -87,23 +88,17 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
         super.addCallback(callback);
     }
 
-    public void sendResponse(CreateResponse<T> response)
+    public void sendResponse(CreateResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
-        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
-        {
-            ((IDatabaseCallback<T>)callback).processResponse(response);
-        }
+        ((IDatabaseCallback<T>)callback).processResponse(response);
     }
 
-    public void sendResponse(DeleteResponse<T> response)
+    public void sendResponse(DeleteResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
-        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
-        {
-            ((IDatabaseCallback<T>)callback).processResponse(response);
-        }
+        ((IDatabaseCallback<T>)callback).processResponse(response);
     }
 
-    public void sendResponse(EditResponse<T> response)
+    public void sendResponse(EditResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
         if (serviceCallbacks.size() == 0)
         {
@@ -112,20 +107,14 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
             return;
         }
 
-        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
-        {
-            ((IDatabaseCallback<T>)callback).processResponse(response);
-        }
+        ((IDatabaseCallback<T>)callback).processResponse(response);
     }
 
-    public void sendResponse(GetAllResponse<T> response)
+    public void sendResponse(GetAllResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
         if (serviceCallbacks.size() > 0)
         {
-            for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
-            {
-                ((IDatabaseCallback<T>)callback).processResponse(response);
-            }
+            ((IDatabaseCallback<T>)callback).processResponse(response);
         }
         else
         {
@@ -141,58 +130,57 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
         }
     }
 
-    public void sendResponse(GetByIdResponse<T> response)
+    public void sendResponse(GetByIdResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
-        for (ICallback<DatabaseResponse<T>> callback : serviceCallbacks)
-        {
-            ((IDatabaseCallback<T>)callback).processResponse(response);
-        }
+        ((IDatabaseCallback<T>)callback).processResponse(response);
     }
 
-    public void postRequest(GetAllRequest<T> request)
+    public void postRequest(GetAllRequest<T> request, ICallback<DatabaseResponse<T>> callback)
     {
         List<T> result = repository.getAll();
 
         if (result == null || result.size() == 0)
         {
-            repository.populateRepository();
+            repository.populateRepository(callback);
         }
         else
         {
-            sendResponse(new GetAllResponse<>("success", new ArrayList<>(result)));
+            sendResponse(new GetAllResponse<>("success", new ArrayList<>(result)), callback);
         }
     }
 
-    public void postRequest(GetByIdRequest<T> request)
+    public void postRequest(GetByIdRequest<T> request, ICallback<DatabaseResponse<T>> callback)
     {
         T result = repository.getById(request.getKey());
 
         if(result == null)
         {
-            repository.populateRepository(request.getKey());
+            Log.e("Populating repository", "GetById");
+            repository.populateRepository(request.getKey(), callback);
         }
         else
         {
-            sendResponse(new GetByIdResponse<>("success", result));
+            Log.e("Sending response", "GetById");
+            sendResponse(new GetByIdResponse<>("success", result), callback);
         }
     }
 
-    public void postRequest(EditRequest<T> request)
+    public void postRequest(EditRequest<T> request, ICallback<DatabaseResponse<T>> callback)
     {
         repository.update(request.getItems());
-        sendResponse(new EditResponse<>("success", request.getItems()));
+        sendResponse(new EditResponse<>("success", request.getItems()), callback);
     }
 
-    public void postRequest(CreateRequest<T> request)
+    public void postRequest(CreateRequest<T> request, ICallback<DatabaseResponse<T>> callback)
     {
         repository.add(request.getItems());
-        sendResponse(new CreateResponse<>("success", request.getItems()));
+        sendResponse(new CreateResponse<>("success", request.getItems()), callback);
     }
 
-    public void postRequest(DeleteRequest<T> request)
+    public void postRequest(DeleteRequest<T> request, ICallback<DatabaseResponse<T>> callback)
     {
         repository.remove(request.getItems());
-        sendResponse(new DeleteResponse<>("success", request.getItems()));
+        sendResponse(new DeleteResponse<>("success", request.getItems()), callback);
     }
 
     public abstract void onConnected();

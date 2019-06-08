@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.services.implementations.credentialsCheckService;
 
+import com.lonn.studentassistant.activities.abstractions.ICallback;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.common.ConnectionBundle;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
@@ -19,32 +20,33 @@ public class CredentialsCheckService extends BasicService<CredentialsResponse>
 {
     protected ConnectionBundle serviceConnections;
     private CredentialsRequest request;
+    private ICallback<CredentialsResponse> callback;
 
     @Override
     public void onCreate()
     {
         super.onCreate();
         serviceConnections = new ConnectionBundle(getBaseContext());
-        serviceConnections.bind(StudentService.class, studentCallback);
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        serviceConnections.unbind(studentCallback, this);
+        serviceConnections.unbind(studentCallback);
     }
 
-    public void postRequest(CredentialsRequest incomingRequest)
+    public void postRequest(CredentialsRequest incomingRequest, ICallback<CredentialsResponse> callback)
     {
         if (request != null)
         {
-            sendResponse(new CredentialsResponse<>("A credential check is in progress!", (Student) null));
+            sendResponse(new CredentialsResponse<>("A credential check is in progress!", (Student) null), callback);
         }
         else
         {
             request = incomingRequest;
-            serviceConnections.postRequest(StudentService.class, new GetByIdRequest<Student>(request.getEntity().getKey()));
+            this.callback = callback;
+            serviceConnections.postRequest(StudentService.class, new GetByIdRequest<Student>(request.getEntity().getKey()), studentCallback);
         }
     }
 
@@ -62,17 +64,17 @@ public class CredentialsCheckService extends BasicService<CredentialsResponse>
             {
                 if (response.getItems().size() == 1)
                 {
-                    sendResponse(new CredentialsResponse<>("success", response.getItems().get(0)));
+                    sendResponse(new CredentialsResponse<>("success", response.getItems().get(0)), callback);
                 }
                 else
                 {
-                    sendResponse(new CredentialsResponse<>("Invalid credentials", (Student)null));
+                    sendResponse(new CredentialsResponse<>("Invalid credentials", (Student)null), callback);
                     request = null;
                 }
             }
             else
             {
-                sendResponse(new CredentialsResponse<>("Invalid credentials", response.getItems()));
+                sendResponse(new CredentialsResponse<>("Invalid credentials", response.getItems()), callback);
                 request = null;
             }
         }

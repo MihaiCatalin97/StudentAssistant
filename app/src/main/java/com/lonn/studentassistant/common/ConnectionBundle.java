@@ -2,9 +2,9 @@ package com.lonn.studentassistant.common;
 
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
@@ -31,8 +31,9 @@ import java.util.Map;
 
 public class ConnectionBundle
 {
-    private static Map<BasicService, CustomServiceConnection> services = new HashMap<>();
-    private Map<Class, List<Request>> requestMap = new HashMap<>();
+    private static List<Class> waitingServices = new LinkedList<>();
+    private static Map<BasicService, List<CustomServiceConnection>> services = new HashMap<>();
+    private Map<Class, Map<Request, ICallback>> waitingRequests = new HashMap<>();
     private Context context;
 
     public ConnectionBundle(Context context)
@@ -40,56 +41,78 @@ public class ConnectionBundle
         this.context = context;
     }
 
-    public <T extends Response> void bind(Class<?> serviceClass, ICallback<T> callback)
+    private <T extends  Response> void bindServiceWithIntent(Class<?> serviceClass, ICallback<T> callback)
     {
-        if(getServiceByClass(serviceClass) == null)
+        CustomServiceConnection<T> connection = new CustomServiceConnection<>(callback);
+        Intent intent = new Intent(context, serviceClass);
+        context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    private <T extends Response> void bind(final Class<?> serviceClass, ICallback<T> callback)
+    {
+        final BasicService service = getServiceByClass(serviceClass);
+        bindServiceWithIntent(serviceClass, callback);
+
+        if(service == null)
+            waitingServices.add(serviceClass);
+
+        new Handler().postDelayed(new Runnable()
         {
-            CustomServiceConnection<T> connection = new CustomServiceConnection<>(callback);
-
-            Intent intent = new Intent(context, serviceClass);
-
-            Log.e("binding", serviceClass.getSimpleName());
-
-            context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-
-            try
+            @Override
+            public void run()
             {
-                services.put((BasicService)serviceClass.getConstructor().newInstance(), connection);
-
-                printServices();
+                if(services.get(getServiceByClass(serviceClass)) != null && services.get(getServiceByClass(serviceClass)).size() > 0)
+                    Log.e(serviceClass.getSimpleName() + " number of connections", Integer.toString(services.get(getServiceByClass(serviceClass)).size()));
+                if(getServiceByClass(serviceClass) != null && getServiceByClass(serviceClass).getCallbackCount() > 0)
+                    Log.e(serviceClass.getSimpleName() + " number of callbacks", Integer.toString(getServiceByClass(serviceClass).getCallbackCount()));
+                new Handler().postDelayed(this,5000);
             }
-            catch (Exception e)
-            {
-                Toast.makeText(context, "An error occured!\n Error code 200", Toast.LENGTH_LONG).show();
-                Log.e("Error services","");
-            }
-        }
+        },5000);
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Response> void unbind(ICallback<T> callback, ContextWrapper wrapper)
+    public <T extends Response> void unbind(ICallback<T> callback)
     {
-        List<BasicService> servicesToUnbind = new LinkedList<>();
+        Map<BasicService, List<CustomServiceConnection>> servicesToUnbind = new HashMap<>();
 
-        Log.e("unbind Called", callback.getClass().getSimpleName());
         for(BasicService service : services.keySet())
         {
-            CustomServiceConnection connection = services.get(service);
+            List<CustomServiceConnection> unbindingConnections = new LinkedList<>();
+            List<CustomServiceConnection> connections = services.get(service);
 
-            if (connection != null && connection.callback.equals(callback))
+            if (connections != null)
             {
-                servicesToUnbind.add(service);
+                for(CustomServiceConnection connection : connections)
+                {
+                    if (connection.callback.equals(callback))
+                    {
+                        unbindingConnections.add(connection);
+                    }
+                }
+
+                servicesToUnbind.put(service, unbindingConnections);
             }
         }
 
-        printServices();
-
-        for (BasicService service : servicesToUnbind)
+        for (BasicService service : servicesToUnbind.keySet())
         {
-            Log.e("unbinding", service.getClass().getSimpleName());
+            List<CustomServiceConnection> connections = services.get(service);
+            List<CustomServiceConnection> unbindingConnections = servicesToUnbind.get(service);
 
-            wrapper.unbindService(services.get(service));
-            services.remove(service);
+            if(connections!=null && unbindingConnections != null)
+            {
+                for (CustomServiceConnection connection : unbindingConnections)
+                {
+                    service.removeCallback(connection.callback);
+                    connections.remove(connection);
+                    context.unbindService(connection);
+                }
+
+                if(connections.size() == 0)
+                    services.remove(service);
+                else
+                    services.put(service, connections);
+            }
         }
     }
 
@@ -104,27 +127,32 @@ public class ConnectionBundle
 
         @Override
         @SuppressWarnings("unchecked")
-        public void onServiceConnected(ComponentName name, IBinder binder) {
+        public void onServiceConnected(ComponentName name, IBinder binder)
+        {
             BasicService<T> service = ((LocalBinder) binder).getService();
+            List<CustomServiceConnection> existingConnections = services.get(service);
 
-            services.remove(getServiceByClass(service.getClass()));
-            printServices();
+            waitingServices.remove(service.getClass());
+
+            if(existingConnections == null)
+                existingConnections = new LinkedList<>();
 
             service.addCallback(callback);
-            services.put(service, this);
+            existingConnections.add(this);
+            services.put(service,existingConnections);
 
             if(service instanceof DatabaseService)
                 ((DatabaseService) service).onConnected();
 
-            if (requestMap.containsKey(service.getClass()))
+            if (waitingRequests.containsKey(service.getClass()))
             {
-                List<Request> requestList = requestMap.get(service.getClass());
+                Map<Request,ICallback> requestList = waitingRequests.get(service.getClass());
 
                 if (requestList != null)
                 {
-                    for (Request req : requestList)
+                    for (Request req : requestList.keySet())
                     {
-                        postRequest(service.getClass(), req);
+                        postRequest(service.getClass(), req, requestList.get(req));
                     }
                 }
             }
@@ -134,20 +162,32 @@ public class ConnectionBundle
         @SuppressWarnings("unchecked")
         public void onServiceDisconnected(ComponentName name)
         {
+            Log.e("onServiceDisconnected", callback.getClass().getSimpleName() + " asdadasdadsa");
             for(BasicService service : services.keySet())
             {
-                CustomServiceConnection<T> mapCallback = services.get(service);
+                List<CustomServiceConnection> connections = services.get(service);
 
-                if (mapCallback != null && mapCallback.equals(this))
+                if(connections != null)
                 {
-                    service.removeCallback(callback);
-                    services.remove(service);
+                    for (CustomServiceConnection connection : connections)
+                    {
+                        if (connection.equals(this))
+                        {
+                            service.removeCallback(callback);
+                            connections.remove(this);
+                            context.unbindService(connection);
+                        }
+                    }
+                    if(connections.size() == 0)
+                        services.remove(service);
+                    else
+                        services.put(service, connections);
                 }
             }
         }
     }
 
-    public BasicService getServiceByClass(Class c)
+    private BasicService getServiceByClass(Class c)
     {
         for(BasicService service : services.keySet())
         {
@@ -159,55 +199,47 @@ public class ConnectionBundle
     }
 
     @SuppressWarnings("unchecked")
-    public void postRequest(Class serviceClass, Request request)
+    public void postRequest(Class serviceClass, Request request, ICallback callback)
     {
         BasicService service = getServiceByClass(serviceClass);
 
-        if(service == null)
+        if(service == null || waitingServices.contains(service.getClass()))
         {
-            List<Request> newList = requestMap.get(serviceClass);
+            Map<Request,ICallback> requestList = waitingRequests.get(serviceClass);
 
-            if (requestMap.get(serviceClass) == null)
+            if (requestList == null)
             {
-                requestMap.put(serviceClass, newList);
+                requestList = new HashMap<>();
+                waitingRequests.put(serviceClass, requestList);
             }
 
-            requestMap.get(serviceClass).add(request);
+            requestList.put(request, callback);
+            bind(serviceClass, callback);
         }
         else if (service instanceof DatabaseService)
         {
             try
             {
                 if (request instanceof CreateRequest)
-                    ((DatabaseService) service).postRequest((CreateRequest) request);
+                    ((DatabaseService) service).postRequest((CreateRequest) request, callback);
                 if (request instanceof DeleteRequest)
-                    ((DatabaseService) service).postRequest((DeleteRequest) request);
+                    ((DatabaseService) service).postRequest((DeleteRequest) request, callback);
                 if (request instanceof EditRequest)
-                    ((DatabaseService) service).postRequest((EditRequest) request);
+                    ((DatabaseService) service).postRequest((EditRequest) request, callback);
                 if (request instanceof GetAllRequest)
-                    ((DatabaseService) service).postRequest((GetAllRequest) request);
+                    ((DatabaseService) service).postRequest((GetAllRequest) request, callback);
                 if (request instanceof GetByIdRequest)
-                    ((DatabaseService) service).postRequest((GetByIdRequest) request);
+                    ((DatabaseService) service).postRequest((GetByIdRequest) request, callback);
             }
             catch (Exception e)
             {
                 Toast.makeText(context, "An error occured!\n Error code 100", Toast.LENGTH_LONG).show();
-                Log.e("Error code 1", e.getLocalizedMessage());
+                Log.e("Error code 100", e.getLocalizedMessage());
             }
         }
         else if (service instanceof LoginService && request instanceof LoginRequest)
-            ((LoginService) service).postRequest((LoginRequest)request);
+            ((LoginService) service).postRequest((LoginRequest)request, callback);
         else if (service instanceof CredentialsCheckService && request instanceof CredentialsRequest)
-            ((CredentialsCheckService) service).postRequest((CredentialsRequest)request);
-    }
-
-    private void printServices()
-    {
-        Log.e("Current services", Integer.toString(services.size()));
-
-        for(BasicService service : services.keySet())
-        {
-            Log.e("Service", service.getClass().getSimpleName());
-        }
+            ((CredentialsCheckService) service).postRequest((CredentialsRequest)request, callback);
     }
 }

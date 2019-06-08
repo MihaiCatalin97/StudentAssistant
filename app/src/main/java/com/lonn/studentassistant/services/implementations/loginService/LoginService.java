@@ -8,6 +8,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.abstractions.ICallback;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.common.ConnectionBundle;
@@ -30,6 +31,7 @@ public class LoginService extends BasicService<LoginResponse>
     protected ConnectionBundle serviceConnections;
     private AuthSharedPrefs authSharedPrefs;
     private LoginRequest request;
+    private ICallback<LoginResponse> callback;
 
     @Override
     public void onCreate()
@@ -38,27 +40,27 @@ public class LoginService extends BasicService<LoginResponse>
         authSharedPrefs = new AuthSharedPrefs();
 
         serviceConnections = new ConnectionBundle(getBaseContext());
-        serviceConnections.bind(UserService.class, userCallback);
     }
 
     @Override
     public void onDestroy()
     {
-        serviceConnections.unbind(userCallback, this);
+        serviceConnections.unbind(userCallback);
         super.onDestroy();
     }
 
-    public void postRequest(LoginRequest incomingRequest)
+    public void postRequest(LoginRequest incomingRequest, ICallback<LoginResponse> callback)
     {
         if (request != null)
         {
-            sendResponse(new LoginResponse("A login already is in progress!"));
+            sendResponse(new LoginResponse("A login already is in progress!"), callback);
         }
         else
         {
             request = incomingRequest;
+            this.callback = callback;
 
-            serviceConnections.postRequest(UserService.class, new GetByIdRequest<User>(Utils.emailToKey(request.email)));
+            serviceConnections.postRequest(UserService.class, new GetByIdRequest<User>(Utils.emailToKey(request.email)), userCallback);
         }
     }
 
@@ -79,13 +81,13 @@ public class LoginService extends BasicService<LoginResponse>
                                 authSharedPrefs.rememberCredentials(request.email, request.password);
                             }
 
-                            sendResponse(new LoginResponse(user, request.password, request.remember));
+                            sendResponse(new LoginResponse(user, request.password, request.remember), callback);
                         }
                         else
                         {
                             authSharedPrefs.deleteCredentials();
 
-                            sendResponse(new LoginResponse(getResources().getString(R.string.invalid_credentials)));
+                            sendResponse(new LoginResponse(getResources().getString(R.string.invalid_credentials)), callback);
                         }
                     }
                 });
@@ -109,13 +111,13 @@ public class LoginService extends BasicService<LoginResponse>
                     }
                     else
                     {
-                        sendResponse(new LoginResponse("Invalid credentials"));
+                        sendResponse(new LoginResponse("Invalid credentials"), callback);
                         request = null;
                     }
                 }
                 else
                 {
-                    sendResponse(new LoginResponse("Invalid credentials"));
+                    sendResponse(new LoginResponse("Invalid credentials"), callback);
                     request = null;
                 }
         }

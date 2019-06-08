@@ -2,14 +2,11 @@ package com.lonn.studentassistant.activities.implementations.student.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-import com.lonn.studentassistant.activities.implementations.student.customViews.CourseSemesterCategory;
-import com.lonn.studentassistant.activities.implementations.student.customViews.CourseYearCategory;
-import com.lonn.studentassistant.activities.implementations.student.customViews.abstractions.ListViewCategory;
+import com.lonn.studentassistant.views.implementations.CourseYearCategory;
 
 import java.util.LinkedList;
 import java.util.List;

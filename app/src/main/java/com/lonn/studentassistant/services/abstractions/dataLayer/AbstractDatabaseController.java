@@ -8,6 +8,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
@@ -37,7 +39,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
         return type;
     }
 
-    public void populateRepository(final CustomList<T> list, final String child)
+    public void populateRepository(final CustomList<T> list, final String child, final ICallback<DatabaseResponse<T>> callback)
     {
         Log.e("Setting listener on", databaseReference.getKey() + "/" + child);
 
@@ -50,25 +52,25 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
 
                 if (item == null)
                 {
-                    boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
+                    boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null), callback);
                     return;
                 }
 
                 item.setKey(dataSnapshot.getKey());
                 list.add(item);
 
-                boundService.sendResponse(new GetByIdResponse<>("success", item));
+                boundService.sendResponse(new GetByIdResponse<>("success", item), callback);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
-                boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null));
+                boundService.sendResponse(new GetByIdResponse<>("Get by id failed", (T)null), callback);
             }
         });
     }
 
-    public void populateRepository(final CustomList<T> list)
+    public void populateRepository(final CustomList<T> list, final ICallback<DatabaseResponse<T>> callback)
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -85,18 +87,17 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                         item.setKey(key);
 
                         list.add(item);
-                        Log.e("Adding " + getItemType() + ": " + item.getKey() + ". Total", Integer.toString(list.size()));
                     }
                 }
 
                 listenForChanges(list);
-                boundService.sendResponse(new GetAllResponse<>("success", list));
+                boundService.sendResponse(new GetAllResponse<>("success", list), callback);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
-                boundService.sendResponse(new GetAllResponse<>("Get all failed", (T)null));
+                boundService.sendResponse(new GetAllResponse<>("Get all failed", (T)null), callback);
             }
         });
     }
@@ -130,7 +131,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                             {
                                 list.set(indexOfKey, item);
 
-                                boundService.sendResponse(new EditResponse<T>("success", item));
+                                boundService.sendResponse(new EditResponse<T>("success", item), null);
                             }
                         }
                     }

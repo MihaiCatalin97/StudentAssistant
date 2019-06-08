@@ -57,8 +57,6 @@ public class AuthenticationActivity extends ServiceBoundActivity
     @Override
     public void onStart() {
         super.onStart();
-        serviceConnections.bind(LoginService.class, loginCallback);
-        serviceConnections.bind(CredentialsCheckService.class, credentialsCallback);
     }
 
     @Override
@@ -101,7 +99,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
             return;
         }
 
-        ((LoginService)serviceConnections.getServiceByClass(LoginService.class)).postRequest(new LoginRequest(email, password, remember));
+        serviceConnections.postRequest(LoginService.class, new LoginRequest(email, password, remember), loginCallback);
     }
 
     public void showRegistrationStep(int step)
@@ -156,7 +154,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
         }
 
         registeringStudent = new Student(numarMatricol,lastName,firstName,initialaTata,email,phoneNumber,an,grupa);
-        ((CredentialsCheckService)serviceConnections.getServiceByClass(CredentialsCheckService.class)).postRequest(new CredentialsRequest<>(registeringStudent));
+        serviceConnections.postRequest(CredentialsCheckService.class, new CredentialsRequest<>(registeringStudent), credentialsCallback);
     }
 
     private void register()
@@ -332,7 +330,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
 
     protected void unbindServices()
     {
-        serviceConnections.unbind(loginCallback, this);
-        serviceConnections.unbind(credentialsCallback, this);
+        serviceConnections.unbind(loginCallback);
+        serviceConnections.unbind(credentialsCallback);
     }
 }

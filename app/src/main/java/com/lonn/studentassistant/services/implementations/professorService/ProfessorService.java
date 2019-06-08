@@ -23,7 +23,6 @@ public class ProfessorService extends DatabaseService<Professor>
 
     public void onConnected()
     {
-        postRequest(new GetAllRequest<Professor>());
     }
 
     public void handleDestroy()

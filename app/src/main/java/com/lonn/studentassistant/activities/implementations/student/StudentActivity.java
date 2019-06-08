@@ -3,27 +3,26 @@ package com.lonn.studentassistant.activities.implementations.student;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.adapters.ProfessorAdapter;
 import com.lonn.studentassistant.activities.implementations.student.callbacks.CourseCallback;
 import com.lonn.studentassistant.activities.implementations.student.callbacks.ProfessorsCallback;
-import com.lonn.studentassistant.activities.implementations.student.customViews.CoursesScrollViewLayout;
+import com.lonn.studentassistant.common.requests.GetAllRequest;
+import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.views.implementations.CoursesScrollViewLayout;
+import com.lonn.studentassistant.views.implementations.ProfessorsScrollViewLayout;
 import com.lonn.studentassistant.activities.implementations.student.managers.StudentActivityCourseManager;
+import com.lonn.studentassistant.activities.implementations.student.managers.StudentActivityProfessorManager;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
-import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 import com.lonn.studentassistant.services.implementations.professorService.ProfessorService;
-
-import java.util.ArrayList;
 
 public class StudentActivity extends NavBarActivity
 {
     public StudentActivityCourseManager courseManager;
-
-    public ProfessorAdapter professorAdapter;
+    public StudentActivityProfessorManager professorManager;
 
     private CourseCallback courseCallback = new CourseCallback(this);
     private ProfessorsCallback professorsCallback = new ProfessorsCallback(this);
@@ -38,18 +37,16 @@ public class StudentActivity extends NavBarActivity
         setContentView(R.layout.student_activity_main_layout);
         super.onCreate(savedInstanceState);
 
-        professorAdapter = new ProfessorAdapter(this, new ArrayList<Professor>());
         courseManager = new StudentActivityCourseManager((CoursesScrollViewLayout)findViewById(R.id.layoutCoursesCategories));
-
-
-        ((ListView)findViewById(R.id.listProfessors)).setAdapter(professorAdapter);
+        professorManager = new StudentActivityProfessorManager((ProfessorsScrollViewLayout) findViewById(R.id.layoutProfessorsCategories));
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        serviceConnections.bind(CourseService.class, courseCallback);
-        serviceConnections.bind(ProfessorService.class, professorsCallback);
+
+        serviceConnections.postRequest(CourseService.class, new GetAllRequest<Course>(), courseCallback);
+        serviceConnections.postRequest(ProfessorService.class, new GetAllRequest<Professor>(), professorsCallback);
     }
 
     public void handleNavBarAction(int id)
@@ -93,6 +90,7 @@ public class StudentActivity extends NavBarActivity
 
     protected void unbindServices()
     {
-        serviceConnections.unbind(courseCallback, this);
+        serviceConnections.unbind(courseCallback);
+        serviceConnections.unbind(professorsCallback);
     }
 }

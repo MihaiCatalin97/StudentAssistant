@@ -23,7 +23,6 @@ public class CourseService extends DatabaseService<Course>
 
     public void onConnected()
     {
-        postRequest(new GetAllRequest<Course>());
     }
 
     public void handleDestroy()

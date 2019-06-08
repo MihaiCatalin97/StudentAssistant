@@ -165,7 +165,7 @@ class URLParser
         if (course == null)
         {
             Log.e("Course groups", row.groups.get(0));
-            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, null);
+            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course description",  null);
             course.addProfessor(professor);
             courseRepository.add(course);
         }
@@ -222,9 +222,7 @@ class URLParser
             {
                 Professor existingProfessor = professorRepository.getById(professor.getKey());
 
-                if(existingProfessor != null && !existingProfessor.equals(professor))
-                    professorRepository.update(professor);
-                else if (existingProfessor == null)
+                if (existingProfessor == null)
                     professorRepository.add(professor);
 
                 List<ParsingRow> parsingRows = parseTable(readUrl(professor.scheduleLink));
@@ -234,6 +232,10 @@ class URLParser
                     Course course = addCourse(row, 2, professor);
                     row.courseKey = course.getKey();
 
+                    if(!professor.courses.contains(row.courseKey))
+                    {
+                        professor.courses.add(row.courseKey);
+                    }
                     if(row.type.equals("Examen"))
                     {
                         addExam(row.toExam(), professor);
@@ -243,6 +245,9 @@ class URLParser
                         addScheduleClass(row.toScheduleClass(), professor);
                     }
                 }
+
+                if(existingProfessor != null && !existingProfessor.equals(professor))
+                    professorRepository.update(professor);
             }
 
             professorRepository.update(professors);
