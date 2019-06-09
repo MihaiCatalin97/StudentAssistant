@@ -26,6 +26,7 @@ android {
         main {
             res.srcDirs =
                     [
+                            'src/main/res/layouts/activities/courseEntityActivity',
                             'src/main/res/layouts/activities/professorEntityActivity',
                             'src/main/res/layouts/activities/courseActivity',
                             'src/main/res/layouts/activities/authenticationActivity',

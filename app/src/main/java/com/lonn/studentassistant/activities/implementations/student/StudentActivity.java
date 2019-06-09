@@ -42,12 +42,20 @@ public class StudentActivity extends NavBarActivity
     }
 
     @Override
+    public void onBackPressed()
+    {
+        if(findViewById(R.id.layoutHome).getVisibility() == View.VISIBLE)
+            super.onBackPressed();
+        else
+            handleNavBarAction(R.id.nav_home);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
         showSnackbar("Loading...");
-        serviceConnections.postRequest(CourseService.class, new GetAllRequest<Course>(), courseCallback);
-        serviceConnections.postRequest(ProfessorService.class, new GetAllRequest<Professor>(), professorsCallback);
+        refreshAll();
     }
 
     public void handleNavBarAction(int id)

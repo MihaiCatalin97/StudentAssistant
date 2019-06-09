@@ -34,11 +34,35 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(DeleteResponse<Course> response)
     {
         Log.e("Got " + response.getClass().getSimpleName(), response.getAction() + " " + response.getResult());
+
+        activity.hideSnackbar();
+
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Fail");
+        else
+        {
+            if (response.getAction().equals("delete") && activity.courseManager != null)
+            {
+                activity.courseManager.delete(response.getItems().get(0));
+            }
+        }
     }
 
     public void processResponse(EditResponse<Course> response)
     {
         Log.e("Got " + response.getClass().getSimpleName(), response.getAction() + " " + response.getResult());
+
+        activity.hideSnackbar();
+
+        if(!response.getResult().equals("success"))
+            activity.showSnackbar("Fail");
+        else
+        {
+            if (response.getAction().equals("edit") && activity.courseManager != null)
+            {
+                activity.courseManager.addOrUpdate(response.getItems().get(0));
+            }
+        }
     }
 
     public void processResponse(GetByIdResponse<Course> response)
@@ -50,9 +74,9 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("getById"))
+            if (response.getAction().equals("getById") && activity.courseManager != null)
             {
-                activity.updateCourses(response.getItems().get(0));
+                activity.courseManager.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -66,10 +90,10 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("getAll"))
+            if (response.getAction().equals("getAll") && activity.courseManager != null)
             {
                 for(Course course : response.getItems())
-                    activity.updateCourses(course);
+                    activity.courseManager.addOrUpdate(course);
             }
         }
     }

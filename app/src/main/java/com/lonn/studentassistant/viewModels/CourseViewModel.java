@@ -2,6 +2,7 @@ package com.lonn.studentassistant.viewModels;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.view.View;
 
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
@@ -14,7 +15,7 @@ import java.util.List;
 public class CourseViewModel extends BaseObservable
 {
     @Bindable
-    public String courseName, description;
+    public String courseName, description, website;
 
     public int pack, semester, year;
     public List<Professor> professors;
@@ -27,6 +28,7 @@ public class CourseViewModel extends BaseObservable
         this.year = course.year;
         this.description = course.description;
         this.professors = new ArrayList<>(course.professorEntities);
+        this.website = course.website;
     }
 
     public void update(Course newCourse)
@@ -51,15 +53,20 @@ public class CourseViewModel extends BaseObservable
             this.year = newCourse.year;
             this.notifyPropertyChanged(BR.courseYearSemester);
         }
-        if (!description.equals(newCourse.description))
+        if (description != null && !description.equals(newCourse.description))
         {
             this.description = newCourse.description;
             this.notifyPropertyChanged(BR.description);
         }
-        if (!professors.equals(newCourse.professorEntities))
+        if (professors != null && !professors.equals(newCourse.professorEntities))
         {
             this.description = newCourse.description;
             this.notifyPropertyChanged(BR.description);
+        }
+        if (website != null && !website.equals(newCourse.website))
+        {
+            this.website = newCourse.website;
+            this.notifyPropertyChanged(BR.website);
         }
     }
 
@@ -77,4 +84,11 @@ public class CourseViewModel extends BaseObservable
     {
         return Utils.yearToString(year) + ", " + Utils.semesterToString(semester);
     }
+
+    @Bindable
+    public int getWebsiteVisible()
+    {
+        return (website != null)? View.VISIBLE : View.GONE;
+    }
+
 }

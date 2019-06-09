@@ -2,12 +2,11 @@ package com.lonn.studentassistant.views.implementations;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.views.abstractions.ScrollViewLayout;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.views.entityViews.ProfessorView;
+import com.lonn.studentassistant.views.entityViews.ProfessorViewFull;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +15,7 @@ import java.util.Map;
 
 public class ProfessorsScrollViewLayout extends ScrollViewLayout<Professor>
 {
-    Map<String, ProfessorView> professors = new HashMap<>();
+    Map<String, ProfessorViewFull> professors = new HashMap<>();
 
     public ProfessorsScrollViewLayout(Context context)
     {
@@ -44,16 +43,16 @@ public class ProfessorsScrollViewLayout extends ScrollViewLayout<Professor>
 
         for(Professor professor : newProfessors)
         {
-            ProfessorView professorView = professors.get(professor.getKey());
+            ProfessorViewFull professorView = professors.get(professor.getKey());
 
             if (professorView == null)
             {
-                professorView = new ProfessorView(getContext(), professor);
+                professorView = new ProfessorViewFull(getContext(), professor);
 
                 categoryContentLayout.addView(professorView);
                 professors.put(professor.getKey(), professorView);
             }
-            else
+            else if (professorView.entityDifferent(professor))
                 professorView.update(professor);
         }
     }

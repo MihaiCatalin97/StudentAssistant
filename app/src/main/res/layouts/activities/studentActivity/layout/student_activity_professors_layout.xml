@@ -6,13 +6,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/titleProfessorsLayout"
         style="@style/DarkBlueTitle"
+        android:id="@+id/titleProfessorsLayout"
         android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Professors"
-        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.lonn.studentassistant.views.implementations.ProfessorsScrollViewLayout

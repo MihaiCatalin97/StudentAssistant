@@ -6,16 +6,19 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
+        style="@style/DarkBlueTitle"
+        android:id="@+id/titleCoursesLayout"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Courses"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/titleCoursesLayout"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <com.lonn.studentassistant.views.implementations.CoursesScrollViewLayout
         android:id="@+id/layoutCoursesCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleCoursesLayout"
         tools:context = ".activities.implementations.student.StudentActivity"/>

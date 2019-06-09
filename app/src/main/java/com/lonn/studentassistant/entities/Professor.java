@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.entities;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -73,4 +74,5 @@ public class Professor extends BaseEntity implements Comparable<Professor>
                 p.level.equals(level) &&
                 p.phoneNumber.equals(phoneNumber);
     }
+
 }

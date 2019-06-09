@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="course"
+            type="com.lonn.studentassistant.viewModels.CourseViewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/solid_background"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/courseTitle"
+            style="@style/DarkBlueTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@{course.courseName}"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/courseType"
+            style="@style/DarkBlueTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@{course.courseType}"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/courseTitle" />
+        <TextView
+
+            android:id="@+id/courseYearAndSemester"
+            style="@style/DarkBlueTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{course.courseYearSemester}"
+            android:textSize="18sp"
+            android:gravity="center"
+            app:layout_constraintTop_toBottomOf="@id/courseType" />
+
+        <TextView
+            android:id="@+id/courseDescription"
+            style="@style/DarkBlueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="@{course.description}"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseYearAndSemester" />
+
+        <TextView
+            android:id="@+id/courseWebSite"
+            style="@style/DarkBlueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{course.website}"
+            android:textSize="18sp"
+            android:visibility="@{course.websiteVisible}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseDescription" />
+
+        <TextView
+            android:id="@+id/courseProfessorsTitle"
+            style="@style/DarkBlueSubtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Professors: "
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/courseWebSite" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/courseProfessorsTitle"
+            app:layout_constraintTop_toBottomOf="@id/courseProfessorsTitle">
+
+            <LinearLayout
+                android:id="@+id/layoutCourseProfessors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

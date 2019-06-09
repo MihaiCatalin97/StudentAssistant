@@ -49,18 +49,6 @@
             android:visibility="@{professor.emailVisible}"/>
 
         <TextView
-            android:id="@+id/professorWebsite"
-            style="@style/SmallDarkBlueTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintLeft_toRightOf="@id/professorImage"
-            app:layout_constraintTop_toBottomOf="@id/professorEmail"
-            android:text="@{`Web site: ` + professor.website}"
-            android:visibility="@{professor.websiteVisible}"/>
-
-        <TextView
             android:id="@+id/professorPhoneNumber"
             style="@style/SmallDarkBlueTextView"
             android:layout_width="0dp"
@@ -68,9 +56,22 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toRightOf="@id/professorImage"
-            app:layout_constraintTop_toBottomOf="@id/professorWebsite"
+            app:layout_constraintTop_toBottomOf="@id/professorEmail"
             android:text="@{`Phone number: ` + professor.phoneNumber}"
             android:visibility="@{professor.phoneNumberVisible}"/>
+
+        <TextView
+            android:id="@+id/professorWebsite"
+            style="@style/SmallDarkBlueTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            app:layout_constraintLeft_toRightOf="@id/professorImage"
+            app:layout_constraintTop_toBottomOf="@id/professorPhoneNumber"
+            android:text="@{`\n` + professor.website}"
+            android:visibility="@{professor.websiteVisible}"/>
+
 
     </android.support.constraint.ConstraintLayout>
 </layout>

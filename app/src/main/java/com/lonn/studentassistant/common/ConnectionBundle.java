@@ -46,6 +46,7 @@ public class ConnectionBundle
         CustomServiceConnection<T> connection = new CustomServiceConnection<>(callback);
         Intent intent = new Intent(context, serviceClass);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        Log.e("Binding", serviceClass.getSimpleName());
     }
 
     private <T extends Response> void bind(final Class<?> serviceClass, ICallback<T> callback)
@@ -53,7 +54,7 @@ public class ConnectionBundle
         final BasicService service = getServiceByClass(serviceClass);
         bindServiceWithIntent(serviceClass, callback);
 
-        if(service == null)
+        if(service == null && !waitingServices.contains(serviceClass))
             waitingServices.add(serviceClass);
 
         new Handler().postDelayed(new Runnable()
@@ -132,6 +133,7 @@ public class ConnectionBundle
             BasicService<T> service = ((LocalBinder) binder).getService();
             List<CustomServiceConnection> existingConnections = services.get(service);
 
+            Log.e(service.getClass().getSimpleName(),"Connected");
             waitingServices.remove(service.getClass());
 
             if(existingConnections == null)
@@ -139,7 +141,7 @@ public class ConnectionBundle
 
             service.addCallback(callback);
             existingConnections.add(this);
-            services.put(service,existingConnections);
+            services.put(service, existingConnections);
 
             if(service instanceof DatabaseService)
                 ((DatabaseService) service).onConnected();
@@ -147,6 +149,7 @@ public class ConnectionBundle
             if (waitingRequests.containsKey(service.getClass()))
             {
                 Map<Request,ICallback> requestList = waitingRequests.get(service.getClass());
+                waitingRequests.remove(service.getClass());
 
                 if (requestList != null)
                 {
@@ -203,7 +206,7 @@ public class ConnectionBundle
     {
         BasicService service = getServiceByClass(serviceClass);
 
-        if(service == null || waitingServices.contains(service.getClass()))
+        if(service == null)
         {
             Map<Request,ICallback> requestList = waitingRequests.get(serviceClass);
 
@@ -214,7 +217,9 @@ public class ConnectionBundle
             }
 
             requestList.put(request, callback);
-            bind(serviceClass, callback);
+
+            if(!waitingServices.contains(serviceClass))
+                bind(serviceClass, callback);
         }
         else if (service instanceof DatabaseService)
         {

@@ -22,8 +22,10 @@ public abstract class BasicService<T extends Response> extends Service
         return binder;
     }
 
-    public void addCallback(ICallback<T> callback) {
-        serviceCallbacks.add(callback);
+    public void addCallback(ICallback<T> callback)
+    {
+        if(!serviceCallbacks.contains(callback))
+            serviceCallbacks.add(callback);
     }
 
     public void removeCallback(ICallback<T> callback)

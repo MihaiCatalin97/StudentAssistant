@@ -2,26 +2,29 @@ package com.lonn.studentassistant.views.implementations;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.abstractions.IEntityActivity;
+import com.lonn.studentassistant.common.abstractions.EntityManager;
+import com.lonn.studentassistant.views.abstractions.EntityView;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.views.entityViews.CourseViewPartial;
 
-import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-public class CourseSemesterCategory extends ScrollViewCategory<Course>
+public class CourseSemesterCategory extends ScrollViewCategory<Course> implements IEntityActivity<Course>
 {
-    Map<String, TextView> courses = new HashMap<>();
+    private EntityManager<Course> manager;
 
     public CourseSemesterCategory(Context context)
     {
         super(context);
         init(context);
+
+        manager = new EntityManager<>(categoryContentLayout, new LinkedList<String>(), this);
     }
 
     public CourseSemesterCategory(Context context, AttributeSet attributeSet)
@@ -54,7 +57,7 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
             }
         }
 
-        ((CheckBox)findViewById(R.id.checkBoxCategory)).setText(categoryName);
+        ((TextView)findViewById(R.id.titleCategory)).setText(categoryName);
     }
 
     public void inflateLayout(Context context)
@@ -71,22 +74,10 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
 
     public void add(List<Course> newCourses)
     {
-        for(Course course : newCourses)
+        for (Course course : newCourses)
         {
-            TextView courseTextView = courses.get(course.getKey());
-
-            if (courseTextView == null)
-            {
-                courseTextView = new TextView(getContext());
-                categoryContentLayout.addView(courseTextView);
-                courses.put(course.getKey(), courseTextView);
-            }
-
-            update(course);
+            manager.addOrUpdate(course);
         }
-
-        if (newCourses.size() > 0)
-            setVisibility(View.VISIBLE);
     }
 
     public int getCategory()
@@ -96,15 +87,16 @@ public class CourseSemesterCategory extends ScrollViewCategory<Course>
 
     public void delete(Course course)
     {
-        categoryContentLayout.removeView(courses.get(course.getKey()));
-        courses.remove(course.getKey());
+        manager.delete(course);
     }
 
     public void update(Course course)
     {
-        if(courses.containsKey(course.getKey()))
-        {
-            courses.get(course.getKey()).setText(course.courseName);
-        }
+        manager.addOrUpdate(course);
+    }
+
+    public EntityView<Course> createView(Course course)
+    {
+        return new CourseViewPartial(getContext(), course);
     }
 }

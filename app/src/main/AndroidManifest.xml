@@ -44,7 +44,7 @@
             android:parentActivityName=".activities.implementations.authentication.AuthenticationActivity"/>
 
         <activity
-            android:name=".activities.implementations.courseEntity.CourseActivity"
+            android:name=".activities.implementations.courseEntity.CourseEntityActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity

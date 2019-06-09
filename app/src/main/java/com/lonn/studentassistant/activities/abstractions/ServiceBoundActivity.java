@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GetTokenResult;
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
 import com.lonn.studentassistant.common.ConnectionBundle;
 
 public abstract class ServiceBoundActivity extends AppCompatActivity
@@ -51,7 +52,7 @@ public abstract class ServiceBoundActivity extends AppCompatActivity
     {
         super.onStart();
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null)
+        if(!(this instanceof AuthenticationActivity) && FirebaseAuth.getInstance().getCurrentUser() == null)
         {
             FirebaseAuth.getInstance().signOut();
             NavUtils.navigateUpFromSameTask(this);

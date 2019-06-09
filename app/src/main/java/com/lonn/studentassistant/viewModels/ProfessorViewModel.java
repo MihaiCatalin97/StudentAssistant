@@ -53,16 +53,19 @@ public class ProfessorViewModel extends BaseObservable
         {
             this.email = newProfessor.email;
             this.notifyPropertyChanged(BR.email);
+            this.notifyPropertyChanged(BR.emailVisible);
         }
         if (phoneNumber == null || !phoneNumber.equals(newProfessor.phoneNumber))
         {
             this.phoneNumber = newProfessor.phoneNumber;
             this.notifyPropertyChanged(BR.phoneNumber);
+            this.notifyPropertyChanged(BR.phoneNumberVisible);
         }
         if (website == null || !website.equals(newProfessor.website))
         {
             this.website = newProfessor.website;
             this.notifyPropertyChanged(BR.website);
+            this.notifyPropertyChanged(BR.websiteVisible);
         }
     }
 
@@ -109,6 +112,12 @@ public class ProfessorViewModel extends BaseObservable
     public int getCabinetVisible()
     {
         return (cabinet != null && cabinet.length() >= 2)? View.VISIBLE : View.GONE;
+    }
+
+    @Bindable
+    public int getCoursesVisible()
+    {
+        return (courses != null && courses.size() > 0)? View.VISIBLE : View.GONE;
     }
 
     @BindingAdapter("srcCompat")

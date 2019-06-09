@@ -229,13 +229,17 @@ class URLParser
 
                 for(ParsingRow row : parsingRows)
                 {
-                    Course course = addCourse(row, 2, professor);
-                    row.courseKey = course.getKey();
-
-                    if(!professor.courses.contains(row.courseKey))
+                    if(row.type.equals("Curs") || row.type.equals("Laborator") || row.type.equals("Seminar"))
                     {
-                        professor.courses.add(row.courseKey);
+                        Course course = addCourse(row, 2, professor);
+                        row.courseKey = course.getKey();
+
+                        if (!professor.courses.contains(row.courseKey))
+                        {
+                            professor.courses.add(row.courseKey);
+                        }
                     }
+
                     if(row.type.equals("Examen"))
                     {
                         addExam(row.toExam(), professor);
@@ -301,7 +305,7 @@ class URLParser
             String rank = parseRank(value);
 
             Professor professor = new Professor(firstName, lastName, generateEmail(firstName, lastName), "0742664239", rank,
-                    "https://profs.info.uaic.ro/~" + firstName.toLowerCase().charAt(0) + lastName.toLowerCase(), "C310");
+                    "https://profs.info.uaic.ro/~" + (firstName.length()>0?firstName.toLowerCase().charAt(0):"") + lastName.toLowerCase(), "C310");
             professor.scheduleLink = "https://profs.info.uaic.ro/~orar/" + link;
 
             return  professor;

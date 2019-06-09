@@ -2,12 +2,14 @@ package com.lonn.studentassistant.activities.implementations.professorEntity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.abstractions.ICourseActivity;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.professorEntity.callbacks.CourseCallback;
+import com.lonn.studentassistant.common.abstractions.EntityManager;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
@@ -16,17 +18,13 @@ import com.lonn.studentassistant.services.implementations.coursesService.CourseS
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.entityViews.CourseViewFull;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ProfessorEntityActivity extends ServiceBoundActivity
+public class ProfessorEntityActivity extends ServiceBoundActivity implements ICourseActivity
 {
     private boolean loadedCourses =false;
     private boolean editPrivilege;
-    public ProfessorViewModel professorModel;
     private Professor professor;
-    private List<CourseViewFull> courseViews;
     private CourseCallback courseCallback = new CourseCallback(this);
+    public EntityManager<Course> courseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -40,9 +38,11 @@ public class ProfessorEntityActivity extends ServiceBoundActivity
 
             if (professor != null)
             {
-                professorModel = new ProfessorViewModel(professor);
+                ProfessorViewModel professorModel = new ProfessorViewModel(professor);
                 binding.setProfessor(professorModel);
             }
+
+            courseManager = new EntityManager<>((ViewGroup)findViewById(R.id.layoutProfessorCourses), professor.courses, this);
         }
     }
 
@@ -66,33 +66,8 @@ public class ProfessorEntityActivity extends ServiceBoundActivity
         serviceConnections.unbind(courseCallback);
     }
 
-    public void updateCourses(Course course)
+    public CourseViewFull createView(Course course)
     {
-        boolean exists = false;
-        int index = 0;
-
-        if(courseViews == null)
-            courseViews = new ArrayList<>();
-
-        for (int i = 0; i < courseViews.size(); i++)
-        {
-            if (courseViews.get(i).getEntityKey().equals(course.getKey()))
-            {
-                exists = true;
-                index = i;
-                break;
-            }
-        }
-
-        if (exists)
-        {
-            courseViews.get(index).update(course);
-        }
-        else
-        {
-            CourseViewFull newCourseView = new CourseViewFull(getBaseContext(), course);
-            courseViews.add(newCourseView);
-            ((LinearLayout)findViewById(R.id.layoutProfessorCourses)).addView(newCourseView);
-        }
+        return new CourseViewFull(getBaseContext(), course);
     }
 }

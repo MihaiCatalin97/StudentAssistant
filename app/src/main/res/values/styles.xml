@@ -2,6 +2,7 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:buttonStyle">@style/BlueRoundButton</item>
+        <item name="android:scrollViewStyle">@style/ScrollViewFading</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -26,6 +27,11 @@
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ScrollViewFading" parent="@android:style/Widget.ScrollView">
+        <item name="android:fadingEdgeLength">150dp</item>
+        <item name="android:requiresFadingEdge">vertical</item>
     </style>
 
 </resources>

@@ -10,24 +10,23 @@ import android.view.View;
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.professorEntity.ProfessorEntityActivity;
-import com.lonn.studentassistant.databinding.ProfessorViewBinding;
+import com.lonn.studentassistant.databinding.ProfessorViewFullBinding;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.abstractions.EntityView;
 
-public class ProfessorView extends EntityView<Professor>
+public class ProfessorViewFull extends EntityView<Professor>
 {
-    ProfessorViewBinding binding;
+    ProfessorViewFullBinding binding;
 
     private ProfessorViewModel model;
-    private Professor entity;
 
-    public ProfessorView(Context context)
+    public ProfessorViewFull(Context context)
     {
         super(context);
     }
 
-    public ProfessorView(Context context, Professor professor)
+    public ProfessorViewFull(Context context, Professor professor)
     {
         super(context);
         entity = professor;
@@ -37,7 +36,7 @@ public class ProfessorView extends EntityView<Professor>
 
     public void inflateLayout(final Context context)
     {
-        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.professor_view, this, true);
+        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.professor_view_full, this, true);
 
         this.setOnClickListener(new OnClickListener()
         {
@@ -55,7 +54,6 @@ public class ProfessorView extends EntityView<Professor>
 
     public void update(Professor newProfessor)
     {
-        Log.e("Updating Professor", newProfessor.lastName);
         entity = newProfessor;
 
         if (model == null)

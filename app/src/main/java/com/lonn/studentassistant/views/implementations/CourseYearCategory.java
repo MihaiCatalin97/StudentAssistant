@@ -3,7 +3,7 @@ package com.lonn.studentassistant.views.implementations;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
@@ -69,7 +69,7 @@ public class CourseYearCategory extends ScrollViewCategory<Course>
             }
         }
 
-        ((CheckBox)findViewById(R.id.checkBoxCategory)).setText(categoryName);
+        ((TextView)findViewById(R.id.titleCategory)).setText(categoryName);
     }
 
     public void inflateLayout(Context context)

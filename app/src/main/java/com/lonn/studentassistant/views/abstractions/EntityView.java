@@ -11,6 +11,8 @@ import com.lonn.studentassistant.entities.BaseEntity;
 
 public abstract class EntityView<T extends BaseEntity> extends LinearLayout
 {
+    protected T entity;
+
     public EntityView(Context context)
     {
         super(context);
@@ -44,4 +46,9 @@ public abstract class EntityView<T extends BaseEntity> extends LinearLayout
     }
 
     public abstract void update(T newEntity);
+
+    public boolean entityDifferent(T entity)
+    {
+        return !this.entity.equals(entity);
+    }
 }
