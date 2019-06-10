@@ -1,10 +1,9 @@
 package com.lonn.studentassistant.views.abstractions;
 
-import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.constraint.ConstraintLayout;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -14,13 +13,14 @@ import android.view.animation.RotateAnimation;
 import android.view.animation.Transformation;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.entities.BaseEntity;
 
 public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T>
 {
-    protected int categoryInt;
+    protected String category;
     protected View categoryHeaderLayout;
     protected LinearLayout categoryContentLayout;
     protected boolean expanded = false;
@@ -28,31 +28,40 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
     public ScrollViewCategory(Context context)
     {
         super(context);
-        init(context);
     }
 
     public ScrollViewCategory(Context context, AttributeSet set)
     {
         super(context, set);
-        init(context);
     }
 
     public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context);
     }
 
-    public abstract void setCategory(int category);
-
-    public int getCategory()
+    public void setCategory(final String category)
     {
-        return categoryInt;
+        this.category = category;
+
+        ((TextView)findViewById(R.id.titleCategory)).setText(category);
+    }
+
+    @Override
+    protected void inflateLayout(Context context)
+    {
+        inflate(context, R.layout.category_layout, this);
+    }
+
+    @Override
+    protected void init(Context context)
+    {
+        super.init(context);
+        initContent();
     }
 
     protected void initContent()
@@ -74,37 +83,22 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
     private void animateExpand()
     {
-        if(expanded)
-        {
-            RotateAnimation animation =
-                    new RotateAnimation(0,180,
-                            Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF, 0.5f);
+        RotateAnimation animation =
+                new RotateAnimation(expanded?0:180,expanded?180:360,
+                        Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF, 0.5f);
 
-            animation.setDuration(500);
-            animation.setFillAfter(true);
-            animation.setFillBefore(true);
+        animation.setDuration(500);
+        animation.setFillAfter(true);
+        animation.setFillBefore(true);
 
-            categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
-        }
-        else
-        {
-            RotateAnimation animation =
-                    new RotateAnimation(180,360,
-                            Animation.RELATIVE_TO_SELF, 0.5f,Animation.RELATIVE_TO_SELF, 0.5f);
-
-            animation.setDuration(500);
-            animation.setFillAfter(true);
-            animation.setFillBefore(true);
-
-            categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
-        }
+        categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)categoryContentLayout.getLayoutParams();
         final int initialMargin = params.topMargin;
 
         if(categoryContentLayout.getMeasuredHeight() == 0 && categoryContentLayout.getChildCount()!=0)
         {
-            params.topMargin = -100000;
+            params.topMargin = -1000*categoryContentLayout.getChildCount();
             categoryContentLayout.setLayoutParams(params);
             categoryContentLayout.setVisibility(View.VISIBLE);
 
@@ -117,10 +111,7 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
                     if (height != 0)
                     {
-                        Ani ani = new Ani(categoryContentLayout, expanded, initialMargin);
-                        ani.setDuration(500);
-                        categoryContentLayout.startAnimation(ani);
-
+                        expandCategory(initialMargin);
                         categoryContentLayout.getViewTreeObserver().removeOnPreDrawListener(this);
                     }
 
@@ -130,18 +121,24 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
         }
         else
         {
-            Ani ani = new Ani(categoryContentLayout, expanded, initialMargin);
-            ani.setDuration(500);
-            categoryContentLayout.startAnimation(ani);
+            expandCategory(initialMargin);
         }
     }
 
-    class Ani extends Animation {
+    private void expandCategory(int initialMargin)
+    {
+        ExpandAnimation ani = new ExpandAnimation(categoryContentLayout, expanded, initialMargin);
+        ani.setDuration(500);
+        categoryContentLayout.startAnimation(ani);
+
+    }
+
+    private class ExpandAnimation extends Animation {
         private boolean expanding;
         private int initialMarginTop, viewHeight;
         private View view;
 
-        Ani(View view, boolean expanding, int initialMarginTop)
+        ExpandAnimation(View view, boolean expanding, int initialMarginTop)
         {
             this.view = view;
             this.expanding = expanding;

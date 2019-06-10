@@ -61,6 +61,7 @@
         <service android:name=".services.implementations.professorService.ProfessorService" />
         <service android:name=".services.implementations.gradeService.GradeService" />
         <service android:name=".services.implementations.scheduleService.ScheduleService" />
+        <service android:name=".services.implementations.otherActivityService.OtherActivityService" />
 
         <receiver android:name=".services.StartupReceiver" >
             <intent-filter>

@@ -38,7 +38,7 @@ public class EntityManager<T extends BaseEntity> implements IEntityManager<T>
         }
         else
         {
-            view = activity.createView(entity);
+            view = activity.getEntityViewInstance(entity);
             entityViewMap.put(entity.getKey(), view);
             contentLayout.addView(view);
         }

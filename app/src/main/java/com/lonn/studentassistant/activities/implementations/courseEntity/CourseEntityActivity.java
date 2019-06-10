@@ -2,13 +2,11 @@ package com.lonn.studentassistant.activities.implementations.courseEntity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.view.ViewGroup;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.IProfessorActivity;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.courseEntity.callbacks.ProfessorCallback;
-import com.lonn.studentassistant.common.abstractions.EntityManager;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
@@ -16,6 +14,7 @@ import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.professorService.ProfessorService;
 import com.lonn.studentassistant.viewModels.CourseViewModel;
 import com.lonn.studentassistant.views.entityViews.ProfessorViewFull;
+import com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorPartialScrollView;
 
 public class CourseEntityActivity extends ServiceBoundActivity implements IProfessorActivity
 {
@@ -23,7 +22,7 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
     private boolean editPrivilege;
     private Course course;
     private ProfessorCallback professorCallback = new ProfessorCallback(this);
-    public EntityManager<Professor> professorManager;
+    public ProfessorPartialScrollView entitiesScrollViewLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,7 +40,7 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
                 binding.setCourse(courseViewModel);
             }
 
-            professorManager = new EntityManager<>((ViewGroup)findViewById(R.id.layoutCourseProfessors), course.professors, this);
+            entitiesScrollViewLayout = findViewById(R.id.scrollViewCourseEntities);
         }
     }
 
@@ -65,7 +64,7 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
         serviceConnections.unbind(professorCallback);
     }
 
-    public ProfessorViewFull createView(Professor professor)
+    public ProfessorViewFull getEntityViewInstance(Professor professor)
     {
         return new ProfessorViewFull(getBaseContext(), professor);
     }

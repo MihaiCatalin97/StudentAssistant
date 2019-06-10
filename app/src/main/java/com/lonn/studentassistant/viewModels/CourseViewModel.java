@@ -8,11 +8,12 @@ import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.views.abstractions.EntityView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseViewModel extends BaseObservable
+public class CourseViewModel extends EntityViewModel<Course>
 {
     @Bindable
     public String courseName, description, website;

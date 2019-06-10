@@ -5,5 +5,5 @@ import com.lonn.studentassistant.views.abstractions.EntityView;
 
 public interface IEntityActivity<T extends BaseEntity>
 {
-    EntityView<T> createView(T entity);
+    EntityView<T> getEntityViewInstance(T entity);
 }

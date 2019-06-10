@@ -12,6 +12,8 @@ import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.Course;
 
+import java.util.Collections;
+
 public class CourseCallback implements IDatabaseCallback<Course>
 {
     private StudentActivity activity;
@@ -29,6 +31,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(CreateResponse<Course> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed creating course");
@@ -36,7 +39,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("create"))
             {
-                activity.courseManager.notifyGetAll(response.getItems());
+                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -44,6 +47,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(DeleteResponse<Course> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed deleting course");
@@ -51,7 +55,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("delete"))
             {
-                activity.courseManager.notifyDelete(response.getItems().get(0));
+                activity.coursesFullScrollView.delete(response.getItems().get(0));
             }
         }
     }
@@ -59,6 +63,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(EditResponse<Course> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed editing course");
@@ -66,7 +71,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("edit"))
             {
-                activity.courseManager.notifyEdit(response.getItems().get(0));
+                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -74,6 +79,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(GetByIdResponse<Course> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed loading course");
@@ -81,7 +87,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("getById"))
             {
-                activity.courseManager.notifyGetAll(response.getItems());
+                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -89,6 +95,7 @@ public class CourseCallback implements IDatabaseCallback<Course>
     public void processResponse(GetAllResponse<Course> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed loading courses");
@@ -96,7 +103,8 @@ public class CourseCallback implements IDatabaseCallback<Course>
         {
             if (response.getAction().equals("getAll"))
             {
-                activity.courseManager.notifyGetAll(response.getItems());
+                for(Course course : response.getItems())
+                    activity.coursesFullScrollView.addOrUpdate(course);
             }
         }
     }

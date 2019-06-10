@@ -10,25 +10,25 @@ import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
-import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.entities.OtherActivity;
 
 import java.util.Collections;
 
-public class CourseCallback implements IDatabaseCallback<Course>
+public class OtherActivityCallback implements IDatabaseCallback<OtherActivity>
 {
     private ProfessorEntityActivity activity;
 
-    public CourseCallback(ProfessorEntityActivity activity)
+    public OtherActivityCallback(ProfessorEntityActivity activity)
     {
         this.activity = activity;
     }
 
-    public void processResponse(DatabaseResponse<Course> res)
+    public void processResponse(DatabaseResponse<OtherActivity> res)
     {
         Log.e("Default response","Received");
     }
 
-    public void processResponse(CreateResponse<Course> response)
+    public void processResponse(CreateResponse<OtherActivity> response)
     {
         activity.hideSnackbar();
         Collections.sort(response.getItems());
@@ -37,14 +37,14 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("create") && activity.coursePartialScroll != null)
+            if (response.getAction().equals("create") && activity.otherActivityPartialScroll != null)
             {
-                activity.coursePartialScroll.addOrUpdate(response.getItems().get(0));
+                activity.otherActivityPartialScroll.addOrUpdate(response.getItems().get(0));
             }
         }
     }
 
-    public void processResponse(DeleteResponse<Course> response)
+    public void processResponse(DeleteResponse<OtherActivity> response)
     {
         activity.hideSnackbar();
         Collections.sort(response.getItems());
@@ -53,14 +53,14 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("delete") && activity.coursePartialScroll != null)
+            if (response.getAction().equals("delete") && activity.otherActivityPartialScroll != null)
             {
-                activity.coursePartialScroll.delete(response.getItems().get(0));
+                activity.otherActivityPartialScroll.delete(response.getItems().get(0));
             }
         }
     }
 
-    public void processResponse(EditResponse<Course> response)
+    public void processResponse(EditResponse<OtherActivity> response)
     {
         activity.hideSnackbar();
         Collections.sort(response.getItems());
@@ -69,14 +69,14 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("edit") && activity.coursePartialScroll != null)
+            if (response.getAction().equals("edit") && activity.otherActivityPartialScroll != null)
             {
-                activity.coursePartialScroll.addOrUpdate(response.getItems().get(0));
+                activity.otherActivityPartialScroll.addOrUpdate(response.getItems().get(0));
             }
         }
     }
 
-    public void processResponse(GetByIdResponse<Course> response)
+    public void processResponse(GetByIdResponse<OtherActivity> response)
     {
         activity.hideSnackbar();
         Collections.sort(response.getItems());
@@ -85,14 +85,14 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("getById") && activity.coursePartialScroll != null)
+            if (response.getAction().equals("getById") && activity.otherActivityPartialScroll != null)
             {
-                activity.coursePartialScroll.addOrUpdate(response.getItems().get(0));
+                activity.otherActivityPartialScroll.addOrUpdate(response.getItems().get(0));
             }
         }
     }
 
-    public void processResponse(GetAllResponse<Course> response)
+    public void processResponse(GetAllResponse<OtherActivity> response)
     {
         activity.hideSnackbar();
         Collections.sort(response.getItems());
@@ -101,10 +101,10 @@ public class CourseCallback implements IDatabaseCallback<Course>
             activity.showSnackbar("Fail");
         else
         {
-            if (response.getAction().equals("getAll") && activity.coursePartialScroll != null)
+            if (response.getAction().equals("getAll") && activity.otherActivityPartialScroll != null)
             {
-                for(Course course : response.getItems())
-                    activity.coursePartialScroll.addOrUpdate(course);
+                for(OtherActivity course : response.getItems())
+                    activity.otherActivityPartialScroll.addOrUpdate(course);
             }
         }
     }

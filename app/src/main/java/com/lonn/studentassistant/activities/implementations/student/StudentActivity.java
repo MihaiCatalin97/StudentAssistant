@@ -10,10 +10,8 @@ import com.lonn.studentassistant.activities.implementations.student.callbacks.Pr
 import com.lonn.studentassistant.common.requests.GetAllRequest;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.views.implementations.CoursesScrollViewLayout;
-import com.lonn.studentassistant.views.implementations.ProfessorsScrollViewLayout;
-import com.lonn.studentassistant.activities.implementations.student.managers.StudentActivityCourseManager;
-import com.lonn.studentassistant.activities.implementations.student.managers.StudentActivityProfessorManager;
+import com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesFullScrollView;
+import com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorsFullScrollView;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
@@ -21,11 +19,10 @@ import com.lonn.studentassistant.services.implementations.professorService.Profe
 
 public class StudentActivity extends NavBarActivity
 {
-    public StudentActivityCourseManager courseManager;
-    public StudentActivityProfessorManager professorManager;
-
     private CourseCallback courseCallback = new CourseCallback(this);
     private ProfessorsCallback professorsCallback = new ProfessorsCallback(this);
+    public CoursesFullScrollView coursesFullScrollView;
+    public ProfessorsFullScrollView professorsScrollViewLayout;
 
     public StudentActivity()
     {
@@ -37,8 +34,8 @@ public class StudentActivity extends NavBarActivity
         setContentView(R.layout.student_activity_main_layout);
         super.onCreate(savedInstanceState);
 
-        courseManager = new StudentActivityCourseManager((CoursesScrollViewLayout)findViewById(R.id.layoutCoursesCategories));
-        professorManager = new StudentActivityProfessorManager((ProfessorsScrollViewLayout) findViewById(R.id.layoutProfessorsCategories));
+        coursesFullScrollView = findViewById(R.id.layoutCoursesCategories);
+        professorsScrollViewLayout = findViewById(R.id.layoutProfessorsCategories);
     }
 
     @Override

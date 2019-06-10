@@ -24,7 +24,8 @@ public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout
         init(context);
     }
 
-    public ScrollViewItem(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ScrollViewItem(Context context, AttributeSet attrs, int defStyleAttr)
+    {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -35,16 +36,15 @@ public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout
         init(context);
     }
 
-    public abstract void inflateLayout(Context context);
+    protected abstract void inflateLayout(Context context);
 
-    public void init(Context context)
+    protected void init(Context context)
     {
         inflateLayout(context);
         setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
         setSoundEffectsEnabled(false);
     }
 
-    public abstract void update(T newEntities);
+    public abstract void addOrUpdate(T newEntities);
     public abstract void delete(T newEntities);
-    public abstract void add(List<T> newEntities);
 }

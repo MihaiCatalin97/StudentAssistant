@@ -14,7 +14,7 @@
         android:text="Professors"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.lonn.studentassistant.views.implementations.ProfessorsScrollViewLayout
+    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorsFullScrollView
         android:id="@+id/layoutProfessorsCategories"
         android:layout_width="match_parent"
         android:layout_height="0dp"

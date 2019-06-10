@@ -3,39 +3,37 @@ package com.lonn.studentassistant.views.entityViews;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.courseEntity.CourseEntityActivity;
-import com.lonn.studentassistant.activities.implementations.professorEntity.ProfessorEntityActivity;
-import com.lonn.studentassistant.databinding.CourseViewFullBinding;
-import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.viewModels.CourseViewModel;
+import com.lonn.studentassistant.databinding.OtherActivityViewPartialBinding;
+import com.lonn.studentassistant.entities.OtherActivity;
+import com.lonn.studentassistant.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.views.abstractions.EntityView;
 
-public class CourseViewFull extends EntityView<Course>
+public class OtherActivityViewPartial extends EntityView<OtherActivity>
 {
-    CourseViewFullBinding binding;
+    OtherActivityViewPartialBinding binding;
 
-    public CourseViewFull(Context context)
+    public OtherActivityViewPartial(Context context)
     {
         super(context);
     }
 
-    public CourseViewFull(Context context, Course course)
+    public OtherActivityViewPartial(Context context, OtherActivity otherActivity)
     {
         super(context);
-        entity = course;
-        model = new CourseViewModel(entity);
-        binding.setCourse((CourseViewModel)model);
+        entity = otherActivity;
+        model = new OtherActivityViewModel(entity);
+        binding.setActivity((OtherActivityViewModel) model);
     }
 
     public void inflateLayout(final Context context)
     {
-        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.course_view_full, this, true);
+        binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.other_activity_view_partial, this, true);
 
         this.setOnClickListener(new OnClickListener()
         {
@@ -51,18 +49,18 @@ public class CourseViewFull extends EntityView<Course>
         });
     }
 
-    public void update(Course newCourse)
+    public void update(OtherActivity newActivity)
     {
-        entity = newCourse;
+        entity = newActivity;
 
         if (model == null)
         {
-            model = new CourseViewModel(newCourse);
-            binding.setCourse((CourseViewModel)model);
+            model = new OtherActivityViewModel(newActivity);
+            binding.setActivity((OtherActivityViewModel)model);
         }
         else
         {
-            model.update(newCourse);
+            model.update(newActivity);
         }
 
         model.notifyPropertyChanged(BR._all);

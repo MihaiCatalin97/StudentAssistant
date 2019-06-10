@@ -24,7 +24,7 @@ public class Utils
         return new String(Base64.decode(input, Base64.DEFAULT));
     }
 
-    static int groupToYear(String group)
+    public static int groupToYear(String group)
     {
         if(group.startsWith("I3") || group.startsWith("III"))
             return 3;
@@ -49,6 +49,10 @@ public class Utils
             return "Second year";
         if (year == 3)
             return "Third year";
+        if (year == 4)
+            return "Master First year";
+        if (year == 5)
+            return "Master Second year";
 
         return "Unknown year";
     }
@@ -70,7 +74,7 @@ public class Utils
         return tag.split(">")[0].split("<")[0].trim();
     }
 
-    static int dayToInt(String day)
+    public static int dayToInt(String day)
     {
         switch (day)
         {

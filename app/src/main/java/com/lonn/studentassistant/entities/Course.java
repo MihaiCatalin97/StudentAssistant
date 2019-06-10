@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Course extends BaseEntity
+public class Course extends BaseEntity implements Comparable<Course>
 {
     @Exclude
     public String courseName;
@@ -19,6 +19,11 @@ public class Course extends BaseEntity
     public String website;
     @Exclude
     public List<Professor> professorEntities = new ArrayList<>();
+
+    public int compareTo(Course course)
+    {
+        return (year - course.year) * 2 + semester - course.semester;
+    }
 
     public Course()
     {}
@@ -48,14 +53,6 @@ public class Course extends BaseEntity
     public void addProfessor(String professorKey)
     {
         professors.add(professorKey);
-    }
-
-    public Course(String courseName, int year, int semester, int pack)
-    {
-        this.courseName = courseName;
-        this.year = year;
-        this.semester = semester;
-        this.pack = pack;
     }
 
     @Exclude

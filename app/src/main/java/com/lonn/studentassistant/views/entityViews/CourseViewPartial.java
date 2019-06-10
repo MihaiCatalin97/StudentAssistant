@@ -19,9 +19,6 @@ public class CourseViewPartial extends EntityView<Course>
 {
     CourseViewPartialBinding binding;
 
-    private CourseViewModel model;
-    private Course entity;
-
     public CourseViewPartial(Context context)
     {
         super(context);
@@ -32,7 +29,7 @@ public class CourseViewPartial extends EntityView<Course>
         super(context);
         entity = course;
         model = new CourseViewModel(entity);
-        binding.setCourse(model);
+        binding.setCourse((CourseViewModel)model);
     }
 
     public void inflateLayout(final Context context)
@@ -60,7 +57,7 @@ public class CourseViewPartial extends EntityView<Course>
         if (model == null)
         {
             model = new CourseViewModel(newCourse);
-            binding.setCourse(model);
+            binding.setCourse((CourseViewModel)model);
         }
         else
         {

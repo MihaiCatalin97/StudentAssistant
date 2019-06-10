@@ -15,7 +15,7 @@ import com.lonn.studentassistant.entities.Professor;
 
 import java.util.List;
 
-public class ProfessorViewModel extends BaseObservable
+public class ProfessorViewModel extends EntityViewModel<Professor>
 {
     @Bindable
     public String firstName, lastName, rank, email, phoneNumber, website, cabinet;

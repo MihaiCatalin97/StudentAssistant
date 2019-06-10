@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.common.DatabasePopulator;
+import com.lonn.studentassistant.debug.DatabasePopulator;
 
 public class DebugActivity extends AppCompatActivity
 {

@@ -12,6 +12,8 @@ import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.Professor;
 
+import java.util.Collections;
+
 public class ProfessorsCallback implements IDatabaseCallback<Professor>
 {
     private StudentActivity activity;
@@ -29,6 +31,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
     public void processResponse(CreateResponse<Professor> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed creating professor");
@@ -36,7 +39,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("create"))
             {
-                activity.professorManager.notifyGetAll(response.getItems());
+                activity.professorsScrollViewLayout.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -44,6 +47,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
     public void processResponse(DeleteResponse<Professor> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed deleting professor");
@@ -51,7 +55,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("delete"))
             {
-                activity.professorManager.notifyDelete(response.getItems().get(0));
+                activity.professorsScrollViewLayout.delete(response.getItems().get(0));
             }
         }
     }
@@ -59,7 +63,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
     public void processResponse(EditResponse<Professor> response)
     {
         activity.hideSnackbar();
-        Log.e("Editing", response.getItems().get(0).getKey());
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed editing professor");
@@ -67,7 +71,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("edit"))
             {
-                activity.professorManager.notifyEdit(response.getItems().get(0));
+                activity.professorsScrollViewLayout.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -75,6 +79,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
     public void processResponse(GetByIdResponse<Professor> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed loading professor");
@@ -82,7 +87,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("getById"))
             {
-                activity.professorManager.notifyGetAll(response.getItems());
+                activity.professorsScrollViewLayout.addOrUpdate(response.getItems().get(0));
             }
         }
     }
@@ -90,6 +95,7 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
     public void processResponse(GetAllResponse<Professor> response)
     {
         activity.hideSnackbar();
+        Collections.sort(response.getItems());
 
         if(!response.getResult().equals("success"))
             activity.showSnackbar("Failed loading professors");
@@ -97,7 +103,8 @@ public class ProfessorsCallback implements IDatabaseCallback<Professor>
         {
             if (response.getAction().equals("getAll"))
             {
-                activity.professorManager.notifyGetAll(response.getItems());
+                for(Professor professor : response.getItems())
+                    activity.professorsScrollViewLayout.addOrUpdate(professor);
             }
         }
     }

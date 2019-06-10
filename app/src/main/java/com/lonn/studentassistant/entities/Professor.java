@@ -20,6 +20,7 @@ public class Professor extends BaseEntity implements Comparable<Professor>
     public String firstName, lastName, email, phoneNumber, level, website, cabinet;
 
     public List<String> courses = new LinkedList<>();
+    public List<String> otherActivities = new LinkedList<>();
 
     public Professor()
     {}

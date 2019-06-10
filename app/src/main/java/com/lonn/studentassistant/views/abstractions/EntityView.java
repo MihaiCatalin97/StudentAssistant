@@ -7,11 +7,13 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.viewModels.EntityViewModel;
 
 
 public abstract class EntityView<T extends BaseEntity> extends LinearLayout
 {
     protected T entity;
+    protected EntityViewModel<T> model;
 
     public EntityView(Context context)
     {
@@ -45,7 +47,7 @@ public abstract class EntityView<T extends BaseEntity> extends LinearLayout
         setSoundEffectsEnabled(false);
     }
 
-    public abstract void update(T newEntity);
+    public abstract void  update(T newEntity);
 
     public boolean entityDifferent(T entity)
     {

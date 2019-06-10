@@ -2,8 +2,8 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="course"
-            type="com.lonn.studentassistant.viewModels.CourseViewModel"/>
+            name="activity"
+            type="com.lonn.studentassistant.viewModels.OtherActivityViewModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -13,37 +13,37 @@
         android:layout_marginBottom="8dp">
         <TextView
             style="@style/DarkBlueSubtitle"
-            android:id="@+id/courseTitle"
+            android:id="@+id/activityTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:text="@{course.courseName}"
+            android:text="@{activity.activityName}"
             android:gravity="start"
             android:textStyle="bold"
             android:textSize="18sp"/>
 
         <TextView
-            android:id="@+id/courseType"
+            android:id="@+id/activityType"
             style="@style/SmallDarkBlueTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseTitle"
-            android:text="@{course.courseType}"/>
+            app:layout_constraintTop_toBottomOf="@id/activityTitle"
+            android:text="@{activity.type}"/>
 
         <TextView
-            android:id="@+id/courseYearAndSemester"
+            android:id="@+id/activityYearAndSemester"
             style="@style/SmallDarkBlueTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseType"
-            android:text="@{course.courseYearSemester}"/>
+            app:layout_constraintTop_toBottomOf="@id/activityType"
+            android:text="@{activity.activityYearSemester}"/>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

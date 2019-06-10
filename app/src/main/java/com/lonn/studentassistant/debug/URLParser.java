@@ -1,15 +1,18 @@
-package com.lonn.studentassistant.common;
+package com.lonn.studentassistant.debug;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Exam;
+import com.lonn.studentassistant.entities.OtherActivity;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.entities.ScheduleClass;
 import com.lonn.studentassistant.services.implementations.coursesService.dataAccessLayer.CourseRepository;
 import com.lonn.studentassistant.services.implementations.examService.dataAccessLayer.ExamRepository;
+import com.lonn.studentassistant.services.implementations.otherActivityService.dataAccessLayer.OtherActivityRepository;
 import com.lonn.studentassistant.services.implementations.professorService.dataAccessLayer.ProfessorRepository;
 import com.lonn.studentassistant.services.implementations.scheduleService.dataAccessLayer.ScheduleRepository;
 
@@ -28,6 +31,7 @@ class URLParser
     private ProfessorRepository professorRepository;
     private ScheduleRepository scheduleRepository;
     private ExamRepository examRepository;
+    private OtherActivityRepository activityRepository;
 
     private String urlString;
 
@@ -38,6 +42,7 @@ class URLParser
         professorRepository = ProfessorRepository.getInstance(null);
         scheduleRepository = ScheduleRepository.getInstance(null);
         examRepository = ExamRepository.getInstance(null);
+        activityRepository = OtherActivityRepository.getInstance(null);
     }
 
     void parse()
@@ -164,7 +169,6 @@ class URLParser
 
         if (course == null)
         {
-            Log.e("Course groups", row.groups.get(0));
             course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course description", "https://profs.info.uaic.ro/~ancai/CN/", null);
             course.addProfessor(professor);
             courseRepository.add(course);
@@ -176,6 +180,25 @@ class URLParser
         }
 
         return course;
+    }
+
+    private OtherActivity addActivity(ParsingRow row, int semester, Professor professor)
+    {
+        OtherActivity activity = activityRepository.getByName(row.courseKey);
+
+        if (activity == null)
+        {
+            activity = new OtherActivity(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, "Course description", "https://profs.info.uaic.ro/~ancai/CN/", null, row.type);
+            activity.addProfessor(professor);
+            activityRepository.add(activity);
+        }
+        else if (!activity.professors.contains(professor.getKey()))
+        {
+            activity.addProfessor(professor);
+            activityRepository.update(activity);
+        }
+
+        return activity;
     }
 
     private void addScheduleClass(ScheduleClass scheduleClass, Professor professor)
@@ -239,8 +262,18 @@ class URLParser
                             professor.courses.add(row.courseKey);
                         }
                     }
+                    else if (!row.type.equals("Examen") && !row.type.equals("Restante"))
+                    {
+                        OtherActivity activity = addActivity(row, 2, professor);
+                        row.courseKey = activity.getKey();
 
-                    if(row.type.equals("Examen"))
+                        if (!professor.otherActivities.contains(row.courseKey))
+                        {
+                            professor.otherActivities.add(row.courseKey);
+                        }
+                    }
+
+                    if(row.type.equals("Examen") || row.type.equals("Restante"))
                     {
                         addExam(row.toExam(), professor);
                     }

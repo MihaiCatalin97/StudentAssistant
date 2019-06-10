@@ -6,5 +6,5 @@ import com.lonn.studentassistant.views.abstractions.EntityView;
 public interface IProfessorActivity extends IEntityActivity<Professor>
 {
     @Override
-    EntityView<Professor> createView(Professor entity);
+    EntityView<Professor> getEntityViewInstance(Professor entity);
 }

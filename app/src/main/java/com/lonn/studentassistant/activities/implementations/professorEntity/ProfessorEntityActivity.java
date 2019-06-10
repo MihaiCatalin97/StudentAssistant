@@ -2,29 +2,35 @@ package com.lonn.studentassistant.activities.implementations.professorEntity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.ICourseActivity;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.professorEntity.callbacks.CourseCallback;
-import com.lonn.studentassistant.common.abstractions.EntityManager;
+import com.lonn.studentassistant.activities.implementations.professorEntity.callbacks.OtherActivityCallback;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.entities.OtherActivity;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
+import com.lonn.studentassistant.services.implementations.otherActivityService.OtherActivityService;
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.entityViews.CourseViewFull;
+import com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesPartialScrollView;
+import com.lonn.studentassistant.views.implementations.scrollViewLayouts.OtherActivityPartialScrollView;
 
 public class ProfessorEntityActivity extends ServiceBoundActivity implements ICourseActivity
 {
-    private boolean loadedCourses =false;
+    private boolean loadedRelatedEntities =false;
     private boolean editPrivilege;
     private Professor professor;
+
     private CourseCallback courseCallback = new CourseCallback(this);
-    public EntityManager<Course> courseManager;
+    private OtherActivityCallback activityCallback = new OtherActivityCallback(this);
+
+    public CoursesPartialScrollView coursePartialScroll;
+    public OtherActivityPartialScrollView otherActivityPartialScroll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +48,8 @@ public class ProfessorEntityActivity extends ServiceBoundActivity implements ICo
                 binding.setProfessor(professorModel);
             }
 
-            courseManager = new EntityManager<>((ViewGroup)findViewById(R.id.layoutProfessorCourses), professor.courses, this);
+            coursePartialScroll = findViewById(R.id.scrollViewProfessorEntities);
+            otherActivityPartialScroll = findViewById(R.id.scrollViewActivityEntities);
         }
     }
 
@@ -50,23 +57,25 @@ public class ProfessorEntityActivity extends ServiceBoundActivity implements ICo
     public void onStart() {
         super.onStart();
 
-        if(!loadedCourses)
+        if(!loadedRelatedEntities)
         {
             for(String courseId : professor.courses)
-            {
                 serviceConnections.postRequest(CourseService.class, new GetByIdRequest<Course>(courseId), courseCallback);
-            }
 
-            loadedCourses = true;
+            for(String activityId : professor.otherActivities)
+                serviceConnections.postRequest(OtherActivityService.class, new GetByIdRequest<OtherActivity>(activityId), activityCallback);
+
+            loadedRelatedEntities = true;
         }
     }
 
     protected void unbindServices()
     {
         serviceConnections.unbind(courseCallback);
+        serviceConnections.unbind(activityCallback);
     }
 
-    public CourseViewFull createView(Course course)
+    public CourseViewFull getEntityViewInstance(Course course)
     {
         return new CourseViewFull(getBaseContext(), course);
     }

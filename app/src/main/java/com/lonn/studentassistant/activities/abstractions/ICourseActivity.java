@@ -6,5 +6,5 @@ import com.lonn.studentassistant.views.abstractions.EntityView;
 public interface ICourseActivity extends IEntityActivity<Course>
 {
     @Override
-    EntityView<Course> createView(Course entity);
+    EntityView<Course> getEntityViewInstance(Course entity);
 }
