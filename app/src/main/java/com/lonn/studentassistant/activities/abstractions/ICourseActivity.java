@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.activities.abstractions;
 
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.views.abstractions.EntityView;
+import com.lonn.studentassistant.views.entityViews.EntityView;
 
 public interface ICourseActivity extends IEntityActivity<Course>
 {

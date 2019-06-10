@@ -3,10 +3,12 @@ package com.lonn.studentassistant.common;
 import android.app.Activity;
 import android.graphics.Point;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -72,6 +74,19 @@ public class Utils
         if(tag.split(">").length > 1)
             return tag.split(">")[1].split("<")[0].trim();
         return tag.split(">")[0].split("<")[0].trim();
+    }
+
+    public static int getId(String resourceName, Class<?> c) {
+        try
+        {
+            Field idField = c.getDeclaredField(resourceName);
+            return idField.getInt(idField);
+        }
+        catch (Exception e)
+        {
+            Log.e("Error getId", e.getLocalizedMessage());
+        }
+        return 0;
     }
 
     public static int dayToInt(String day)

@@ -60,4 +60,11 @@
         android:id="@+id/layoutAdministrative"
         android:visibility="invisible"/>
 
+    <include
+        layout="@layout/student_activity_other_activities_layout"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/layoutOtherActivities"
+        android:visibility="invisible"/>
+
 </android.support.constraint.ConstraintLayout>

@@ -51,6 +51,10 @@
             android:name=".activities.implementations.professorEntity.ProfessorEntityActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".activities.implementations.otheractivityEntity.OtherActivityEntityActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
         <service android:name=".services.implementations.loginService.LoginService" />
         <service android:name=".services.implementations.registerService.RegisterService" />
         <service android:name=".services.implementations.credentialsCheckService.CredentialsCheckService" />

@@ -1,6 +1,5 @@
 package com.lonn.studentassistant.viewModels;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
@@ -8,7 +7,6 @@ import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.views.abstractions.EntityView;
 
 import java.util.ArrayList;
 import java.util.List;

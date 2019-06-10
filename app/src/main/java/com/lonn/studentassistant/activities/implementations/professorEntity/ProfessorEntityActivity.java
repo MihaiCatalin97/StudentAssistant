@@ -16,7 +16,7 @@ import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 import com.lonn.studentassistant.services.implementations.otherActivityService.OtherActivityService;
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.views.entityViews.CourseViewFull;
+import com.lonn.studentassistant.views.entityViews.EntityView;
 import com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesPartialScrollView;
 import com.lonn.studentassistant.views.implementations.scrollViewLayouts.OtherActivityPartialScrollView;
 
@@ -40,7 +40,7 @@ public class ProfessorEntityActivity extends ServiceBoundActivity implements ICo
 
         if(getIntent() != null && getIntent().getExtras() != null)
         {
-            professor = (Professor) getIntent().getExtras().getSerializable("professor");
+            professor = (Professor) getIntent().getExtras().getSerializable("entity");
 
             if (professor != null)
             {
@@ -75,8 +75,8 @@ public class ProfessorEntityActivity extends ServiceBoundActivity implements ICo
         serviceConnections.unbind(activityCallback);
     }
 
-    public CourseViewFull getEntityViewInstance(Course course)
+    public EntityView<Course> getEntityViewInstance(Course course)
     {
-        return new CourseViewFull(getBaseContext(), course);
+        return new EntityView<>(getBaseContext(), course, "full");
     }
 }

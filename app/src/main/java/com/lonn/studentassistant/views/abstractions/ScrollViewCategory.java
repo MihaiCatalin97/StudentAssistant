@@ -3,7 +3,6 @@ package com.lonn.studentassistant.views.abstractions;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -133,7 +132,8 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
     }
 
-    private class ExpandAnimation extends Animation {
+    private class ExpandAnimation extends Animation
+    {
         private boolean expanding;
         private int initialMarginTop, viewHeight;
         private View view;
@@ -182,5 +182,5 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
         public boolean willChangeBounds() {
             return true;
         }
-    };
+    }
 }

@@ -4,7 +4,7 @@ import android.view.ViewGroup;
 
 import com.lonn.studentassistant.activities.abstractions.IEntityActivity;
 import com.lonn.studentassistant.entities.BaseEntity;
-import com.lonn.studentassistant.views.abstractions.EntityView;
+import com.lonn.studentassistant.views.entityViews.EntityView;
 
 import java.util.HashMap;
 import java.util.LinkedList;

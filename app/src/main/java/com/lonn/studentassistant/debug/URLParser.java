@@ -188,7 +188,7 @@ class URLParser
 
         if (activity == null)
         {
-            activity = new OtherActivity(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, "Course description", "https://profs.info.uaic.ro/~ancai/CN/", null, row.type);
+            activity = new OtherActivity(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, "Other activity description", "https://profs.info.uaic.ro/~ancai/CN/", null, row.type);
             activity.addProfessor(professor);
             activityRepository.add(activity);
         }
@@ -262,7 +262,7 @@ class URLParser
                             professor.courses.add(row.courseKey);
                         }
                     }
-                    else if (!row.type.equals("Examen") && !row.type.equals("Restante"))
+                    else if (!row.type.equals("Examen") && !row.type.equals("Restante") && !row.type.equals("Proiecte"))
                     {
                         OtherActivity activity = addActivity(row, 2, professor);
                         row.courseKey = activity.getKey();
@@ -273,7 +273,7 @@ class URLParser
                         }
                     }
 
-                    if(row.type.equals("Examen") || row.type.equals("Restante"))
+                    if(row.type.equals("Examen") || row.type.equals("Restante") || row.type.equals("Proiecte"))
                     {
                         addExam(row.toExam(), professor);
                     }

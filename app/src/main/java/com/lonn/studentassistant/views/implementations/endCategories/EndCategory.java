@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.abstractions;
+package com.lonn.studentassistant.views.implementations.endCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -8,29 +8,33 @@ import android.util.AttributeSet;
 import com.lonn.studentassistant.activities.abstractions.IEntityActivity;
 import com.lonn.studentassistant.common.abstractions.EntityManager;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
+import com.lonn.studentassistant.views.entityViews.EntityView;
 
 import java.util.LinkedList;
 
-public abstract class ScrollViewEndCategory<T extends BaseEntity> extends ScrollViewCategory<T> implements IEntityActivity<T>
+public class EndCategory<T extends BaseEntity> extends ScrollViewCategory<T> implements IEntityActivity<T>
 {
+    private String viewType;
     private EntityManager<T> entityManager;
 
-    public ScrollViewEndCategory(Context context)
+    public EndCategory(Context context, String viewType)
     {
         super(context);
+        this.viewType = viewType;
     }
 
-    public ScrollViewEndCategory(Context context, AttributeSet set)
+    public EndCategory(Context context, AttributeSet set)
     {
         super(context, set);
     }
 
-    public ScrollViewEndCategory(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EndCategory(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ScrollViewEndCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public EndCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
@@ -51,4 +55,8 @@ public abstract class ScrollViewEndCategory<T extends BaseEntity> extends Scroll
         entityManager.delete(entity);
     }
 
+    public EntityView<T> getEntityViewInstance(T entity)
+    {
+        return new EntityView<>(getContext(), entity, viewType);
+    }
 }

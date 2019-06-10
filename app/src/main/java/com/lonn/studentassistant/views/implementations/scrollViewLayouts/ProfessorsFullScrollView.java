@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.views.abstractions.ScrollViewLayout;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.views.implementations.endCategories.ProfessorFullCategory;
+import com.lonn.studentassistant.views.implementations.endCategories.EndCategory;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -45,8 +45,8 @@ public class ProfessorsFullScrollView extends ScrollViewLayout<Professor>
         return result;
     }
 
-    protected ProfessorFullCategory getBaseCategoryInstance(Context context)
+    protected EndCategory<Professor> getBaseCategoryInstance(Context context)
     {
-        return new ProfessorFullCategory(context);
+        return new EndCategory<>(context,"full");
     }
 }

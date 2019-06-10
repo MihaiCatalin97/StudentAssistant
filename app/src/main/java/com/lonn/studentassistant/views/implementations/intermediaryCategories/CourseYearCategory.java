@@ -5,7 +5,7 @@ import android.content.Context;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.views.abstractions.ScrollViewIntermediaryCategory;
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.views.implementations.endCategories.CoursePartialCategory;
+import com.lonn.studentassistant.views.implementations.endCategories.EndCategory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,8 +26,8 @@ public class CourseYearCategory extends ScrollViewIntermediaryCategory<Course>
         return result;
     }
 
-    public CoursePartialCategory getSubCategoryInstance(Context context)
+    public EndCategory<Course> getSubCategoryInstance(Context context)
     {
-        return new CoursePartialCategory(context);
+        return new EndCategory<>(context, "partial");
     }
 }

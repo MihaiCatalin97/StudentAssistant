@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.views.abstractions.ScrollViewLayout;
-import com.lonn.studentassistant.views.implementations.endCategories.CoursePartialCategory;
+import com.lonn.studentassistant.views.implementations.endCategories.EndCategory;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,8 +32,8 @@ public class CoursesPartialScrollView extends ScrollViewLayout<Course>
         return Collections.singletonList("Courses");
     }
 
-    protected CoursePartialCategory getBaseCategoryInstance(Context context)
+    protected EndCategory<Course> getBaseCategoryInstance(Context context)
     {
-        return new CoursePartialCategory(context);
+        return new EndCategory<>(context, "partial");
     }
 }

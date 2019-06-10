@@ -13,7 +13,7 @@ import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.services.implementations.professorService.ProfessorService;
 import com.lonn.studentassistant.viewModels.CourseViewModel;
-import com.lonn.studentassistant.views.entityViews.ProfessorViewFull;
+import com.lonn.studentassistant.views.entityViews.EntityView;
 import com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorPartialScrollView;
 
 public class CourseEntityActivity extends ServiceBoundActivity implements IProfessorActivity
@@ -32,7 +32,7 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
 
         if(getIntent() != null && getIntent().getExtras() != null)
         {
-            course = (Course) getIntent().getExtras().getSerializable("course");
+            course = (Course) getIntent().getExtras().getSerializable("entity");
 
             if (course != null)
             {
@@ -64,8 +64,8 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
         serviceConnections.unbind(professorCallback);
     }
 
-    public ProfessorViewFull getEntityViewInstance(Professor professor)
+    public EntityView<Professor> getEntityViewInstance(Professor professor)
     {
-        return new ProfessorViewFull(getBaseContext(), professor);
+        return new EntityView<>(getBaseContext(), professor, "full");
     }
 }
