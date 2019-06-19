@@ -1,26 +1,33 @@
 package com.lonn.studentassistant.entities;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class OtherActivity extends BaseEntity implements Comparable<OtherActivity>
+public class OtherActivity extends BaseEntity
 {
     @Exclude
     public String activityName;
     public int year;
     public int semester;
-    public List<String> professors = new ArrayList<>();
+    public List<String> professors = new LinkedList<>();
+    public List<String> scheduleClasses = new LinkedList<>();
     public String description = "";
     public String website;
     public String type;
 
-    public int compareTo(OtherActivity activity)
+    public int compareTo(Object activity)
     {
-        return activityName.compareTo(activity.activityName);
+        if(!(activity instanceof OtherActivity))
+            return -1;
+        else
+            return activityName.compareTo(((OtherActivity)activity).activityName);
     }
 
     @Exclude
@@ -78,5 +85,12 @@ public class OtherActivity extends BaseEntity implements Comparable<OtherActivit
         OtherActivity c = (OtherActivity) o;
 
         return c.semester == semester && c.year == year && c.activityName.equals(activityName);
+    }
+
+    @Override
+    @NonNull
+    public String toString()
+    {
+        return activityName;
     }
 }

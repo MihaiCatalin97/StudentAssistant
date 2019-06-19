@@ -4,15 +4,14 @@ import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @IgnoreExtraProperties
 public class ScheduleClass extends BaseEntity
 {
-    @Exclude
-    private String classKey;
-
-    public String room;
+    public List<String> rooms;
     public int day;
     public int startHour;
     public int endHour;
@@ -23,9 +22,20 @@ public class ScheduleClass extends BaseEntity
     public int pack;
     public List<String> groups;
 
-    public ScheduleClass(String room, int day, int startHour, int endHour, String courseKey, String type, List<String> professorKeys, String parity, int pack, List<String> groups)
+    public int compareTo(Object scheduleClass)
     {
-        this.room = room;
+        if(!(scheduleClass instanceof ScheduleClass))
+            return -1;
+
+        return (day-((ScheduleClass)scheduleClass).day) * 100000 + startHour-((ScheduleClass)scheduleClass).startHour;
+    }
+
+    public ScheduleClass()
+    {}
+
+    public ScheduleClass(List<String> room, int day, int startHour, int endHour, String courseKey, String type, List<String> professorKeys, String parity, int pack, List<String> groups)
+    {
+        this.rooms = new LinkedList<>(room);
         this.day = day;
         this.startHour = startHour;
         this.endHour = endHour;
@@ -46,20 +56,50 @@ public class ScheduleClass extends BaseEntity
         this.professorKeys.add(professor.getKey());
     }
 
-    @Override
+    @Exclude
     public String getKey()
     {
-        return room + "_" + Integer.toString(day) + "_" + Integer.toString(startHour);
+        StringBuilder result = new StringBuilder();
+
+        for(int i=0;i<rooms.size();i++)
+        {
+            result.append(rooms.get(i));
+
+            if(i+1<rooms.size())
+                result.append("-");
+        }
+
+        return result.toString() + "_" + Integer.toString(day) + "_" + Integer.toString(startHour);
     }
 
-    @Override
+    @Exclude
     public void setKey(String key)
     {
         if(key.split("_").length == 3)
         {
-            room = key.split("_")[0];
+            rooms = Arrays.asList(key.split("_")[0].split("-"));
             day = Integer.parseInt(key.split("_")[1]);
             startHour = Integer.parseInt(key.split("_")[2]);
         }
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (!(o instanceof ScheduleClass))
+            return false;
+
+        ScheduleClass p = (ScheduleClass) o;
+
+        return p.courseKey.equals(courseKey) &&
+                p.type.equals(type) &&
+                p.parity.equals(parity) &&
+                p.rooms.equals(rooms) &&
+                p.professorKeys.equals(professorKeys) &&
+                p.groups.equals(groups) &&
+                p.day == day &&
+                p.startHour == startHour &&
+                p.endHour == endHour &&
+                p.pack == pack;
     }
 }

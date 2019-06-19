@@ -46,7 +46,6 @@ public class ConnectionBundle
         CustomServiceConnection<T> connection = new CustomServiceConnection<>(callback);
         Intent intent = new Intent(context, serviceClass);
         context.bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        Log.e("Binding", serviceClass.getSimpleName());
     }
 
     private <T extends Response> void bind(final Class<?> serviceClass, ICallback<T> callback)
@@ -57,7 +56,7 @@ public class ConnectionBundle
         if(service == null && !waitingServices.contains(serviceClass))
             waitingServices.add(serviceClass);
 
-        new Handler().postDelayed(new Runnable()
+        /*new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run()
@@ -68,7 +67,7 @@ public class ConnectionBundle
                     Log.e(serviceClass.getSimpleName() + " number of callbacks", Integer.toString(getServiceByClass(serviceClass).getCallbackCount()));
                 new Handler().postDelayed(this,5000);
             }
-        },5000);
+        },5000);*/
     }
 
     @SuppressWarnings("unchecked")

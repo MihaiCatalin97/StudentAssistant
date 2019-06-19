@@ -1,13 +1,16 @@
 package com.lonn.studentassistant.entities;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Course extends BaseEntity implements Comparable<Course>
+public class Course extends BaseEntity
 {
     @Exclude
     public String courseName;
@@ -15,14 +18,18 @@ public class Course extends BaseEntity implements Comparable<Course>
     public int semester;
     public int pack;
     public List<String> professors = new ArrayList<>();
+    public List<String> scheduleClasses = new LinkedList<>();
     public String description = "";
     public String website;
     @Exclude
     public List<Professor> professorEntities = new ArrayList<>();
 
-    public int compareTo(Course course)
+    public int compareTo(Object course)
     {
-        return (year - course.year) * 2 + semester - course.semester;
+        if(!(course instanceof Course))
+            return -1;
+        else
+            return (year - ((Course)course).year) * 10 + semester - ((Course)course).semester;
     }
 
     public Course()
@@ -76,5 +83,12 @@ public class Course extends BaseEntity implements Comparable<Course>
         Course c = (Course) o;
 
         return c.semester == semester && c.year == year && c.courseName.equals(courseName);
+    }
+
+    @Override
+    @NonNull
+    public String toString()
+    {
+        return courseName;
     }
 }

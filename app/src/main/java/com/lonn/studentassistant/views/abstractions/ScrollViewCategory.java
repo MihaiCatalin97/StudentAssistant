@@ -2,58 +2,92 @@ package com.lonn.studentassistant.views.abstractions;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.os.Build;
+import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
-import android.view.animation.Transformation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.viewModels.CategoryViewModel;
+import com.lonn.studentassistant.views.implementations.EntityView;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T>
 {
-    protected String category;
+    protected CategoryViewModel categoryViewModel = new CategoryViewModel();
     protected View categoryHeaderLayout;
     protected LinearLayout categoryContentLayout;
+    protected RelativeLayout categoryMainLayout;
+    protected ConstraintLayout categoryAddLayout;
+
+    protected String viewType = "full";
+    protected String generateChildCategories = "none";
+
     protected boolean expanded = false;
+    protected boolean showEmpty = false;
+    protected boolean isEndCategory = true;
+
+    protected Map<String, ScrollViewItem<T>> children = new HashMap<>();
+    protected List<T> listAllEntities = new LinkedList<>();
 
     public ScrollViewCategory(Context context)
     {
         super(context);
+        init(context);
     }
 
-    public ScrollViewCategory(Context context, AttributeSet set)
+    public ScrollViewCategory(Context context, AttributeSet attrs)
     {
-        super(context, set);
+        super(context, attrs);
+        getAttributesFromSet(attrs);
+        init(context);
     }
 
     public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        getAttributesFromSet(attrs);
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        getAttributesFromSet(attrs);
+        init(context);
     }
+
+    protected abstract void initCategoryViewModel();
 
     public void setCategory(final String category)
     {
-        this.category = category;
-
-        ((TextView)findViewById(R.id.titleCategory)).setText(category);
+        categoryViewModel.category = category;
+        categoryViewModel.notifyPropertyChanged(BR.category);
     }
 
     @Override
     protected void inflateLayout(Context context)
     {
-        inflate(context, R.layout.category_layout, this);
+        CategoryLayoutBinding binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.category_layout, this, true);
+        binding.setCategoryModel(categoryViewModel);
     }
 
     @Override
@@ -61,12 +95,15 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
     {
         super.init(context);
         initContent();
+        initCategoryViewModel();
     }
 
     protected void initContent()
     {
-        categoryContentLayout = findViewById(R.id.layoutCategoryContent);
-        categoryHeaderLayout = findViewById(R.id.layoutCategoryHeader);
+        categoryMainLayout = findViewById(R.id.layoutCategoryMain);
+        categoryContentLayout = categoryMainLayout.findViewById(R.id.layoutCategoryContent);
+        categoryHeaderLayout = categoryMainLayout.findViewById(R.id.layoutCategoryHeader);
+        categoryAddLayout = categoryContentLayout.findViewById(R.id.layoutCategoryAdd);
 
         categoryHeaderLayout.setOnClickListener(new OnClickListener()
         {
@@ -78,6 +115,44 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
                 animateExpand();
             }
         });
+
+        if(categoryContentLayout.getChildCount() == 1 && !showEmpty)
+            setVisibility(View.GONE);
+    }
+
+    private void getAttributesFromSet(AttributeSet set)
+    {
+        TypedArray a = getContext().obtainStyledAttributes(set, R.styleable.ScrollViewCategory );
+        final int N = a.getIndexCount();
+        for (int i = 0; i < N; ++i)
+        {
+            int attr = a.getIndex(i);
+            switch (attr)
+            {
+                case R.styleable.ScrollViewCategory_category_title:
+                    setCategory(a.getString(attr));
+                    break;
+                case R.styleable.ScrollViewCategory_view_type:
+                    viewType = a.getString(attr);
+                    break;
+                case R.styleable.ScrollViewCategory_show_empty:
+                    showEmpty = a.getBoolean(attr, false);
+                    break;
+                case R.styleable.ScrollViewCategory_generate_child_categories:
+                    generateChildCategories = a.getString(attr);
+
+                    if(generateChildCategories != null)
+                        isEndCategory = generateChildCategories.equals("none");
+                    break;
+                case R.styleable.ScrollViewCategory_show_base_header:
+                    categoryViewModel.showHeader = a.getBoolean(attr, true);
+                    break;
+                case R.styleable.ScrollViewCategory_permission_level:
+                    categoryViewModel.permissionLevel = a.getInteger(attr, 0);
+                    break;
+            }
+        }
+        a.recycle();
     }
 
     private void animateExpand()
@@ -92,95 +167,230 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
         categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
 
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)categoryContentLayout.getLayoutParams();
-        final int initialMargin = params.topMargin;
+        ExpandAnimation expandAnimation = new ExpandAnimation();
+        expandAnimation.setDuration(500);
+        expandAnimation.start(categoryContentLayout);
+    }
 
-        if(categoryContentLayout.getMeasuredHeight() == 0 && categoryContentLayout.getChildCount()!=0)
+    public void addOrUpdate(T entity)
+    {
+        if(shouldContain(entity))
         {
-            params.topMargin = -1000*categoryContentLayout.getChildCount();
-            categoryContentLayout.setLayoutParams(params);
-            categoryContentLayout.setVisibility(View.VISIBLE);
-
-            categoryContentLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener()
+            if(isEndCategory)
             {
-                @Override
-                public boolean onPreDraw()
+                ScrollViewItem<T> view = children.get(entity.getKey());
+
+                if(view != null)
                 {
-                    int height = categoryContentLayout.getMeasuredHeight();
-
-                    if (height != 0)
-                    {
-                        expandCategory(initialMargin);
-                        categoryContentLayout.getViewTreeObserver().removeOnPreDrawListener(this);
-                    }
-
-                    return true;
+                    view.addOrUpdate(entity);
                 }
-            });
-        }
-        else
-        {
-            expandCategory(initialMargin);
-        }
-    }
-
-    private void expandCategory(int initialMargin)
-    {
-        ExpandAnimation ani = new ExpandAnimation(categoryContentLayout, expanded, initialMargin);
-        ani.setDuration(500);
-        categoryContentLayout.startAnimation(ani);
-
-    }
-
-    private class ExpandAnimation extends Animation
-    {
-        private boolean expanding;
-        private int initialMarginTop, viewHeight;
-        private View view;
-
-        ExpandAnimation(View view, boolean expanding, int initialMarginTop)
-        {
-            this.view = view;
-            this.expanding = expanding;
-            this.initialMarginTop = initialMarginTop;
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            int newMargin;
-
-            if(expanding)
-                newMargin = (int)((-2*initialMarginTop - viewHeight) * (1 - interpolatedTime)) + initialMarginTop;
-            else
-                newMargin = (int)((-2*initialMarginTop - viewHeight) * interpolatedTime) + initialMarginTop;
-
-            Log.e("New margin " + Boolean.toString(expanding), Integer.toString(newMargin));
-            ((RelativeLayout.LayoutParams)view.getLayoutParams()).topMargin = newMargin;
-            view.requestLayout();
-
-            if(interpolatedTime == 1)
-            {
-                if(!expanding)
+                else
                 {
-                    view.setVisibility(View.GONE);
-                    ((RelativeLayout.LayoutParams)view.getLayoutParams()).topMargin = initialMarginTop;
+                    view = new EntityView<>(getContext(), entity, viewType, categoryViewModel.permissionLevel);
+                    children.put(entity.getKey(), view);
+                    addView(view);
+                }
+            }
+            else
+            {
+                generateChildCategories(entity);
+                setCategoriesViewType();
+
+                for (String category : children.keySet())
+                {
+                    ScrollViewItem<T> child = children.get(category);
+
+                    if (child != null)
+                        child.addOrUpdate(entity);
                 }
             }
         }
 
-        @Override
-        public void initialize(int width, int height, int parentWidth, int parentHeight) {
-            super.initialize(width, height, parentWidth, parentHeight);
+        updateEntitiesList(entity);
+    }
 
-            view.setVisibility(View.VISIBLE);
+    private void updateEntitiesList(T entity)
+    {
+            for(T listEntity : listAllEntities)
+            {
+                if(listEntity.getKey().equals(entity.getKey()))
+                {
+                    listAllEntities.remove(listEntity);
+                    break;
+                }
+            }
+        if(!shouldContain(entity))
+        {
+            listAllEntities.add(entity);
+        }
+    }
 
-            ((RelativeLayout.LayoutParams)view.getLayoutParams()).topMargin = initialMarginTop;
-            viewHeight = height;
+    public void delete(T entity)
+    {
+        if(isEndCategory)
+        {
+            ScrollViewItem<T> view = children.get(entity.getKey());
+
+            if(view != null)
+            {
+                children.remove(entity.getKey());
+                categoryContentLayout.removeView(view);
+            }
+        }
+        else
+        {
+            for (String category : children.keySet())
+            {
+                ScrollViewItem<T> child = children.get(category);
+
+                if (child != null)
+                    child.delete(entity);
+            }
+        }
+        updateEntitiesList(entity);
+    }
+
+    public void delete(String key)
+    {
+        if(isEndCategory)
+        {
+            ScrollViewItem<T> view = children.get(key);
+
+            if(view != null)
+            {
+                children.remove(key);
+                categoryContentLayout.removeView(view);
+            }
+        }
+        else
+        {
+            for (String category : children.keySet())
+            {
+                ScrollViewItem<T> child = children.get(category);
+
+                if (child != null)
+                    child.delete(key);
+            }
+        }
+    }
+
+    @Override
+    public void addView(View child)
+    {
+        if (getChildCount() == 0)
+            super.addView(child);
+        else
+        {
+            categoryContentLayout.addView(child);
+            addChildView(child);
+        }
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params)
+    {
+        if (getChildCount() == 0)
+            super.addView(child, params);
+        else
+        {
+            categoryContentLayout.addView(child, params);
+            addChildView(child);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index)
+    {
+        if (getChildCount() == 0)
+            super.addView(child, index);
+        else
+        {
+            categoryContentLayout.addView(child, index);
+            addChildView(child);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params)
+    {
+        if (getChildCount() == 0)
+            super.addView(child, index, params);
+        else
+        {
+            categoryContentLayout.addView(child, index, params);
+            addChildView(child);
+        }
+    }
+
+    @Override
+    public void addView(View child, int width, int height)
+    {
+        if(getChildCount() == 0)
+            super.addView(child, width, height);
+        else
+        {
+            categoryContentLayout.addView(child, width, height);
+            addChildView(child);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void addChildView(View v)
+    {
+        if (v instanceof ScrollViewCategory)
+        {
+            isEndCategory = false;
+
+            ((ScrollViewCategory) v).categoryViewModel.permissionLevel = this.categoryViewModel.permissionLevel;
+            ((ScrollViewCategory) v).viewType = viewType;
+            ((ScrollViewCategory) v).showEmpty = showEmpty;
+
+            children.put(((ScrollViewCategory) v).categoryViewModel.category, (ScrollViewCategory<T>) v);
+
+            categoryAddLayout.setVisibility(View.GONE);
+        }
+        else if (isEndCategory && categoryViewModel.permissionLevel > 0)
+        {
+            categoryAddLayout.setVisibility(View.VISIBLE);
+            categoryAddLayout.bringToFront();
+        }
+        else
+            categoryAddLayout.setVisibility(View.GONE);
+
+        this.setVisibility(View.VISIBLE);
+    }
+
+    @BindingAdapter("srcCompat")
+    public static void bindSrcCompat(ImageView imageView, int resourceId)
+    {
+        imageView.setImageResource(resourceId);
+    }
+
+    private void setCategoriesViewType()
+    {
+        for(ScrollViewItem child : children.values())
+        {
+            if(child instanceof ScrollViewCategory)
+                ((ScrollViewCategory) child).viewType = viewType;
+        }
+    }
+
+    protected abstract void generateChildCategories(T entity);
+
+    protected void sortChildren()
+    {
+        String[] categories = new String[children.size()];
+        categories = children.keySet().toArray(categories);
+        Arrays.sort(categories);
+
+        for (String childCategory : categories)
+        {
+            View child = children.get(childCategory);
+
+            if(child != null)
+                child.bringToFront();
         }
 
-        @Override
-        public boolean willChangeBounds() {
-            return true;
-        }
+        categoryAddLayout.bringToFront();
     }
 }

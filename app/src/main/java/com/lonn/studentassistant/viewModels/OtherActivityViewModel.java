@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.viewModels;
 
+import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
@@ -11,7 +12,7 @@ import com.lonn.studentassistant.entities.Professor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OtherActivityViewModel extends EntityViewModel<OtherActivity>
+public class OtherActivityViewModel extends BaseObservable
 {
     @Bindable
     public String activityName, description, website, type;
@@ -21,6 +22,12 @@ public class OtherActivityViewModel extends EntityViewModel<OtherActivity>
 
     public OtherActivityViewModel(OtherActivity activity)
     {
+        update(activity);
+    }
+
+    public void update(OtherActivity activity)
+    {
+
         this.activityName = activity.activityName;
         this.type = activity.type;
         this.semester = activity.semester;
@@ -28,45 +35,8 @@ public class OtherActivityViewModel extends EntityViewModel<OtherActivity>
         this.description = activity.description;
         this.professors = new ArrayList<>(activity.professorEntities);
         this.website = activity.website;
-    }
 
-    public void update(OtherActivity newActivity)
-    {
-        if (!activityName.equals(newActivity.activityName))
-        {
-            this.activityName = newActivity.activityName;
-            this.notifyPropertyChanged(BR.courseName);
-        }
-        if (semester != newActivity.semester)
-        {
-            this.semester = newActivity.semester;
-            this.notifyPropertyChanged(BR.courseYearSemester);
-        }
-        if (year != newActivity.year)
-        {
-            this.year = newActivity.year;
-            this.notifyPropertyChanged(BR.courseYearSemester);
-        }
-        if (type != null && !type.equals(newActivity.type))
-        {
-            this.type = newActivity.type;
-            this.notifyPropertyChanged(BR.type);
-        }
-        if (description != null && !description.equals(newActivity.description))
-        {
-            this.description = newActivity.description;
-            this.notifyPropertyChanged(BR.description);
-        }
-        if (professors != null && !professors.equals(newActivity.professorEntities))
-        {
-            this.description = newActivity.description;
-            this.notifyPropertyChanged(BR.description);
-        }
-        if (website != null && !website.equals(newActivity.website))
-        {
-            this.website = newActivity.website;
-            this.notifyPropertyChanged(BR.website);
-        }
+        notifyPropertyChanged(BR._all);
     }
 
     @Bindable

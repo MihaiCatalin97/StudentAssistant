@@ -14,7 +14,7 @@ public class OtherActivityNotificationCreator extends NotificationCreator<OtherA
 
     public String getTitle(DatabaseResponse<OtherActivity> response)
     {
-        return "Other activity notification title";
+        return "Other activity notification field1";
     }
 
     public String getText(DatabaseResponse<OtherActivity> response)

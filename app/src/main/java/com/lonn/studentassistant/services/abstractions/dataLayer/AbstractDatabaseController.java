@@ -10,6 +10,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.activities.abstractions.ICallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
+import com.lonn.studentassistant.common.responses.CreateResponse;
+import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
@@ -87,6 +89,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
                         item.setKey(key);
 
                         list.add(item);
+                        Log.e("Added " + type.getSimpleName(), key);
                     }
                 }
 
@@ -123,13 +126,17 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
 
                             int indexOfKey = list.indexOfKey(item.getKey());
 
-                            if(indexOfKey== -1)
+                            if(indexOfKey == -1)
                             {
                                 list.remove(indexOfKey);
+                                Log.e("Created " + type.getSimpleName(), dataSnapshot.getKey());
+
+                                boundService.sendResponse(new CreateResponse<T>("success", item), null);
                             }
                             else
                             {
                                 list.set(indexOfKey, item);
+                                Log.e("Updated " + type.getSimpleName(), dataSnapshot.getKey());
 
                                 boundService.sendResponse(new EditResponse<T>("success", item), null);
                             }
@@ -199,6 +206,7 @@ public abstract class AbstractDatabaseController<T extends BaseEntity> implement
             itemMap.put(item.getKey(), item);
         }
 
+        Log.e("Enrolling courses 3", Integer.toString(items.size()));
         databaseReference.updateChildren(itemMap);
     }
 

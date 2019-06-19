@@ -24,10 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
+import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.services.abstractions.BasicService;
+import com.lonn.studentassistant.viewModels.UserViewModel;
 
 
-public abstract class NavBarActivity extends ServiceBoundActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundActivity<T> implements NavigationView.OnNavigationItemSelectedListener {
     private int logoutCount = 0;
 
     public NavBarActivity()
@@ -124,8 +126,6 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
         logoutCount++;
     }
 
-    protected abstract void refreshAll();
-
     private void initializeNavBar()
     {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -137,7 +137,7 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
             public void onClick(View view) {
                 showSnackbar("Refreshing everything...");
 
-                refreshAll();
+                businessLayer.refreshAll();
             }
         });
 
@@ -152,18 +152,6 @@ public abstract class NavBarActivity extends ServiceBoundActivity implements Nav
         navigationView.setNavigationItemSelectedListener(this);
 
         NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
-        binding.setPassedUsed(new UserObservable(FirebaseAuth.getInstance().getCurrentUser()));
-    }
-
-    public class UserObservable extends BaseObservable
-    {
-        @Bindable
-        public String email, name;
-
-        UserObservable(FirebaseUser user)
-        {
-            this.email = user.getEmail();
-            this.name = user.getDisplayName();
-        }
+        binding.setPassedUsed(new UserViewModel(FirebaseAuth.getInstance().getCurrentUser()));
     }
 }

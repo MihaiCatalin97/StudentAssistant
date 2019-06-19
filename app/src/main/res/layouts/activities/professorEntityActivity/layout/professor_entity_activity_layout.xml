@@ -98,15 +98,28 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesPartialScrollView
-                        android:id="@+id/scrollViewProfessorEntities"
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory
+                        android:id="@+id/coursesBaseCategory"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:category_title="Courses"
+                        app:view_type="full">
 
-                    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.OtherActivityPartialScrollView
-                        android:id="@+id/scrollViewActivityEntities"
+                    </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory>
+
+                    <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityBaseCategory
+                        android:id="@+id/otherActivitiesBaseCategory"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        app:category_title="Other activities"
+                        app:view_type="partial"/>
+
+                    <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                        android:id="@+id/scheduleBaseCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="Schedule"
+                        app:view_type="partial"/>
 
                 </LinearLayout>
         </ScrollView>

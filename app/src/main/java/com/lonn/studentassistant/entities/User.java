@@ -16,6 +16,11 @@ public class User extends BaseEntity
     private String personId;
     private String privileges;
 
+    public int compareTo(Object user)
+    {
+        return -1;
+    }
+
     public User(String email, String personId, String privileges)
     {
         this.personId = personId;

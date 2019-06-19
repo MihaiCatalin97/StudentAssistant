@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.scheduleCategories;
+package com.lonn.studentassistant.views.implementations.categories.scheduleCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,7 +9,6 @@ import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.ScheduleClass;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.otherActivityCategories.OtherActivityTypeCategory;
 
 public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass>
 {

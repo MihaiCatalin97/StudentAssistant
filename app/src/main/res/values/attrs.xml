@@ -1,2 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <declare-styleable name="ScrollViewCategory">
+        <attr name="category_title" format="string"/>
+        <attr name="view_type" format="string"/>
+        <attr name="show_empty" format="boolean"/>
+        <attr name="generate_child_categories" format="string"/>
+        <attr name="show_base_header" format="boolean"/>
+        <attr name="permission_level" format="integer"/>
+    </declare-styleable>
+</resources>

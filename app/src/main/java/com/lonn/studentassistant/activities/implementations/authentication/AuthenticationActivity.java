@@ -12,8 +12,12 @@ import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.implementations.authentication.callbacks.CredentialsCallback;
+import com.lonn.studentassistant.activities.implementations.authentication.callbacks.LoginCallback;
+import com.lonn.studentassistant.activities.implementations.authentication.callbacks.StudentCallback;
 import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
 import com.lonn.studentassistant.common.requests.CredentialsRequest;
+import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.common.responses.CredentialsResponse;
 import com.lonn.studentassistant.common.responses.LoginResponse;
 import com.lonn.studentassistant.common.requests.LoginRequest;
@@ -24,6 +28,7 @@ import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.services.implementations.loginService.LoginService;
 import com.lonn.studentassistant.services.implementations.registerService.RegisterService;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
+import com.lonn.studentassistant.services.implementations.studentService.StudentService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,15 +40,24 @@ public class AuthenticationActivity extends ServiceBoundActivity
     private Student registeringStudent;
     private String privileges;
 
+    private LoginCallback loginCallback = new LoginCallback(this);
+    private CredentialsCallback credentialsCallback = new CredentialsCallback(this);
+    private StudentCallback studentCallback = new StudentCallback(this);
+
     public AuthenticationActivity()
     {
         super();
     }
 
+    protected void inflateLayout()
+    {
+        setContentView(R.layout.auth_activity_layout);
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.auth_activity_layout);
         AuthSharedPrefs.init(getBaseContext());
 
         authSharedPrefs = new AuthSharedPrefs();
@@ -280,57 +294,17 @@ public class AuthenticationActivity extends ServiceBoundActivity
         }
     }
 
-    private ICallback<LoginResponse> loginCallback = new ICallback<LoginResponse>()
-    {
-        public void processResponse(final  LoginResponse response)
-        {
-            hideSnackbar();
-
-            if(response.getResult().equals("success"))
-            {
-                if (response.remember)
-                {
-                    setLoginFields(new HashMap<String,String>()
-                    {{
-                        put("remember", "true");
-                        put("email", Utils.keyToEmail(response.user.getKey()));
-                        put("password", response.password);
-                    }});
-                }
-
-                if (response.user.getPrivileges().equals("student"))
-                {
-                    Intent studentActivityIntent = new Intent(AuthenticationActivity.this, StudentActivity.class);
-                    studentActivityIntent.putExtra("user", response.user);
-                    startActivity(studentActivityIntent);
-                }
-            }
-            else
-            {
-                showSnackbar(response.getResult());
-            }
-        }
-    };
-
-    private ICallback<CredentialsResponse> credentialsCallback = new ICallback<CredentialsResponse>()
-    {
-        public void processResponse(final CredentialsResponse response)
-        {
-            hideSnackbar();
-
-            if (response.getResult().equals("success")) {
-                showRegistrationStep(2);
-            }
-            else
-            {
-                showSnackbar(response.getResult());
-            }
-        }
-    };
-
     protected void unbindServices()
     {
         serviceConnections.unbind(loginCallback);
         serviceConnections.unbind(credentialsCallback);
     }
+
+    public void getStudent(String student)
+    {
+        serviceConnections.postRequest(StudentService.class, new GetByIdRequest<Student>(student), studentCallback);
+    }
+
+    public void tapAdd(View v)
+    {}
 }

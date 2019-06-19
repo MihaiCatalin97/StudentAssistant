@@ -1,21 +1,14 @@
-package com.lonn.studentassistant.views.implementations.professorCategories;
+package com.lonn.studentassistant.views.implementations.categories.professorCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
-import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class ProfessorBaseCategory extends ScrollViewCategory<Professor>
 {
@@ -71,10 +64,5 @@ public class ProfessorBaseCategory extends ScrollViewCategory<Professor>
         categoryViewModel.entityName = "professor";
 
         categoryViewModel.notifyPropertyChanged(BR.entityName);
-    }
-
-    protected int calculatePermissionLevel()
-    {
-        return StudentActivity.getInstance().getPermissionLevel(Professor.class);
     }
 }

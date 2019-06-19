@@ -15,13 +15,20 @@ import com.lonn.studentassistant.entities.Professor;
 
 import java.util.List;
 
-public class ProfessorViewModel extends EntityViewModel<Professor>
+public class ProfessorViewModel extends BaseObservable
 {
     @Bindable
     public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
+    @Bindable
+    public int professorImage = R.drawable.ic_default_picture_person;
     public List<Course> courses;
 
     public ProfessorViewModel(Professor professor)
+    {
+        update(professor);
+    }
+
+    public void update(Professor professor)
     {
         this.firstName = professor.firstName;
         this.lastName = professor.lastName;
@@ -30,43 +37,8 @@ public class ProfessorViewModel extends EntityViewModel<Professor>
         this.phoneNumber = professor.phoneNumber;
         this.website = professor.website;
         this.cabinet = professor.cabinet;
-    }
 
-    public void update(Professor newProfessor)
-    {
-        if (firstName == null || !firstName.equals(newProfessor.firstName))
-        {
-            this.firstName = newProfessor.firstName;
-            this.notifyPropertyChanged(BR.firstName);
-        }
-        if (lastName == null || !lastName.equals(newProfessor.lastName))
-        {
-            this.lastName = newProfessor.lastName;
-            this.notifyPropertyChanged(BR.lastName);
-        }
-        if (rank == null || !rank.equals(newProfessor.level))
-        {
-            this.rank = newProfessor.level;
-            this.notifyPropertyChanged(BR.rank);
-        }
-        if (email == null || !email.equals(newProfessor.email))
-        {
-            this.email = newProfessor.email;
-            this.notifyPropertyChanged(BR.email);
-            this.notifyPropertyChanged(BR.emailVisible);
-        }
-        if (phoneNumber == null || !phoneNumber.equals(newProfessor.phoneNumber))
-        {
-            this.phoneNumber = newProfessor.phoneNumber;
-            this.notifyPropertyChanged(BR.phoneNumber);
-            this.notifyPropertyChanged(BR.phoneNumberVisible);
-        }
-        if (website == null || !website.equals(newProfessor.website))
-        {
-            this.website = newProfessor.website;
-            this.notifyPropertyChanged(BR.website);
-            this.notifyPropertyChanged(BR.websiteVisible);
-        }
+        notifyPropertyChanged(BR._all);
     }
 
     @Bindable
@@ -103,12 +75,6 @@ public class ProfessorViewModel extends EntityViewModel<Professor>
     }
 
     @Bindable
-    public int getProfessorImage()
-    {
-        return R.drawable.ic_default_picture_person;
-    }
-
-    @Bindable
     public int getCabinetVisible()
     {
         return (cabinet != null && cabinet.length() >= 2)? View.VISIBLE : View.GONE;
@@ -118,11 +84,5 @@ public class ProfessorViewModel extends EntityViewModel<Professor>
     public int getCoursesVisible()
     {
         return (courses != null && courses.size() > 0)? View.VISIBLE : View.GONE;
-    }
-
-    @BindingAdapter("srcCompat")
-    public static void bindSrcCompat(ImageView imageView, int resourceId)
-    {
-        imageView.setImageResource(resourceId);
     }
 }

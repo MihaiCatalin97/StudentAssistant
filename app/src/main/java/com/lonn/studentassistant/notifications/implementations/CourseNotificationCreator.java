@@ -14,7 +14,7 @@ public class CourseNotificationCreator extends NotificationCreator<Course>
 
     public String getTitle(DatabaseResponse<Course> response)
     {
-        return "Course notification title";
+        return "Course notification field1";
     }
 
     public String getText(DatabaseResponse<Course> response)

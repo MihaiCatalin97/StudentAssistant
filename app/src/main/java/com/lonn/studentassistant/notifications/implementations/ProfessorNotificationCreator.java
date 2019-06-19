@@ -14,7 +14,7 @@ public class ProfessorNotificationCreator extends NotificationCreator<Professor>
 
     public String getTitle(DatabaseResponse<Professor> response)
     {
-        return "Professor notification title";
+        return "Professor notification field1";
     }
 
     public String getText(DatabaseResponse<Professor> response)

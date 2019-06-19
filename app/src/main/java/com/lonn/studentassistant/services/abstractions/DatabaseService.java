@@ -90,12 +90,36 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
 
     public void sendResponse(CreateResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
-        ((IDatabaseCallback<T>)callback).processResponse(response);
+        if (serviceCallbacks.size() == 0)
+        {
+            if(notificationCreator != null)
+                notificationCreator.showNotification(this, response);
+        }
+        else
+        {
+            if (callback != null)
+                ((IDatabaseCallback<T>) callback).processResponse(response);
+            else
+                for(ICallback<DatabaseResponse<T>> callback1 : serviceCallbacks)
+                    ((IDatabaseCallback<T>) callback1).processResponse(response);
+        }
     }
 
     public void sendResponse(DeleteResponse<T> response, ICallback<DatabaseResponse<T>> callback)
     {
-        ((IDatabaseCallback<T>)callback).processResponse(response);
+        if (serviceCallbacks.size() == 0)
+        {
+            if(notificationCreator != null)
+                notificationCreator.showNotification(this, response);
+        }
+        else
+        {
+            if (callback != null)
+                ((IDatabaseCallback<T>) callback).processResponse(response);
+            else
+                for(ICallback<DatabaseResponse<T>> callback1 : serviceCallbacks)
+                    ((IDatabaseCallback<T>) callback1).processResponse(response);
+        }
     }
 
     public void sendResponse(EditResponse<T> response, ICallback<DatabaseResponse<T>> callback)
@@ -104,7 +128,6 @@ public abstract class DatabaseService<T extends BaseEntity> extends BasicService
         {
             if(notificationCreator != null)
                 notificationCreator.showNotification(this, response);
-            return;
         }
         else
         {

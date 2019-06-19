@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.scheduleCategories;
+package com.lonn.studentassistant.views.implementations.categories.scheduleCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.ScheduleClass;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
 public class ScheduleDayCategory extends ScheduleBaseCategory
 {

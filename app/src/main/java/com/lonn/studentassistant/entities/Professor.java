@@ -5,13 +5,16 @@ import android.util.Log;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+import com.lonn.studentassistant.R;
 
 import java.util.LinkedList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Professor extends BaseEntity implements Comparable<Professor>
+public class Professor extends BaseEntity
 {
+    @Exclude
+    public int professorImage = R.drawable.ic_default_picture_person;
     @Exclude
     private String professorKey;
     @Exclude
@@ -21,6 +24,7 @@ public class Professor extends BaseEntity implements Comparable<Professor>
 
     public List<String> courses = new LinkedList<>();
     public List<String> otherActivities = new LinkedList<>();
+    public List<String> scheduleClasses = new LinkedList<>();
 
     public Professor()
     {}
@@ -36,12 +40,15 @@ public class Professor extends BaseEntity implements Comparable<Professor>
         this.cabinet = cabinet;
     }
 
-    public int compareTo(Professor professor)
+    public int compareTo(Object professor)
     {
-        int result = (lastName!=null&&lastName.length()>0?lastName.charAt(0):0) - (professor.lastName!=null&&professor.lastName.length()>0?professor.lastName.charAt(0):0);
+        if(!(professor instanceof Professor))
+            return -1;
+
+        int result = (lastName!=null&&lastName.length()>0?lastName.charAt(0):0) - (((Professor)professor).lastName!=null&&((Professor)professor).lastName.length()>0?((Professor)professor).lastName.charAt(0):0);
 
         if (result == 0)
-            result = (firstName!=null&&firstName.length()>0?firstName.charAt(0):0) - (professor.firstName!=null&&professor.firstName.length()>0?professor.firstName.charAt(0):0);
+            result = (firstName!=null&&firstName.length()>0?firstName.charAt(0):0) - (((Professor)professor).firstName!=null&&((Professor)professor).firstName.length()>0?((Professor)professor).firstName.charAt(0):0);
 
         return result;
     }

@@ -1,20 +1,15 @@
-package com.lonn.studentassistant.views.implementations.courseCategories;
+package com.lonn.studentassistant.views.implementations.categories.courseCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
+import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
-import com.lonn.studentassistant.views.dialogBuilders.OptionalCourseDialogBuilder;
 
-import java.util.List;
-
-public class OptionalCourseBaseCategory extends ScrollViewCategory<Course>
+public class OptionalCourseBaseCategory extends CourseBaseCategory
 {
     public OptionalCourseBaseCategory(Context context)
     {
@@ -39,7 +34,7 @@ public class OptionalCourseBaseCategory extends ScrollViewCategory<Course>
 
     public boolean shouldContain(Course course)
     {
-        return StudentActivity.getInstance().getStudentOptionalCourses().contains(course.getKey());
+        return ServiceBoundActivity.getCurrentActivity().getBusinessLayer().containsReferenceToEntity(course.getKey());
     }
 
     public void generateChildCategories(Course course)
@@ -49,15 +44,6 @@ public class OptionalCourseBaseCategory extends ScrollViewCategory<Course>
     protected void initCategoryViewModel()
     {
         categoryViewModel.entityName = "optional course";
-        categoryAddLayout.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                OptionalCourseDialogBuilder builder = new OptionalCourseDialogBuilder(getContext(), listAllEntities);
-                builder.showDialog();
-            }
-        });
 
         categoryViewModel.notifyPropertyChanged(BR.entityName);
     }

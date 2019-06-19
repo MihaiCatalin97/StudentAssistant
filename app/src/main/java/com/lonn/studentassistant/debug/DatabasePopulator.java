@@ -43,8 +43,6 @@ public class DatabasePopulator
         newStudents.add(new Student("5", "Andro", "Bianca", "R", "bandro@gmail.com", "0742664239", 3, "B5"));
         newStudents.add(new Student("6", "Hurbea", "Razvan", "R", "rhurbea@gmail.com", "0742664239", 3, "A1"));
 
-        newStudents.get(0).addCourse("TSP~Net");
-
         studentRepository.add(newStudents);
     }
 

@@ -14,14 +14,29 @@
         android:text="Other Activities"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.OtherActivityFullScrollView
-        android:id="@+id/layoutOtherActivitiesCategories"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleOtherActivitiesLayout"
-        tools:context = ".activities.implementations.student.StudentActivity"/>
+        app:layout_constraintLeft_toLeftOf="@id/titleOtherActivitiesLayout"
+        app:layout_constraintTop_toBottomOf="@id/titleOtherActivitiesLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityBaseCategory
+                android:id="@+id/otherActivitiesBaseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:category_title="Other activities"
+                app:generate_child_categories="types"
+                app:show_base_header="false"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

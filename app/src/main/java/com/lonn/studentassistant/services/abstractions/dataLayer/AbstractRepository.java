@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
+import android.util.Log;
+
 import com.lonn.studentassistant.activities.abstractions.ICallback;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
@@ -74,7 +76,8 @@ public abstract class AbstractRepository<T extends BaseEntity>
             }
         }
 
-        databaseController.add(resultList);
+        Log.e("Enrolling courses 2", Integer.toString(resultList.size()));
+        databaseController.update(resultList);
     }
 
     public void add(T item)

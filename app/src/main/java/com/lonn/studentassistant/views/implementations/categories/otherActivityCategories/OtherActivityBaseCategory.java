@@ -1,17 +1,13 @@
-package com.lonn.studentassistant.views.implementations.otherActivityCategories;
+package com.lonn.studentassistant.views.implementations.categories.otherActivityCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.view.View;
 
 import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
-import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.OtherActivity;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
-import com.lonn.studentassistant.views.dialogBuilders.OptionalCourseDialogBuilder;
 
 public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
 {

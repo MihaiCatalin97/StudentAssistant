@@ -2,7 +2,7 @@ package com.lonn.studentassistant.services.implementations.scheduleService.dataA
 
 import com.lonn.studentassistant.entities.ScheduleClass;
 import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
-import com.lonn.studentassistant.services.implementations.scheduleService.ScheduleService;
+import com.lonn.studentassistant.services.implementations.scheduleService.ScheduleClassService;
 
 public class ScheduleRepository extends AbstractRepository<ScheduleClass>
 {
@@ -13,7 +13,7 @@ public class ScheduleRepository extends AbstractRepository<ScheduleClass>
         super(new ScheduleDatabaseController());
     }
 
-    public static ScheduleRepository getInstance(ScheduleService service)
+    public static ScheduleRepository getInstance(ScheduleClassService service)
     {
         if (instance == null)
             instance = new ScheduleRepository();

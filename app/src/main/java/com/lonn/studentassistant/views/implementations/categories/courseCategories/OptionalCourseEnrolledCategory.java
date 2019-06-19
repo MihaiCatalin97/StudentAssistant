@@ -1,10 +1,11 @@
-package com.lonn.studentassistant.views.implementations.courseCategories;
+package com.lonn.studentassistant.views.implementations.categories.courseCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
+import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.entities.Course;
 
@@ -31,7 +32,7 @@ public class OptionalCourseEnrolledCategory extends OptionalCourseBaseCategory
 
     public boolean shouldContain(Course course)
     {
-        return StudentActivity.getInstance().getStudentOptionalCourses().contains(course.getKey());
+        return ServiceBoundActivity.getCurrentActivity().getBusinessLayer().containsReferenceToEntity(course.getKey());
     }
 
     public void generateChildCategories(Course course)

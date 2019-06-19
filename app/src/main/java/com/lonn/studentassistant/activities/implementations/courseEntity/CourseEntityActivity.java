@@ -2,33 +2,46 @@ package com.lonn.studentassistant.activities.implementations.courseEntity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.view.View;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.IProfessorActivity;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.courseEntity.callbacks.ProfessorCallback;
+import com.lonn.studentassistant.activities.implementations.courseEntity.callbacks.ScheduleClassCallback;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.entities.ScheduleClass;
 import com.lonn.studentassistant.services.implementations.professorService.ProfessorService;
+import com.lonn.studentassistant.services.implementations.scheduleService.ScheduleClassService;
 import com.lonn.studentassistant.viewModels.CourseViewModel;
-import com.lonn.studentassistant.views.entityViews.EntityView;
-import com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorPartialScrollView;
+import com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory;
+import com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory;
 
-public class CourseEntityActivity extends ServiceBoundActivity implements IProfessorActivity
+public class CourseEntityActivity extends ServiceBoundActivity
 {
+    private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;
     private boolean editPrivilege;
     private Course course;
+
     private ProfessorCallback professorCallback = new ProfessorCallback(this);
-    public ProfessorPartialScrollView entitiesScrollViewLayout;
+    private ScheduleClassCallback scheduleClassCallback;
+
+    public ProfessorBaseCategory professorBaseCategory;
+    public ScheduleBaseCategory scheduleBaseCategory;
+
+
+    protected void inflateLayout()
+    {
+        binding = DataBindingUtil.setContentView(this, R.layout.course_entity_activity_layout);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        CourseEntityActivityLayoutBinding binding = DataBindingUtil.setContentView(this, R.layout.course_entity_activity_layout);
 
         if(getIntent() != null && getIntent().getExtras() != null)
         {
@@ -40,7 +53,10 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
                 binding.setCourse(courseViewModel);
             }
 
-            entitiesScrollViewLayout = findViewById(R.id.scrollViewCourseEntities);
+            professorBaseCategory = findViewById(R.id.professorsBaseCategory);
+            scheduleBaseCategory = findViewById(R.id.scheduleBaseCategory);
+
+            scheduleClassCallback = new ScheduleClassCallback(this, course.getKey());
         }
     }
 
@@ -51,9 +67,10 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
         if(!loadedProfessors)
         {
             for(String professorId : course.professors)
-            {
                 serviceConnections.postRequest(ProfessorService.class, new GetByIdRequest<Professor>(professorId), professorCallback);
-            }
+
+            for(String scheduleId : course.scheduleClasses)
+                serviceConnections.postRequest(ScheduleClassService.class, new GetByIdRequest<ScheduleClass>(scheduleId), scheduleClassCallback);
 
             loadedProfessors = true;
         }
@@ -62,10 +79,9 @@ public class CourseEntityActivity extends ServiceBoundActivity implements IProfe
     protected void unbindServices()
     {
         serviceConnections.unbind(professorCallback);
+        serviceConnections.unbind(scheduleClassCallback);
     }
 
-    public EntityView<Professor> getEntityViewInstance(Professor professor)
-    {
-        return new EntityView<>(getBaseContext(), professor, "full");
-    }
+    public void tapAdd(View v)
+    {}
 }

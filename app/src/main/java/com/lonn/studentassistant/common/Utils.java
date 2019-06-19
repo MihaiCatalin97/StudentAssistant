@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.lonn.studentassistant.entities.Student;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;
@@ -24,6 +28,29 @@ public class Utils
 
     public static String decrypt(String input) {
         return new String(Base64.decode(input, Base64.DEFAULT));
+    }
+
+    public static String dayToString(int day)
+    {
+        switch (day)
+        {
+            case 1:
+                return "Monday";
+            case 2:
+                return "Tuesday";
+            case 3:
+                return "Wednesday";
+            case 4:
+                return "Thursday";
+            case 5:
+                return "Friday";
+            case 6:
+                return "Saturday";
+            case 7:
+                return "Sunday";
+        }
+
+        return "Unknown day";
     }
 
     public static int groupToYear(String group)
@@ -123,11 +150,31 @@ public class Utils
             {
                 return 6;
             }
+            case "Sunday":
+            case "Duminica":
+            {
+                return 7;
+            }
             default:
             {
                 return 0;
             }
         }
+    }
+
+    public static List<String> getStudentGroupTags(Student student)
+    {
+        List<String> result = new LinkedList<>();
+
+        result.add("I" + Integer.toString(student.year));
+        result.add(result.get(0) + student.group);
+
+        String semian = student.group.substring(0,1);
+
+        if(semian.equals("A") || semian.equals("B"))
+            result.add(result.get(0) + student.group.substring(0,1));
+
+        return result;
     }
 
     public static String emailToKey(String email)
@@ -181,5 +228,17 @@ public class Utils
 
         displayWidth = size.x;
         displayHeight = size.y;
+    }
+
+    public static void removeMargins(View view)
+    {
+        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams)
+        {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+            p.setMargins(0,0,0,0);
+            view.requestLayout();
+        }
+
+        view.setPadding(0,0,0,0);
     }
 }

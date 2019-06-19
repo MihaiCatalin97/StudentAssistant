@@ -14,14 +14,80 @@
         android:text="Courses"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesFullScrollView
-        android:id="@+id/layoutCoursesCategories"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleCoursesLayout"
-        tools:context = ".activities.implementations.student.StudentActivity"/>
+        app:layout_constraintLeft_toLeftOf="@id/titleCoursesLayout"
+        app:layout_constraintTop_toBottomOf="@id/titleCoursesLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory
+                android:id="@+id/coursesBaseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:category_title="Courses"
+                app:view_type="full"
+                app:show_base_header="false">
+
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="First year"
+                    app:view_type="partial">
+
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="First semester"/>
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="Second semester"/>
+
+                </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
+
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Second year">
+
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="First semester"/>
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="Second semester"/>
+
+                </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
+
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Third year">
+
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="First semester"/>
+                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:category_title="Second semester"/>
+
+                </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
+
+            </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -15,7 +15,7 @@ public class StudentNotificationCreator extends NotificationCreator<Student>
 
     public String getTitle(DatabaseResponse<Student> response)
     {
-        return "Student notification title";
+        return "Student notification field1";
     }
 
     public String getText(DatabaseResponse<Student> response)

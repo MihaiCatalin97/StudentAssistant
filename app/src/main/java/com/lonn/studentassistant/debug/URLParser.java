@@ -33,6 +33,8 @@ class URLParser
     private ExamRepository examRepository;
     private OtherActivityRepository activityRepository;
 
+    private List<String> examTags = Arrays.asList("Examen", "Partial", "Restante", "Test practic", "Proiecte");
+
     private String urlString;
 
     URLParser(String urlString)
@@ -169,7 +171,7 @@ class URLParser
 
         if (course == null)
         {
-            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course description", "https://profs.info.uaic.ro/~ancai/CN/", null);
+            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course field3", "https://profs.info.uaic.ro/~ancai/CN/", null);
             course.addProfessor(professor);
             courseRepository.add(course);
         }
@@ -188,7 +190,7 @@ class URLParser
 
         if (activity == null)
         {
-            activity = new OtherActivity(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, "Other activity description", "https://profs.info.uaic.ro/~ancai/CN/", null, row.type);
+            activity = new OtherActivity(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, "Other activity field3", "https://profs.info.uaic.ro/~ancai/CN/", null, row.type);
             activity.addProfessor(professor);
             activityRepository.add(activity);
         }
@@ -213,6 +215,7 @@ class URLParser
         }
         else if (existingSchedule == null)
             scheduleRepository.add(scheduleClass);
+
     }
 
     private void addExam(Exam exam, Professor professor)
@@ -262,7 +265,7 @@ class URLParser
                             professor.courses.add(row.courseKey);
                         }
                     }
-                    else if (!row.type.equals("Examen") && !row.type.equals("Restante") && !row.type.equals("Proiecte"))
+                    else if (!examTags.contains(row.type))
                     {
                         OtherActivity activity = addActivity(row, 2, professor);
                         row.courseKey = activity.getKey();
@@ -273,12 +276,31 @@ class URLParser
                         }
                     }
 
-                    if(row.type.equals("Examen") || row.type.equals("Restante") || row.type.equals("Proiecte"))
+                    if(examTags.contains(row.type))
                     {
                         addExam(row.toExam(), professor);
                     }
                     else
                     {
+                        ScheduleClass scheduleClass = row.toScheduleClass();
+                        Course course = courseRepository.getById(scheduleClass.courseKey);
+                        OtherActivity otherActivity = activityRepository.getById(scheduleClass.courseKey);
+
+                        if(!professor.scheduleClasses.contains(scheduleClass.getKey()))
+                            professor.scheduleClasses.add(scheduleClass.getKey());
+
+
+                        if(course != null && !course.scheduleClasses.contains(scheduleClass.getKey()))
+                        {
+                            course.scheduleClasses.add(scheduleClass.getKey());
+                            courseRepository.update(course);
+                        }
+                        else if(otherActivity != null && !otherActivity.scheduleClasses.contains(scheduleClass.getKey()))
+                        {
+                            otherActivity.scheduleClasses.add(scheduleClass.getKey());
+                            activityRepository.update(otherActivity);
+                        }
+
                         addScheduleClass(row.toScheduleClass(), professor);
                     }
                 }
@@ -408,7 +430,7 @@ class URLParser
         ScheduleClass toScheduleClass()
         {
             return new ScheduleClass(
-                    rooms.get(0),
+                    rooms,
                     day,
                     startHour,
                     endHour,

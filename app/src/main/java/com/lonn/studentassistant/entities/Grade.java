@@ -17,6 +17,11 @@ public class Grade extends BaseEntity
     public Grade()
     {}
 
+    public int compareTo(Object course)
+    {
+        return 0;
+    }
+
     public Grade(@NonNull String studentId, @NonNull String courseId, @NonNull Date date, int value)
     {
         this.studentId = studentId;

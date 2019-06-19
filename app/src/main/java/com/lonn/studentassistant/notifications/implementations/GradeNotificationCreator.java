@@ -15,7 +15,7 @@ public class GradeNotificationCreator extends NotificationCreator<Grade>
 
     public String getTitle(DatabaseResponse<Grade> response)
     {
-        return "Grade notification title";
+        return "Grade notification field1";
     }
 
     public String getText(DatabaseResponse<Grade> response)

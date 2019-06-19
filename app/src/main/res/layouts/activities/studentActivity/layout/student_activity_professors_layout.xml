@@ -14,13 +14,28 @@
         android:text="Professors"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorsFullScrollView
-        android:id="@+id/layoutProfessorsCategories"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleProfessorsLayout"
-        tools:context = ".activities.implementations.student.StudentActivity"/>
+        app:layout_constraintLeft_toLeftOf="@id/titleProfessorsLayout"
+        app:layout_constraintTop_toBottomOf="@id/titleProfessorsLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory
+                android:id="@+id/professorsBaseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:category_title="Professors"
+                app:show_base_header="false"
+                app:generate_child_categories="courses"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>

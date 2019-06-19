@@ -14,7 +14,7 @@ public class ScheduleNotificationCreator extends NotificationCreator<ScheduleCla
 
     public String getTitle(DatabaseResponse<ScheduleClass> response)
     {
-        return "Schedule notification title";
+        return "Schedule notification field1";
     }
 
     public String getText(DatabaseResponse<ScheduleClass> response)

@@ -1,7 +1,10 @@
 package com.lonn.studentassistant.activities.implementations.student.callbacks;
 
 import android.util.Log;
+import android.view.ViewGroup;
 
+import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.abstractions.AbstractDatabaseCallback;
 import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
@@ -11,101 +14,67 @@ import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.entities.Student;
 
 import java.util.Collections;
 
-public class CourseCallback implements IDatabaseCallback<Course>
+public class CourseCallback extends AbstractDatabaseCallback<Course>
 {
-    private StudentActivity activity;
-
     public CourseCallback(StudentActivity activity)
     {
-        this.activity = activity;
-    }
-
-    public void processResponse(DatabaseResponse<Course> res)
-    {
-        Log.e("Default response","Received");
+        super(activity);
     }
 
     public void processResponse(CreateResponse<Course> response)
     {
-        activity.hideSnackbar();
-        Collections.sort(response.getItems());
+        Course course = response.getItems().get(0);
 
-        if(!response.getResult().equals("success"))
-            activity.showSnackbar("Failed creating course");
-        else
-        {
-            if (response.getAction().equals("create"))
-            {
-                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
-            }
-        }
+        ((StudentActivity) activity).coursesBaseCategory.addOrUpdate(course);
+
+        if (course.pack != 0)
+            ((StudentActivity) activity).coursesProfileCategory.addOrUpdate(course);
     }
 
     public void processResponse(DeleteResponse<Course> response)
     {
-        activity.hideSnackbar();
-        Collections.sort(response.getItems());
+        Course course = response.getItems().get(0);
 
-        if(!response.getResult().equals("success"))
-            activity.showSnackbar("Failed deleting course");
-        else
-        {
-            if (response.getAction().equals("delete"))
-            {
-                activity.coursesFullScrollView.delete(response.getItems().get(0));
-            }
-        }
+        ((StudentActivity) activity).coursesBaseCategory.delete(course);
+
+        if (course.pack != 0)
+            ((StudentActivity) activity).coursesProfileCategory.delete(course);
+
     }
 
     public void processResponse(EditResponse<Course> response)
     {
-        activity.hideSnackbar();
-        Collections.sort(response.getItems());
+        Course course = response.getItems().get(0);
 
-        if(!response.getResult().equals("success"))
-            activity.showSnackbar("Failed editing course");
-        else
-        {
-            if (response.getAction().equals("edit"))
-            {
-                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
-            }
-        }
+        ((StudentActivity) activity).coursesBaseCategory.addOrUpdate(course);
+
+        if (course.pack != 0)
+            ((StudentActivity) activity).coursesProfileCategory.addOrUpdate(course);
+
     }
 
     public void processResponse(GetByIdResponse<Course> response)
     {
-        activity.hideSnackbar();
-        Collections.sort(response.getItems());
+        Course course = response.getItems().get(0);
 
-        if(!response.getResult().equals("success"))
-            activity.showSnackbar("Failed loading course");
-        else
-        {
-            if (response.getAction().equals("getById"))
-            {
-                activity.coursesFullScrollView.addOrUpdate(response.getItems().get(0));
-            }
-        }
+        ((StudentActivity) activity).coursesBaseCategory.addOrUpdate(course);
+
+        if (course.pack != 0)
+            ((StudentActivity) activity).coursesProfileCategory.addOrUpdate(course);
     }
 
     public void processResponse(GetAllResponse<Course> response)
     {
-        activity.hideSnackbar();
-        Collections.sort(response.getItems());
-
-        if(!response.getResult().equals("success"))
-            activity.showSnackbar("Failed loading courses");
-        else
+        for (Course course : response.getItems())
         {
-            if (response.getAction().equals("getAll"))
-            {
-                for(Course course : response.getItems())
-                    activity.coursesFullScrollView.addOrUpdate(course);
-            }
+            ((StudentActivity) activity).coursesBaseCategory.addOrUpdate(course);
+
+            if (course.pack != 0)
+                ((StudentActivity) activity).coursesProfileCategory.addOrUpdate(course);
         }
     }
 }

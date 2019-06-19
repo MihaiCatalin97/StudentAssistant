@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.otherActivityCategories;
+package com.lonn.studentassistant.views.implementations.categories.otherActivityCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -6,9 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.OtherActivity;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
 public class OtherActivitySemesterCategory extends OtherActivityBaseCategory
 {

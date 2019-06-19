@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="entity"
+            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel"/>
+    </data>
+    <TableRow
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/table_line">
+        <TextView
+            android:id="@+id/entityField1"
+            style="@style/DarkBlueTextView"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.12"
+            android:text="@{entity.field1}"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:lines="2"
+            android:padding="2dp"/>
+        <TextView
+            android:id="@+id/entityField2"
+            style="@style/DarkBlueTextView"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.56"
+            android:text="@{entity.field2}"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="@{entity.field2LineCount}"
+            android:padding="2dp"/>
+        <TextView
+            android:id="@+id/entityField3"
+            style="@style/DarkBlueTextView"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:text="@{entity.field3}"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:lines="@{entity.field3LineCount}"
+            android:padding="2dp"/>
+        <TextView
+            android:id="@+id/entityField4"
+            style="@style/DarkBlueTextView"
+            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="0.12"
+            android:text="@{entity.field4}"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:lines="@{entity.field4LineCount}"
+            android:padding="2dp"/>
 
-</android.support.constraint.ConstraintLayout>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/entityRemoveButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_close"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="4dp"
+            android:visibility="@{entity.permissionLevel > 2? View.VISIBLE:View.GONE}"/>
+    </TableRow>
+</layout>

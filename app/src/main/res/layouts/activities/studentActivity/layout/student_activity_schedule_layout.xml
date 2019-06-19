@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
+        style="@style/DarkBlueTitle"
+        android:id="@+id/titleScheduleLayout"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Schedule"/>
+        android:layout_height="wrap_content"
+        android:text="Schedule"
+        app:layout_constraintTop_toTopOf="parent"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/titleScheduleLayout"
+        app:layout_constraintTop_toBottomOf="@id/titleScheduleLayout">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                android:id="@+id/scheduleBaseCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:category_title="Schedule"
+                app:generate_child_categories="days"
+                app:show_base_header="false"/>
+
+        </LinearLayout>
+    </ScrollView>
 </android.support.constraint.ConstraintLayout>

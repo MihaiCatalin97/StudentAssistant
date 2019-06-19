@@ -8,6 +8,24 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DialogTheme" parent="android:Theme.DeviceDefault.Light.Dialog">
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowTitleStyle">@style/DarkBlueTitle</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:buttonStyle">@style/BlueRoundButton</item>
+        <item name="android:textColorAlertDialogListItem">@color/colorPrimaryDark</item>
+        <item name="android:checkedTextViewStyle">@style/CheckedTextViewStyle</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="CheckedTextViewStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

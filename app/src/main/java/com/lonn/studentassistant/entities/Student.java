@@ -7,10 +7,11 @@ import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 @IgnoreExtraProperties
-public class Student extends BaseEntity
+public class Student extends BaseEntity implements Cloneable
 {
     @Exclude
     public String studentId;
@@ -23,8 +24,15 @@ public class Student extends BaseEntity
     public int year;
     public String group;
     public String accountId;
+
+    public List<String> otherActivities = new ArrayList<>();
     public List<String> optionalCourses = new ArrayList<>();
     public List<String> grades = new ArrayList<>();
+
+    public int compareTo(Object object)
+    {
+        return -1;
+    }
 
     public Student(String studentId, String lastName, String firstName, String fatherInitial, String email,
                    String phoneNumber, int year, String group, @Nullable List<Course> optionalCourses, @Nullable List<Grade> grades)
@@ -102,7 +110,9 @@ public class Student extends BaseEntity
                 x.fatherInitial.equals(this.fatherInitial) &&
                 x.group.equals(this.group) &&
                 x.year == this.year &&
-                x.optionalCourses.containsAll(optionalCourses);
+                x.optionalCourses.containsAll(optionalCourses)&&
+                x.otherActivities.containsAll(otherActivities) &&
+                x.grades.containsAll(grades);
     }
 
     @Exclude
@@ -115,5 +125,26 @@ public class Student extends BaseEntity
     public void setKey(String key)
     {
         studentId = key;
+    }
+
+    public Student clone()
+    {
+        Student student = new Student();
+
+        student.studentId = studentId;
+        student.lastName = lastName;
+        student.firstName = firstName;
+        student.fatherInitial = fatherInitial;
+        student.email = email;
+        student.phoneNumber = phoneNumber;
+        student.year = year;
+        student.group = group;
+        student.accountId = accountId;
+
+        student.otherActivities = new LinkedList<>(otherActivities);
+        student.optionalCourses = new LinkedList<>(optionalCourses);
+        student.grades = new LinkedList<>(grades);
+
+        return student;
     }
 }

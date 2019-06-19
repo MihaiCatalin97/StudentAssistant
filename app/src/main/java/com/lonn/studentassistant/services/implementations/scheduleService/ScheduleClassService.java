@@ -7,7 +7,7 @@ import com.lonn.studentassistant.notifications.implementations.ScheduleNotificat
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
 import com.lonn.studentassistant.services.implementations.scheduleService.dataAccessLayer.ScheduleRepository;
 
-public class ScheduleService extends DatabaseService<ScheduleClass>
+public class ScheduleClassService extends DatabaseService<ScheduleClass>
 {
     public ScheduleRepository instantiateRepository()
     {

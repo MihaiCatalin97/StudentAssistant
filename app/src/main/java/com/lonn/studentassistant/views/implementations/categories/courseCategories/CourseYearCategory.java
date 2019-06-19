@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.courseCategories;
+package com.lonn.studentassistant.views.implementations.categories.courseCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
 public class CourseYearCategory extends CourseBaseCategory
 {

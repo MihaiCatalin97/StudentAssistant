@@ -13,7 +13,7 @@ import com.lonn.studentassistant.entities.OtherActivity;
 import com.lonn.studentassistant.entities.Professor;
 import com.lonn.studentassistant.entities.ScheduleClass;
 
-public class ScrollViewViewModel extends BaseObservable
+public class ScrollViewEntityViewModel extends BaseObservable
 {
     public Class entityActivityClass;
     @Bindable
@@ -21,7 +21,7 @@ public class ScrollViewViewModel extends BaseObservable
     @Bindable
     public String field1, field2, field3, field4;
 
-    public ScrollViewViewModel(int image, String field1, String field2, String field3, Class entityActivityClass)
+    public ScrollViewEntityViewModel(int image, String field1, String field2, String field3, Class entityActivityClass)
     {
         this.image = image;
         this.field1 = field1;
@@ -30,7 +30,7 @@ public class ScrollViewViewModel extends BaseObservable
         this.entityActivityClass = entityActivityClass;
     }
 
-    public ScrollViewViewModel(String field1, String field2, String field3, String field4, Class entityActivityClass)
+    public ScrollViewEntityViewModel(String field1, String field2, String field3, String field4, Class entityActivityClass)
     {
         this.field1 = field1;
         this.field2 = field2;
@@ -39,7 +39,7 @@ public class ScrollViewViewModel extends BaseObservable
         this.entityActivityClass = entityActivityClass;
     }
 
-    public ScrollViewViewModel(String field1, String field2, String field3, Class entityActivityClass)
+    public ScrollViewEntityViewModel(String field1, String field2, String field3, Class entityActivityClass)
     {
         this.field1 = field1;
         this.field2 = field2;
@@ -47,7 +47,7 @@ public class ScrollViewViewModel extends BaseObservable
         this.entityActivityClass = entityActivityClass;
     }
 
-    public static ScrollViewViewModel partial(Course course)
+    public static ScrollViewEntityViewModel partial(Course course)
     {
         String title = course.courseName;
         String subtitle = course.pack==0?"Mandatory course":"Optional course (pack " + Integer.toString(course.pack) + ")";
@@ -58,46 +58,46 @@ public class ScrollViewViewModel extends BaseObservable
         else
             description = course.website;
 
-        return new ScrollViewViewModel(title, subtitle, description, CourseEntityActivity.class);
+        return new ScrollViewEntityViewModel(title, subtitle, description, CourseEntityActivity.class);
     }
 
-    public static ScrollViewViewModel full(Course course)
+    public static ScrollViewEntityViewModel full(Course course)
     {
         String title = course.courseName;
         String subtitle = course.pack==0?"Mandatory course":"Optional course (pack " + Integer.toString(course.pack) + ")";
         String description = Utils.yearToString(course.year) + ", " + Utils.semesterToString(course.semester);
 
-        return new ScrollViewViewModel(title, subtitle, description, CourseEntityActivity.class);
+        return new ScrollViewEntityViewModel(title, subtitle, description, CourseEntityActivity.class);
     }
 
-    public static ScrollViewViewModel partial(Professor professor)
+    public static ScrollViewEntityViewModel partial(Professor professor)
     {
         String title = professor.level + " " + professor.lastName + " " + professor.firstName;
         String subtitle = "Cabinet: " + professor.cabinet;
         String description = professor.email;
 
-        return new ScrollViewViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
+        return new ScrollViewEntityViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
     }
 
-    public static ScrollViewViewModel full(Professor professor)
+    public static ScrollViewEntityViewModel full(Professor professor)
     {
         String title = professor.level + " " + professor.lastName + " " + professor.firstName;
         String subtitle = "Cabinet: " + professor.cabinet;
         String description = professor.email;
 
-        return new ScrollViewViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
+        return new ScrollViewEntityViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
     }
 
-    public static ScrollViewViewModel partial(OtherActivity otherActivity)
+    public static ScrollViewEntityViewModel partial(OtherActivity otherActivity)
     {
         String title = otherActivity.activityName;
         String subtitle = otherActivity.type;
         String description = Utils.yearToString(otherActivity.year) + ", " + Utils.semesterToString(otherActivity.semester);
 
-        return new ScrollViewViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
+        return new ScrollViewEntityViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    public static ScrollViewViewModel full(OtherActivity otherActivity)
+    public static ScrollViewEntityViewModel full(OtherActivity otherActivity)
     {
         String title = otherActivity.activityName;
         String subtitle = Utils.yearToString(otherActivity.year) + ", " + Utils.semesterToString(otherActivity.semester);
@@ -108,10 +108,10 @@ public class ScrollViewViewModel extends BaseObservable
         else
             description = otherActivity.website;
 
-        return new ScrollViewViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
+        return new ScrollViewEntityViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    public static ScrollViewViewModel partial(ScheduleClass scheduleClass)
+    public static ScrollViewEntityViewModel partial(ScheduleClass scheduleClass)
     {
         ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
         String field1 = model.getHours();
@@ -119,10 +119,10 @@ public class ScrollViewViewModel extends BaseObservable
         String field3 = model.getFormattedType();
         String field4 = model.getRooms();
 
-        return new ScrollViewViewModel(field1, field2, field3, field4, null);
+        return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }
 
-    public static ScrollViewViewModel full(ScheduleClass scheduleClass)
+    public static ScrollViewEntityViewModel full(ScheduleClass scheduleClass)
     {
         ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
         String field1 = model.getHours();
@@ -130,10 +130,10 @@ public class ScrollViewViewModel extends BaseObservable
         String field3 = model.getFormattedType();
         String field4 = model.getRooms();
 
-        return new ScrollViewViewModel(field1, field2, field3, field4, null);
+        return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }
 
-    public static ScrollViewViewModel partial(BaseEntity entity)
+    public static ScrollViewEntityViewModel partial(BaseEntity entity)
     {
         if(entity instanceof Course)
             return partial((Course)entity);
@@ -141,10 +141,12 @@ public class ScrollViewViewModel extends BaseObservable
             return partial((Professor)entity);
         if(entity instanceof OtherActivity)
             return partial((OtherActivity)entity);
+        if(entity instanceof ScheduleClass)
+            return partial((ScheduleClass)entity);
         return null;
     }
 
-    public static ScrollViewViewModel full(BaseEntity entity)
+    public static ScrollViewEntityViewModel full(BaseEntity entity)
     {
         if(entity instanceof Course)
             return full((Course)entity);
@@ -152,6 +154,26 @@ public class ScrollViewViewModel extends BaseObservable
             return full((Professor)entity);
         if(entity instanceof OtherActivity)
             return full((OtherActivity)entity);
+        if(entity instanceof ScheduleClass)
+            return full((ScheduleClass)entity);
         return null;
+    }
+
+    @Bindable
+    public int getField2LineCount()
+    {
+        return field2.split("\n").length;
+    }
+
+    @Bindable
+    public int getField3LineCount()
+    {
+        return field3.split("\n").length;
+    }
+
+    @Bindable
+    public int getField4LineCount()
+    {
+        return field4.split("\n").length;
     }
 }

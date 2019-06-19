@@ -34,8 +34,8 @@
             android:textSize="18sp"
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/activityTitle" />
-        <TextView
 
+        <TextView
             android:id="@+id/activityYearAndSemester"
             style="@style/DarkBlueTextView"
             android:layout_width="match_parent"
@@ -69,14 +69,34 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/activityDescription" />
 
-        <com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorPartialScrollView
-            android:id="@+id/scrollViewProfessorEntities"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/activityWebSite"
-            app:layout_constraintTop_toBottomOf="@id/activityWebSite"/>
+            app:layout_constraintTop_toBottomOf="@id/activityWebSite">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory
+                    android:id="@+id/professorsBaseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Professors"
+                    app:view_type="partial"/>
+
+                <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                    android:id="@+id/scheduleBaseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Schedule"
+                    app:view_type="partial"/>
+
+            </LinearLayout>
+        </ScrollView>
 
     </android.support.constraint.ConstraintLayout>
 </layout>

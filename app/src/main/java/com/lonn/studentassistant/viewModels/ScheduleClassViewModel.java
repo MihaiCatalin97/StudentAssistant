@@ -1,16 +1,18 @@
 package com.lonn.studentassistant.viewModels;
 
+import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
 
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
+import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.ScheduleClass;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
+public class ScheduleClassViewModel extends BaseObservable
 {
     public String courseKey;
     public List<String> rooms;
@@ -24,6 +26,11 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
 
     public ScheduleClassViewModel(ScheduleClass scheduleClass)
     {
+        update(scheduleClass);
+    }
+
+    public void update(ScheduleClass scheduleClass)
+    {
         this.type = scheduleClass.type;
         this.day = scheduleClass.day;
         this.courseKey = scheduleClass.courseKey;
@@ -33,46 +40,8 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
         this.startHour = scheduleClass.startHour;
         this.endHour = scheduleClass.endHour;
         this.parity = scheduleClass.parity;
-    }
 
-    public void update(ScheduleClass scheduleClass)
-    {
-        if (type == null || !type.equals(scheduleClass.type))
-        {
-            this.type = scheduleClass.type;
-            this.notifyPropertyChanged(BR.type);
-        }
-        if (courseKey == null || !courseKey.equals(scheduleClass.courseKey))
-        {
-            this.courseKey = scheduleClass.courseKey;
-            this.notifyPropertyChanged(BR.courseName);
-        }
-        if (day != scheduleClass.day)
-        {
-            this.day = scheduleClass.day;
-            this.notifyPropertyChanged(BR.day);
-        }
-        if (groups == null || !groups.equals(scheduleClass.groups))
-        {
-            this.groups = new LinkedList<>(scheduleClass.groups);
-            this.notifyPropertyChanged(BR.groups);
-        }
-        if (startHour != scheduleClass.startHour)
-        {
-            this.startHour = scheduleClass.startHour;
-            this.notifyPropertyChanged(BR.startHour);
-        }
-        if (endHour != scheduleClass.endHour)
-        {
-            this.endHour = scheduleClass.endHour;
-            this.notifyPropertyChanged(BR.endHour);
-        }
-        if (parity == null || !parity.equals(scheduleClass.parity))
-        {
-            this.parity = scheduleClass.parity;
-            this.notifyPropertyChanged(BR.parity);
-            this.notifyPropertyChanged(BR.parityVisible);
-        }
+        notifyPropertyChanged(BR._all);
     }
 
     @Bindable
@@ -84,13 +53,23 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
     @Bindable
     public String getStartHour()
     {
-        return Integer.toString(startHour/100) + ":" + Integer.toString(startHour%100);
+        String minuteString = Integer.toString(startHour%100);
+
+        if(minuteString.length() == 1)
+            minuteString = "0" + minuteString;
+
+        return Integer.toString(startHour/100) + ":" + minuteString;
     }
 
     @Bindable
     public String getEndHour()
     {
-        return Integer.toString(endHour/100) + ":" + Integer.toString(endHour%100);
+        String minuteString = Integer.toString(endHour%100);
+
+        if(minuteString.length() == 1)
+            minuteString = "0" + minuteString;
+
+        return Integer.toString(endHour/100) + ":" + minuteString;
     }
 
     @Bindable
@@ -102,8 +81,12 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
     @Bindable
     public String getCourseName()
     {
+        Course auxCourse = new Course();
+        auxCourse.setKey(courseKey);
+
+        String courseName = auxCourse.getKey();
         int legth=0;
-        String[] words = courseKey.split(" ");
+        String[] words = courseName.split(" ");
         String result = "";
 
         for(String word : words)
@@ -141,5 +124,23 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass>
         }
 
         return result;
+    }
+
+    @Bindable
+    public String getFormattedType()
+    {
+        return type.replace(" ","\n");
+    }
+
+    @Bindable
+    public int getTypeNumberOfLines()
+    {
+        return type.split(" ").length;
+    }
+
+    @Bindable
+    public int getNumberOfRooms()
+    {
+        return rooms.size();
     }
 }

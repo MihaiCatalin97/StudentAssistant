@@ -25,6 +25,11 @@ public class Exam extends BaseEntity
     public int pack;
     public List<String> groups;
 
+    public int compareTo(Object course)
+    {
+        return 0;
+    }
+
     public Exam()
     {}
 

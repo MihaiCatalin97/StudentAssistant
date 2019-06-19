@@ -15,7 +15,7 @@ public class ExamNotificationCreator extends NotificationCreator<Exam>
 
     public String getTitle(DatabaseResponse<Exam> response)
     {
-        return "Exam notification title";
+        return "Exam notification field1";
     }
 
     public String getText(DatabaseResponse<Exam> response)

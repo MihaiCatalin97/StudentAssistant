@@ -1,49 +1,75 @@
 package com.lonn.studentassistant.activities.implementations.student;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.callbacks.CourseCallback;
-import com.lonn.studentassistant.activities.implementations.student.callbacks.OtherActivityCallback;
-import com.lonn.studentassistant.activities.implementations.student.callbacks.ProfessorsCallback;
-import com.lonn.studentassistant.common.requests.GetAllRequest;
+import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.OtherActivity;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.services.implementations.otherActivityService.OtherActivityService;
-import com.lonn.studentassistant.views.implementations.scrollViewLayouts.CoursesFullScrollView;
-import com.lonn.studentassistant.views.implementations.scrollViewLayouts.OtherActivityFullScrollView;
-import com.lonn.studentassistant.views.implementations.scrollViewLayouts.ProfessorsFullScrollView;
+import com.lonn.studentassistant.entities.ScheduleClass;
+import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
-import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
-import com.lonn.studentassistant.services.implementations.professorService.ProfessorService;
+import com.lonn.studentassistant.viewModels.StudentViewModel;
+import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class StudentActivity extends NavBarActivity
+public class StudentActivity extends NavBarActivity<Student>
 {
-    private CourseCallback courseCallback = new CourseCallback(this);
-    private ProfessorsCallback professorsCallback = new ProfessorsCallback(this);
-    private OtherActivityCallback otherActivityCallback = new OtherActivityCallback(this);
+    private StudentViewModel studentViewModel;
+    private ScrollView profilePage;
+    private StudentActivityMainLayoutBinding binding;
 
-    public CoursesFullScrollView coursesFullScrollView;
-    public ProfessorsFullScrollView professorsScrollViewLayout;
-    public OtherActivityFullScrollView otherActivityFullScrollView;
+    public ScrollViewCategory<Course> coursesBaseCategory;
+    public ScrollViewCategory<Professor> professorsBaseCategory;
+    public ScrollViewCategory<OtherActivity> otherActivitiesBaseCategory;
+    public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
+
+    public ScrollViewCategory<Course> coursesProfileCategory;
+    public ScrollViewCategory<OtherActivity> otherActivitiesProfileCategory;
 
     public StudentActivity()
     {
         super();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.student_activity_main_layout);
-        super.onCreate(savedInstanceState);
+    public void updateStudent(Student student)
+    {
+        if(studentViewModel == null)
+        {
+            studentViewModel = new StudentViewModel(student);
+            binding.setStudent(studentViewModel);
+        }
+        else
+            studentViewModel.update(student);
+    }
 
-        coursesFullScrollView = findViewById(R.id.layoutCoursesCategories);
-        professorsScrollViewLayout = findViewById(R.id.layoutProfessorsCategories);
-        otherActivityFullScrollView = findViewById(R.id.layoutOtherActivitiesCategories);
+    protected void inflateLayout()
+    {
+        binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        businessLayer = new StudentBusinessLayer(this);
+
+        if(getIntent() != null && getIntent().getExtras() != null)
+            businessLayer.editActivityEntity((Student) getIntent().getExtras().getSerializable("student"));
+
+        coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
+        professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
+        otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
+        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
+
+        profilePage = findViewById(R.id.layoutProfile);
+        coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
+        otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
     }
 
     @Override
@@ -60,7 +86,7 @@ public class StudentActivity extends NavBarActivity
         super.onStart();
 
         showSnackbar("Loading...");
-        refreshAll();
+        businessLayer.refreshAll();
     }
 
     public void handleNavBarAction(int id)
@@ -69,6 +95,11 @@ public class StudentActivity extends NavBarActivity
         {
             Utils.hideViews(Utils.getVisibleChildren((ViewGroup)findViewById(R.id.layoutMain)));
             findViewById(R.id.layoutHome).setVisibility(View.VISIBLE);
+        }
+        else if (id == R.id.nav_profile)
+        {
+            Utils.hideViews(Utils.getVisibleChildren((ViewGroup)findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutProfile).setVisibility(View.VISIBLE);
         }
         else if (id == R.id.nav_schedule)
         {
@@ -105,19 +136,5 @@ public class StudentActivity extends NavBarActivity
             Utils.hideViews(Utils.getVisibleChildren((ViewGroup)findViewById(R.id.layoutMain)));
             findViewById(R.id.layoutOtherActivities).setVisibility(View.VISIBLE);
         }
-    }
-
-    protected void unbindServices()
-    {
-        serviceConnections.unbind(courseCallback);
-        serviceConnections.unbind(professorsCallback);
-        serviceConnections.unbind(otherActivityCallback);
-    }
-
-    protected void refreshAll()
-    {
-        serviceConnections.postRequest(CourseService.class, new GetAllRequest<Course>(), courseCallback);
-        serviceConnections.postRequest(ProfessorService.class, new GetAllRequest<Professor>(), professorsCallback);
-        serviceConnections.postRequest(OtherActivityService.class, new GetAllRequest<OtherActivity>(), otherActivityCallback);
     }
 }

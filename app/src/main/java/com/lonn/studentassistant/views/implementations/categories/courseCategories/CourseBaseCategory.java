@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.courseCategories;
+package com.lonn.studentassistant.views.implementations.categories.courseCategories;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -7,12 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
-import com.lonn.studentassistant.views.dialogBuilders.OptionalCourseDialogBuilder;
-
-import java.util.List;
 
 public class CourseBaseCategory extends ScrollViewCategory<Course>
 {
@@ -44,9 +40,7 @@ public class CourseBaseCategory extends ScrollViewCategory<Course>
     {
         categoryViewModel.entityName = "course";
 
-        String thisClassName = getClass().getSimpleName().toLowerCase();
-
-        if(thisClassName.startsWith("optionalcourse"))
+        if(getClass().getSimpleName().toLowerCase().contains("enrolled"))
         {
             categoryViewModel.entityName = "optional course";
             categoryAddLayout.setOnClickListener(new OnClickListener()
@@ -54,17 +48,9 @@ public class CourseBaseCategory extends ScrollViewCategory<Course>
                 @Override
                 public void onClick(View v)
                 {
-                    OptionalCourseDialogBuilder builder = new OptionalCourseDialogBuilder(getContext(), (List<Course>)listAllEntities);
-                    builder.showDialog();
                 }
             });
         }
-        else if(thisClassName.startsWith("otheractivity"))
-            categoryViewModel.entityName = "other activity";
-        else if(thisClassName.startsWith("professor"))
-            categoryViewModel.entityName = "professor";
-        else if(thisClassName.startsWith("schedule"))
-            categoryViewModel.entityName = "schedule class";
 
         categoryViewModel.notifyPropertyChanged(BR.entityName);
     }
