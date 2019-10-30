@@ -34,6 +34,6 @@ public class ScheduleClass extends BaseEntity {
             }
         }
 
-        return result.toString() + "_" + Integer.toString(day) + "_" + Integer.toString(startHour);
+        return result.toString() + "_" + day + "_" + startHour;
     }
 }

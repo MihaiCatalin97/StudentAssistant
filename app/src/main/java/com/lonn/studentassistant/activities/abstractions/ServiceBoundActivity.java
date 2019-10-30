@@ -11,93 +11,42 @@ import androidx.core.app.NavUtils;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
+import com.lonn.studentassistant.activities.implementations.authentication.LoginActivity;
+import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialogBuilders.DialogBuilder;
 
 import java.util.List;
 
-public abstract class ServiceBoundActivity<T extends BaseEntity> extends AppCompatActivity {
-    private static ServiceBoundActivity instance;
-    protected Snackbar snackbar;
-    private long timeLastSnack;
+public abstract class ServiceBoundActivity extends AppCompatActivity {
+    protected FirebaseConnection firebaseConnection;
+    private Handler handler = new Handler();
 
-    public ServiceBoundActivity() {
+    public void showSnackBar(String message) {
+        showSnackBar(message, Snackbar.LENGTH_INDEFINITE);
     }
 
-    public static ServiceBoundActivity getCurrentActivity() {
-        return instance;
-    }
+    public void showSnackBar(String message, int length) {
+        Snackbar snackbar;
 
-    public void showSnackbar(String message) {
-        if (snackbar == null) {
-            if (findViewById(R.id.fab) != null) {
-                snackbar = Snackbar.make(findViewById(R.id.fab), message, Snackbar.LENGTH_INDEFINITE);
-            }
-            else {
-                snackbar = Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_INDEFINITE);
-            }
-        }
-        else {
-            snackbar.setText(message);
-        }
+//        if (findViewById(R.id.fab) != null) {
+//            snackbar = Snackbar.make(findViewById(R.id.fab), message, length);
+//        }
+//        else {
+        snackbar = Snackbar.make(findViewById(android.R.id.content), message, length);
+//        }
 
         snackbar.show();
-        timeLastSnack = System.currentTimeMillis();
     }
-
-    public void showSnackbar(String message, int length) {
-        if (snackbar == null) {
-            if (findViewById(R.id.fab) != null) {
-                snackbar = Snackbar.make(findViewById(R.id.fab), message, length);
-            }
-            else {
-                snackbar = Snackbar.make(findViewById(android.R.id.content), message, length);
-            }
-        }
-        else {
-            snackbar.setText(message);
-        }
-
-        snackbar.show();
-        timeLastSnack = System.currentTimeMillis();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        inflateLayout();
-    }
-
-    protected abstract void inflateLayout();
 
     @Override
     public void onStart() {
         super.onStart();
 
-        if (!(this instanceof AuthenticationActivity) && FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (!(this instanceof LoginActivity) && FirebaseAuth.getInstance().getCurrentUser() == null) {
             FirebaseAuth.getInstance().signOut();
             NavUtils.navigateUpFromSameTask(this);
-        }
-
-        instance = this;
-    }
-
-    public void hideSnackbar() {
-        if (snackbar != null) {
-            if (System.currentTimeMillis() - timeLastSnack >= 1500) {
-                snackbar.dismiss();
-            }
-            else {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        hideSnackbar();
-                    }
-                }, 1500 - System.currentTimeMillis() + timeLastSnack);
-            }
         }
     }
 
@@ -131,5 +80,18 @@ public abstract class ServiceBoundActivity<T extends BaseEntity> extends AppComp
     public void showDialog(List<BaseEntity> entities, String title, String positiveButtonText) {
         DialogBuilder builder = new DialogBuilder(ServiceBoundActivity.this, entities, title, positiveButtonText);
         builder.showDialog();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        firebaseConnection = new FirebaseConnection(getBaseContext());
+        inflateLayout();
+    }
+
+    protected abstract void inflateLayout();
+
+    protected void executeWithDelay(Runnable runnable, long delay) {
+        handler.postDelayed(runnable, delay);
     }
 }

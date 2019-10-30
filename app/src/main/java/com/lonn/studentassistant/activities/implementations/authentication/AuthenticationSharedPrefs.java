@@ -6,14 +6,15 @@ import android.content.SharedPreferences;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AuthSharedPrefs {
-    private static SharedPreferences sharedPref;
+class AuthenticationSharedPrefs {
+    private SharedPreferences sharedPref;
 
-    static void init(Context context) {
-        sharedPref = context.getSharedPreferences("studentassistant-auth", Context.MODE_PRIVATE);
+    AuthenticationSharedPrefs(Context context) {
+        sharedPref = context.getSharedPreferences("studentassistant-auth",
+                Context.MODE_PRIVATE);
     }
 
-    public void deleteCredentials() {
+    void deleteCredentials() {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("remember", false);
         editor.remove("email");
@@ -21,7 +22,7 @@ public class AuthSharedPrefs {
         editor.apply();
     }
 
-    public void rememberCredentials(final String email, final String password) {
+    void saveCredentials(final String email, final String password) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("remember", true);
         editor.putString("email", email);
@@ -34,12 +35,15 @@ public class AuthSharedPrefs {
     }
 
     Map<String, String> getCredentials() {
-        Map<String, String> creds = new HashMap<>();
+        Map<String, String> credentials = new HashMap<>();
 
-        creds.put("email", sharedPref.getString("email", ""));
-        creds.put("password", sharedPref.getString("password", ""));
-        creds.put("remember", Boolean.toString(sharedPref.getBoolean("remember", false)));
+        credentials.put("email",
+                sharedPref.getString("email", ""));
+        credentials.put("password",
+                sharedPref.getString("password", ""));
+        credentials.put("remember",
+                Boolean.toString(sharedPref.getBoolean("remember", false)));
 
-        return creds;
+        return credentials;
     }
 }

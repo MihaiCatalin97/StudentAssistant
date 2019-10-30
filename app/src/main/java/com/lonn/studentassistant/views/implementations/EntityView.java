@@ -91,6 +91,18 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
         return true;
     }
 
+    public Class getEntityClass() {
+        return entity.getClass();
+    }
+
+    public T getEntity() {
+        return entity;
+    }
+
+    public Class getActivityClass() {
+        return model.entityActivityClass;
+    }
+
     protected int getLayoutId() {
         if (entity instanceof ScheduleClass || entity instanceof Grade) {
             return R.layout.entity_table_row_view;
@@ -106,17 +118,5 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
         else {
             ((EntityConstraintLayoutViewBinding) binding).setEntity(model);
         }
-    }
-
-    public Class getEntityClass() {
-        return entity.getClass();
-    }
-
-    public T getEntity() {
-        return entity;
-    }
-
-    public Class getActivityClass() {
-        return model.entityActivityClass;
     }
 }

@@ -11,27 +11,10 @@ import androidx.core.content.ContextCompat;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.debug.DatabasePopulator;
-import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 
 public class DebugActivity extends AppCompatActivity {
     private DatabasePopulator populator;
-
-    @Override
-    protected void onCreate(Bundle savedBundle) {
-        super.onCreate(savedBundle);
-        setContentView(R.layout.debug_layout);
-
-        FirebaseConfig firebaseConfig = new FirebaseConfig(this.getBaseContext());
-        populator = new DatabasePopulator(new FirebaseConnection(firebaseConfig));
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
-        }
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 2);
-        }
-    }
 
     public void debugButton(View v) {
         switch (v.getId()) {
@@ -65,6 +48,21 @@ public class DebugActivity extends AppCompatActivity {
             case R.id.populateGrades: {
 
             }
+        }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedBundle) {
+        super.onCreate(savedBundle);
+        setContentView(R.layout.debug_layout);
+
+        populator = new DatabasePopulator(new FirebaseConnection(getBaseContext()));
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_NETWORK_STATE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_NETWORK_STATE}, 2);
         }
     }
 }

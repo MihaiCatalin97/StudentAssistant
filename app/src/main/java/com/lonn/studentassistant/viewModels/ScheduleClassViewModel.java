@@ -54,7 +54,7 @@ public class ScheduleClassViewModel extends BaseObservable {
             minuteString = "0" + minuteString;
         }
 
-        return Integer.toString(startHour / 100) + ":" + minuteString;
+        return startHour / 100 + ":" + minuteString;
     }
 
     @Bindable
@@ -65,7 +65,7 @@ public class ScheduleClassViewModel extends BaseObservable {
             minuteString = "0" + minuteString;
         }
 
-        return Integer.toString(endHour / 100) + ":" + minuteString;
+        return endHour / 100 + ":" + minuteString;
     }
 
     @Bindable

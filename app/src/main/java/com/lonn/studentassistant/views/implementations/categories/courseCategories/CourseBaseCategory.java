@@ -31,6 +31,9 @@ public class CourseBaseCategory extends ScrollViewCategory<Course> {
         return true;
     }
 
+    public void generateChildCategories(Course course) {
+    }
+
     protected void initCategoryViewModel() {
         categoryViewModel.entityName = "course";
 
@@ -44,8 +47,5 @@ public class CourseBaseCategory extends ScrollViewCategory<Course> {
         }
 
         categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-    }
-
-    public void generateChildCategories(Course course) {
     }
 }

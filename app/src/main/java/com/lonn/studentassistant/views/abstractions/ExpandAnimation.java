@@ -16,28 +16,6 @@ public class ExpandAnimation extends Animation {
     }
 
     @Override
-    protected void applyTransformation(float interpolatedTime, Transformation t) {
-        int newMargin;
-
-        if (expanding) {
-            newMargin = (int) ((-2 * initialMarginTop - viewHeight) * (1 - interpolatedTime)) + initialMarginTop;
-        }
-        else {
-            newMargin = (int) ((-2 * initialMarginTop - viewHeight) * interpolatedTime) + initialMarginTop;
-        }
-
-        ((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = newMargin;
-        view.requestLayout();
-
-        if (interpolatedTime == 1) {
-            if (!expanding) {
-                view.setVisibility(View.GONE);
-                ((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = initialMarginTop;
-            }
-        }
-    }
-
-    @Override
     public void initialize(int width, int height, int parentWidth, int parentHeight) {
         super.initialize(width, height, parentWidth, parentHeight);
 
@@ -82,6 +60,28 @@ public class ExpandAnimation extends Animation {
         else {
             initialMarginTop = initialMargin;
             view.startAnimation(ExpandAnimation.this);
+        }
+    }
+
+    @Override
+    protected void applyTransformation(float interpolatedTime, Transformation t) {
+        int newMargin;
+
+        if (expanding) {
+            newMargin = (int) ((-2 * initialMarginTop - viewHeight) * (1 - interpolatedTime)) + initialMarginTop;
+        }
+        else {
+            newMargin = (int) ((-2 * initialMarginTop - viewHeight) * interpolatedTime) + initialMarginTop;
+        }
+
+        ((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = newMargin;
+        view.requestLayout();
+
+        if (interpolatedTime == 1) {
+            if (!expanding) {
+                view.setVisibility(View.GONE);
+                ((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = initialMarginTop;
+            }
         }
     }
 }

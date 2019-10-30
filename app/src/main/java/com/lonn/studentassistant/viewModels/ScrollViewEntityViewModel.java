@@ -45,7 +45,7 @@ public class ScrollViewEntityViewModel extends BaseObservable {
 
     public static ScrollViewEntityViewModel partial(Course course) {
         String title = course.getCourseName();
-        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + Integer.toString(course.getPack()) + ")";
+        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + course.getPack() + ")";
         String description;
 
         if (course.getWebsite() == null) {
@@ -60,7 +60,7 @@ public class ScrollViewEntityViewModel extends BaseObservable {
 
     public static ScrollViewEntityViewModel full(Course course) {
         String title = course.getCourseName();
-        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + Integer.toString(course.getPack()) + ")";
+        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + course.getPack() + ")";
         String description = Utils.yearToString(course.getYear()) + ", " + Utils.semesterToString(course.getSemester());
 
         return new ScrollViewEntityViewModel(title, subtitle, description, CourseEntityActivity.class);

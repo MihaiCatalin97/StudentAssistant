@@ -18,7 +18,7 @@ import com.lonn.studentassistant.firebaselayer.models.Student;
 import com.lonn.studentassistant.viewModels.StudentViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class StudentActivity extends NavBarActivity<Student> {
+public class StudentActivity extends NavBarActivity {
     public ScrollViewCategory<Course> coursesBaseCategory;
     public ScrollViewCategory<Professor> professorsBaseCategory;
     public ScrollViewCategory<OtherActivity> otherActivitiesBaseCategory;
@@ -42,24 +42,6 @@ public class StudentActivity extends NavBarActivity<Student> {
         }
     }
 
-    protected void inflateLayout() {
-        binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
-        professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
-        otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
-        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
-
-        ScrollView profilePage = findViewById(R.id.layoutProfile);
-        coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
-        otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
-    }
-
     @Override
     public void onBackPressed() {
         if (findViewById(R.id.layoutHome).getVisibility() == View.VISIBLE) {
@@ -74,7 +56,7 @@ public class StudentActivity extends NavBarActivity<Student> {
     public void onStart() {
         super.onStart();
 
-        showSnackbar("Loading...");
+        showSnackBar("Loading...");
 //        businessLayer.refreshAll();
     }
 
@@ -115,5 +97,23 @@ public class StudentActivity extends NavBarActivity<Student> {
             Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
             findViewById(R.id.layoutOtherActivities).setVisibility(View.VISIBLE);
         }
+    }
+
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
+        professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
+        otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
+        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
+
+        ScrollView profilePage = findViewById(R.id.layoutProfile);
+        coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
+        otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
     }
 }

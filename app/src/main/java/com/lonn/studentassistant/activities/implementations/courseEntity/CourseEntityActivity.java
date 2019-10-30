@@ -12,13 +12,22 @@ import com.lonn.studentassistant.viewModels.CourseViewModel;
 import com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory;
 import com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory;
 
-public class CourseEntityActivity extends ServiceBoundActivity<Course> {
+public class CourseEntityActivity extends ServiceBoundActivity {
     public ProfessorBaseCategory professorBaseCategory;
     public ScheduleBaseCategory scheduleBaseCategory;
     private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;
     private boolean editPrivilege;
     private Course course;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!loadedProfessors) {
+            loadedProfessors = true;
+        }
+    }
 
     protected void inflateLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.course_entity_activity_layout);
@@ -38,15 +47,6 @@ public class CourseEntityActivity extends ServiceBoundActivity<Course> {
 
             professorBaseCategory = findViewById(R.id.professorsBaseCategory);
             scheduleBaseCategory = findViewById(R.id.scheduleBaseCategory);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (!loadedProfessors) {
-            loadedProfessors = true;
         }
     }
 }

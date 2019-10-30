@@ -1,83 +1,54 @@
 package com.lonn.studentassistant.activities.implementations.authentication;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
-import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.firebaselayer.models.Student;
 
-import java.util.Map;
-
-public class AuthenticationActivity extends ServiceBoundActivity {
-    private AuthSharedPrefs authSharedPrefs;
+public class RegisterActivity extends ServiceBoundActivity {
     private Student registeringStudent;
     private String privileges;
 
-    public AuthenticationActivity() {
-        super();
+    public void tapRegistrationButton(View v) {
+        switch (v.getId()) {
+            case R.id.buttonRegisterStudent: {
+                privileges = "student";
+                showRegistrationStep(1);
+                break;
+            }
+            case R.id.registerButtonContinue: {
+                checkCredentials();
+                break;
+            }
+            case R.id.registerButton: {
+                register();
+                break;
+            }
+        }
+    }
+
+    public void backToLogin(View v) {
+        super.onBackPressed();
+//        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+//        startActivity(loginActivityIntent);
     }
 
     protected void inflateLayout() {
-        setContentView(R.layout.auth_activity_layout);
+        setContentView(R.layout.register_activity_layout);
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        AuthSharedPrefs.init(getBaseContext());
-
-        authSharedPrefs = new AuthSharedPrefs();
-
-        if (authSharedPrefs.hasSavedCredentials()) {
-            setLoginFields(authSharedPrefs.getCredentials());
-        }
-
-        Utils.init(this);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    public void login(View v) {
-        String email = ((EditText) findViewById(R.id.loginEditTextEmail)).getText().toString();
-        String password = ((EditText) findViewById(R.id.loginEditTextPassword)).getText().toString();
-        boolean remember = ((CheckBox) findViewById(R.id.loginRememberCheckBox)).isChecked();
-
-        if (email.length() == 0) {
-            Toast.makeText(getBaseContext(), "Invalid email!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (password.length() == 0) {
-            Toast.makeText(getBaseContext(), "Invalid password!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        showSnackbar("Logging in...");
-    }
-
-    public void showRegistrationStep(int step) {
+    private void showRegistrationStep(int step) {
         switch (step) {
             case 0: {
-                findViewById(R.id.layoutLogin).setVisibility(View.INVISIBLE);
-                findViewById(R.id.layoutRegister1).setVisibility(View.VISIBLE);
-                break;
-            }
-            case 1: {
                 findViewById(R.id.layoutRegister1).setVisibility(View.INVISIBLE);
                 findViewById(R.id.layoutRegister2).setVisibility(View.VISIBLE);
                 break;
             }
-            case 2: {
+            case 1: {
                 findViewById(R.id.layoutRegister2).setVisibility(View.INVISIBLE);
                 findViewById(R.id.layoutRegister3).setVisibility(View.VISIBLE);
                 break;
@@ -116,6 +87,8 @@ public class AuthenticationActivity extends ServiceBoundActivity {
                 .setPhoneNumber(phoneNumber)
                 .setYear(an)
                 .setGroup(grupa);
+
+        // save student by hash key and query it at credentials check to protect data integrity
     }
 
     private void register() {
@@ -137,56 +110,5 @@ public class AuthenticationActivity extends ServiceBoundActivity {
         }
 
         registeringStudent.accountId = email;
-    }
-
-    public void showDebugLayout(View v) {
-        Intent debugIntent = new Intent(this, DebugActivity.class);
-        startActivity(debugIntent);
-    }
-
-    public void tapRegistrationButton(View v) {
-        switch (v.getId()) {
-            case R.id.signUpButton: {
-                showRegistrationStep(0);
-                break;
-            }
-            case R.id.buttonRegisterStudent: {
-                privileges = "student";
-                showRegistrationStep(1);
-                break;
-            }
-            case R.id.registerButtonContinue: {
-                checkCredentials();
-                break;
-            }
-            case R.id.registerButton: {
-                register();
-                break;
-            }
-        }
-    }
-
-    public void showLoginLayout(View v) {
-        findViewById(R.id.layoutLogin).setVisibility(View.VISIBLE);
-        findViewById(R.id.layoutRegister1).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutRegister2).setVisibility(View.INVISIBLE);
-        findViewById(R.id.layoutRegister3).setVisibility(View.INVISIBLE);
-    }
-
-    public void setLoginFields(Map<String, String> map) {
-
-        ((EditText) findViewById(R.id.loginEditTextEmail)).setText(map.get("email"));
-        ((EditText) findViewById(R.id.loginEditTextPassword)).setText(map.get("password"));
-
-        String remember = map.get("remember");
-        if (remember != null) {
-            ((CheckBox) findViewById(R.id.loginRememberCheckBox)).setChecked(remember.equals("true"));
-        }
-    }
-
-    public void tapRememberCheckBox(View v) {
-        if (!((CheckBox) v).isChecked()) {
-            authSharedPrefs.deleteCredentials();
-        }
     }
 }

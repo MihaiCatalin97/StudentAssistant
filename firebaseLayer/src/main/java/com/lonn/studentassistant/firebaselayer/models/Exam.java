@@ -29,7 +29,7 @@ public class Exam extends BaseEntity {
         for (String room : rooms)
             key.append(room).append("~");
 
-        key.append("_").append(Integer.toString(day)).append("_").append(Integer.toString(startHour));
+        key.append("_").append(day).append("_").append(startHour);
 
         return key.toString();
     }

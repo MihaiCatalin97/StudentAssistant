@@ -40,7 +40,7 @@ public class CourseViewModel extends BaseObservable {
             return "Mandatory course";
         }
         else {
-            return "Optional course (Pack " + Integer.toString(pack) + ")";
+            return "Optional course (Pack " + pack + ")";
         }
     }
 

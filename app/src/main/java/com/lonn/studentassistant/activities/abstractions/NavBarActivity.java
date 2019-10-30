@@ -1,11 +1,9 @@
 package com.lonn.studentassistant.activities.abstractions;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,25 +18,14 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.viewModels.UserViewModel;
 
 
-public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundActivity<T> implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class NavBarActivity extends ServiceBoundActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int logoutCount = 0;
 
     public NavBarActivity() {
         super();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        initializeNavBar();
-
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            NavUtils.navigateUpFromSameTask(this);
-        }
     }
 
     public abstract void handleNavBarAction(int id);
@@ -65,10 +52,8 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
         int id = item.getItemId();
 
         switch (id) {
+            case R.id.action_sensors:
             case R.id.action_settings: {
-                return true;
-            }
-            case R.id.action_sensors: {
                 return true;
             }
             case R.id.action_terms: {
@@ -77,10 +62,8 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
                 builder.setMessage("These are the terms and conditions")
                         .setTitle("Terms and Conditions");
 
-                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK button
-                    }
+                builder.setPositiveButton("OK", (dialog, dialog_id) -> {
+                    // User clicked OK button
                 });
 
                 AlertDialog dialog = builder.create();
@@ -117,18 +100,24 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
         logoutCount++;
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initializeNavBar();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+    }
+
     private void initializeNavBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showSnackbar("Refreshing everything...");
-
-//                businessLayer.refreshAll();
-            }
+        fab.setOnClickListener((view) -> {
+            showSnackBar("Refreshing everything...");
+//          businessLayer.refreshAll();
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

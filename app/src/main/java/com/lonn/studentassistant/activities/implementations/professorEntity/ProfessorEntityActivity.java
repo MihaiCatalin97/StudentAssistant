@@ -15,17 +15,13 @@ import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class ProfessorEntityActivity extends ServiceBoundActivity<Professor> {
+public class ProfessorEntityActivity extends ServiceBoundActivity {
     public ScrollViewCategory<Course> courseBaseCategory;
     public ScrollViewCategory<OtherActivity> otherActivityBaseCategory;
     public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
     private ProfessorEntityActivityLayoutBinding binding;
     private ProfessorViewModel viewModel;
     private boolean editPrivilege;
-
-    protected void inflateLayout() {
-        binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
-    }
 
     public void updateEntity(Professor professor) {
         if (viewModel == null) {
@@ -38,20 +34,24 @@ public class ProfessorEntityActivity extends ServiceBoundActivity<Professor> {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        courseBaseCategory = findViewById(R.id.coursesBaseCategory);
-        otherActivityBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
-        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
 //        businessLayer.refreshAll();
     }
 
     public void tapAdd(View v) {
+    }
+
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        courseBaseCategory = findViewById(R.id.coursesBaseCategory);
+        otherActivityBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
+        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
     }
 }

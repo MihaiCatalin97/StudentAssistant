@@ -1,5 +1,9 @@
 package com.lonn.studentassistant.firebaselayer.firebaseConnection;
 
+import android.content.Context;
+import android.util.Log;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
@@ -7,6 +11,7 @@ import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.firebaselayer.requests.LoginRequest;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
 import java.util.HashMap;
@@ -21,7 +26,9 @@ public class FirebaseConnection {
     @Getter(AccessLevel.PROTECTED)
     private Map<DatabaseTable, DatabaseContext> databaseMap = new HashMap<>();
 
-    public FirebaseConnection(FirebaseConfig firebaseConfig) {
+    public FirebaseConnection(Context applicationContext) {
+        FirebaseConfig firebaseConfig = new FirebaseConfig(applicationContext);
+
         for (DatabaseTable table : DatabaseTable.values()) {
             databaseMap.put(table,
                     new DatabaseContext<>(firebaseConfig.getTableReference(table),
@@ -61,5 +68,21 @@ public class FirebaseConnection {
         if (context != null) {
             context.deleteAll(request.onSuccess(), request.onError());
         }
+    }
+
+    public void execute(final LoginRequest request) {
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        mAuth.signInWithEmailAndPassword(request.username(), request.password())
+                .addOnCompleteListener((loginTask) -> {
+                    if (loginTask.isSuccessful()) {
+                        Log.i("Login", "Login successful for user " + request.username());
+                        request.onSuccess().run();
+                    }
+                    else {
+                        Log.i("Login", "Login error for user " + request.username());
+                        request.onError().run();
+                    }
+                });
     }
 }

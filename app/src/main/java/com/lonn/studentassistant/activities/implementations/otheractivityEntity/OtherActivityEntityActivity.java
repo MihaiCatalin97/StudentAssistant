@@ -13,13 +13,28 @@ import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class OtherActivityEntityActivity extends ServiceBoundActivity<OtherActivity> {
+public class OtherActivityEntityActivity extends ServiceBoundActivity {
     public ScrollViewCategory<Professor> professorBaseCategory;
     public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
     private OtherActivityEntityActivityLayoutBinding binding;
     private boolean loadedRelatedEntities = false;
     private boolean editPrivilege;
     private OtherActivity otherActivity;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        if (!loadedRelatedEntities) {
+//            for(String professorId : otherActivity.professors)
+//                serviceConnections.postRequest(ProfessorService.class, new GetByIdRequest<Professor>(professorId), professorCallback);
+//
+//            for(String scheduleId : otherActivity.scheduleClasses)
+//                serviceConnections.postRequest(ScheduleClassService.class, new GetByIdRequest<ScheduleClass>(scheduleId), scheduleClassCallback);
+
+            loadedRelatedEntities = true;
+        }
+    }
 
     protected void inflateLayout() {
         binding = DataBindingUtil.setContentView(this, R.layout.other_activity_entity_activity_layout);
@@ -40,21 +55,6 @@ public class OtherActivityEntityActivity extends ServiceBoundActivity<OtherActiv
             professorBaseCategory = findViewById(R.id.professorsBaseCategory);
             scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
 
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (!loadedRelatedEntities) {
-//            for(String professorId : otherActivity.professors)
-//                serviceConnections.postRequest(ProfessorService.class, new GetByIdRequest<Professor>(professorId), professorCallback);
-//
-//            for(String scheduleId : otherActivity.scheduleClasses)
-//                serviceConnections.postRequest(ScheduleClassService.class, new GetByIdRequest<ScheduleClass>(scheduleId), scheduleClassCallback);
-
-            loadedRelatedEntities = true;
         }
     }
 }

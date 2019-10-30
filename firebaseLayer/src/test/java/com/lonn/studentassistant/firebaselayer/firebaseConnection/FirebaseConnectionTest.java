@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.firebaseConnection;
 
-import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
+import android.test.mock.MockContext;
+
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
 
@@ -13,7 +14,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class FirebaseConnectionTest {
     @Mock
-    private FirebaseConfig config;
+    private MockContext context;
 
     private DatabaseContext courseDatabaseContext;
     private DatabaseContext examDatabaseContext;
@@ -30,7 +31,7 @@ public class FirebaseConnectionTest {
         MockitoAnnotations.initMocks(this);
 
         FirebaseConnection firebaseConnection;
-        firebaseConnection = new FirebaseConnection(config);
+        firebaseConnection = new FirebaseConnection(context);
 
         courseDatabaseContext = firebaseConnection.getDatabaseMap().get(DatabaseTable.COURSES);
         examDatabaseContext = firebaseConnection.getDatabaseMap().get(DatabaseTable.EXAMS);

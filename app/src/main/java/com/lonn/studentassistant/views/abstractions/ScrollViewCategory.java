@@ -76,93 +76,9 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
         imageView.setImageResource(resourceId);
     }
 
-    protected abstract void initCategoryViewModel();
-
     public void setCategory(final String category) {
         categoryViewModel.category = category;
         categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.category);
-    }
-
-    @Override
-    protected void inflateLayout(Context context) {
-        CategoryLayoutBinding binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.category_layout, this, true);
-        binding.setCategoryModel(categoryViewModel);
-    }
-
-    @Override
-    protected void init(Context context) {
-        super.init(context);
-        initContent();
-        initCategoryViewModel();
-    }
-
-    protected void initContent() {
-        categoryMainLayout = findViewById(R.id.layoutCategoryMain);
-        categoryContentLayout = categoryMainLayout.findViewById(R.id.layoutCategoryContent);
-        categoryHeaderLayout = categoryMainLayout.findViewById(R.id.layoutCategoryHeader);
-        categoryAddLayout = categoryContentLayout.findViewById(R.id.layoutCategoryAdd);
-
-        categoryHeaderLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expanded = !expanded;
-
-                animateExpand();
-            }
-        });
-
-        if (categoryContentLayout.getChildCount() == 1 && !showEmpty) {
-            setVisibility(View.GONE);
-        }
-    }
-
-    private void getAttributesFromSet(AttributeSet set) {
-        TypedArray a = getContext().obtainStyledAttributes(set, R.styleable.ScrollViewCategory);
-        final int N = a.getIndexCount();
-        for (int i = 0; i < N; ++i) {
-            int attr = a.getIndex(i);
-            switch (attr) {
-                case R.styleable.ScrollViewCategory_category_title:
-                    setCategory(a.getString(attr));
-                    break;
-                case R.styleable.ScrollViewCategory_view_type:
-                    viewType = a.getString(attr);
-                    break;
-                case R.styleable.ScrollViewCategory_show_empty:
-                    showEmpty = a.getBoolean(attr, false);
-                    break;
-                case R.styleable.ScrollViewCategory_generate_child_categories:
-                    generateChildCategories = a.getString(attr);
-
-                    if (generateChildCategories != null) {
-                        isEndCategory = generateChildCategories.equals("none");
-                    }
-                    break;
-                case R.styleable.ScrollViewCategory_show_base_header:
-                    categoryViewModel.showHeader = a.getBoolean(attr, true);
-                    break;
-                case R.styleable.ScrollViewCategory_permission_level:
-                    categoryViewModel.permissionLevel = a.getInteger(attr, 0);
-                    break;
-            }
-        }
-        a.recycle();
-    }
-
-    private void animateExpand() {
-        RotateAnimation animation =
-                new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
-                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-        animation.setDuration(500);
-        animation.setFillAfter(true);
-        animation.setFillBefore(true);
-
-        categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
-
-        ExpandAnimation expandAnimation = new ExpandAnimation();
-        expandAnimation.setDuration(500);
-        expandAnimation.start(categoryContentLayout);
     }
 
     public void addOrUpdate(T entity) {
@@ -194,18 +110,6 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
         }
 
         updateEntitiesList(entity);
-    }
-
-    private void updateEntitiesList(T entity) {
-        for (T listEntity : listAllEntities) {
-            if (listEntity.computeKey().equals(entity.computeKey())) {
-                listAllEntities.remove(listEntity);
-                break;
-            }
-        }
-        if (!shouldContain(entity)) {
-            listAllEntities.add(entity);
-        }
     }
 
     public void delete(T entity) {
@@ -304,6 +208,120 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
         }
     }
 
+    protected abstract void initCategoryViewModel();
+
+    @Override
+    protected void inflateLayout(Context context) {
+        CategoryLayoutBinding binding = DataBindingUtil.inflate((LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE), R.layout.category_layout, this, true);
+        binding.setCategoryModel(categoryViewModel);
+    }
+
+    @Override
+    protected void init(Context context) {
+        super.init(context);
+        initContent();
+        initCategoryViewModel();
+    }
+
+    protected void initContent() {
+        categoryMainLayout = findViewById(R.id.layoutCategoryMain);
+        categoryContentLayout = categoryMainLayout.findViewById(R.id.layoutCategoryContent);
+        categoryHeaderLayout = categoryMainLayout.findViewById(R.id.layoutCategoryHeader);
+        categoryAddLayout = categoryContentLayout.findViewById(R.id.layoutCategoryAdd);
+
+        categoryHeaderLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expanded = !expanded;
+
+                animateExpand();
+            }
+        });
+
+        if (categoryContentLayout.getChildCount() == 1 && !showEmpty) {
+            setVisibility(View.GONE);
+        }
+    }
+
+    protected abstract void generateChildCategories(T entity);
+
+    protected void sortChildren() {
+        String[] categories = new String[children.size()];
+        categories = children.keySet().toArray(categories);
+        Arrays.sort(categories);
+
+        for (String childCategory : categories) {
+            View child = children.get(childCategory);
+
+            if (child != null) {
+                child.bringToFront();
+            }
+        }
+
+        categoryAddLayout.bringToFront();
+    }
+
+    private void getAttributesFromSet(AttributeSet set) {
+        TypedArray a = getContext().obtainStyledAttributes(set, R.styleable.ScrollViewCategory);
+        final int N = a.getIndexCount();
+        for (int i = 0; i < N; ++i) {
+            int attr = a.getIndex(i);
+            switch (attr) {
+                case R.styleable.ScrollViewCategory_category_title:
+                    setCategory(a.getString(attr));
+                    break;
+                case R.styleable.ScrollViewCategory_view_type:
+                    viewType = a.getString(attr);
+                    break;
+                case R.styleable.ScrollViewCategory_show_empty:
+                    showEmpty = a.getBoolean(attr, false);
+                    break;
+                case R.styleable.ScrollViewCategory_generate_child_categories:
+                    generateChildCategories = a.getString(attr);
+
+                    if (generateChildCategories != null) {
+                        isEndCategory = generateChildCategories.equals("none");
+                    }
+                    break;
+                case R.styleable.ScrollViewCategory_show_base_header:
+                    categoryViewModel.showHeader = a.getBoolean(attr, true);
+                    break;
+                case R.styleable.ScrollViewCategory_permission_level:
+                    categoryViewModel.permissionLevel = a.getInteger(attr, 0);
+                    break;
+            }
+        }
+        a.recycle();
+    }
+
+    private void animateExpand() {
+        RotateAnimation animation =
+                new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+        animation.setDuration(500);
+        animation.setFillAfter(true);
+        animation.setFillBefore(true);
+
+        categoryHeaderLayout.findViewById(R.id.arrowCategory).startAnimation(animation);
+
+        ExpandAnimation expandAnimation = new ExpandAnimation();
+        expandAnimation.setDuration(500);
+        expandAnimation.start(categoryContentLayout);
+    }
+
+    private void updateEntitiesList(T entity) {
+        for (T listEntity : listAllEntities) {
+            if (listEntity.computeKey().equals(entity.computeKey())) {
+                listAllEntities.remove(listEntity);
+                break;
+            }
+        }
+        if (!shouldContain(entity)) {
+            listAllEntities.add(entity);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private void addChildView(View v) {
         if (v instanceof ScrollViewCategory) {
@@ -334,23 +352,5 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
                 ((ScrollViewCategory) child).viewType = viewType;
             }
         }
-    }
-
-    protected abstract void generateChildCategories(T entity);
-
-    protected void sortChildren() {
-        String[] categories = new String[children.size()];
-        categories = children.keySet().toArray(categories);
-        Arrays.sort(categories);
-
-        for (String childCategory : categories) {
-            View child = children.get(childCategory);
-
-            if (child != null) {
-                child.bringToFront();
-            }
-        }
-
-        categoryAddLayout.bringToFront();
     }
 }
