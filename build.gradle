@@ -4,12 +4,12 @@ buildscript {
     repositories {
         google()
         jcenter()
-        
+
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.2'
-        classpath 'com.google.gms:google-services:4.2.0'
-        
+        classpath 'com.android.tools.build:gradle:3.5.1'
+        classpath 'com.google.gms:google-services:4.3.2'
+
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -20,6 +20,52 @@ allprojects {
         google()
         jcenter()
         mavenCentral()
+    }
+}
+
+subprojects {
+    task printProjName {
+        println ">> " + project.name
+    }
+
+    if (project.name != "firebaselayer")
+        apply plugin: "com.android.application"
+    else
+        apply plugin: "com.android.library"
+
+    android{
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+
+    dependencies {
+        implementation 'androidx.appcompat:appcompat:1.1.0'
+        implementation "org.projectlombok:lombok:1.18.8"
+        implementation "org.slf4j:slf4j-android:1.7.28"
+
+        annotationProcessor "org.projectlombok:lombok:1.18.8"
+
+        // Common test and androidTest dependencies
+        testImplementation "androidx.test.ext:junit:1.1.1"
+        androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+        testImplementation "junit:junit:4.12"
+        androidTestImplementation "junit:junit:4.12"
+
+        // Specific test dependencies
+        testImplementation "org.hamcrest:hamcrest:2.2-rc1"
+        testImplementation "org.projectlombok:lombok:1.18.8"
+        testImplementation "org.slf4j:slf4j-android:1.7.28"
+        testImplementation "org.assertj:assertj-core:3.13.2"
+        testImplementation "org.mockito:mockito-core:3.1.0"
+        testAnnotationProcessor "org.projectlombok:lombok:1.18.8"
+
+        // Specific androidTest dependencies
+        androidTestImplementation 'androidx.test:runner:1.2.0'
+        androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+        androidTestImplementation 'androidx.test:rules:1.2.0'
+        androidTestImplementation 'org.mockito:mockito-android:3.1.0'
     }
 }
 

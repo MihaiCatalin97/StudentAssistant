@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.student.callbacks;
 
-import com.lonn.studentassistant.activities.abstractions.AbstractDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.AbstractDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.responses.CreateResponse;
 import com.lonn.studentassistant.common.responses.DeleteResponse;
@@ -9,9 +9,9 @@ import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.OtherActivity;
 
-public class OtherActivityCallback extends AbstractDatabaseCallback<OtherActivity>
+class OtherActivityCallback extends AbstractDatabaseCallback<OtherActivity>
 {
-    public OtherActivityCallback(StudentActivity activity)
+    OtherActivityCallback(StudentActivity activity)
     {
         super(activity);
     }

@@ -1,24 +1,17 @@
 package com.lonn.studentassistant.activities.implementations.student.callbacks;
 
-import android.util.Log;
-
-import com.lonn.studentassistant.activities.abstractions.AbstractDatabaseCallback;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.AbstractDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
-import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.responses.CreateResponse;
 import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.entities.Student;
 
-import java.util.Collections;
-
-public class ProfessorsCallback extends AbstractDatabaseCallback<Professor>
+class ProfessorsCallback extends AbstractDatabaseCallback<Professor>
 {
-    public ProfessorsCallback(StudentActivity activity)
+    ProfessorsCallback(StudentActivity activity)
     {
         super(activity);
     }

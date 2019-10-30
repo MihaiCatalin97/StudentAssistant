@@ -3,19 +3,16 @@ package com.lonn.studentassistant.activities.abstractions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.core.app.NavUtils;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.GetTokenResult;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.ConnectionBundle;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.views.implementations.EntityView;
@@ -175,4 +172,6 @@ public abstract class ServiceBoundActivity<T extends BaseEntity> extends AppComp
         DialogBuilder builder = new DialogBuilder(ServiceBoundActivity.this, entities, title, positiveButtonText);
         builder.showDialog();
     }
+
+    public abstract void updateEntity(T entity);
 }

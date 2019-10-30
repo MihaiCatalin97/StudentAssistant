@@ -1,12 +1,10 @@
 package com.lonn.studentassistant.viewModels;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
+
 import android.view.View;
-import android.widget.ImageView;
 
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;

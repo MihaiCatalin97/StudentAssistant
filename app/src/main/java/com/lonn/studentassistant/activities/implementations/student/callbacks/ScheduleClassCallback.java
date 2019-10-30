@@ -1,10 +1,9 @@
 package com.lonn.studentassistant.activities.implementations.student.callbacks;
 
 
-import com.lonn.studentassistant.activities.abstractions.AbstractDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.AbstractDatabaseCallback;
 import com.lonn.studentassistant.activities.abstractions.IBusinessLayer;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
-import com.lonn.studentassistant.activities.implementations.student.StudentBusinessLayer;
 import com.lonn.studentassistant.common.responses.CreateResponse;
 import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
@@ -12,9 +11,9 @@ import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.ScheduleClass;
 
-public class ScheduleClassCallback extends AbstractDatabaseCallback<ScheduleClass>
+class ScheduleClassCallback extends AbstractDatabaseCallback<ScheduleClass>
 {
-    public ScheduleClassCallback(StudentActivity activity, IBusinessLayer businessLayer)
+    ScheduleClassCallback(StudentActivity activity, IBusinessLayer businessLayer)
     {
         super(activity, businessLayer);
     }

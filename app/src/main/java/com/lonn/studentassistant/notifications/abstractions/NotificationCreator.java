@@ -2,8 +2,8 @@ package com.lonn.studentassistant.notifications.abstractions;
 
 import android.app.Notification;
 import android.content.Context;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.entities.BaseEntity;

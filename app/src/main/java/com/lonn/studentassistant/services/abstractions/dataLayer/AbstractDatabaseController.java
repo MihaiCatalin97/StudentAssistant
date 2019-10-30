@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -8,10 +8,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.responses.CreateResponse;
-import com.lonn.studentassistant.common.responses.DeleteResponse;
 import com.lonn.studentassistant.common.responses.EditResponse;
 import com.lonn.studentassistant.common.responses.GetAllResponse;
 import com.lonn.studentassistant.common.responses.GetByIdResponse;
@@ -19,7 +18,6 @@ import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.CustomList;
 import com.lonn.studentassistant.services.abstractions.DatabaseService;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,13 +2,10 @@ package com.lonn.studentassistant.services.abstractions.dataLayer;
 
 import android.util.Log;
 
-import com.lonn.studentassistant.activities.abstractions.ICallback;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.CustomList;
-import com.lonn.studentassistant.services.abstractions.DatabaseService;
-import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.services.implementations.credentialsCheckService;
 
-import com.lonn.studentassistant.activities.abstractions.ICallback;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.IDatabaseCallback;
 import com.lonn.studentassistant.common.ConnectionBundle;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.common.requests.CredentialsRequest;

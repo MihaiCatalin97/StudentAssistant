@@ -1,12 +1,13 @@
 package com.lonn.studentassistant.activities.implementations.student;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.activities.implementations.student.callbacks.StudentBusinessLayer;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.OtherActivity;
@@ -21,7 +22,6 @@ import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 public class StudentActivity extends NavBarActivity<Student>
 {
     private StudentViewModel studentViewModel;
-    private ScrollView profilePage;
     private StudentActivityMainLayoutBinding binding;
 
     public ScrollViewCategory<Course> coursesBaseCategory;
@@ -37,7 +37,7 @@ public class StudentActivity extends NavBarActivity<Student>
         super();
     }
 
-    public void updateStudent(Student student)
+    public void updateEntity(Student student)
     {
         if(studentViewModel == null)
         {
@@ -57,17 +57,18 @@ public class StudentActivity extends NavBarActivity<Student>
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        businessLayer = new StudentBusinessLayer(this);
 
         if(getIntent() != null && getIntent().getExtras() != null)
-            businessLayer.editActivityEntity((Student) getIntent().getExtras().getSerializable("student"));
+            businessLayer = new StudentBusinessLayer(this, (Student) getIntent().getExtras().getSerializable("student"));
+        else
+            businessLayer = new StudentBusinessLayer(this, null);
 
         coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
         professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
         otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
         scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
 
-        profilePage = findViewById(R.id.layoutProfile);
+        ScrollView profilePage = findViewById(R.id.layoutProfile);
         coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
         otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
     }

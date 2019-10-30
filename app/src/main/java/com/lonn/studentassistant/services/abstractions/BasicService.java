@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.lonn.studentassistant.common.LocalBinder;
-import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.abstractions.Response;
 
 import java.util.ArrayList;

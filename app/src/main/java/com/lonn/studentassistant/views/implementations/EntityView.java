@@ -2,20 +2,17 @@ package com.lonn.studentassistant.views.implementations;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
 import com.lonn.studentassistant.entities.BaseEntity;
-import com.lonn.studentassistant.entities.Course;
 import com.lonn.studentassistant.entities.Grade;
 import com.lonn.studentassistant.entities.ScheduleClass;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;

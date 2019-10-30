@@ -1,7 +1,6 @@
 package com.lonn.studentassistant.services.abstractions.dataLayer;
 
-import com.lonn.studentassistant.activities.abstractions.ICallback;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.entities.CustomList;

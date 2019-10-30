@@ -1,23 +1,19 @@
 package com.lonn.studentassistant.services.abstractions;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.firebase.FirebaseApp;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.IDatabaseCallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
-import com.lonn.studentassistant.common.abstractions.Response;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
 import com.lonn.studentassistant.common.requests.GetAllRequest;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
-import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.requests.EditRequest;
 import com.lonn.studentassistant.common.responses.CreateResponse;
 import com.lonn.studentassistant.common.responses.DeleteResponse;
@@ -27,7 +23,6 @@ import com.lonn.studentassistant.common.responses.GetByIdResponse;
 import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.notifications.abstractions.NotificationCreator;
 import com.lonn.studentassistant.services.abstractions.dataLayer.AbstractRepository;
-import com.lonn.studentassistant.services.implementations.coursesService.CourseService;
 
 import java.util.ArrayList;
 import java.util.List;

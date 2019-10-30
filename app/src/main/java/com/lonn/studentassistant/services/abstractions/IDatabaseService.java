@@ -1,8 +1,7 @@
 package com.lonn.studentassistant.services.abstractions;
 
-import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;
-import com.lonn.studentassistant.common.abstractions.Response;
 import com.lonn.studentassistant.common.requests.CreateRequest;
 import com.lonn.studentassistant.common.requests.DeleteRequest;
 import com.lonn.studentassistant.common.requests.GetAllRequest;

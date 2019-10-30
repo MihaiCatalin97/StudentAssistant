@@ -1,9 +1,8 @@
 package com.lonn.studentassistant.activities.implementations.authentication.callbacks;
 
 import android.content.Intent;
-import android.util.Log;
 
-import com.lonn.studentassistant.activities.abstractions.AbstractDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.AbstractDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.responses.CreateResponse;

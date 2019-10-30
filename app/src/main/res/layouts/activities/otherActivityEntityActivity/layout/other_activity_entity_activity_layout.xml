@@ -6,7 +6,7 @@
             type="com.lonn.studentassistant.viewModels.OtherActivityViewModel"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/solid_background"
@@ -93,10 +93,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:category_title="Schedule"
-                    app:view_type="partial"/>
+                    app:view_type="partial"
+                    app:generate_child_categories="days"/>
 
             </LinearLayout>
         </ScrollView>
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

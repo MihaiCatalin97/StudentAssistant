@@ -11,23 +11,20 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ICallback;
 import com.lonn.studentassistant.activities.implementations.authentication.callbacks.CredentialsCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.callbacks.LoginCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.callbacks.StudentCallback;
 import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
 import com.lonn.studentassistant.common.requests.CredentialsRequest;
 import com.lonn.studentassistant.common.requests.GetByIdRequest;
-import com.lonn.studentassistant.common.responses.CredentialsResponse;
-import com.lonn.studentassistant.common.responses.LoginResponse;
 import com.lonn.studentassistant.common.requests.LoginRequest;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.entities.BaseEntity;
 import com.lonn.studentassistant.services.implementations.credentialsCheckService.CredentialsCheckService;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.entities.Student;
 import com.lonn.studentassistant.services.implementations.loginService.LoginService;
 import com.lonn.studentassistant.services.implementations.registerService.RegisterService;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.services.implementations.studentService.StudentService;
 
 import java.util.HashMap;
@@ -307,4 +304,7 @@ public class AuthenticationActivity extends ServiceBoundActivity
 
     public void tapAdd(View v)
     {}
+
+    public void updateEntity(BaseEntity e)
+    { }
 }

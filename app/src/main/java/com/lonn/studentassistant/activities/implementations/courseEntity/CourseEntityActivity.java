@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.courseEntity;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,7 +19,7 @@ import com.lonn.studentassistant.viewModels.CourseViewModel;
 import com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory;
 import com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory;
 
-public class CourseEntityActivity extends ServiceBoundActivity
+public class CourseEntityActivity extends ServiceBoundActivity<Course>
 {
     private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;
@@ -84,4 +84,7 @@ public class CourseEntityActivity extends ServiceBoundActivity
 
     public void tapAdd(View v)
     {}
+
+    public void updateEntity(Course e)
+    { }
 }

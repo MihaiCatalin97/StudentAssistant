@@ -1,8 +1,5 @@
 package com.lonn.studentassistant.entities;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.lonn.studentassistant.R;
@@ -15,8 +12,6 @@ public class Professor extends BaseEntity
 {
     @Exclude
     public int professorImage = R.drawable.ic_default_picture_person;
-    @Exclude
-    private String professorKey;
     @Exclude
     public String scheduleLink;
 
@@ -81,6 +76,28 @@ public class Professor extends BaseEntity
                 p.email.equals(email) &&
                 p.level.equals(level) &&
                 p.phoneNumber.equals(phoneNumber);
+    }
+
+    @Override
+    public Professor clone()
+    {
+        Professor result = new Professor();
+
+        result.firstName = firstName;
+        result.lastName = lastName;
+        result.email = email;
+        result.phoneNumber = phoneNumber;
+        result.level = level;
+        result.website = website;
+        result.cabinet = cabinet;
+        result.professorImage = professorImage;
+        result.scheduleLink = scheduleLink;
+
+        result.courses = new LinkedList<>(courses);
+        result.otherActivities = new LinkedList<>(otherActivities);
+        result.scheduleClasses = new LinkedList<>(scheduleClasses);
+
+        return result;
     }
 
 }

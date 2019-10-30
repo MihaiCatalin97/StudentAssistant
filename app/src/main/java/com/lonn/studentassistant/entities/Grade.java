@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.entities;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.firebase.database.Exclude;
 

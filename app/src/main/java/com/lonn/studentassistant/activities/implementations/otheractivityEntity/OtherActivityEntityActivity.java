@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.otheractivityEntity;
 
-import android.databinding.DataBindingUtil;
+import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
 
@@ -18,7 +18,7 @@ import com.lonn.studentassistant.services.implementations.scheduleService.Schedu
 import com.lonn.studentassistant.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class OtherActivityEntityActivity extends ServiceBoundActivity
+public class OtherActivityEntityActivity extends ServiceBoundActivity<OtherActivity>
 {
     private OtherActivityEntityActivityLayoutBinding binding;
     private boolean loadedRelatedEntities =false;
@@ -83,4 +83,7 @@ public class OtherActivityEntityActivity extends ServiceBoundActivity
 
     public void tapAdd(View v)
     {}
+
+    public void updateEntity(OtherActivity e)
+    { }
 }

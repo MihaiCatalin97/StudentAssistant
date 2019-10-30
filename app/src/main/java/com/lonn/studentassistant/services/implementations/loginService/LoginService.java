@@ -1,15 +1,14 @@
 package com.lonn.studentassistant.services.implementations.loginService;
 
-import android.os.Handler;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ICallback;
-import com.lonn.studentassistant.activities.abstractions.IDatabaseCallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.IDatabaseCallback;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthSharedPrefs;
 import com.lonn.studentassistant.common.ConnectionBundle;
 import com.lonn.studentassistant.common.abstractions.DatabaseResponse;

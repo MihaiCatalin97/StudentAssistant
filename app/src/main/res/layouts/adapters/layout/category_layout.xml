@@ -62,7 +62,7 @@
                 android:textSize="18sp"
                 android:text="@{categoryModel.category}"/>
 
-            <android.support.v7.widget.AppCompatImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/arrowCategory"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"

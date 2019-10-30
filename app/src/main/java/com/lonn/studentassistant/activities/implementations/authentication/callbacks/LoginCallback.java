@@ -1,10 +1,7 @@
 package com.lonn.studentassistant.activities.implementations.authentication.callbacks;
 
-import android.content.Intent;
-
-import com.lonn.studentassistant.activities.abstractions.ICallback;
+import com.lonn.studentassistant.activities.abstractions.callbacks.ICallback;
 import com.lonn.studentassistant.activities.implementations.authentication.AuthenticationActivity;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.common.responses.LoginResponse;
 

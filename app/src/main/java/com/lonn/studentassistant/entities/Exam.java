@@ -1,12 +1,9 @@
 package com.lonn.studentassistant.entities;
 
-import android.support.annotation.NonNull;
-
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Exam extends BaseEntity
