@@ -26,15 +26,33 @@ public enum DatabaseTable {
         this.tableClass = tableClass;
     }
 
+    public static DatabaseTable valueOf(Class<? extends BaseEntity> tableClass) {
+        if (tableClass.equals(Course.class)) {
+            return COURSES;
+        }
+        if (tableClass.equals(Exam.class)) {
+            return EXAMS;
+        }
+        if (tableClass.equals(Grade.class)) {
+            return GRADES;
+        }
+        if (tableClass.equals(OtherActivity.class)) {
+            return OTHER_ACTIVITIES;
+        }
+        if (tableClass.equals(Professor.class)) {
+            return PROFESSORS;
+        }
+        if (tableClass.equals(ScheduleClass.class)) {
+            return SCHEDULE_CLASSES;
+        }
+        if (tableClass.equals(Student.class)) {
+            return STUDENTS;
+        }
+
+        return USERS;
+    }
+
     public Class<? extends BaseEntity> getTableClass() {
         return tableClass;
-    }
-
-    public boolean isGlobalTable() {
-        return true;
-    }
-
-    public boolean isUserSpecificTable() {
-        return !isGlobalTable();
     }
 }

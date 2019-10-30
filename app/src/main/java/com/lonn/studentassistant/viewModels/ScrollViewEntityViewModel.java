@@ -7,22 +7,20 @@ import com.lonn.studentassistant.activities.implementations.courseEntity.CourseE
 import com.lonn.studentassistant.activities.implementations.otheractivityEntity.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.professorEntity.ProfessorEntityActivity;
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.BaseEntity;
-import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.entities.OtherActivity;
-import com.lonn.studentassistant.entities.Professor;
-import com.lonn.studentassistant.entities.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.models.Professor;
+import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 
-public class ScrollViewEntityViewModel extends BaseObservable
-{
+public class ScrollViewEntityViewModel extends BaseObservable {
     public Class entityActivityClass;
     @Bindable
     public int permissionLevel = 0, image = 0;
     @Bindable
     public String field1, field2, field3, field4;
 
-    public ScrollViewEntityViewModel(int image, String field1, String field2, String field3, Class entityActivityClass)
-    {
+    public ScrollViewEntityViewModel(int image, String field1, String field2, String field3, Class entityActivityClass) {
         this.image = image;
         this.field1 = field1;
         this.field2 = field2;
@@ -30,8 +28,7 @@ public class ScrollViewEntityViewModel extends BaseObservable
         this.entityActivityClass = entityActivityClass;
     }
 
-    public ScrollViewEntityViewModel(String field1, String field2, String field3, String field4, Class entityActivityClass)
-    {
+    public ScrollViewEntityViewModel(String field1, String field2, String field3, String field4, Class entityActivityClass) {
         this.field1 = field1;
         this.field2 = field2;
         this.field3 = field3;
@@ -39,80 +36,76 @@ public class ScrollViewEntityViewModel extends BaseObservable
         this.entityActivityClass = entityActivityClass;
     }
 
-    public ScrollViewEntityViewModel(String field1, String field2, String field3, Class entityActivityClass)
-    {
+    public ScrollViewEntityViewModel(String field1, String field2, String field3, Class entityActivityClass) {
         this.field1 = field1;
         this.field2 = field2;
         this.field3 = field3;
         this.entityActivityClass = entityActivityClass;
     }
 
-    public static ScrollViewEntityViewModel partial(Course course)
-    {
-        String title = course.courseName;
-        String subtitle = course.pack==0?"Mandatory course":"Optional course (pack " + Integer.toString(course.pack) + ")";
+    public static ScrollViewEntityViewModel partial(Course course) {
+        String title = course.getCourseName();
+        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + Integer.toString(course.getPack()) + ")";
         String description;
 
-        if(course.website == null)
-            description = course.description;
-        else
-            description = course.website;
+        if (course.getWebsite() == null) {
+            description = course.getDescription();
+        }
+        else {
+            description = course.getWebsite();
+        }
 
         return new ScrollViewEntityViewModel(title, subtitle, description, CourseEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel full(Course course)
-    {
-        String title = course.courseName;
-        String subtitle = course.pack==0?"Mandatory course":"Optional course (pack " + Integer.toString(course.pack) + ")";
-        String description = Utils.yearToString(course.year) + ", " + Utils.semesterToString(course.semester);
+    public static ScrollViewEntityViewModel full(Course course) {
+        String title = course.getCourseName();
+        String subtitle = course.getPack() == 0 ? "Mandatory course" : "Optional course (pack " + Integer.toString(course.getPack()) + ")";
+        String description = Utils.yearToString(course.getYear()) + ", " + Utils.semesterToString(course.getSemester());
 
         return new ScrollViewEntityViewModel(title, subtitle, description, CourseEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel partial(Professor professor)
-    {
-        String title = professor.level + " " + professor.lastName + " " + professor.firstName;
-        String subtitle = "Cabinet: " + professor.cabinet;
-        String description = professor.email;
+    public static ScrollViewEntityViewModel partial(Professor professor) {
+        String title = professor.getLevel() + " " + professor.getLastName() + " " + professor.getFirstName();
+        String subtitle = "Cabinet: " + professor.getCabinet();
+        String description = professor.getEmail();
 
-        return new ScrollViewEntityViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
+        return new ScrollViewEntityViewModel(professor.getProfessorImage(), title, subtitle, description, ProfessorEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel full(Professor professor)
-    {
-        String title = professor.level + " " + professor.lastName + " " + professor.firstName;
-        String subtitle = "Cabinet: " + professor.cabinet;
-        String description = professor.email;
+    public static ScrollViewEntityViewModel full(Professor professor) {
+        String title = professor.getLevel() + " " + professor.getLastName() + " " + professor.getFirstName();
+        String subtitle = "Cabinet: " + professor.getCabinet();
+        String description = professor.getEmail();
 
-        return new ScrollViewEntityViewModel(professor.professorImage, title, subtitle, description, ProfessorEntityActivity.class);
+        return new ScrollViewEntityViewModel(professor.getProfessorImage(), title, subtitle, description, ProfessorEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel partial(OtherActivity otherActivity)
-    {
-        String title = otherActivity.activityName;
-        String subtitle = otherActivity.type;
-        String description = Utils.yearToString(otherActivity.year) + ", " + Utils.semesterToString(otherActivity.semester);
+    public static ScrollViewEntityViewModel partial(OtherActivity otherActivity) {
+        String title = otherActivity.getActivityName();
+        String subtitle = otherActivity.getType();
+        String description = Utils.yearToString(otherActivity.getYear()) + ", " + Utils.semesterToString(otherActivity.getSemester());
 
         return new ScrollViewEntityViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel full(OtherActivity otherActivity)
-    {
-        String title = otherActivity.activityName;
-        String subtitle = Utils.yearToString(otherActivity.year) + ", " + Utils.semesterToString(otherActivity.semester);
+    public static ScrollViewEntityViewModel full(OtherActivity otherActivity) {
+        String title = otherActivity.getActivityName();
+        String subtitle = Utils.yearToString(otherActivity.getYear()) + ", " + Utils.semesterToString(otherActivity.getSemester());
         String description;
 
-        if(otherActivity.website == null)
-            description = otherActivity.description;
-        else
-            description = otherActivity.website;
+        if (otherActivity.getWebsite() == null) {
+            description = otherActivity.getDescription();
+        }
+        else {
+            description = otherActivity.getWebsite();
+        }
 
         return new ScrollViewEntityViewModel(title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    public static ScrollViewEntityViewModel partial(ScheduleClass scheduleClass)
-    {
+    public static ScrollViewEntityViewModel partial(ScheduleClass scheduleClass) {
         ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
         String field1 = model.getHours();
         String field2 = model.getCourseName();
@@ -122,8 +115,7 @@ public class ScrollViewEntityViewModel extends BaseObservable
         return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }
 
-    public static ScrollViewEntityViewModel full(ScheduleClass scheduleClass)
-    {
+    public static ScrollViewEntityViewModel full(ScheduleClass scheduleClass) {
         ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
         String field1 = model.getHours();
         String field2 = model.getCourseName();
@@ -133,47 +125,50 @@ public class ScrollViewEntityViewModel extends BaseObservable
         return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }
 
-    public static ScrollViewEntityViewModel partial(BaseEntity entity)
-    {
-        if(entity instanceof Course)
-            return partial((Course)entity);
-        if(entity instanceof Professor)
-            return partial((Professor)entity);
-        if(entity instanceof OtherActivity)
-            return partial((OtherActivity)entity);
-        if(entity instanceof ScheduleClass)
-            return partial((ScheduleClass)entity);
+    public static ScrollViewEntityViewModel partial(BaseEntity entity) {
+        if (entity instanceof Course) {
+            return partial((Course) entity);
+        }
+        if (entity instanceof Professor) {
+            return partial((Professor) entity);
+        }
+        if (entity instanceof OtherActivity) {
+            return partial((OtherActivity) entity);
+        }
+        if (entity instanceof ScheduleClass) {
+            return partial((ScheduleClass) entity);
+        }
         return null;
     }
 
-    public static ScrollViewEntityViewModel full(BaseEntity entity)
-    {
-        if(entity instanceof Course)
-            return full((Course)entity);
-        if(entity instanceof Professor)
-            return full((Professor)entity);
-        if(entity instanceof OtherActivity)
-            return full((OtherActivity)entity);
-        if(entity instanceof ScheduleClass)
-            return full((ScheduleClass)entity);
+    public static ScrollViewEntityViewModel full(BaseEntity entity) {
+        if (entity instanceof Course) {
+            return full((Course) entity);
+        }
+        if (entity instanceof Professor) {
+            return full((Professor) entity);
+        }
+        if (entity instanceof OtherActivity) {
+            return full((OtherActivity) entity);
+        }
+        if (entity instanceof ScheduleClass) {
+            return full((ScheduleClass) entity);
+        }
         return null;
     }
 
     @Bindable
-    public int getField2LineCount()
-    {
+    public int getField2LineCount() {
         return field2.split("\n").length;
     }
 
     @Bindable
-    public int getField3LineCount()
-    {
+    public int getField3LineCount() {
         return field3.split("\n").length;
     }
 
     @Bindable
-    public int getField4LineCount()
-    {
+    public int getField4LineCount() {
         return field4.split("\n").length;
     }
 }

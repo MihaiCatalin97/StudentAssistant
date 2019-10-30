@@ -6,17 +6,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 
-public class OtherActivitySemesterCategory extends OtherActivityBaseCategory
-{
-    public OtherActivitySemesterCategory(Context context)
-    {
+public class OtherActivitySemesterCategory extends OtherActivityBaseCategory {
+    public OtherActivitySemesterCategory(Context context) {
         super(context);
     }
 
-    public OtherActivitySemesterCategory(Context context, AttributeSet attrs)
-    {
+    public OtherActivitySemesterCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -29,11 +26,10 @@ public class OtherActivitySemesterCategory extends OtherActivityBaseCategory
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(OtherActivity otherActivity)
-    {
-        return Utils.semesterToString(otherActivity.semester).equals(categoryViewModel.category);
+    public boolean shouldContain(OtherActivity otherActivity) {
+        return Utils.semesterToString(otherActivity.getSemester()).equals(categoryViewModel.category);
     }
 
-    public void generateChildCategories(OtherActivity otherActivity)
-    {}
+    public void generateChildCategories(OtherActivity otherActivity) {
+    }
 }

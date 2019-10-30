@@ -6,17 +6,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.firebaselayer.models.Course;
 
-public class CourseYearCategory extends CourseBaseCategory
-{
-    public CourseYearCategory(Context context)
-    {
+public class CourseYearCategory extends CourseBaseCategory {
+    public CourseYearCategory(Context context) {
         super(context);
     }
 
-    public CourseYearCategory(Context context, AttributeSet attrs)
-    {
+    public CourseYearCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -29,11 +26,10 @@ public class CourseYearCategory extends CourseBaseCategory
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(Course course)
-    {
-        return Utils.yearToString(course.year).equals(categoryViewModel.category);
+    public boolean shouldContain(Course course) {
+        return Utils.yearToString(course.getYear()).equals(categoryViewModel.category);
     }
 
-    public void generateChildCategories(Course course)
-    {}
+    public void generateChildCategories(Course course) {
+    }
 }

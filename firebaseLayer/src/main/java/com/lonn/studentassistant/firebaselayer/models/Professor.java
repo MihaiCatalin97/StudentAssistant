@@ -1,14 +1,10 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
-import com.google.firebase.database.Exclude;
-
 import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
 @Data

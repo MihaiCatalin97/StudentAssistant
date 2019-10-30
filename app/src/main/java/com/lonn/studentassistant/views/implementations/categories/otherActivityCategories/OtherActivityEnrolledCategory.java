@@ -5,19 +5,14 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
-import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
-import com.lonn.studentassistant.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 
-public class OtherActivityEnrolledCategory extends OtherActivityBaseCategory
-{
-    public OtherActivityEnrolledCategory(Context context)
-    {
+public class OtherActivityEnrolledCategory extends OtherActivityBaseCategory {
+    public OtherActivityEnrolledCategory(Context context) {
         super(context);
     }
 
-    public OtherActivityEnrolledCategory(Context context, AttributeSet attrs)
-    {
+    public OtherActivityEnrolledCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -26,16 +21,14 @@ public class OtherActivityEnrolledCategory extends OtherActivityBaseCategory
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OtherActivityEnrolledCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
-    {
+    public OtherActivityEnrolledCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(OtherActivity otherActivity)
-    {
-        return ServiceBoundActivity.getCurrentActivity().getBusinessLayer().containsReferenceToEntity(otherActivity.getKey());
+    public boolean shouldContain(OtherActivity otherActivity) {
+        return true;
     }
 
-    public void generateChildCategories(OtherActivity otherActivity)
-    {}
+    public void generateChildCategories(OtherActivity otherActivity) {
+    }
 }

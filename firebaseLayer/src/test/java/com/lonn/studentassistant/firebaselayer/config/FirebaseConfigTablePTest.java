@@ -1,7 +1,5 @@
 package com.lonn.studentassistant.firebaselayer.config;
 
-import android.content.Context;
-
 import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
 
 import org.junit.Before;

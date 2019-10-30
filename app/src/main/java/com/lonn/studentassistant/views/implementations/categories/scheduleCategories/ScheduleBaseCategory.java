@@ -5,20 +5,16 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass>
-{
-    public ScheduleBaseCategory(Context context)
-    {
+public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass> {
+    public ScheduleBaseCategory(Context context) {
         super(context);
     }
 
-    public ScheduleBaseCategory(Context context, AttributeSet attrs)
-    {
+    public ScheduleBaseCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -31,18 +27,14 @@ public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass>
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(ScheduleClass scheduleClass)
-    {
+    public boolean shouldContain(ScheduleClass scheduleClass) {
         return true;
     }
 
-    public void generateChildCategories(ScheduleClass scheduleClass)
-    {
-        if(generateChildCategories.equals("days"))
-        {
-            String dayString = Utils.dayToString(scheduleClass.day);
-            if (children.get(dayString) == null)
-            {
+    public void generateChildCategories(ScheduleClass scheduleClass) {
+        if (generateChildCategories.equals("days")) {
+            String dayString = Utils.dayToString(scheduleClass.getDay());
+            if (children.get(dayString) == null) {
                 ScheduleDayCategory newCategory = new ScheduleDayCategory(getContext());
                 newCategory.setCategory(dayString);
                 addView(newCategory);
@@ -51,10 +43,9 @@ public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass>
         }
     }
 
-    protected void initCategoryViewModel()
-    {
+    protected void initCategoryViewModel() {
         categoryViewModel.entityName = "schedule class";
 
-        categoryViewModel.notifyPropertyChanged(BR.entityName);
+        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }
 }

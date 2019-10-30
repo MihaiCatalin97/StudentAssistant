@@ -8,7 +8,6 @@ import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface IDatabaseContext<T extends BaseEntity> {
     void saveOrUpdate(T entity, Runnable onSuccess, OnErrorCallback<Exception> onError);

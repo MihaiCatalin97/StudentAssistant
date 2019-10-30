@@ -5,19 +5,15 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
-{
-    public OtherActivityBaseCategory(Context context)
-    {
+public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity> {
+    public OtherActivityBaseCategory(Context context) {
         super(context);
     }
 
-    public OtherActivityBaseCategory(Context context, AttributeSet attrs)
-    {
+    public OtherActivityBaseCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -30,31 +26,26 @@ public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(OtherActivity otherActivity)
-    {
+    public boolean shouldContain(OtherActivity otherActivity) {
         return true;
     }
 
-    public void generateChildCategories(OtherActivity otherActivity)
-    {
-        if(generateChildCategories.equals("types"))
-        {
-            if (children.get(otherActivity.type) == null)
-            {
+    public void generateChildCategories(OtherActivity otherActivity) {
+        if (generateChildCategories.equals("types")) {
+            if (children.get(otherActivity.getType()) == null) {
                 OtherActivityTypeCategory newCategory = new OtherActivityTypeCategory(getContext());
-                newCategory.setCategory(otherActivity.type);
+                newCategory.setCategory(otherActivity.getType());
                 addView(newCategory);
-                children.put(otherActivity.type, newCategory);
+                children.put(otherActivity.getType(), newCategory);
             }
 
             sortChildren();
         }
     }
 
-    protected void initCategoryViewModel()
-    {
+    protected void initCategoryViewModel() {
         categoryViewModel.entityName = "other activity";
 
-        categoryViewModel.notifyPropertyChanged(BR.entityName);
+        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }
 }

@@ -1,74 +1,53 @@
 package com.lonn.studentassistant.debug;
 
-import com.lonn.studentassistant.entities.Student;
-import com.lonn.studentassistant.services.implementations.gradeService.dataAccessLayer.GradeRepository;
-import com.lonn.studentassistant.services.implementations.professorService.dataAccessLayer.ProfessorRepository;
-import com.lonn.studentassistant.services.implementations.studentService.dataAccessLayer.StudentRepository;
-import com.lonn.studentassistant.services.implementations.userService.dataAccessLayer.UserRepository;
-import com.lonn.studentassistant.services.implementations.coursesService.dataAccessLayer.CourseRepository;
+import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
+import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
-import java.util.ArrayList;
-import java.util.List;
+public class DatabasePopulator {
+    private FirebaseConnection firebaseConnection;
 
-public class DatabasePopulator
-{
-    private StudentRepository studentRepository;
-    private UserRepository userRepository;
-    private CourseRepository courseRepository;
-    private GradeRepository gradeRepository;
-    private ProfessorRepository professorRepository;
-
-    public DatabasePopulator()
-    {
-        studentRepository = StudentRepository.getInstance(null);
-        userRepository = UserRepository.getInstance(null);
-        courseRepository = CourseRepository.getInstance(null);
-        gradeRepository = GradeRepository.getInstance(null);
-        professorRepository = ProfessorRepository.getInstance(null);
+    public DatabasePopulator(FirebaseConnection firebaseConnection) {
+        this.firebaseConnection = firebaseConnection;
     }
 
-    public void deleteUsersTable()
-    {
-        userRepository.remove(userRepository.getAll());
+    public void deleteUsersTable() {
+        firebaseConnection.execute(new DeleteAllRequest().databaseTable(DatabaseTable.USERS));
     }
 
-    public void populateStudentsTable()
-    {
-        List<Student> newStudents = new ArrayList<>();
-
-        newStudents.add(new Student("1", "Mihai", "Catalin", "R", "cmihai@gmail.com", "0742664239", 3, "B5"));
-        newStudents.add(new Student("2", "Tanasuca", "Bogdan", "R", "btanasuca@gmail.com", "0742664239", 3, "B5"));
-        newStudents.add(new Student("3", "Cretu", "Marius", "R", "mcretu@gmail.com", "0742664239", 3, "B5"));
-        newStudents.add(new Student("4", "Borceanu", "Florin", "R", "bflorin@gmail.com", "0742664239", 3, "B5"));
-        newStudents.add(new Student("5", "Andro", "Bianca", "R", "bandro@gmail.com", "0742664239", 3, "B5"));
-        newStudents.add(new Student("6", "Hurbea", "Razvan", "R", "rhurbea@gmail.com", "0742664239", 3, "A1"));
-
-        studentRepository.add(newStudents);
+    public void populateStudentsTable() {
+        firebaseConnection.execute(new SaveRequest<Student>()
+                .entity(new Student()
+                        .setStudentId("1")
+                        .setLastName("Mihai")
+                        .setFirstName("Catalin")
+                        .setFatherInitial("R")
+                        .setEmail("email1.com")
+                        .setPhoneNumber("0742664239")
+                        .setGroup("B5")
+                        .setYear(3)));
     }
 
-    public void deleteStudentsTable()
-    {
-        studentRepository.remove(studentRepository.getAll());
+    public void deleteStudentsTable() {
+        firebaseConnection.execute(new DeleteAllRequest()
+                .databaseTable(DatabaseTable.STUDENTS));
     }
 
-    public void deleteCoursesTable()
-    {
-        courseRepository.remove(courseRepository.getAll());
+    public void deleteCoursesTable() {
+        firebaseConnection.execute(new DeleteAllRequest()
+                .databaseTable(DatabaseTable.COURSES));
     }
 
-    public void deleteProfessorsTable()
-    {
-        professorRepository.remove(professorRepository.getAll());
+    public void deleteProfessorsTable() {
+        firebaseConnection.execute(new DeleteAllRequest()
+                .databaseTable(DatabaseTable.PROFESSORS));
     }
-
-    public void populateGradesTable()
-    {
-
-    }
-
-    public void parseSchedule()
-    {
-        URLParser conn = new URLParser("https://profs.info.uaic.ro/~orar/orar_profesori.html");
-        conn.parse();
-    }
+//
+//    public void parseSchedule() {
+//        URLParser conn = new URLParser("https://profs.info.uaic.ro/~orar/orar_profesori.html",
+//                firebaseConnection);
+//        conn.parse();
+//    }
 }

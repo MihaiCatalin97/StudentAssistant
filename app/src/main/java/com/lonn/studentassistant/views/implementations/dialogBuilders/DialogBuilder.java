@@ -6,24 +6,20 @@ import android.content.DialogInterface;
 import android.view.Window;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
-import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class DialogBuilder extends AlertDialog.Builder
-{
+public class DialogBuilder extends AlertDialog.Builder {
     private List<Integer> checkedItems = new LinkedList<>();
 
-    public DialogBuilder(Context context, final List<BaseEntity> entities, String title, String positiveButtonText)
-    {
+    public DialogBuilder(Context context, final List<BaseEntity> entities, String title, String positiveButtonText) {
         super(context, R.style.DialogTheme);
 
         String[] titles = new String[entities.size()];
 
-        for(int i=0;i<entities.size();i++)
-        {
+        for (int i = 0; i < entities.size(); i++) {
             titles[i] = entities.get(i).toString();
         }
 
@@ -32,55 +28,43 @@ public class DialogBuilder extends AlertDialog.Builder
                 null,
                 new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked)
-                    {
-                        if(isChecked)
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (isChecked) {
                             checkedItems.add(which);
-                        else
+                        }
+                        else {
                             checkedItems.remove(Integer.valueOf(which));
+                        }
                     }
                 }
         );
 
-        setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener()
-        {
+        setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
-
-                for(Integer position : checkedItems)
-                {
-                    ServiceBoundActivity.getCurrentActivity().getBusinessLayer().addEntityToList(entities.get(position));
-                }
-
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
 
-        setNegativeButton("Cancel", new DialogInterface.OnClickListener()
-        {
+        setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
     }
 
-    public void showDialog()
-    {
+    public void showDialog() {
         final AlertDialog dialog = create();
 
-        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onShow(DialogInterface arg0)
-            {
+            public void onShow(DialogInterface arg0) {
                 Window dialogWindow = dialog.getWindow();
 
                 dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
                 dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
 
-                if(dialogWindow != null)
-                {
+                if (dialogWindow != null) {
                     dialogWindow.setBackgroundDrawableResource(R.drawable.dark_stroke_solid_background);
                 }
             }

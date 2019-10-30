@@ -1,62 +1,57 @@
 package com.lonn.studentassistant.viewModels;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import android.view.View;
 
-import com.lonn.studentassistant.BR;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.models.Course;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseViewModel extends BaseObservable
-{
+public class CourseViewModel extends BaseObservable {
     @Bindable
     public String courseName, description, website;
 
     public int pack, semester, year;
-    public List<Professor> professors;
+    public List<String> professors;
 
-    public CourseViewModel(Course course)
-    {
+    public CourseViewModel(Course course) {
         update(course);
     }
 
-    public void update(Course course)
-    {
-        this.courseName = course.courseName;
-        this.pack = course.pack;
-        this.semester = course.semester;
-        this.year = course.year;
-        this.description = course.description;
-        this.professors = new ArrayList<>(course.professorEntities);
-        this.website = course.website;
+    public void update(Course course) {
+        this.courseName = course.getCourseName();
+        this.pack = course.getPack();
+        this.semester = course.getSemester();
+        this.year = course.getYear();
+        this.description = course.getDescription();
+        this.professors = new ArrayList<>(course.getProfessors());
+        this.website = course.getWebsite();
 
-        notifyPropertyChanged(BR._all);
+        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
     }
 
     @Bindable
-    public String getCourseType()
-    {
-        if(pack == 0)
+    public String getCourseType() {
+        if (pack == 0) {
             return "Mandatory course";
-        else
+        }
+        else {
             return "Optional course (Pack " + Integer.toString(pack) + ")";
+        }
     }
 
     @Bindable
-    public String getCourseYearSemester()
-    {
+    public String getCourseYearSemester() {
         return Utils.yearToString(year) + ", " + Utils.semesterToString(semester);
     }
 
     @Bindable
-    public int getWebsiteVisible()
-    {
-        return (website != null)? View.VISIBLE : View.GONE;
+    public int getWebsiteVisible() {
+        return (website != null) ? View.VISIBLE : View.GONE;
     }
 
 }

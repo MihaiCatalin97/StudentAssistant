@@ -6,19 +6,15 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.entities.Course;
+import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class CourseBaseCategory extends ScrollViewCategory<Course>
-{
-    public CourseBaseCategory(Context context)
-    {
+public class CourseBaseCategory extends ScrollViewCategory<Course> {
+    public CourseBaseCategory(Context context) {
         super(context);
     }
 
-    public CourseBaseCategory(Context context, AttributeSet attrs)
-    {
+    public CourseBaseCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -31,30 +27,25 @@ public class CourseBaseCategory extends ScrollViewCategory<Course>
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(Course course)
-    {
+    public boolean shouldContain(Course course) {
         return true;
     }
 
-    protected void initCategoryViewModel()
-    {
+    protected void initCategoryViewModel() {
         categoryViewModel.entityName = "course";
 
-        if(getClass().getSimpleName().toLowerCase().contains("enrolled"))
-        {
+        if (getClass().getSimpleName().toLowerCase().contains("enrolled")) {
             categoryViewModel.entityName = "optional course";
-            categoryAddLayout.setOnClickListener(new OnClickListener()
-            {
+            categoryAddLayout.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(View v)
-                {
+                public void onClick(View v) {
                 }
             });
         }
 
-        categoryViewModel.notifyPropertyChanged(BR.entityName);
+        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }
 
-    public void generateChildCategories(Course course)
-    {}
+    public void generateChildCategories(Course course) {
+    }
 }

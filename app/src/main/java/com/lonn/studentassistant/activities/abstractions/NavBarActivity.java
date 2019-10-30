@@ -2,35 +2,32 @@ package com.lonn.studentassistant.activities.abstractions;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.core.app.NavUtils;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NavUtils;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.entities.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.viewModels.UserViewModel;
 
 
 public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundActivity<T> implements NavigationView.OnNavigationItemSelectedListener {
     private int logoutCount = 0;
 
-    public NavBarActivity()
-    {
+    public NavBarActivity() {
         super();
     }
 
@@ -39,8 +36,9 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
         super.onCreate(savedInstanceState);
         initializeNavBar();
 
-        if(FirebaseAuth.getInstance().getCurrentUser() == null)
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             NavUtils.navigateUpFromSameTask(this);
+        }
     }
 
     public abstract void handleNavBarAction(int id);
@@ -66,17 +64,14 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id)
-        {
+        switch (id) {
             case R.id.action_settings: {
                 return true;
             }
-            case R.id.action_sensors:
-            {
+            case R.id.action_sensors: {
                 return true;
             }
-            case R.id.action_terms:
-            {
+            case R.id.action_terms: {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                 builder.setMessage("These are the terms and conditions")
@@ -93,8 +88,7 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
 
                 return true;
             }
-            case R.id.action_logout:
-            {
+            case R.id.action_logout: {
                 FirebaseAuth.getInstance().signOut();
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
@@ -109,22 +103,21 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            if (logoutCount == 0)
+        }
+        else {
+            if (logoutCount == 0) {
                 Toast.makeText(getBaseContext(), "Press twice to log out!", Toast.LENGTH_SHORT).show();
-            else
-            {
+            }
+            else {
                 logoutCount = 0;
                 FirebaseAuth.getInstance().signOut();
-                unbindServices();
                 super.onBackPressed();
             }
         }
         logoutCount++;
     }
 
-    private void initializeNavBar()
-    {
+    private void initializeNavBar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -134,7 +127,7 @@ public abstract class NavBarActivity<T extends BaseEntity> extends ServiceBoundA
             public void onClick(View view) {
                 showSnackbar("Refreshing everything...");
 
-                businessLayer.refreshAll();
+//                businessLayer.refreshAll();
             }
         });
 

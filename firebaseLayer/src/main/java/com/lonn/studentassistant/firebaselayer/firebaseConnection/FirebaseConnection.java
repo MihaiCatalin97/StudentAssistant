@@ -4,7 +4,8 @@ import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
-import com.lonn.studentassistant.firebaselayer.requests.DeleteRequest;
+import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
+import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
@@ -46,11 +47,19 @@ public class FirebaseConnection {
         }
     }
 
-    public void execute(DeleteRequest request) {
+    public void execute(DeleteByIdRequest request) {
         DatabaseContext context = getDatabaseMap().get(request.databaseTable());
 
         if (context != null) {
             context.delete(request.key(), request.onSuccess(), request.onError());
+        }
+    }
+
+    public void execute(DeleteAllRequest request) {
+        DatabaseContext context = getDatabaseMap().get(request.databaseTable());
+
+        if (context != null) {
+            context.deleteAll(request.onSuccess(), request.onError());
         }
     }
 }

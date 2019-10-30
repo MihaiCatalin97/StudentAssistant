@@ -6,17 +6,14 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 
-public class ScheduleDayCategory extends ScheduleBaseCategory
-{
-    public ScheduleDayCategory(Context context)
-    {
+public class ScheduleDayCategory extends ScheduleBaseCategory {
+    public ScheduleDayCategory(Context context) {
         super(context);
     }
 
-    public ScheduleDayCategory(Context context, AttributeSet attrs)
-    {
+    public ScheduleDayCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -29,11 +26,10 @@ public class ScheduleDayCategory extends ScheduleBaseCategory
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(ScheduleClass scheduleClass)
-    {
-        return Utils.dayToString(scheduleClass.day).equals(categoryViewModel.category);
+    public boolean shouldContain(ScheduleClass scheduleClass) {
+        return Utils.dayToString(scheduleClass.getDay()).equals(categoryViewModel.category);
     }
 
-    public void generateChildCategories(ScheduleClass scheduleClass)
-    {}
+    public void generateChildCategories(ScheduleClass scheduleClass) {
+    }
 }

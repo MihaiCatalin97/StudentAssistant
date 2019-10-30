@@ -13,4 +13,11 @@ public class SaveRequest<T extends BaseEntity> {
     private Runnable onSuccess;
     private OnErrorCallback<Exception> onError;
     private T entity;
+
+    public SaveRequest<T> entity(T entity) {
+        this.entity = entity;
+        this.databaseTable = DatabaseTable.valueOf(entity.getClass());
+
+        return this;
+    }
 }

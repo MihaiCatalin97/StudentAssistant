@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 
 public class Utils {
 
-    public static String emailToKey(String email)
-    {
-        return email.replace(".",",");
+    public static String emailToKey(String email) {
+        return email.replace(".", ",");
     }
 
     public static String stringToFirstCapital(@NonNull String stringToFormat) {

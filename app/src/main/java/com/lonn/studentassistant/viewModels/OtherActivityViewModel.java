@@ -1,59 +1,52 @@
 package com.lonn.studentassistant.viewModels;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import android.view.View;
 
-import com.lonn.studentassistant.BR;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.OtherActivity;
-import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OtherActivityViewModel extends BaseObservable
-{
+public class OtherActivityViewModel extends BaseObservable {
     @Bindable
     public String activityName, description, website, type;
 
     public int semester, year;
-    public List<Professor> professors;
+    public List<String> professors;
 
-    public OtherActivityViewModel(OtherActivity activity)
-    {
+    public OtherActivityViewModel(OtherActivity activity) {
         update(activity);
     }
 
-    public void update(OtherActivity activity)
-    {
+    public void update(OtherActivity activity) {
 
-        this.activityName = activity.activityName;
-        this.type = activity.type;
-        this.semester = activity.semester;
-        this.year = activity.year;
-        this.description = activity.description;
-        this.professors = new ArrayList<>(activity.professorEntities);
-        this.website = activity.website;
+        this.activityName = activity.getActivityName();
+        this.type = activity.getType();
+        this.semester = activity.getSemester();
+        this.year = activity.getYear();
+        this.description = activity.getDescription();
+        this.professors = new ArrayList<>(activity.getProfessors());
+        this.website = activity.getWebsite();
 
-        notifyPropertyChanged(BR._all);
+        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
     }
 
     @Bindable
-    public String getActivityType()
-    {
+    public String getActivityType() {
         return type;
     }
 
     @Bindable
-    public String getActivityYearSemester()
-    {
+    public String getActivityYearSemester() {
         return Utils.yearToString(year) + ", " + Utils.semesterToString(semester);
     }
 
     @Bindable
-    public int getWebsiteVisible()
-    {
-        return (website != null)? View.VISIBLE : View.GONE;
+    public int getWebsiteVisible() {
+        return (website != null) ? View.VISIBLE : View.GONE;
     }
 }

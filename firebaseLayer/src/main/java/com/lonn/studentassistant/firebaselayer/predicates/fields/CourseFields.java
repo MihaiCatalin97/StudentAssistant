@@ -2,9 +2,6 @@ package com.lonn.studentassistant.firebaselayer.predicates.fields;
 
 import com.lonn.studentassistant.firebaselayer.models.Course;
 
-import java.math.BigInteger;
-import java.util.UUID;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -5,18 +5,15 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.models.Professor;
 
-public class ProfessorCourseCategory extends ProfessorBaseCategory
-{
-    public ProfessorCourseCategory(Context context)
-    {
+public class ProfessorCourseCategory extends ProfessorBaseCategory {
+    public ProfessorCourseCategory(Context context) {
         super(context);
     }
 
-    public ProfessorCourseCategory(Context context, AttributeSet attrs)
-    {
+    public ProfessorCourseCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
@@ -29,14 +26,13 @@ public class ProfessorCourseCategory extends ProfessorBaseCategory
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(Professor professor)
-    {
+    public boolean shouldContain(Professor professor) {
         Course auxCourse = new Course();
-        auxCourse.courseName = categoryViewModel.category;
+        auxCourse.setCourseName(categoryViewModel.category);
 
-        return professor.courses.contains(auxCourse.getKey());
+        return professor.getCourses().contains(auxCourse.computeKey());
     }
 
-    public void generateChildCategories(Professor professor)
-    {}
+    public void generateChildCategories(Professor professor) {
+    }
 }

@@ -1,19 +1,18 @@
 package com.lonn.studentassistant.viewModels;
 
-import androidx.databinding.BaseObservable;
-import androidx.databinding.Bindable;
 import android.view.View;
 
-import com.lonn.studentassistant.BR;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.entities.Course;
-import com.lonn.studentassistant.entities.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class ScheduleClassViewModel extends BaseObservable
-{
+public class ScheduleClassViewModel extends BaseObservable {
     public String courseKey;
     public List<String> rooms;
     public int day, startHour, endHour;
@@ -24,78 +23,71 @@ public class ScheduleClassViewModel extends BaseObservable
     @Bindable
     public List<String> groups;
 
-    public ScheduleClassViewModel(ScheduleClass scheduleClass)
-    {
+    public ScheduleClassViewModel(ScheduleClass scheduleClass) {
         update(scheduleClass);
     }
 
-    public void update(ScheduleClass scheduleClass)
-    {
-        this.type = scheduleClass.type;
-        this.day = scheduleClass.day;
-        this.courseKey = scheduleClass.courseKey;
-        this.rooms = new LinkedList<>(scheduleClass.rooms);
-        this.groups = new LinkedList<>(scheduleClass.groups);
-        this.professorKeys = new LinkedList<>(scheduleClass.professorKeys);
-        this.startHour = scheduleClass.startHour;
-        this.endHour = scheduleClass.endHour;
-        this.parity = scheduleClass.parity;
+    public void update(ScheduleClass scheduleClass) {
+        this.type = scheduleClass.getType();
+        this.day = scheduleClass.getDay();
+        this.courseKey = scheduleClass.getCourseKey();
+        this.rooms = new LinkedList<>(scheduleClass.getRooms());
+        this.groups = new LinkedList<>(scheduleClass.getGroups());
+        this.professorKeys = new LinkedList<>(scheduleClass.getProfessorKeys());
+        this.startHour = scheduleClass.getStartHour();
+        this.endHour = scheduleClass.getEndHour();
+        this.parity = scheduleClass.getParity();
 
-        notifyPropertyChanged(BR._all);
+        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
     }
 
     @Bindable
-    public int getParityVisible()
-    {
-        return (parity != null && parity.length()> 0)? View.VISIBLE : View.GONE;
+    public int getParityVisible() {
+        return (parity != null && parity.length() > 0) ? View.VISIBLE : View.GONE;
     }
 
     @Bindable
-    public String getStartHour()
-    {
-        String minuteString = Integer.toString(startHour%100);
+    public String getStartHour() {
+        String minuteString = Integer.toString(startHour % 100);
 
-        if(minuteString.length() == 1)
+        if (minuteString.length() == 1) {
             minuteString = "0" + minuteString;
+        }
 
-        return Integer.toString(startHour/100) + ":" + minuteString;
+        return Integer.toString(startHour / 100) + ":" + minuteString;
     }
 
     @Bindable
-    public String getEndHour()
-    {
-        String minuteString = Integer.toString(endHour%100);
+    public String getEndHour() {
+        String minuteString = Integer.toString(endHour % 100);
 
-        if(minuteString.length() == 1)
+        if (minuteString.length() == 1) {
             minuteString = "0" + minuteString;
+        }
 
-        return Integer.toString(endHour/100) + ":" + minuteString;
+        return Integer.toString(endHour / 100) + ":" + minuteString;
     }
 
     @Bindable
-    public String getDay()
-    {
+    public String getDay() {
         return Utils.dayToString(day);
     }
 
     @Bindable
-    public String getCourseName()
-    {
+    public String getCourseName() {
         Course auxCourse = new Course();
-        auxCourse.setKey(courseKey);
+        auxCourse.setCourseName(courseKey.replace("~", "."));
 
-        String courseName = auxCourse.getKey();
-        int legth=0;
+        String courseName = auxCourse.computeKey();
+        int legth = 0;
         String[] words = courseName.split(" ");
         String result = "";
 
-        for(String word : words)
-        {
+        for (String word : words) {
             result += word + " ";
             legth += word.length() + 1;
 
-            if (legth > 20)
-            {
+            if (legth > 20) {
                 result += "\n";
                 legth = 0;
             }
@@ -105,42 +97,37 @@ public class ScheduleClassViewModel extends BaseObservable
     }
 
     @Bindable
-    public String getHours()
-    {
+    public String getHours() {
         return getStartHour() + "\n" + getEndHour();
     }
 
     @Bindable
-    public String getRooms()
-    {
-        String result =  "";
+    public String getRooms() {
+        String result = "";
 
-        for(int i=0;i<rooms.size();i++)
-        {
+        for (int i = 0; i < rooms.size(); i++) {
             result += rooms.get(i);
 
-            if(i+1 < rooms.size())
+            if (i + 1 < rooms.size()) {
                 result += "\n";
+            }
         }
 
         return result;
     }
 
     @Bindable
-    public String getFormattedType()
-    {
-        return type.replace(" ","\n");
+    public String getFormattedType() {
+        return type.replace(" ", "\n");
     }
 
     @Bindable
-    public int getTypeNumberOfLines()
-    {
+    public int getTypeNumberOfLines() {
         return type.split(" ").length;
     }
 
     @Bindable
-    public int getNumberOfRooms()
-    {
+    public int getNumberOfRooms() {
         return rooms.size();
     }
 }

@@ -14,7 +14,7 @@ import com.lonn.studentassistant.firebaselayer.models.Student;
 import com.lonn.studentassistant.firebaselayer.models.User;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
-import com.lonn.studentassistant.firebaselayer.requests.DeleteRequest;
+import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
@@ -29,7 +29,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Map;
-import java.util.UUID;
 
 import static org.mockito.Mockito.times;
 
@@ -42,7 +41,7 @@ public class FirebaseConnectionPTest {
     public SaveRequest<? extends BaseEntity> saveRequest;
 
     @Parameter(value = 2)
-    public DeleteRequest deleteRequest;
+    public DeleteByIdRequest deleteByIdRequest;
 
     @Parameter(value = 3)
     public DatabaseTable requestDatabaseTable;
@@ -95,13 +94,13 @@ public class FirebaseConnectionPTest {
                     .onSuccess(onSuccess)
                     .entity(savingEntity);
 
-            DeleteRequest deleteRequest = new DeleteRequest()
+            DeleteByIdRequest deleteByIdRequest = new DeleteByIdRequest()
                     .databaseTable(databaseTable)
                     .onError(onErrorCallback)
                     .onSuccess(onSuccess)
-                    .id(UUID.randomUUID());
+                    .key("Random key");
 
-            parameters[i] = new Object[]{getRequest, saveRequest, deleteRequest, databaseTable};
+            parameters[i] = new Object[]{getRequest, saveRequest, deleteByIdRequest, databaseTable};
         }
 
         return parameters;
@@ -112,7 +111,7 @@ public class FirebaseConnectionPTest {
     public void init() {
         MockitoAnnotations.initMocks(this);
 
-        Mockito.doCallRealMethod().when(firebaseConnection).execute(Mockito.any(DeleteRequest.class));
+        Mockito.doCallRealMethod().when(firebaseConnection).execute(Mockito.any(DeleteByIdRequest.class));
         Mockito.doCallRealMethod().when(firebaseConnection).execute(Mockito.any(GetRequest.class));
         Mockito.doCallRealMethod().when(firebaseConnection).execute(Mockito.any(SaveRequest.class));
 
@@ -126,7 +125,7 @@ public class FirebaseConnectionPTest {
         Mockito.when(databaseMap.get(DatabaseTable.STUDENTS)).thenReturn(studentContext);
         Mockito.when(databaseMap.get(DatabaseTable.USERS)).thenReturn(userContext);
 
-        System.out.println(getRequest + " " + saveRequest + " " + deleteRequest);
+        System.out.println(getRequest + " " + saveRequest + " " + deleteByIdRequest);
     }
 
     @Test
@@ -145,7 +144,7 @@ public class FirebaseConnectionPTest {
 
     @Test
     public void executeDeleteRequest_shouldCallGetWithAccordingTable() {
-        firebaseConnection.execute(deleteRequest);
+        firebaseConnection.execute(deleteByIdRequest);
 
         Mockito.verify(databaseMap, times(1)).get(requestDatabaseTable);
     }
@@ -163,14 +162,18 @@ public class FirebaseConnectionPTest {
     public void executeSaveRequest_shouldCallSaveOrUpdateOnContext() {
         firebaseConnection.execute(saveRequest);
 
-        Mockito.verify(databaseMap.get(requestDatabaseTable), times(1)).saveOrUpdate(saveRequest.entity(), saveRequest.onSuccess(), saveRequest.onError());
+        Mockito.verify(databaseMap.get(requestDatabaseTable), times(1))
+                .saveOrUpdate(saveRequest.entity(), saveRequest.onSuccess(), saveRequest.onError());
     }
 
     @Test
     public void executeDeleteRequest_shouldCallDeleteOnContext() {
-        firebaseConnection.execute(deleteRequest);
+        firebaseConnection.execute(deleteByIdRequest);
 
-        Mockito.verify(databaseMap.get(requestDatabaseTable), times(1)).delete(deleteRequest.id(), deleteRequest.onSuccess(), deleteRequest.onError());
+        Mockito.verify(databaseMap.get(requestDatabaseTable), times(1))
+                .delete(deleteByIdRequest.key(),
+                        deleteByIdRequest.onSuccess(),
+                        deleteByIdRequest.onError());
     }
 
     @Test
@@ -187,7 +190,7 @@ public class FirebaseConnectionPTest {
 
     @Test
     public void executeDeleteRequest_shouldNotThrowException() {
-        Mockito.when(databaseMap.get(deleteRequest.databaseTable())).thenReturn(null);
-        firebaseConnection.execute(deleteRequest);
+        Mockito.when(databaseMap.get(deleteByIdRequest.databaseTable())).thenReturn(null);
+        firebaseConnection.execute(deleteByIdRequest);
     }
 }
