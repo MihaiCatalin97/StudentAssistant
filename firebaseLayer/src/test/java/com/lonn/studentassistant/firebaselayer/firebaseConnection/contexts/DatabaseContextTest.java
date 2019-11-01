@@ -98,7 +98,7 @@ public class DatabaseContextTest {
 
         doCallRealMethod()
                 .when(context)
-                .delete(any(UUID.class),
+                .delete(any(String.class),
                         any(Runnable.class),
                         any(OnErrorCallback.class));
 
@@ -169,7 +169,7 @@ public class DatabaseContextTest {
 
     @Test
     public void delete_shouldCallChildWithParameterUuid_whenDatabaseIsNotNull() {
-        context.delete(testUuid, onSuccess, onErrorCallback);
+        context.delete(testUuid.toString(), onSuccess, onErrorCallback);
 
         verify(database, times(1))
                 .child(testUuid.toString());
@@ -177,7 +177,7 @@ public class DatabaseContextTest {
 
     @Test
     public void delete_shouldCallRemoveValueOnChild_whenDatabaseIsNotNull() {
-        context.delete(testUuid, onSuccess, onErrorCallback);
+        context.delete(testUuid.toString(), onSuccess, onErrorCallback);
 
         verify(childReference, times(1))
                 .removeValue();
@@ -185,7 +185,7 @@ public class DatabaseContextTest {
 
     @Test
     public void delete_shouldCallAddListenersToTask_whenDatabaseIsNotNull() {
-        context.delete(testUuid, onSuccess, onErrorCallback);
+        context.delete(testUuid.toString(), onSuccess, onErrorCallback);
 
         verify(context, times(1))
                 .addListenersToTask(dbTask, onSuccess, onErrorCallback);
@@ -196,7 +196,7 @@ public class DatabaseContextTest {
         when(context.getDatabase())
 
                 .thenReturn(null);
-        context.delete(testUuid, onSuccess, onErrorCallback);
+        context.delete(testUuid.toString(), onSuccess, onErrorCallback);
 
         verify(database, times(0))
                 .child(testUuid.toString());

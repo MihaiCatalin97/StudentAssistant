@@ -2,10 +2,13 @@ package com.lonn.studentassistant.activities.implementations.courseEntity;
 
 import android.os.Bundle;
 
+import androidx.core.app.NavUtils;
 import androidx.databinding.DataBindingUtil;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.activities.implementations.login.LoginActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.viewModels.CourseViewModel;
@@ -26,6 +29,11 @@ public class CourseEntityActivity extends ServiceBoundActivity {
 
         if (!loadedProfessors) {
             loadedProfessors = true;
+        }
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            FirebaseAuth.getInstance().signOut();
+            NavUtils.navigateUpFromSameTask(this);
         }
     }
 

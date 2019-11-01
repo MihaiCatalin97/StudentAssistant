@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.implementations.authentication.LoginActivity"
+            android:name=".activities.implementations.login.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -36,17 +36,17 @@
         <activity
             android:name=".activities.implementations.student.StudentActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.authentication.LoginActivity"/>
+            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
 
         <activity
             android:name=".activities.implementations.debug.DebugActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.authentication.LoginActivity"/>
+            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
 
         <activity
-            android:name=".activities.implementations.authentication.RegisterActivity"
+            android:name=".activities.implementations.register.RegisterActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.authentication.LoginActivity"/>
+            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
 
         <activity
             android:name=".activities.implementations.courseEntity.CourseEntityActivity"

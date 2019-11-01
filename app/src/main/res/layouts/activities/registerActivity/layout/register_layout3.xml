@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.implementations.authentication.RegisterActivity">
+    tools:context=".activities.implementations.register.RegisterActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,9 +35,9 @@
         android:gravity="center"
         android:text="@string/repeat_password"
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/registerEditTextPassword2"
-        app:layout_constraintRight_toLeftOf="@+id/registerEditTextPassword2"
-        app:layout_constraintTop_toTopOf="@+id/registerEditTextPassword2" />
+        app:layout_constraintBottom_toBottomOf="@+id/registerEditTextRepeatPassword"
+        app:layout_constraintRight_toLeftOf="@+id/registerEditTextRepeatPassword"
+        app:layout_constraintTop_toTopOf="@+id/registerEditTextRepeatPassword" />
 
     <TextView
         android:id="@+id/registerPasswordTextView1"
@@ -78,7 +78,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/registerEditTextPassword2"
+        android:id="@+id/registerEditTextRepeatPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -95,11 +95,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:onClick="tapRegistrationButton"
-        android:text="@string/sign_up"
+        android:onClick="tapCreateAccountButton"
+        android:text="Create account"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registerEditTextPassword2" />
+        app:layout_constraintTop_toBottomOf="@+id/registerEditTextRepeatPassword" />
 
     <Button
         android:id="@+id/backRegistrationButton"

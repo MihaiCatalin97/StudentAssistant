@@ -1,17 +1,16 @@
 package com.lonn.studentassistant.activities.abstractions;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
-import com.lonn.studentassistant.activities.implementations.authentication.LoginActivity;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.views.implementations.EntityView;
@@ -38,16 +37,6 @@ public abstract class ServiceBoundActivity extends AppCompatActivity {
 //        }
 
         snackbar.show();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        if (!(this instanceof LoginActivity) && FirebaseAuth.getInstance().getCurrentUser() == null) {
-            FirebaseAuth.getInstance().signOut();
-            NavUtils.navigateUpFromSameTask(this);
-        }
     }
 
     public void tapScrollViewEntityLayout(View v) {
@@ -93,5 +82,19 @@ public abstract class ServiceBoundActivity extends AppCompatActivity {
 
     protected void executeWithDelay(Runnable runnable, long delay) {
         handler.postDelayed(runnable, delay);
+    }
+
+    protected void hideKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        View view = getCurrentFocus();
+
+        if (view == null) {
+            view = new View(this);
+        }
+
+        if (inputMethodManager != null) {
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 }

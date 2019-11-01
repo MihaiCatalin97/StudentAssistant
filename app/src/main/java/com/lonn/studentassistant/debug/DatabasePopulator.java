@@ -18,13 +18,14 @@ public class DatabasePopulator {
     }
 
     public void populateStudentsTable() {
+        for(int i=0;i<10;i++)
         firebaseConnection.execute(new SaveRequest<Student>()
                 .entity(new Student()
-                        .setStudentId("1")
+                        .setStudentId(Integer.toString(i))
                         .setLastName("Mihai")
                         .setFirstName("Catalin")
                         .setFatherInitial("R")
-                        .setEmail("email1.com")
+                        .setEmail("email@email.com")
                         .setPhoneNumber("0742664239")
                         .setGroup("B5")
                         .setYear(3)));

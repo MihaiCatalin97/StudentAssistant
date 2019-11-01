@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.implementations.authentication.LoginActivity">
+    tools:context=".activities.implementations.login.LoginActivity">
 
     <TextView
         style="@style/DarkBlueTitle"
@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:onClick="tapRegistrationButton"
+        android:onClick="tapSignUpButton"
         android:text="@string/sign_up"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

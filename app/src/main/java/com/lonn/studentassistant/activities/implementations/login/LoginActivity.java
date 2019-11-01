@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.implementations.authentication;
+package com.lonn.studentassistant.activities.implementations.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
 import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
+import com.lonn.studentassistant.activities.implementations.register.RegisterActivity;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.firebaselayer.requests.LoginRequest;
@@ -40,7 +41,7 @@ public class LoginActivity extends ServiceBoundActivity {
         login(email, password, rememberCredentials);
     }
 
-    public void tapRegistrationButton(View v) {
+    public void tapSignUpButton(View v) {
         Intent registerActivityIntent = new Intent(this, RegisterActivity.class);
         startActivity(registerActivityIntent);
     }
@@ -70,20 +71,30 @@ public class LoginActivity extends ServiceBoundActivity {
         authenticationSharedPrefs = new AuthenticationSharedPrefs(getBaseContext());
 
         if (authenticationSharedPrefs.hasSavedCredentials()) {
-            setLoginFields(authenticationSharedPrefs.getCredentials());
+            Map<String, String> storedCredentials = authenticationSharedPrefs.getCredentials();
+            String email = storedCredentials.get("email");
+            String password = storedCredentials.get("password");
+            String rememberCredentialsString = storedCredentials.get("remember");
+
+            boolean rememberCredentials = rememberCredentialsString != null &&
+                    rememberCredentialsString.equalsIgnoreCase("true");
+
+            setLoginFields(email, password, rememberCredentials);
         }
 
         Utils.init(this);
     }
 
-    private void setLoginFields(Map<String, String> map) {
-        ((EditText) findViewById(R.id.loginEditTextEmail)).setText(map.get("email"));
-        ((EditText) findViewById(R.id.loginEditTextPassword)).setText(map.get("password"));
+    private void setLoginFields(String email, String password, boolean rememberCredentials) {
+        ((EditText) findViewById(R.id.loginEditTextEmail)).setText(email);
+        ((EditText) findViewById(R.id.loginEditTextPassword)).setText(password);
+        ((CheckBox) findViewById(R.id.loginRememberCheckBox)).setChecked(rememberCredentials);
+    }
 
-        String remember = map.get("remember");
-        if (remember != null) {
-            ((CheckBox) findViewById(R.id.loginRememberCheckBox)).setChecked(remember.equals("true"));
-        }
+    private void clearLoginFields() {
+        ((EditText) findViewById(R.id.loginEditTextEmail)).setText("");
+        ((EditText) findViewById(R.id.loginEditTextPassword)).setText("");
+        ((CheckBox) findViewById(R.id.loginRememberCheckBox)).setChecked(false);
     }
 
     private void login(String email, String password, boolean rememberCredentials) {
@@ -101,13 +112,24 @@ public class LoginActivity extends ServiceBoundActivity {
 
         executeWithDelay(() -> {
             unlockInputs();
+
+            if (!rememberCredentials) {
+                clearLoginFields();
+            }
+
             startActivity(new Intent(this, StudentActivity.class));
         }, 750);
+
+        if (rememberCredentials) {
+            authenticationSharedPrefs.saveCredentials(email, password);
+        }
     }
 
     private void onLoginFail() {
         showSnackBar("Login unsuccessful!", 1000);
         unlockInputs();
+
+        authenticationSharedPrefs.deleteCredentials();
     }
 
     private void lockInputs() {

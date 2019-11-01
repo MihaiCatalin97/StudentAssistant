@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.implementations.authentication;
+package com.lonn.studentassistant.activities.implementations.login;
 
 import android.content.Context;
 import android.content.SharedPreferences;

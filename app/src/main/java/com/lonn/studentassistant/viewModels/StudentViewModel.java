@@ -21,13 +21,13 @@ public class StudentViewModel extends BaseObservable {
     }
 
     public void update(Student student) {
-        this.firstName = student.firstName;
-        this.lastName = student.lastName;
-        this.email = student.email;
-        this.phoneNumber = student.phoneNumber;
-        this.website = student.fatherInitial;
-        this.group = student.group;
-        this.year = student.year;
+        this.firstName = student.getFirstName();
+        this.lastName = student.getLastName();
+        this.email = student.getEmail();
+        this.phoneNumber = student.getPhoneNumber();
+        this.website = student.getFatherInitial();
+        this.group = student.getGroup();
+        this.year = student.getYear();
 
         notifyPropertyChanged(com.lonn.studentassistant.BR._all);
     }

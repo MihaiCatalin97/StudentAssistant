@@ -154,13 +154,13 @@ public class Utils {
     public static List<String> getStudentGroupTags(Student student) {
         List<String> result = new LinkedList<>();
 
-        result.add("I" + student.year);
-        result.add(result.get(0) + student.group);
+        result.add("I" + student.getYear());
+        result.add(result.get(0) + student.getGroup());
 
-        String semian = student.group.substring(0, 1);
+        String semian = student.getGroup().substring(0, 1);
 
         if (semian.equals("A") || semian.equals("B")) {
-            result.add(result.get(0) + student.group.substring(0, 1));
+            result.add(result.get(0) + student.getGroup().substring(0, 1));
         }
 
         return result;
