@@ -1,15 +1,22 @@
 package com.lonn.studentassistant.validation.validators;
 
-import com.lonn.studentassistant.common.Predicate;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
 import com.lonn.studentassistant.validation.ValidationResult;
+import com.lonn.studentassistant.validation.functionalInterfaces.Predicate;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
-class ValidationRule<T extends BaseEntity> {
+class ValidationRule<T> {
     private Predicate<T> predicate;
     private String errorMessage;
+
+    public static <T> ValidationRule<T> test(Predicate<T> predicate) {
+        ValidationRule<T> rule = new ValidationRule<>();
+        rule.predicate = predicate;
+        return rule;
+    }
+
+    public ValidationRule<T> orError(String errorMessage) {
+        this.errorMessage = errorMessage;
+        return this;
+    }
 
     ValidationResult validate(T entity) {
         if (predicate.test(entity)) {

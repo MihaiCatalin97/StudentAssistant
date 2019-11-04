@@ -6,16 +6,16 @@ import android.view.View;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.models.Professor;
 import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
-import com.lonn.studentassistant.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class ProfessorEntityActivity extends ServiceBoundActivity {
+public class ProfessorEntityActivity extends FirebaseConnectedActivity {
     public ScrollViewCategory<Course> courseBaseCategory;
     public ScrollViewCategory<OtherActivity> otherActivityBaseCategory;
     public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;

@@ -25,40 +25,63 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="www"
-                    android:host="lonn" />
+
+                <data
+                    android:host="lonn"
+                    android:scheme="www" />
             </intent-filter>
 
         </activity>
 
         <activity
             android:name=".activities.implementations.student.StudentActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
+            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.implementations.debug.DebugActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
+            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.register.RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"/>
+            android:name=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.credentialsCheck.StudentCheckActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.credentialsCheck.ProfessorCheckActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.credentialsCheck.AdministratorCheckActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.AccountCreationActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.implementations.courseEntity.CourseEntityActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.implementations.professorEntity.ProfessorEntityActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.implementations.otheractivityEntity.OtherActivityEntityActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
     </application>
 

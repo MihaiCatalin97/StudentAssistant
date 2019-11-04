@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.activities.implementations.student;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ScrollView;
 
@@ -10,12 +11,13 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.models.Administrator;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.models.Professor;
 import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.models.Student;
-import com.lonn.studentassistant.viewModels.StudentViewModel;
+import com.lonn.studentassistant.viewModels.entities.StudentViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
 public class StudentActivity extends NavBarActivity {
@@ -27,10 +29,6 @@ public class StudentActivity extends NavBarActivity {
     public ScrollViewCategory<OtherActivity> otherActivitiesProfileCategory;
     private StudentViewModel studentViewModel;
     private StudentActivityMainLayoutBinding binding;
-
-    public StudentActivity() {
-        super();
-    }
 
     public void updateEntity(Student student) {
         if (studentViewModel == null) {
@@ -56,8 +54,19 @@ public class StudentActivity extends NavBarActivity {
     public void onStart() {
         super.onStart();
 
-        showSnackBar("Loading...");
-//        businessLayer.refreshAll();
+        Student student = new Student()
+                .setStudentId("123")
+                .setEmail("abc")
+                .setFatherInitial("R");
+
+        Log.i("Student", student.toString());
+
+        Administrator admin = new Administrator()
+                .setFirstName("Abc")
+                .setLastName("BCD")
+                .setAdministratorKey("1234");
+
+        Log.i("Admin", admin.toString());
     }
 
     public void handleNavBarAction(int id) {

@@ -1,9 +1,8 @@
 package com.lonn.studentassistant.firebaselayer.firebaseConnection;
 
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
-import com.lonn.studentassistant.firebaselayer.interfaces.OnErrorCallback;
-import com.lonn.studentassistant.firebaselayer.interfaces.OnSuccessCallback;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.firebaselayer.models.Exam;
 import com.lonn.studentassistant.firebaselayer.models.Grade;
@@ -13,7 +12,7 @@ import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.models.Student;
 import com.lonn.studentassistant.firebaselayer.models.User;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
@@ -75,14 +74,14 @@ public class FirebaseConnectionPTest {
         for (int i = 0; i < DatabaseTable.values().length; i++) {
             DatabaseTable databaseTable = DatabaseTable.values()[i];
 
-            OnErrorCallback onErrorCallback = Mockito.mock(OnErrorCallback.class);
-            OnSuccessCallback onSuccessCallback = Mockito.mock(OnSuccessCallback.class);
+            Consumer consumer = Mockito.mock(Consumer.class);
+            Consumer Consumer = Mockito.mock(Consumer.class);
             Predicate<Student> predicate = Mockito.mock(Predicate.class);
 
             GetRequest<Student> getRequest = new GetRequest<Student>()
                     .databaseTable(databaseTable)
-                    .onError(onErrorCallback)
-                    .onSuccess(onSuccessCallback)
+                    .onError(consumer)
+                    .onSuccess(Consumer)
                     .predicate(predicate);
 
             Runnable onSuccess = Mockito.mock(Runnable.class);
@@ -90,13 +89,13 @@ public class FirebaseConnectionPTest {
 
             SaveRequest<Student> saveRequest = new SaveRequest<>()
                     .databaseTable(databaseTable)
-                    .onError(onErrorCallback)
+                    .onError(consumer)
                     .onSuccess(onSuccess)
                     .entity(savingEntity);
 
             DeleteByIdRequest deleteByIdRequest = new DeleteByIdRequest()
                     .databaseTable(databaseTable)
-                    .onError(onErrorCallback)
+                    .onError(consumer)
                     .onSuccess(onSuccess)
                     .key("Random key");
 

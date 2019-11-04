@@ -30,7 +30,7 @@ public class ProfessorCourseCategory extends ProfessorBaseCategory {
         Course auxCourse = new Course();
         auxCourse.setCourseName(categoryViewModel.category);
 
-        return professor.getCourses().contains(auxCourse.computeKey());
+        return professor.getCourses().contains(auxCourse.getKey());
     }
 
     public void generateChildCategories(Professor professor) {

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="categoryModel"
-            type="com.lonn.studentassistant.viewModels.CategoryViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

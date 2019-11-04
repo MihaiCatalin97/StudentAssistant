@@ -4,7 +4,7 @@
     <data>
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.StudentViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel"/>
     </data>
 
     <ScrollView

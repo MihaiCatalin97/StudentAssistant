@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.EntityFields;
 import com.lonn.studentassistant.firebaselayer.predicates.operators.Operator;
 

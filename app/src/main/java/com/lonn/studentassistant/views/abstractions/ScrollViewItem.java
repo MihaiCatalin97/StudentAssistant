@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
 public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout {
     public ScrollViewItem(Context context) {

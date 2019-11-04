@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+
 import java.util.List;
 
 import lombok.Data;
@@ -23,7 +25,7 @@ public class ScheduleClass extends BaseEntity {
     private List<String> groups;
 
     @Override
-    public String computeKey() {
+    public String getKey() {
         StringBuilder result = new StringBuilder();
 
         for (int i = 0; i < rooms.size(); i++) {

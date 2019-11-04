@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
+import com.lonn.studentassistant.firebaselayer.models.abstractions.HashableEntity;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Professor extends BaseEntity {
+public class Professor extends HashableEntity {
     private String professorImage;
     private String scheduleLink;
     private String firstName;
@@ -26,7 +28,12 @@ public class Professor extends BaseEntity {
     private List<String> scheduleClasses = new LinkedList<>();
 
     @Override
-    public String computeKey() {
+    public String getKey() {
         return (level + "_" + firstName + "_" + lastName).replace(".", "~");
+    }
+
+    @Override
+    public String computeHashingString() {
+        return getFirstName() + getLastName() + getPhoneNumber();
     }
 }

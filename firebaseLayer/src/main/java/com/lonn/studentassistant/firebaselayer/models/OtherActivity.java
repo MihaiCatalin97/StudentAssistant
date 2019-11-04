@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +24,7 @@ public class OtherActivity extends BaseEntity {
     private List<String> scheduleClasses = new LinkedList<>();
 
     @Override
-    public String computeKey() {
+    public String getKey() {
         return activityName.replace(".", "~");
     }
 }

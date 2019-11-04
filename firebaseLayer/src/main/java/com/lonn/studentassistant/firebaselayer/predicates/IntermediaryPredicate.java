@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.predicates;
 
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.EntityFields;
 import com.lonn.studentassistant.firebaselayer.predicates.operators.Equal;
 import com.lonn.studentassistant.firebaselayer.predicates.operators.GreaterEqual;

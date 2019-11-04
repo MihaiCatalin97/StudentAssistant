@@ -3,7 +3,7 @@
     <data>
         <variable
             name="otherActivity"
-            type="com.lonn.studentassistant.viewModels.OtherActivityViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

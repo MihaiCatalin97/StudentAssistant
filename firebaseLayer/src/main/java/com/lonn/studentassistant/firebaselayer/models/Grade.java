@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+
 import java.util.Date;
 
 import lombok.Data;
@@ -16,7 +18,7 @@ public class Grade extends BaseEntity {
     private String courseId;
 
     @Override
-    public String computeKey() {
+    public String getKey() {
         return (studentId + "_" + courseId).replace(".", "~");
     }
 }

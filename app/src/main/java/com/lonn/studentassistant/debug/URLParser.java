@@ -13,7 +13,7 @@
 //import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 //import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 //import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
-//import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+//import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseTable;
 //import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 //
 //import java.io.BufferedReader;
@@ -153,7 +153,7 @@
 //            course.addProfessor(professor);
 //            courseRepository.add(course);
 //        }
-//        else if (!course.professors.contains(professor.computeKey())) {
+//        else if (!course.professors.contains(professor.getKey())) {
 //            course.addProfessor(professor);
 //            courseRepository.update(course);
 //        }
@@ -169,7 +169,7 @@
 //            activity.addProfessor(professor);
 //            activityRepository.add(activity);
 //        }
-//        else if (!activity.professors.contains(professor.computeKey())) {
+//        else if (!activity.professors.contains(professor.getKey())) {
 //            activity.addProfessor(professor);
 //            activityRepository.update(activity);
 //        }
@@ -178,10 +178,10 @@
 //    }
 //
 //    private void addScheduleClass(ScheduleClass scheduleClass, Professor professor) {
-//        ScheduleClass existingSchedule = scheduleRepository.getById(scheduleClass.computeKey());
+//        ScheduleClass existingSchedule = scheduleRepository.getById(scheduleClass.getKey());
 //        scheduleClass.addProfessor(professor);
 //
-//        if (existingSchedule != null && !existingSchedule.professorKeys.contains(professor.computeKey())) {
+//        if (existingSchedule != null && !existingSchedule.professorKeys.contains(professor.getKey())) {
 //            existingSchedule.addProfessor(professor);
 //            scheduleRepository.update(existingSchedule);
 //        }
@@ -192,10 +192,10 @@
 //    }
 //
 //    private void addExam(Exam exam, Professor professor) {
-//        Exam existingExam = examRepository.getById(exam.computeKey());
+//        Exam existingExam = examRepository.getById(exam.getKey());
 //        exam.addProfessor(professor);
 //
-//        if (existingExam != null && !existingExam.professorKeys.contains(professor.computeKey())) {
+//        if (existingExam != null && !existingExam.professorKeys.contains(professor.getKey())) {
 //            existingExam.addProfessor(professor);
 //            examRepository.update(existingExam);
 //        }
@@ -216,7 +216,7 @@
 //            List<Professor> professors = parseProfessors(readResult);
 //
 //            for (Professor professor : professors) {
-//                Professor existingProfessor = professorRepository.getById(professor.computeKey());
+//                Professor existingProfessor = professorRepository.getById(professor.getKey());
 //
 //                if (existingProfessor == null) {
 //                    professorRepository.add(professor);
@@ -227,7 +227,7 @@
 //                for (ParsingRow row : parsingRows) {
 //                    if (row.getType().equals("Curs") || row.getType().equals("Laborator") || row.getType().equals("Seminar")) {
 //                        Course course = addCourse(row, 2, professor);
-//                        row.courseKey = course.computeKey();
+//                        row.courseKey = course.getKey();
 //
 //                        if (!professor.courses.contains(row.courseKey)) {
 //                            professor.courses.add(row.courseKey);
@@ -235,7 +235,7 @@
 //                    }
 //                    else if (!examTags.contains(row.getType())) {
 //                        OtherActivity activity = addActivity(row, 2, professor);
-//                        row.courseKey = activity.computeKey();
+//                        row.courseKey = activity.getKey();
 //
 //                        if (!professor.otherActivities.contains(row.courseKey)) {
 //                            professor.otherActivities.add(row.courseKey);
@@ -250,17 +250,17 @@
 //                        Course course = courseRepository.getById(scheduleClass.courseKey);
 //                        OtherActivity otherActivity = activityRepository.getById(scheduleClass.courseKey);
 //
-//                        if (!professor.scheduleClasses.contains(scheduleClass.computeKey())) {
-//                            professor.scheduleClasses.add(scheduleClass.computeKey());
+//                        if (!professor.scheduleClasses.contains(scheduleClass.getKey())) {
+//                            professor.scheduleClasses.add(scheduleClass.getKey());
 //                        }
 //
 //
-//                        if (course != null && !course.scheduleClasses.contains(scheduleClass.computeKey())) {
-//                            course.scheduleClasses.add(scheduleClass.computeKey());
+//                        if (course != null && !course.scheduleClasses.contains(scheduleClass.getKey())) {
+//                            course.scheduleClasses.add(scheduleClass.getKey());
 //                            courseRepository.update(course);
 //                        }
-//                        else if (otherActivity != null && !otherActivity.scheduleClasses.contains(scheduleClass.computeKey())) {
-//                            otherActivity.scheduleClasses.add(scheduleClass.computeKey());
+//                        else if (otherActivity != null && !otherActivity.scheduleClasses.contains(scheduleClass.getKey())) {
+//                            otherActivity.scheduleClasses.add(scheduleClass.getKey());
 //                            activityRepository.update(otherActivity);
 //                        }
 //

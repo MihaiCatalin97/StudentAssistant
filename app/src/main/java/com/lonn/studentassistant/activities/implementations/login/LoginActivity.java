@@ -8,16 +8,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.debug.DebugActivity;
-import com.lonn.studentassistant.activities.implementations.register.RegisterActivity;
+import com.lonn.studentassistant.activities.implementations.register.accountChoice.AccountChoiceActivity;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.firebaselayer.requests.LoginRequest;
 
 import java.util.Map;
 
-public class LoginActivity extends ServiceBoundActivity {
+public class LoginActivity extends FirebaseConnectedActivity {
     private EditText emailEditText;
     private EditText passwordEditText;
     private CheckBox credentialsRememberCheckBox;
@@ -42,7 +42,7 @@ public class LoginActivity extends ServiceBoundActivity {
     }
 
     public void tapSignUpButton(View v) {
-        Intent registerActivityIntent = new Intent(this, RegisterActivity.class);
+        Intent registerActivityIntent = new Intent(this, AccountChoiceActivity.class);
         startActivity(registerActivityIntent);
     }
 

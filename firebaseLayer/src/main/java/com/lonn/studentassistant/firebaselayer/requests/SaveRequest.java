@@ -1,7 +1,9 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
-import com.lonn.studentassistant.firebaselayer.interfaces.OnErrorCallback;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -11,12 +13,12 @@ import lombok.experimental.Accessors;
 public class SaveRequest<T extends BaseEntity> {
     private DatabaseTable databaseTable;
     private Runnable onSuccess;
-    private OnErrorCallback<Exception> onError;
+    private Consumer<Exception> onError;
     private T entity;
 
     public SaveRequest<T> entity(T entity) {
         this.entity = entity;
-        this.databaseTable = DatabaseTable.valueOf(entity.getClass());
+        this.databaseTable = DatabaseTableContainer.valueOf(entity.getClass());
 
         return this;
     }

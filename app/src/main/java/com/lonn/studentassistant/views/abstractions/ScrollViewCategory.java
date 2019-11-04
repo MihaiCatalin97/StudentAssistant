@@ -20,8 +20,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
-import com.lonn.studentassistant.viewModels.CategoryViewModel;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.Arrays;
@@ -84,14 +84,14 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
     public void addOrUpdate(T entity) {
         if (shouldContain(entity)) {
             if (isEndCategory) {
-                ScrollViewItem<T> view = children.get(entity.computeKey());
+                ScrollViewItem<T> view = children.get(entity.getKey());
 
                 if (view != null) {
                     view.addOrUpdate(entity);
                 }
                 else {
                     view = new EntityView<>(getContext(), entity, viewType, categoryViewModel.permissionLevel);
-                    children.put(entity.computeKey(), view);
+                    children.put(entity.getKey(), view);
                     addView(view);
                 }
             }
@@ -114,10 +114,10 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
     public void delete(T entity) {
         if (isEndCategory) {
-            ScrollViewItem<T> view = children.get(entity.computeKey());
+            ScrollViewItem<T> view = children.get(entity.getKey());
 
             if (view != null) {
-                children.remove(entity.computeKey());
+                children.remove(entity.getKey());
                 categoryContentLayout.removeView(view);
             }
         }
@@ -312,7 +312,7 @@ public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollVie
 
     private void updateEntitiesList(T entity) {
         for (T listEntity : listAllEntities) {
-            if (listEntity.computeKey().equals(entity.computeKey())) {
+            if (listEntity.getKey().equals(entity.getKey())) {
                 listAllEntities.remove(listEntity);
                 break;
             }

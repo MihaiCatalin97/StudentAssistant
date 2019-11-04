@@ -3,7 +3,7 @@
     <data>
         <variable
             name="professor"
-            type="com.lonn.studentassistant.viewModels.ProfessorViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

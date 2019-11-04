@@ -6,11 +6,11 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
+import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
-import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.testingapplication.TestingActivity;
 import com.lonn.studentassistant.testingapplication.testUtils.CourseUtils;
 

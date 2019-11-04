@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.models;
 
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+
 import java.util.List;
 
 import lombok.Data;
@@ -23,7 +25,7 @@ public class Exam extends BaseEntity {
     private List<String> rooms;
 
     @Override
-    public String computeKey() {
+    public String getKey() {
         StringBuilder key = new StringBuilder();
 
         for (String room : rooms)

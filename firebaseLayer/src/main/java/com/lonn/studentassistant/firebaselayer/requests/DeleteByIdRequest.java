@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
-import com.lonn.studentassistant.firebaselayer.interfaces.OnErrorCallback;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -10,6 +11,6 @@ import lombok.experimental.Accessors;
 public class DeleteByIdRequest {
     private DatabaseTable databaseTable;
     private String key;
-    private OnErrorCallback<Exception> onError;
+    private Consumer<Exception> onError;
     private Runnable onSuccess;
 }

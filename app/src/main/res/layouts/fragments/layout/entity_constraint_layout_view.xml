@@ -4,7 +4,7 @@
         <import type="android.view.View"/>
         <variable
             name="entity"
-            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -5,9 +5,9 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseContext;
+import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.models.Course;
-import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.testingapplication.TestingActivity;
 import com.lonn.studentassistant.testingapplication.testUtils.CourseUtils;
 
@@ -152,7 +152,7 @@ public class CourseContextITest {
             }
         });
 
-        courseDatabaseContext.delete(courseList.get(deletingIndex).computeKey(),
+        courseDatabaseContext.delete(courseList.get(deletingIndex).getKey(),
                 () -> deleteFuture.complete(true),
                 (error) -> fail(error.getMessage()));
 

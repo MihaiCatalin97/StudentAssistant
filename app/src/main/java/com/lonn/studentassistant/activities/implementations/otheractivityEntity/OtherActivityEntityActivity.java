@@ -5,15 +5,15 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.ServiceBoundActivity;
+import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.models.Professor;
 import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
-import com.lonn.studentassistant.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class OtherActivityEntityActivity extends ServiceBoundActivity {
+public class OtherActivityEntityActivity extends FirebaseConnectedActivity {
     public ScrollViewCategory<Professor> professorBaseCategory;
     public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
     private OtherActivityEntityActivityLayoutBinding binding;

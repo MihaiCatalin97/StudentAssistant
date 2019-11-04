@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public class StudentFields<T> extends EntityFields<Student, T> {
-    public static StudentFields<String> IDENTIFICATION_HASH = new StudentFields<>("identificationHash");
+    public static StudentFields<String> ID = new StudentFields<>("id");
 
     @Getter
     private String fieldName;

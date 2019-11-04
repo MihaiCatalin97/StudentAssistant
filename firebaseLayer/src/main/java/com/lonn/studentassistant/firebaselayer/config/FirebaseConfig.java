@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.lonn.studentassistant.firebaselayer.R;
 import com.lonn.studentassistant.firebaselayer.Utils;
-import com.lonn.studentassistant.firebaselayer.requests.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -28,7 +28,7 @@ public class FirebaseConfig {
             return "UnknownTable";
         }
 
-        return Utils.stringToFirstCapital(databaseTable.name());
+        return Utils.stringToFirstCapital(databaseTable.getTableName());
     }
 
     String getDatabaseName() {

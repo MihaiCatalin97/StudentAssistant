@@ -18,10 +18,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.viewModels.UserViewModel;
+import com.lonn.studentassistant.viewModels.entities.UserViewModel;
 
 
-public abstract class NavBarActivity extends ServiceBoundActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class NavBarActivity extends FirebaseConnectedActivity implements NavigationView.OnNavigationItemSelectedListener {
     private int logoutCount = 0;
 
     public NavBarActivity() {

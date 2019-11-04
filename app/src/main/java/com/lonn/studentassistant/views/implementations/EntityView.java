@@ -12,10 +12,10 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.firebaselayer.models.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.models.Grade;
 import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
-import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
