@@ -1,7 +1,8 @@
 package com.lonn.studentassistant.debug;
 
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.debug.parsers.UAICScheduleParser;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
+import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.models.Administrator;
 import com.lonn.studentassistant.firebaselayer.models.Student;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
@@ -57,10 +58,10 @@ public class DatabasePopulator {
                 .databaseTable(DatabaseTableContainer.ADMINISTRATORS)
                 .entity(administrator));
     }
-//
-//    public void parseSchedule() {
-//        URLParser conn = new URLParser("https://profs.info.uaic.ro/~orar/orar_profesori.html",
-//                firebaseConnection);
-//        conn.parse();
-//    }
+
+    public void parseSchedule() {
+        UAICScheduleParser uaicScheduleParser = new UAICScheduleParser();
+
+        uaicScheduleParser.parseUAICSchedule();
+    }
 }

@@ -20,12 +20,8 @@ public class Course extends BaseEntity {
     private String courseName;
     private String description = "";
     private String website;
+    private String scheduleLink;
 
     private List<String> professors = new ArrayList<>();
     private List<String> scheduleClasses = new LinkedList<>();
-
-    @Override
-    public String getKey() {
-        return courseName.replace(".", "~");
-    }
 }

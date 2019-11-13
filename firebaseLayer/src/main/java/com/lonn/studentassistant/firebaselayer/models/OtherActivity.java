@@ -19,6 +19,7 @@ public class OtherActivity extends BaseEntity {
     private String description = "";
     private String website;
     private String type;
+    private String scheduleLink;
 
     private List<String> professors = new LinkedList<>();
     private List<String> scheduleClasses = new LinkedList<>();

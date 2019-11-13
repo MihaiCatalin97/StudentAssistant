@@ -29,6 +29,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -38,6 +39,7 @@ android {
             signingConfig signingConfigs.release
         }
         debug {
+            minifyEnabled false
             signingConfig signingConfigs.debug
         }
     }
@@ -70,6 +72,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
@@ -85,6 +88,7 @@ dependencies {
 
     implementation "org.projectlombok:lombok:1.18.8"
     implementation "org.slf4j:slf4j-android:1.7.28"
+    implementation 'org.jsoup:jsoup:1.12.1'
 
     annotationProcessor "org.projectlombok:lombok:1.18.8"
 

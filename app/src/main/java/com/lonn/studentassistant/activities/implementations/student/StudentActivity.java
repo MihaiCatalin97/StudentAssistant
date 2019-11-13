@@ -11,14 +11,16 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.Administrator;
 import com.lonn.studentassistant.firebaselayer.models.Course;
 import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.models.Professor;
 import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.entities.StudentViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
+
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 
 public class StudentActivity extends NavBarActivity {
     public ScrollViewCategory<Course> coursesBaseCategory;
@@ -54,19 +56,18 @@ public class StudentActivity extends NavBarActivity {
     public void onStart() {
         super.onStart();
 
-        Student student = new Student()
-                .setStudentId("123")
-                .setEmail("abc")
-                .setFatherInitial("R");
-
-        Log.i("Student", student.toString());
-
-        Administrator admin = new Administrator()
-                .setFirstName("Abc")
-                .setLastName("BCD")
-                .setAdministratorKey("1234");
-
-        Log.i("Admin", admin.toString());
+        showSnackBar("Loading courses");
+        firebaseConnection.execute(new GetRequest<Course>()
+                .databaseTable(COURSES)
+                .onSuccess(courses -> {
+                    for (Course course : courses) {
+                        coursesBaseCategory.addOrUpdate(course);
+                    }
+                })
+                .onError(error -> {
+                    Log.e("Error loading courses", error.getMessage());
+                    showSnackBar("An error occurred while loading your courses.");
+                }));
     }
 
     public void handleNavBarAction(int id) {

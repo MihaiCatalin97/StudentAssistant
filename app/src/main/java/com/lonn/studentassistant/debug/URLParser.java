@@ -11,18 +11,14 @@
 //import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 //import com.lonn.studentassistant.firebaselayer.models.Professor;
 //import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
-//import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-//import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
-//import com.lonn.studentassistant.firebaselayer.firebaseConnection.contexts.DatabaseTable;
-//import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 //
 //import java.io.BufferedReader;
 //import java.io.InputStreamReader;
 //import java.net.URL;
 //import java.util.ArrayList;
 //import java.util.Arrays;
+//import java.util.LinkedList;
 //import java.util.List;
-//import java.util.concurrent.CompletableFuture;
 //import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 //
@@ -30,8 +26,12 @@
 //    private FirebaseConnection firebaseConnection;
 //
 //    private List<String> examTags = Arrays.asList("Examen", "Partial", "Restante", "Test practic", "Proiecte");
-//
 //    private String urlString;
+//
+//    private List<Professor> parsedProfessors = new LinkedList<>();
+//    private List<Course> parsedCourses = new LinkedList<>();
+//    private List<ScheduleClass> parsedScheduleClasses = new LinkedList<>();
+//    private List<Exam> parsedExams = new LinkedList<>();
 //
 //    URLParser(String urlString, FirebaseConnection firebaseConnection) {
 //        this.firebaseConnection = firebaseConnection;
@@ -141,16 +141,13 @@
 //    }
 //
 //    private Course addCourse(ParsingRow row, int semester, Professor professor) {
-//        firebaseConnection.execute(new GetRequest<Course>()
-//                .databaseTable(DatabaseTable.COURSES)
-//                .predicate(Predicate.where(CourseFields.COURSE_NAME)
-//                .equalTo(row.courseKey))
-//                .onSuccess((courses) -> {
-//                }));
+//        Course course = new Course()
+//                .setCourseName()
+//
 //
 //        if (course == null) {
-//            course = new Course(row.courseKey, Utils.groupToYear(row.groups.get(0)), semester, row.pack, "Course field3", "https://profs.info.uaic.ro/~ancai/CN/", null);
-//            course.addProfessor(professor);
+//            course =
+//                    course.addProfessor(professor);
 //            courseRepository.add(course);
 //        }
 //        else if (!course.professors.contains(professor.getKey())) {
@@ -319,11 +316,15 @@
 //            String lastName = parseLastName(value);
 //            String rank = parseRank(value);
 //
-//            Professor professor = new Professor(firstName, lastName, generateEmail(firstName, lastName), "0742664239", rank,
-//                    "https://profs.info.uaic.ro/~" + (firstName.length() > 0 ? firstName.toLowerCase().charAt(0) : "") + lastName.toLowerCase(), "C310");
-//            professor.scheduleLink = "https://profs.info.uaic.ro/~orar/" + link;
-//
-//            return professor;
+//            return new Professor()
+//                    .setFirstName(firstName)
+//                    .setLastName(lastName)
+//                    .setEmail(generateEmail(firstName, lastName))
+//                    .setPhoneNumber("0742664239")
+//                    .setLevel(rank)
+//                    .setWebsite("https://profs.info.uaic.ro/~" + (firstName.length() > 0 ? firstName.toLowerCase().charAt(0) : "") + lastName.toLowerCase())
+//                    .setCabinet("C310")
+//                    .setScheduleLink("https://profs.info.uaic.ro/~orar/" + link);
 //        }
 //
 //        private String generateEmail(String firstName, String lastName) {
@@ -388,30 +389,31 @@
 //        }
 //
 //        ScheduleClass toScheduleClass() {
-//            return new ScheduleClass(
-//                    rooms,
-//                    day,
-//                    startHour,
-//                    endHour,
-//                    courseKey, type,
-//                    professorKeys,
-//                    parity,
-//                    pack,
-//                    groups);
+//            return new ScheduleClass()
+//                    .setRooms(rooms)
+//                    .setDay(day)
+//                    .setStartHour(startHour)
+//                    .setEndHour(endHour)
+//                    .setCourseKey(courseKey)
+//                    .setType(type)
+//                    .setProfessorKeys(professorKeys)
+//                    .setParity(parity)
+//                    .setPack(pack)
+//                    .setGroups(groups);
 //        }
 //
 //        Exam toExam() {
-//            return new Exam(
-//                    rooms,
-//                    day,
-//                    date,
-//                    startHour,
-//                    endHour,
-//                    courseKey,
-//                    type,
-//                    professorKeys,
-//                    pack,
-//                    groups);
+//            return new Exam()
+//                    .setRooms(rooms)
+//                    .setDay(day)
+//                    .setDate(date)
+//                    .setStartHour(startHour)
+//                    .setEndHour(endHour)
+//                    .setCourseKey(courseKey)
+//                    .setType(type)
+//                    .setProfessorKeys(professorKeys)
+//                    .setPack(pack)
+//                    .setGroups(groups);
 //        }
 //    }
 //}

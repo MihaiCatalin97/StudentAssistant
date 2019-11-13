@@ -26,7 +26,7 @@ public class DebugActivity extends FirebaseConnectedActivity {
     public void debugButton(View v) {
         switch (v.getId()) {
             case R.id.parse: {
-                //populator.parseSchedule();
+                populator.parseSchedule();
                 break;
             }
             case R.id.deleteUsers: {
