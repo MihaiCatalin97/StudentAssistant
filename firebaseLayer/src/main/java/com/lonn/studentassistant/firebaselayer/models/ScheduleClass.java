@@ -2,7 +2,10 @@ package com.lonn.studentassistant.firebaselayer.models;
 
 import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,23 +22,8 @@ public class ScheduleClass extends BaseEntity {
     private String type;
     private String parity;
 
-    private String courseKey;
-    private List<String> rooms;
-    private List<String> professorKeys;
-    private List<String> groups;
-
-    @Override
-    public String getKey() {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < rooms.size(); i++) {
-            result.append(rooms.get(i));
-
-            if (i + 1 < rooms.size()) {
-                result.append("-");
-            }
-        }
-
-        return result.toString() + "_" + day + "_" + startHour;
-    }
+    private String course;
+    private Set<String> rooms = new HashSet<>();
+    private Set<String> professors = new HashSet<>();
+    private Set<String> groups = new HashSet<>();
 }

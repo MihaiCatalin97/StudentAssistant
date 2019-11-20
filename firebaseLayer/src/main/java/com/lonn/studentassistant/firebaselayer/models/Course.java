@@ -3,8 +3,11 @@ package com.lonn.studentassistant.firebaselayer.models;
 import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -22,6 +25,6 @@ public class Course extends BaseEntity {
     private String website;
     private String scheduleLink;
 
-    private List<String> professors = new ArrayList<>();
-    private List<String> scheduleClasses = new LinkedList<>();
+    private Set<String> professors = new HashSet<>();
+    private Set<String> scheduleClasses = new HashSet<>();
 }

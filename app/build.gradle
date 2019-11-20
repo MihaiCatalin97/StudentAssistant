@@ -109,6 +109,7 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:3.1.0'
 
     implementation project(path: ':firebaselayer')
+    implementation project(path: ':scheduleParser')
 }
 
 apply plugin: 'com.google.gms.google-services'

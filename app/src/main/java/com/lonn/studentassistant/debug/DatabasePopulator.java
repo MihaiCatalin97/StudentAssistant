@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.debug;
 
-import com.lonn.studentassistant.debug.parsers.UAICScheduleParser;
+import com.lonn.scheduleparser.parsers.UAICScheduleParser;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.models.Administrator;

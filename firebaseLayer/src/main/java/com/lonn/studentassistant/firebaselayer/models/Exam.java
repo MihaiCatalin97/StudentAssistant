@@ -2,7 +2,10 @@ package com.lonn.studentassistant.firebaselayer.models;
 
 import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,19 +23,7 @@ public class Exam extends BaseEntity {
     private String type;
 
     private String courseKey;
-    private List<String> professorKeys;
-    private List<String> groups;
-    private List<String> rooms;
-
-    @Override
-    public String getKey() {
-        StringBuilder key = new StringBuilder();
-
-        for (String room : rooms)
-            key.append(room).append("~");
-
-        key.append("_").append(day).append("_").append(startHour);
-
-        return key.toString();
-    }
+    private Set<String> professorKeys = new HashSet<>();
+    private Set<String> groups = new HashSet<>();
+    private Set<String> rooms = new HashSet<>();
 }

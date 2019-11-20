@@ -30,10 +30,10 @@ public class ScheduleClassViewModel extends BaseObservable {
     public void update(ScheduleClass scheduleClass) {
         this.type = scheduleClass.getType();
         this.day = scheduleClass.getDay();
-        this.courseKey = scheduleClass.getCourseKey();
+        this.courseKey = scheduleClass.getCourse();
         this.rooms = new LinkedList<>(scheduleClass.getRooms());
         this.groups = new LinkedList<>(scheduleClass.getGroups());
-        this.professorKeys = new LinkedList<>(scheduleClass.getProfessorKeys());
+        this.professorKeys = new LinkedList<>(scheduleClass.getProfessors());
         this.startHour = scheduleClass.getStartHour();
         this.endHour = scheduleClass.getEndHour();
         this.parity = scheduleClass.getParity();

@@ -16,9 +16,4 @@ public class Grade extends BaseEntity {
     private Date date;
     private String studentId;
     private String courseId;
-
-    @Override
-    public String getKey() {
-        return (studentId + "_" + courseId).replace(".", "~");
-    }
 }

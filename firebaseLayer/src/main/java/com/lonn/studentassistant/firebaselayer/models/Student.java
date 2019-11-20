@@ -3,7 +3,9 @@ package com.lonn.studentassistant.firebaselayer.models;
 import com.lonn.studentassistant.firebaselayer.models.abstractions.HashableEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,9 +23,10 @@ public class Student extends HashableEntity implements Cloneable {
     private String phoneNumber;
     private String group;
     private int year;
-    private List<String> otherActivities = new ArrayList<>();
-    private List<String> optionalCourses = new ArrayList<>();
-    private List<String> grades = new ArrayList<>();
+
+    private Set<String> otherActivities = new HashSet<>();
+    private Set<String> optionalCourses = new HashSet<>();
+    private Set<String> grades = new HashSet<>();
 
     @Override
     public String computeHashingString() {

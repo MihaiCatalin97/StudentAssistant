@@ -2,8 +2,10 @@ package com.lonn.studentassistant.firebaselayer.models;
 
 import com.lonn.studentassistant.firebaselayer.models.abstractions.HashableEntity;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,14 +25,9 @@ public class Professor extends HashableEntity {
     private String website;
     private String cabinet;
 
-    private List<String> courses = new LinkedList<>();
-    private List<String> otherActivities = new LinkedList<>();
-    private List<String> scheduleClasses = new LinkedList<>();
-
-    @Override
-    public String getKey() {
-        return (level + "_" + firstName + "_" + lastName).replace(".", "~");
-    }
+    private Set<String> courses = new HashSet<>();
+    private Set<String> otherActivities = new HashSet<>();
+    private Set<String> scheduleClasses = new HashSet<>();
 
     @Override
     public String computeHashingString() {
