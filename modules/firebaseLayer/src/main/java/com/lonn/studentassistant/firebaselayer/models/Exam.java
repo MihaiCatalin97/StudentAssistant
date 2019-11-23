@@ -20,8 +20,8 @@ public class Exam extends BaseEntity {
     private String date;
     private String type;
 
-    private String courseKey;
-    private Set<String> professorKeys = new HashSet<>();
+    private String course;
+    private Set<String> professors = new HashSet<>();
     private Set<String> groups = new HashSet<>();
     private Set<String> rooms = new HashSet<>();
 }

@@ -21,6 +21,8 @@ public class Course extends BaseEntity {
     private String website;
     private String scheduleLink;
 
+    private CycleSpecializations cycleAndSpecialization;
+
     private Set<String> professors = new HashSet<>();
     private Set<String> scheduleClasses = new HashSet<>();
 }

@@ -1,13 +1,12 @@
-package com.lonn.scheduleparser.repositories;
+package com.lonn.scheduleparser.parsingServices.otherActivities;
 
-import com.lonn.scheduleparser.mergers.OtherActivityMerger;
+import com.lonn.scheduleparser.parsingServices.abstractions.Repository;
 import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 
 public class OtherActivityRepository extends Repository<OtherActivity> {
     private static OtherActivityRepository instance;
 
     private OtherActivityRepository() {
-        merger = new OtherActivityMerger();
     }
 
     public static OtherActivityRepository getInstance() {
@@ -19,7 +18,8 @@ public class OtherActivityRepository extends Repository<OtherActivity> {
 
     public OtherActivity findByScheduleLink(String scheduleLink) {
         for (OtherActivity otherActivity : entities) {
-            if (otherActivity.getScheduleLink().equals(scheduleLink)) {
+            if (otherActivity.getScheduleLink() != null &&
+                    otherActivity.getScheduleLink().equals(scheduleLink)) {
                 return otherActivity;
             }
         }

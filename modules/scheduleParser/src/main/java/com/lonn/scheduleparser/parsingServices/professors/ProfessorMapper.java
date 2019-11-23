@@ -1,5 +1,7 @@
-package com.lonn.scheduleparser.mappers;
+package com.lonn.scheduleparser.parsingServices.professors;
 
+import com.lonn.scheduleparser.parsingServices.abstractions.Mapper;
+import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.models.Professor;
 
 import org.jsoup.nodes.Element;
@@ -7,7 +9,7 @@ import org.jsoup.nodes.Element;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HtmlProfessorMapper {
+public class ProfessorMapper extends Mapper<Professor> {
     private static final String FIRST_NAME_REGEX = "(?: ([^,]+))?";
     private static final String LAST_NAME_REGEX = "([^ ,]+)";
     private static final String RANK_REGEX = "(?:,(?: )*(.*)(?: )*)?";

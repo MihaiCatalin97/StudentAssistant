@@ -1,6 +1,5 @@
-package com.lonn.scheduleparser.repositories;
+package com.lonn.scheduleparser.parsingServices.abstractions;
 
-import com.lonn.scheduleparser.mergers.Merger;
 import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
 
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 
 public abstract class Repository<T extends BaseEntity> {
     protected List<T> entities;
-    protected Merger<T> merger;
 
     protected Repository() {
         this.entities = new LinkedList<>();
@@ -17,7 +15,7 @@ public abstract class Repository<T extends BaseEntity> {
 
     public boolean add(T entity) {
         if (!containsKey(entity.getKey())) {
-            merger.addByMerging(entities, entity);
+            entities.add(entity);
             return true;
         }
         return false;
@@ -25,6 +23,10 @@ public abstract class Repository<T extends BaseEntity> {
 
     public boolean addAll(List<T> entities) {
         boolean result = true;
+
+        if (entities == null) {
+            return false;
+        }
 
         for (T entity : entities) {
             result &= add(entity);
@@ -57,6 +59,12 @@ public abstract class Repository<T extends BaseEntity> {
 
     public List<T> getAll() {
         return new ArrayList<>(entities);
+    }
+
+    public abstract T findByScheduleLink(String scheduleLink);
+
+    public void clearAll() {
+        entities.clear();
     }
 
     private int getPositionOfElementWithKey(String key) {

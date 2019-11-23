@@ -22,6 +22,8 @@ public class Student extends HashableEntity implements Cloneable {
     private String group;
     private int year;
 
+    private CycleSpecializations cycleAndSpecialization;
+
     private Set<String> otherActivities = new HashSet<>();
     private Set<String> optionalCourses = new HashSet<>();
     private Set<String> grades = new HashSet<>();
