@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 import org.junit.After;
 import org.junit.Before;

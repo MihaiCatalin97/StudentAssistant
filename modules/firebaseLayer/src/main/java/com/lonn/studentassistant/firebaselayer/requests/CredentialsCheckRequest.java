@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.IdentificationHash;
+import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

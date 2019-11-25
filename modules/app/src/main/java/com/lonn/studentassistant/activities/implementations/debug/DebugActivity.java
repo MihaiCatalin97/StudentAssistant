@@ -73,7 +73,7 @@ public class DebugActivity extends FirebaseConnectedActivity {
     protected void onCreate(Bundle savedBundle) {
         super.onCreate(savedBundle);
 
-        populator = new DatabasePopulator(FirebaseConnection.getInstance(getBaseContext()));
+        populator = new DatabasePopulator(FirebaseConnection.getInstance(getBaseContext()), this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);

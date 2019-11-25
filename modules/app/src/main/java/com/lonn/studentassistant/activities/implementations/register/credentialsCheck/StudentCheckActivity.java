@@ -4,7 +4,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.StudentCheckActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.IdentificationHash;
+import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 import com.lonn.studentassistant.viewModels.authentication.StudentCredentials;
 
 public class StudentCheckActivity extends CredentialsCheckActivity {

@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.predicates.fields;
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

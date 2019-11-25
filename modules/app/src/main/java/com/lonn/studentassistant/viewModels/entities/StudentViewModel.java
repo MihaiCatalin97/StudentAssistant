@@ -4,8 +4,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.models.Course;
-import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
 
 import java.util.List;
 

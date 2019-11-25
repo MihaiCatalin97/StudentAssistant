@@ -6,7 +6,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class CourseViewModel extends BaseObservable {
     }
 
     public void update(Course course) {
-        this.courseName = course.getCourseName();
+        this.courseName = course.getDisciplineName();
         this.pack = course.getPack();
         this.semester = course.getSemester();
         this.year = course.getYear();
@@ -37,10 +37,10 @@ public class CourseViewModel extends BaseObservable {
     @Bindable
     public String getCourseType() {
         if (pack == 0) {
-            return "Mandatory course";
+            return "Mandatory discipline";
         }
         else {
-            return "Optional course (Pack " + pack + ")";
+            return "Optional discipline (Pack " + pack + ")";
         }
     }
 

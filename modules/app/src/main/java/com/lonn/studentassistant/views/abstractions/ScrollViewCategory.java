@@ -20,7 +20,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 

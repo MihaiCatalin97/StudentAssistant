@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.register;
 
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;

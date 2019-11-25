@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 
 public class OtherActivitySemesterCategory extends OtherActivityBaseCategory {
     public OtherActivitySemesterCategory(Context context) {

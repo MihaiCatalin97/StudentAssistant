@@ -1,18 +1,30 @@
 package com.lonn.studentassistant.debug;
 
+import com.lonn.scheduleparser.ParseResult;
 import com.lonn.scheduleparser.UAICScheduleParser;
+import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.common.Logger;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.models.Administrator;
-import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.entities.Administrator;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
-public class DatabasePopulator {
-    private FirebaseConnection firebaseConnection;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
-    public DatabasePopulator(FirebaseConnection firebaseConnection) {
+import static java.util.concurrent.Executors.newSingleThreadExecutor;
+
+public class DatabasePopulator {
+    private static final Logger LOGGER = Logger.ofClass(DatabasePopulator.class);
+    private FirebaseConnection firebaseConnection;
+    private FirebaseConnectedActivity parentActivity;
+
+    public DatabasePopulator(FirebaseConnection firebaseConnection, FirebaseConnectedActivity parentActivity) {
         this.firebaseConnection = firebaseConnection;
+        this.parentActivity = parentActivity;
     }
 
     public void deleteUsersTable() {
@@ -62,6 +74,37 @@ public class DatabasePopulator {
     public void parseSchedule() {
         UAICScheduleParser uaicScheduleParser = new UAICScheduleParser();
 
-        uaicScheduleParser.parseUAICSchedule();
+        newSingleThreadExecutor().submit(() -> {
+            parentActivity.showSnackBar("Parsing UAIC schedule");
+
+            try {
+                ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
+
+                saveParsedEntities(parseResult.getCourses(), "courses");
+                saveParsedEntities(parseResult.getProfessors(), "professors");
+                saveParsedEntities(parseResult.getOtherActivities(), "other activities");
+                saveParsedEntities(parseResult.getOneTimeClasses(), "one time classes");
+                saveParsedEntities(parseResult.getRecurringClasses(), "recurring classes");
+            } catch (InterruptedException | ExecutionException exception) {
+                parentActivity.showSnackBar("An error occurred while parsing the schedule!", 1000);
+                LOGGER.error("Failed to parse UAIC schedule", exception);
+            }
+        });
+    }
+
+    private <T extends BaseEntity> void saveParsedEntities(List<T> entitiesToSave,
+                                                           String entityName) {
+
+        firebaseConnection.execute(new SaveRequest<T>()
+                .entities(entitiesToSave)
+                .onSuccess(() -> {
+                    parentActivity.showSnackBar("Saved " + entityName, 1000);
+                })
+                .onError((Exception exception) -> {
+                            parentActivity
+                                    .showSnackBar("An error occurred while saving the " + entityName, 1000);
+                            LOGGER.error("Failed saving " + entityName, exception);
+                        }
+                ));
     }
 }

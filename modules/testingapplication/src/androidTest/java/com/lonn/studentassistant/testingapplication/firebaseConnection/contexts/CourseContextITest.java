@@ -6,7 +6,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.testingapplication.TestingActivity;
 import com.lonn.studentassistant.testingapplication.testUtils.CourseUtils;
@@ -52,7 +52,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error saving course", databaseResultFuture.get());
+            assertTrue("Error saving discipline", databaseResultFuture.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the SAVE call");
         }
@@ -70,7 +70,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error saving course", saveResult.get());
+            assertTrue("Error saving discipline", saveResult.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the SAVE call");
         }
@@ -79,7 +79,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Not all course were found", getResult.get().contains(testingCourse));
+            assertTrue("Not all discipline were found", getResult.get().contains(testingCourse));
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the GET call");
         }
@@ -97,7 +97,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error saving course", saveResult.get());
+            assertTrue("Error saving discipline", saveResult.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the SAVE call");
         }
@@ -109,7 +109,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error saving course", saveResult.get());
+            assertTrue("Error saving discipline", saveResult.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the SAVE call");
         }
@@ -118,8 +118,8 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Not all course were found", getResult.get().contains(testingCourse));
-            assertEquals("Created more than one course", 1, getResult.get().size());
+            assertTrue("Not all discipline were found", getResult.get().contains(testingCourse));
+            assertEquals("Created more than one discipline", 1, getResult.get().size());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the GET call");
         }
@@ -157,7 +157,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error deleting course", deleteFuture.get());
+            assertTrue("Error deleting discipline", deleteFuture.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the DELETE call");
         }
@@ -171,7 +171,7 @@ public class CourseContextITest {
             courseList.remove(deletingIndex);
 
             assertFalse("Course was not deleted", getResult.contains(deletedCourse));
-            assertTrue("Not all course were found", getFuture.get().containsAll(courseList));
+            assertTrue("Not all discipline were found", getFuture.get().containsAll(courseList));
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the GET call");
         }
@@ -207,7 +207,7 @@ public class CourseContextITest {
                 (error) -> fail(error.getMessage()));
 
         try {
-            assertTrue("Error deleting course", deleteFuture.get());
+            assertTrue("Error deleting discipline", deleteFuture.get());
         } catch (InterruptedException | ExecutionException e) {
             fail("An error occurred while getting future results of the DELETE call");
         }

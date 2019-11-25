@@ -7,9 +7,9 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
-import com.lonn.studentassistant.firebaselayer.models.Professor;
-import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 

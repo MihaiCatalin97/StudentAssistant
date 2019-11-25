@@ -3,7 +3,7 @@ package com.lonn.studentassistant.firebaselayer.database.contexts;
 
 import com.google.firebase.database.DatabaseError;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 
 import java.util.List;

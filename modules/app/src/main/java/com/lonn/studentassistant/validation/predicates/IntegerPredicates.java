@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.validation.predicates;
 
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.validation.ValidationConstants;
 import com.lonn.studentassistant.validation.functionalInterfaces.IntegerGetter;
 import com.lonn.studentassistant.validation.functionalInterfaces.Predicate;

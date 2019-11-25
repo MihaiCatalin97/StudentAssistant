@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 public class OptionalCourseBaseCategory extends CourseBaseCategory {
     public OptionalCourseBaseCategory(Context context) {
@@ -33,7 +33,7 @@ public class OptionalCourseBaseCategory extends CourseBaseCategory {
     }
 
     protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "optional course";
+        categoryViewModel.entityName = "optional discipline";
 
         categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }

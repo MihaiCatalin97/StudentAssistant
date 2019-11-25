@@ -8,7 +8,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
 
 import java.lang.reflect.Field;
 import java.util.LinkedList;

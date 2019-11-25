@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 public class OptionalCourseEnrolledCategory extends OptionalCourseBaseCategory {
     public OptionalCourseEnrolledCategory(Context context) {

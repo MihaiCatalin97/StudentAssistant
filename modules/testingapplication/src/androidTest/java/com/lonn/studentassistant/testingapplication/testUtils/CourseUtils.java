@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.testingapplication.testUtils;
 
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

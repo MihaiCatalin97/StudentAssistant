@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.database;
 
 import com.lonn.studentassistant.firebaselayer.Utils;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
 import lombok.Getter;
 

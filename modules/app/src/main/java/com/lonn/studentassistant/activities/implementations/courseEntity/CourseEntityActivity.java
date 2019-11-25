@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
 import com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory;
 import com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory;

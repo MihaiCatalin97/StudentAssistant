@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
 public class CourseBaseCategory extends ScrollViewCategory<Course> {
@@ -35,10 +35,10 @@ public class CourseBaseCategory extends ScrollViewCategory<Course> {
     }
 
     protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "course";
+        categoryViewModel.entityName = "discipline";
 
         if (getClass().getSimpleName().toLowerCase().contains("enrolled")) {
-            categoryViewModel.entityName = "optional course";
+            categoryViewModel.entityName = "optional discipline";
             categoryAddLayout.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {

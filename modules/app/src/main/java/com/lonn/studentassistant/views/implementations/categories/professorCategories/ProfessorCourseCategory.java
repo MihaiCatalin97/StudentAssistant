@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 
-import com.lonn.studentassistant.firebaselayer.models.Course;
-import com.lonn.studentassistant.firebaselayer.models.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Professor;
 
 public class ProfessorCourseCategory extends ProfessorBaseCategory {
     public ProfessorCourseCategory(Context context) {
@@ -28,7 +28,7 @@ public class ProfessorCourseCategory extends ProfessorBaseCategory {
 
     public boolean shouldContain(Professor professor) {
         Course auxCourse = new Course();
-        auxCourse.setCourseName(categoryViewModel.category);
+        auxCourse.setDisciplineName(categoryViewModel.category);
 
         return professor.getCourses().contains(auxCourse.getKey());
     }

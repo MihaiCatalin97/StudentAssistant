@@ -7,7 +7,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;

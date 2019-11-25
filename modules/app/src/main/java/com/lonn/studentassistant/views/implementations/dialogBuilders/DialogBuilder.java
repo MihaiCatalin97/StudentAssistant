@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.view.Window;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
 import java.util.LinkedList;
 import java.util.List;

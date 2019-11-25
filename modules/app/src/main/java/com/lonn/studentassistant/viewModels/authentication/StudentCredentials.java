@@ -3,7 +3,7 @@ package com.lonn.studentassistant.viewModels.authentication;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
 
 import lombok.ToString;
 

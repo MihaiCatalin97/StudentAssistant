@@ -4,8 +4,8 @@ import com.google.android.gms.tasks.Task;
 import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.IdentificationHash;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.HashableEntity;
+import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashFields;
 

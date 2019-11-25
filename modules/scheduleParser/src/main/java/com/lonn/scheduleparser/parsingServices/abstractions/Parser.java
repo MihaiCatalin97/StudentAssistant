@@ -1,6 +1,6 @@
 package com.lonn.scheduleparser.parsingServices.abstractions;
 
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,12 +14,15 @@ public abstract class Parser<T extends BaseEntity> {
 
     public List<T> parse(Document document) {
         List<T> parsedEntities = new LinkedList<>();
+        Elements parsableElements = getListOfParsableElements(document);
 
-        for (Element parsableElement : getListOfParsableElements(document)) {
-            T parsedEntity = parseSingleEntity(parsableElement);
+        if (parsableElements != null) {
+            for (Element parsableElement : parsableElements) {
+                T parsedEntity = parseSingleEntity(parsableElement);
 
-            if (parsedEntity != null) {
-                parsedEntities.add(parsedEntity);
+                if (parsedEntity != null) {
+                    parsedEntities.add(parsedEntity);
+                }
             }
         }
 

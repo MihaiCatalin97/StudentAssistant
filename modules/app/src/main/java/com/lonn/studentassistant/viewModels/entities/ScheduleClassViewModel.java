@@ -6,8 +6,8 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.Course;
-import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,14 +23,14 @@ public class ScheduleClassViewModel extends BaseObservable {
     @Bindable
     public List<String> groups;
 
-    public ScheduleClassViewModel(ScheduleClass scheduleClass) {
+    public ScheduleClassViewModel(RecurringClass scheduleClass) {
         update(scheduleClass);
     }
 
-    public void update(ScheduleClass scheduleClass) {
+    public void update(RecurringClass scheduleClass) {
         this.type = scheduleClass.getType();
         this.day = scheduleClass.getDay();
-        this.courseKey = scheduleClass.getCourse();
+        this.courseKey = scheduleClass.getDiscipline();
         this.rooms = new LinkedList<>(scheduleClass.getRooms());
         this.groups = new LinkedList<>(scheduleClass.getGroups());
         this.professorKeys = new LinkedList<>(scheduleClass.getProfessors());
@@ -76,7 +76,7 @@ public class ScheduleClassViewModel extends BaseObservable {
     @Bindable
     public String getCourseName() {
         Course auxCourse = new Course();
-        auxCourse.setCourseName(courseKey.replace("~", "."));
+        auxCourse.setDisciplineName(courseKey.replace("~", "."));
 
         String courseName = auxCourse.getKey();
         int legth = 0;

@@ -1,6 +1,6 @@
 package com.lonn.scheduleparser.parsingServices.abstractions;
 
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
 import org.jsoup.nodes.Document;
 

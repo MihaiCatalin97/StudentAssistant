@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialogBuilders.DialogBuilder;
 

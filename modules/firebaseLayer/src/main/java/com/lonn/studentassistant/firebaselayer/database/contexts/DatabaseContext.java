@@ -10,7 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 
 import java.util.ArrayList;

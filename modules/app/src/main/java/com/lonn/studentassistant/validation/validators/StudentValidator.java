@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.validation.validators;
 
-import com.lonn.studentassistant.firebaselayer.models.Student;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
 
 import java.util.ArrayList;
 import java.util.List;

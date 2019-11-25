@@ -6,7 +6,7 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class OtherActivityViewModel extends BaseObservable {
 
     public void update(OtherActivity activity) {
 
-        this.activityName = activity.getActivityName();
+        this.activityName = activity.getDisciplineName();
         this.type = activity.getType();
         this.semester = activity.getSemester();
         this.year = activity.getYear();

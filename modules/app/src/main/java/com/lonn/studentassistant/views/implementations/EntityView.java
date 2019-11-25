@@ -12,9 +12,9 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.models.Grade;
-import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.Grade;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 

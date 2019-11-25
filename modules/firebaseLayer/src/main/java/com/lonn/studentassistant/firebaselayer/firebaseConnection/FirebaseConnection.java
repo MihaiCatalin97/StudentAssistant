@@ -9,10 +9,10 @@ import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContextWithIdentification;
-import com.lonn.studentassistant.firebaselayer.models.IdentificationHash;
-import com.lonn.studentassistant.firebaselayer.models.User;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.HashableEntity;
+import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
+import com.lonn.studentassistant.firebaselayer.entities.User;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashFields;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.UserFields;
@@ -44,10 +44,10 @@ public class FirebaseConnection {
         firebaseConfig = new FirebaseConfig(applicationContext);
 
         databaseMap.put(DatabaseTableContainer.COURSES, buildContextForTable(DatabaseTableContainer.COURSES));
-        databaseMap.put(DatabaseTableContainer.EXAMS, buildContextForTable(DatabaseTableContainer.EXAMS));
         databaseMap.put(DatabaseTableContainer.GRADES, buildContextForTable(DatabaseTableContainer.GRADES));
         databaseMap.put(DatabaseTableContainer.OTHER_ACTIVITIES, buildContextForTable(DatabaseTableContainer.OTHER_ACTIVITIES));
-        databaseMap.put(DatabaseTableContainer.SCHEDULE_CLASSES, buildContextForTable(DatabaseTableContainer.SCHEDULE_CLASSES));
+        databaseMap.put(DatabaseTableContainer.RECURRING_CLASSES, buildContextForTable(DatabaseTableContainer.RECURRING_CLASSES));
+        databaseMap.put(DatabaseTableContainer.ONE_TIME_CLASSES, buildContextForTable(DatabaseTableContainer.ONE_TIME_CLASSES));
         databaseMap.put(DatabaseTableContainer.USERS, buildContextForTable(DatabaseTableContainer.USERS));
         databaseMap.put(DatabaseTableContainer.IDENTIFICATION_HASHES, buildContextForTable(DatabaseTableContainer.IDENTIFICATION_HASHES));
 
@@ -82,7 +82,9 @@ public class FirebaseConnection {
         DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
 
         if (context != null) {
-            context.saveOrUpdate(request.entity(), request.onSuccess(), request.onError());
+            for (T entity : request.entities()) {
+                context.saveOrUpdate(entity, request.onSuccess(), request.onError());
+            }
         }
     }
 

@@ -6,10 +6,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
 
-public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass> {
+public class ScheduleBaseCategory extends ScrollViewCategory<RecurringClass> {
     public ScheduleBaseCategory(Context context) {
         super(context);
     }
@@ -27,11 +27,11 @@ public class ScheduleBaseCategory extends ScrollViewCategory<ScheduleClass> {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public boolean shouldContain(ScheduleClass scheduleClass) {
+    public boolean shouldContain(RecurringClass scheduleClass) {
         return true;
     }
 
-    public void generateChildCategories(ScheduleClass scheduleClass) {
+    public void generateChildCategories(RecurringClass scheduleClass) {
         if (generateChildCategories.equals("days")) {
             String dayString = Utils.dayToString(scheduleClass.getDay());
             if (children.get(dayString) == null) {

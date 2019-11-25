@@ -6,7 +6,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 public class CourseYearCategory extends CourseBaseCategory {
     public CourseYearCategory(Context context) {

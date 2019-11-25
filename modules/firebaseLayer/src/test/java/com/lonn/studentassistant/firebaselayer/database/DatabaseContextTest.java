@@ -9,8 +9,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext.CustomValueEventListener;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.models.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.models.Course;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 
 import org.hamcrest.Matchers;
