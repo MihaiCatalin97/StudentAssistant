@@ -1,15 +1,34 @@
 package com.lonn.scheduleparser.parsingServices;
 
-import android.util.Log;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class Utils {
-    public static void logException(Exception exception){
-        String errorMessage = exception.getMessage();
+	private static final Logger LOGGER = Logger.ofClass(Utils.class);
 
-        if (errorMessage == null) {
-            errorMessage = exception.toString();
-        }
+	public static Integer hourStringToInteger(String hourString) {
+		try {
+			return Integer.parseInt(hourString.replace(":", ""));
+		}
+		catch (NumberFormatException exception) {
+			LOGGER.error("Error while parsing hour", exception);
+			return null;
+		}
+	}
 
-        Log.e("Parsing ", errorMessage);
-    }
+	public static Integer intStringToInteger(String intString) {
+		try {
+			return Integer.parseInt(intString);
+		}
+		catch (NumberFormatException exception) {
+			LOGGER.error("Error while parsing integer", exception);
+			return null;
+		}
+	}
+
+	public static List<String> splitByCommon(String stringWithCommons) {
+		return asList(stringWithCommons.replace(" ", "")
+				.split(","));
+	}
 }

@@ -11,9 +11,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public abstract class ScheduleClass extends BaseEntity {
-    private int startHour;
-    private int endHour;
-    private int pack;
+    private Integer startHour;
+    private Integer endHour;
+    private Integer pack;
     private String type;
     private String parity;
 
