@@ -16,7 +16,6 @@ public abstract class Discipline extends BaseEntity{
     private String disciplineName;
     private String description = "";
     private String website;
-    private String type;
     private String scheduleLink;
 
     private List<String> professors = new LinkedList<>();

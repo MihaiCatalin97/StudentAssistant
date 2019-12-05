@@ -166,14 +166,6 @@ public class Utils {
         return result;
     }
 
-    public static String emailToKey(String email) {
-        return email.replace(".", ",");
-    }
-
-    public static String keyToEmail(String key) {
-        return key.replace(",", ".");
-    }
-
     public static boolean isValidStudentId(String studentId) {
         String regex = "^[a-zA-Z0-9]+$";
 

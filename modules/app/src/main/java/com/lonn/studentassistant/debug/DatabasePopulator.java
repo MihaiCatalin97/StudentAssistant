@@ -80,11 +80,11 @@ public class DatabasePopulator {
 			try {
 				ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
 
-//				saveParsedEntities(parseResult.getCourses(), "courses");
-//				saveParsedEntities(parseResult.getProfessors(), "professors");
-//				saveParsedEntities(parseResult.getOtherActivities(), "other activities");
-//				saveParsedEntities(parseResult.getOneTimeClasses(), "one time classes");
-//				saveParsedEntities(parseResult.getRecurringClasses(), "recurring classes");
+				saveParsedEntities(parseResult.getCourses(), "courses");
+				saveParsedEntities(parseResult.getProfessors(), "professors");
+				saveParsedEntities(parseResult.getOtherActivities(), "other activities");
+				saveParsedEntities(parseResult.getOneTimeClasses(), "one time classes");
+				saveParsedEntities(parseResult.getRecurringClasses(), "recurring classes");
 			}
 			catch (InterruptedException | ExecutionException exception) {
 				parentActivity.showSnackBar("An error occurred while parsing the schedule!",
@@ -103,7 +103,8 @@ public class DatabasePopulator {
 						parentActivity.showSnackBar("Saved " + entityName, 1000)
 				)
 				.onError((Exception exception) -> {
-							parentActivity.showSnackBar("An error occurred while saving the " + entityName,
+							parentActivity.showSnackBar(
+									"An error occurred while saving the " + entityName,
 									1000);
 							LOGGER.error("Failed saving " + entityName, exception);
 						}

@@ -10,5 +10,5 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class OtherActivity extends Discipline {
-
+	private String type;
 }

@@ -1,10 +1,10 @@
 package com.lonn.scheduleparser;
 
-import com.lonn.scheduleparser.parsingServices.classes.oneTime.OneTimeClassParsingService;
-import com.lonn.scheduleparser.parsingServices.classes.recurring.RecurringClassParsingService;
-import com.lonn.scheduleparser.parsingServices.disciplines.courses.CourseParsingService;
-import com.lonn.scheduleparser.parsingServices.disciplines.otherActivities.OtherActivityParsingService;
-import com.lonn.scheduleparser.parsingServices.professors.ProfessorParsingService;
+import com.lonn.scheduleparser.parsing.services.OneTimeClassParsingService;
+import com.lonn.scheduleparser.parsing.services.RecurringClassParsingService;
+import com.lonn.scheduleparser.parsing.services.CourseParsingService;
+import com.lonn.scheduleparser.parsing.services.OtherActivityParsingService;
+import com.lonn.scheduleparser.parsing.services.ProfessorParsingService;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
