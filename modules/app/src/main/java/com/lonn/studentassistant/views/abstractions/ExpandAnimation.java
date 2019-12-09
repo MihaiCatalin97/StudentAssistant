@@ -12,7 +12,7 @@ public class ExpandAnimation extends Animation {
     private int initialMarginTop, viewHeight;
     private ViewGroup view;
 
-    ExpandAnimation() {
+    public ExpandAnimation() {
     }
 
     @Override

@@ -60,7 +60,7 @@
                 android:textStyle="bold"
                 android:gravity="start|center_vertical"
                 android:textSize="18sp"
-                android:text="@{categoryModel.category}"/>
+                android:text="@{categoryModel.categoryName}"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/arrowCategory"

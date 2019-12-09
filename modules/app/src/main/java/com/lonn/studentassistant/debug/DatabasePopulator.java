@@ -15,6 +15,10 @@ import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ADMINISTRATORS;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {
@@ -47,17 +51,17 @@ public class DatabasePopulator {
 
 	public void deleteStudentsTable() {
 		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(DatabaseTableContainer.STUDENTS));
+				.databaseTable(STUDENTS));
 	}
 
 	public void deleteCoursesTable() {
 		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(DatabaseTableContainer.COURSES));
+				.databaseTable(COURSES));
 	}
 
 	public void deleteProfessorsTable() {
 		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(DatabaseTableContainer.PROFESSORS));
+				.databaseTable(PROFESSORS));
 	}
 
 	public void populateAdministratorsTable() {
@@ -67,7 +71,7 @@ public class DatabasePopulator {
 				.setAdministratorKey("123");
 
 		firebaseConnection.execute(new SaveRequest<>()
-				.databaseTable(DatabaseTableContainer.ADMINISTRATORS)
+				.databaseTable(ADMINISTRATORS)
 				.entity(administrator));
 	}
 
@@ -96,7 +100,6 @@ public class DatabasePopulator {
 
 	private <T extends BaseEntity> void saveParsedEntities(List<T> entitiesToSave,
 														   String entityName) {
-
 		firebaseConnection.execute(new SaveRequest<T>()
 				.entities(entitiesToSave)
 				.onSuccess(() ->

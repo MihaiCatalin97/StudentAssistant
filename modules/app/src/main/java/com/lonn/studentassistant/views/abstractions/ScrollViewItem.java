@@ -1,8 +1,6 @@
 package com.lonn.studentassistant.views.abstractions;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -21,18 +19,9 @@ public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout 
         super(context, attrs, defStyleAttr);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ScrollViewItem(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     public abstract void addOrUpdate(T entity);
 
-    public abstract void delete(T entity);
-
     public abstract boolean shouldContain(T entity);
-
-    public abstract void delete(String key);
 
     protected abstract void inflateLayout(Context context);
 

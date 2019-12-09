@@ -28,7 +28,7 @@ public class ScheduleDayCategory extends ScheduleBaseCategory {
     }
 
     public boolean shouldContain(RecurringClass scheduleClass) {
-        return Utils.dayToString(scheduleClass.getDay()).equals(categoryViewModel.category);
+        return Utils.dayToString(scheduleClass.getDay()).equals(categoryViewModel.categoryName);
     }
 
     public void generateChildCategories(ScheduleClass scheduleClass) {

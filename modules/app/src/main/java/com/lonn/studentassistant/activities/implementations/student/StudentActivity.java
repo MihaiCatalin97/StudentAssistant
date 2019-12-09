@@ -18,7 +18,7 @@ import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleCla
 import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.entities.StudentViewModel;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
+import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 
@@ -56,7 +56,6 @@ public class StudentActivity extends NavBarActivity {
     public void onStart() {
         super.onStart();
 
-        showSnackBar("Loading courses");
         firebaseConnection.execute(new GetRequest<Course>()
                 .databaseTable(COURSES)
                 .onSuccess(courses -> {

@@ -1,13 +1,12 @@
 package com.lonn.studentassistant.views.implementations.categories.otherActivityCategories;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 
 public class OtherActivityTypeCategory extends OtherActivityBaseCategory {
+
     public OtherActivityTypeCategory(Context context) {
         super(context);
     }
@@ -20,13 +19,8 @@ public class OtherActivityTypeCategory extends OtherActivityBaseCategory {
         super(context, attrs, defStyleAttr);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public OtherActivityTypeCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
-
     public boolean shouldContain(OtherActivity otherActivity) {
-        return otherActivity.getType().equals(categoryViewModel.category);
+        return otherActivity.getType().equals(categoryViewModel.categoryName);
     }
 
     public void generateChildCategories(OtherActivity otherActivity) {

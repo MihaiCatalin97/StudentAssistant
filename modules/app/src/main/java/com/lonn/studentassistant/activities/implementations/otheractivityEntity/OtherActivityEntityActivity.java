@@ -11,7 +11,7 @@ import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
-import com.lonn.studentassistant.views.abstractions.ScrollViewCategory;
+import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
 
 public class OtherActivityEntityActivity extends FirebaseConnectedActivity {
     public ScrollViewCategory<Professor> professorBaseCategory;
