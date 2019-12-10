@@ -21,7 +21,7 @@ public class OtherActivityYearCategory extends OtherActivityBaseCategory {
     }
 
     public boolean shouldContain(OtherActivity otherActivity) {
-        return Utils.yearToString(otherActivity.getYear()).equals(categoryViewModel.categoryName);
+        return Utils.yearToString(otherActivity.getYear()).equals(viewModel.getCategoryTitle());
     }
 
     public void generateChildCategories(OtherActivity otherActivity) {

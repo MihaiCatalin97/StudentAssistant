@@ -1,8 +1,6 @@
 package com.lonn.studentassistant.views.implementations.categories.scheduleCategories;
 
-import android.annotation.TargetApi;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 
 import com.lonn.studentassistant.common.Utils;
@@ -10,42 +8,36 @@ import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
 
 public class ScheduleBaseCategory extends ScrollViewCategory<RecurringClass> {
-    public ScheduleBaseCategory(Context context) {
-        super(context);
-    }
+	public ScheduleBaseCategory(Context context) {
+		super(context);
+	}
 
-    public ScheduleBaseCategory(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public ScheduleBaseCategory(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public ScheduleBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+	public ScheduleBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+	}
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public ScheduleBaseCategory(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+	public boolean shouldContain(RecurringClass scheduleClass) {
+		return true;
+	}
 
-    public boolean shouldContain(RecurringClass scheduleClass) {
-        return true;
-    }
+	public void generateChildCategories(RecurringClass scheduleClass) {
+		if (getViewModel().getSubCategoriesToGenerate().equals("days")) {
+			String dayString = Utils.dayToString(scheduleClass.getDay());
+			if (!containsChildCategoryWithName(dayString)) {
+				ScheduleDayCategory newCategory = new ScheduleDayCategory(getContext());
+				newCategory.getViewModel().setCategoryTitle(dayString);
+				addChildCategory(newCategory);
+			}
+		}
+	}
 
-    public void generateChildCategories(RecurringClass scheduleClass) {
-        if (generateChildCategories.equals("days")) {
-            String dayString = Utils.dayToString(scheduleClass.getDay());
-            if (children.get(dayString) == null) {
-                ScheduleDayCategory newCategory = new ScheduleDayCategory(getContext());
-                newCategory.setCategory(dayString);
-                addView(newCategory);
-                children.put(dayString, newCategory);
-            }
-        }
-    }
+	protected void initCategoryViewModel() {
+		viewModel.setEntityName("schedule class");
 
-    protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "schedule class";
-
-        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-    }
+		viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
+	}
 }

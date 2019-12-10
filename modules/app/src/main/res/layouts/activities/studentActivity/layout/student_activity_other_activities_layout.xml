@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <TextView
-        style="@style/DarkBlueTitle"
-        android:id="@+id/titleOtherActivitiesLayout"
-        android:layout_marginTop="16dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Other Activities"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/titleOtherActivitiesLayout"
-        app:layout_constraintTop_toBottomOf="@id/titleOtherActivitiesLayout">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/titleOtherActivitiesLayout"
+            style="@style/DarkBlueTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Other Activities"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityBaseCategory
-                android:id="@+id/otherActivitiesBaseCategory"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/titleOtherActivitiesLayout"
+            app:layout_constraintTop_toBottomOf="@id/titleOtherActivitiesLayout">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:category_title="Other activities"
-                app:generate_child_categories="types"
-                app:show_base_header="false"/>
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
+                <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityBaseCategory
+                    android:id="@+id/otherActivitiesBaseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Other activities"
+                    app:show_header="false"
+                    app:subcategories_to_generate="types" />
+
+            </LinearLayout>
+        </ScrollView>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

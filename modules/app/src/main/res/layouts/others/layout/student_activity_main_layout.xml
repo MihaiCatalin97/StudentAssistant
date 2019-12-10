@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+
         <variable
             name="user"
-            type="com.lonn.studentassistant.viewModels.entities.UserViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.UserViewModel" />
+
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
+
+        <variable
+            name="courses"
+            type="java.util.List&lt;Course&gt;" />
     </data>
+
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://schemas.android.com/apk/res-auto"
@@ -18,11 +28,42 @@
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
 
-        <include
-            layout="@layout/app_bar_main"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            bind:student="@{student}"/>
+            tools:context=".activities.implementations.student.StudentActivity">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <include
+                android:id="@+id/layoutMain"
+                layout="@layout/student_activity_content_layout"
+                app:allCourses="@{courses}"
+                app:student="@{student}" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                app:srcCompat="@drawable/ic_refresh_light" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"

@@ -24,49 +24,34 @@ public class DialogBuilder extends AlertDialog.Builder {
         }
 
         setTitle(title);
-        setMultiChoiceItems(titles,
-                null,
-                new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (isChecked) {
-                            checkedItems.add(which);
-                        }
-                        else {
-                            checkedItems.remove(Integer.valueOf(which));
-                        }
+        setMultiChoiceItems(titles, null,
+                (dialog, which, isChecked) -> {
+                    if (isChecked) {
+                        checkedItems.add(which);
+                    }
+                    else {
+                        checkedItems.remove(Integer.valueOf(which));
                     }
                 }
         );
 
-        setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        setPositiveButton(positiveButtonText, (dialog, which) -> {
         });
 
-        setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
     }
 
     public void showDialog() {
         final AlertDialog dialog = create();
 
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface arg0) {
-                Window dialogWindow = dialog.getWindow();
+        dialog.setOnShowListener(arg0 -> {
+            Window dialogWindow = dialog.getWindow();
 
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
 
-                if (dialogWindow != null) {
-                    dialogWindow.setBackgroundDrawableResource(R.drawable.dark_stroke_solid_background);
-                }
+            if (dialogWindow != null) {
+                dialogWindow.setBackgroundDrawableResource(R.drawable.dark_stroke_solid_background);
             }
         });
 

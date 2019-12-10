@@ -19,8 +19,6 @@ public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout 
         super(context, attrs, defStyleAttr);
     }
 
-    public abstract void addOrUpdate(T entity);
-
     public abstract boolean shouldContain(T entity);
 
     protected abstract void inflateLayout(Context context);

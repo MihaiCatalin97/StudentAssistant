@@ -9,44 +9,43 @@ import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
 
 public class ProfessorBaseCategory extends ScrollViewCategory<Professor> {
 
-    public ProfessorBaseCategory(Context context) {
-        super(context);
-    }
+	public ProfessorBaseCategory(Context context) {
+		super(context);
+	}
 
-    public ProfessorBaseCategory(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+	public ProfessorBaseCategory(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
 
-    public ProfessorBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+	public ProfessorBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
+	}
 
-    public boolean shouldContain(Professor professor) {
-        return true;
-    }
+	public boolean shouldContain(Professor professor) {
+		return true;
+	}
 
-    public void generateChildCategories(Professor professor) {
-        if (getCategoryViewModel().childCategoryTypes.equals("courses")) {
-            Course auxCourse = new Course();
+	public void generateChildCategories(Professor professor) {
+		if (getViewModel().getSubCategoriesToGenerate().equals("courses")) {
+			Course auxCourse = new Course();
 
-            for (String course : professor.getCourses()) {
-                auxCourse.setDisciplineName(course.replace("~", "."));
+			for (String course : professor.getCourses()) {
+				auxCourse.setDisciplineName(course.replace("~", "."));
 
-                if (children.get(auxCourse.getDisciplineName()) == null) {
-                    ProfessorCourseCategory newCategory = new ProfessorCourseCategory(getContext());
-                    newCategory.setCategory(auxCourse.getDisciplineName());
-                    addView(newCategory);
-                    children.put(auxCourse.getDisciplineName(), newCategory);
-                }
-            }
+				if (!containsChildCategoryWithName(auxCourse.getDisciplineName())) {
+					ProfessorCourseCategory newCategory = new ProfessorCourseCategory(getContext());
+					newCategory.getViewModel().setCategoryTitle(auxCourse.getDisciplineName());
+					addChildCategory(newCategory);
+				}
+			}
 
-            sortChildren();
-        }
-    }
+			getContent().sortChildren();
+		}
+	}
 
-    protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "professor";
+	protected void initCategoryViewModel() {
+		viewModel.setEntityName("professor");
 
-        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-    }
+		viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
+	}
 }

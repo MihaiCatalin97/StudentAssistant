@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.validation.functionalInterfaces;
+package com.lonn.studentassistant.common.interfaces;
 
 @FunctionalInterface
 public interface StringGetter<T> {

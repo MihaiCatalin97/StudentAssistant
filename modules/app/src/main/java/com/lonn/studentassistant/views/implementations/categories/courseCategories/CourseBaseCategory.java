@@ -23,15 +23,12 @@ public class CourseBaseCategory extends ScrollViewCategory<Course> {
     }
 
     protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "discipline";
+        viewModel.setEntityName("discipline");
 
-        if (getClass().getSimpleName().toLowerCase().contains("enrolled")) {
-            categoryViewModel.entityName = "optional discipline";
-            getCategoryContentLayout().setOnAddTap(() -> {
+        getContent().setOnAddTap(() -> {
 
-            });
-        }
+        });
 
-        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
+        viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }
 }

@@ -1,74 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:bind="http://schemas.android.com/tools">
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="categoryModel"
-            type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel" />
     </data>
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/layoutCategoryMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{categoryModel.showHeader? @drawable/dark_stroke_solid_background : null}"
-        android:layout_marginBottom="@{categoryModel.showHeader? @dimen/dim_16dp : @dimen/dim_0dp}"
         android:layout_marginLeft="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
-        android:layout_marginRight="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}">
+        android:layout_marginRight="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
+        android:layout_marginBottom="@{categoryModel.showHeader? @dimen/dim_16dp : @dimen/dim_0dp}"
+        android:background="@{categoryModel.showHeader? @drawable/dark_stroke_solid_background : null}">
 
-        <LinearLayout
-            android:id="@+id/layoutCategoryContent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
-            android:layout_marginRight="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
-            android:layout_marginTop="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
-            android:orientation="vertical"
-            android:layout_below="@+id/layoutCategoryHeader"
-            android:visibility="@{categoryModel.showHeader? View.GONE : View.VISIBLE}">
-
-            <include
-                layout="@layout/category_add_entity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/layoutCategoryAdd"
-                android:visibility="@{categoryModel.permissionLevel>0? View.VISIBLE : View.GONE}"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                bind:categoryModel="@{categoryModel}"/>
-        </LinearLayout>
-
-        <LinearLayout
+        <com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryHeader
             android:id="@+id/layoutCategoryHeader"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:background="@drawable/dark_color_bar"
-            android:weightSum="1"
-            android:paddingEnd="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
+            android:orientation="horizontal"
             android:paddingStart="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
-            android:visibility="@{categoryModel.showHeader? View.VISIBLE : View.GONE}">
+            android:paddingEnd="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
+            android:visibility="@{categoryModel.showHeader? View.VISIBLE : View.GONE}"
+            android:weightSum="1">
 
             <TextView
                 android:id="@+id/titleCategory"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:layout_weight="0.9"
-                android:textColor="#FFF"
-                android:textStyle="bold"
                 android:gravity="start|center_vertical"
+                android:text="@{categoryModel.categoryTitle}"
+                android:textColor="#FFF"
                 android:textSize="18sp"
-                android:text="@{categoryModel.categoryName}"/>
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/arrowCategory"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:contentDescription="Arrow"
                 android:layout_weight="0.1"
-                app:srcCompat="@drawable/ic_arrow_down"/>
-        </LinearLayout>
+                android:contentDescription="Arrow"
+                app:srcCompat="@drawable/ic_arrow_down" />
+        </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryHeader>
+
+        <com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent
+            android:id="@+id/layoutCategoryContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutCategoryHeader"
+            android:layout_marginLeft="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
+            android:layout_marginTop="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
+            android:layout_marginRight="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
+            android:orientation="vertical"
+            android:visibility="@{categoryModel.showHeader? View.GONE : View.VISIBLE}">
+
+            <include
+                android:id="@+id/layoutCategoryAdd"
+                layout="@layout/category_add_entity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="@{categoryModel.permissionLevel>0? View.VISIBLE : View.GONE}"
+                app:categoryModel="@{categoryModel}" />
+        </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent>
     </RelativeLayout>
 </layout>

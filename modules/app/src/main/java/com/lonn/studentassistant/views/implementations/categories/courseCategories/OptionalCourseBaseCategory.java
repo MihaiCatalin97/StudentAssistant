@@ -22,8 +22,8 @@ public class OptionalCourseBaseCategory extends CourseBaseCategory {
     }
 
     protected void initCategoryViewModel() {
-        categoryViewModel.entityName = "optional discipline";
+        viewModel.setEntityName("optional discipline");
 
-        categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
+        viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
     }
 }

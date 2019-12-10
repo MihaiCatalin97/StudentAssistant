@@ -1,86 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+
     <data>
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
+
+        <variable
+            name="allCourses"
+            type="java.util.List&lt;Course&gt;" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        style="@style/DarkBlueShadow_LightBlue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/solid_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".activities.implementations.student.StudentActivity"
-        tools:showIn="@layout/app_bar_main"
-        android:background="@drawable/solid_background"
-        style="@style/DarkBlueShadow_LightBlue">
+        tools:showIn="@layout/student_activity_main_layout">
 
         <include
-            layout="@layout/student_activity_home_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutHome"
-            android:visibility="visible"/>
+            layout="@layout/student_activity_home_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
 
         <include
-            layout="@layout/student_activity_profile_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutProfile"
+            layout="@layout/student_activity_profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:visibility="invisible"
-            bind:student="@{student}"/>
+            app:student="@{student}" />
 
         <include
-            layout="@layout/student_activity_schedule_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutSchedule"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_schedule_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
         <include
-            layout="@layout/student_activity_grades_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutGrades"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_grades_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
         <include
-            layout="@layout/student_activity_messages_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutMessages"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_messages_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
         <include
-            layout="@layout/student_activity_professors_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutProfessors"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_professors_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
         <include
-            layout="@layout/student_activity_courses_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutCourses"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_courses_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible"
+            app:courses="@{allCourses}" />
 
         <include
-            layout="@layout/student_activity_administrative_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutAdministrative"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_administrative_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
         <include
-            layout="@layout/student_activity_other_activities_layout"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
             android:id="@+id/layoutOtherActivities"
-            android:visibility="invisible"/>
+            layout="@layout/student_activity_other_activities_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

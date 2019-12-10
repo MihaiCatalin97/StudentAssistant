@@ -22,7 +22,7 @@ public class ProfessorCourseCategory extends ProfessorBaseCategory {
 
     public boolean shouldContain(Professor professor) {
         Course auxCourse = new Course();
-        auxCourse.setDisciplineName(categoryViewModel.categoryName);
+        auxCourse.setDisciplineName(viewModel.getCategoryTitle());
 
         return professor.getCourses().contains(auxCourse.getKey());
     }

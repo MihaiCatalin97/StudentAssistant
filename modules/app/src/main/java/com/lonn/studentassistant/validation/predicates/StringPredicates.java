@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.validation.predicates;
 
 import com.lonn.studentassistant.validation.Regex;
-import com.lonn.studentassistant.validation.functionalInterfaces.Predicate;
-import com.lonn.studentassistant.validation.functionalInterfaces.StringGetter;
+import com.lonn.studentassistant.common.interfaces.Predicate;
+import com.lonn.studentassistant.common.interfaces.StringGetter;
 
 public class StringPredicates {
     public static <T> Predicate<T> nonEmptyStringPredicate(StringGetter<T> getter) {

@@ -1,40 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:bind="http://schemas.android.com/tools">
 
-    <TextView
-        style="@style/DarkBlueTitle"
-        android:id="@+id/titleScheduleLayout"
-        android:layout_marginTop="16dp"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Schedule"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:layout_height="match_parent">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@id/titleScheduleLayout"
-        app:layout_constraintTop_toBottomOf="@id/titleScheduleLayout">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <TextView
+            android:id="@+id/titleScheduleLayout"
+            style="@style/DarkBlueTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Schedule"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
-                android:id="@+id/scheduleBaseCategory"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/titleScheduleLayout"
+            app:layout_constraintTop_toBottomOf="@id/titleScheduleLayout">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:category_title="Schedule"
-                app:generate_child_categories="days"
-                app:show_base_header="false"/>
+                android:orientation="vertical">
 
-        </LinearLayout>
-    </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                    android:id="@+id/scheduleBaseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:category_title="Schedule"
+                    app:show_header="false"
+                    app:subcategories_to_generate="days" />
+
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

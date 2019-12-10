@@ -21,7 +21,7 @@ public class OtherActivitySemesterCategory extends OtherActivityBaseCategory {
     }
 
     public boolean shouldContain(OtherActivity otherActivity) {
-        return Utils.semesterToString(otherActivity.getSemester()).equals(categoryViewModel.categoryName);
+        return Utils.semesterToString(otherActivity.getSemester()).equals(viewModel.getCategoryTitle());
     }
 
     public void generateChildCategories(OtherActivity otherActivity) {

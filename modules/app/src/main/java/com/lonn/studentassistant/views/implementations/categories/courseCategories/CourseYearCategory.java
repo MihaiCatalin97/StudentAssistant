@@ -16,7 +16,7 @@ public class CourseYearCategory extends CourseBaseCategory {
     }
 
     public boolean shouldContain(Course course) {
-        return Utils.yearToString(course.getYear()).equals(categoryViewModel.categoryName);
+        return Utils.yearToString(course.getYear()).equals(viewModel.getCategoryTitle());
     }
 
     public void generateChildCategories(Course course) {

@@ -2,8 +2,8 @@ package com.lonn.studentassistant.validation.predicates;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.validation.ValidationConstants;
-import com.lonn.studentassistant.validation.functionalInterfaces.IntegerGetter;
-import com.lonn.studentassistant.validation.functionalInterfaces.Predicate;
+import com.lonn.studentassistant.common.interfaces.IntegerGetter;
+import com.lonn.studentassistant.common.interfaces.Predicate;
 
 public class IntegerPredicates {
     public static <T extends BaseEntity> Predicate<T> isValidYear(IntegerGetter<T> getter) {

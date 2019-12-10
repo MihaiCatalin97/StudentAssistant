@@ -25,21 +25,21 @@ public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
 	}
 
 	public void generateChildCategories(OtherActivity otherActivity) {
-		if (getCategoryViewModel().childCategoryTypes.equals("types")) {
-			if (!getCategoryContentLayout().containsChildCategoryWithName(otherActivity.getType())) {
+		if (getViewModel().getSubCategoriesToGenerate().equals("types")) {
+			if (!containsChildCategoryWithName(otherActivity.getType())) {
 				OtherActivityTypeCategory newCategory = new OtherActivityTypeCategory(getContext());
-				newCategory.setCategory(otherActivity.getType());
-				addView(newCategory);
-				children.put(otherActivity.getType(), newCategory);
+
+				newCategory.getViewModel().setCategoryTitle(otherActivity.getType());
+				addChildCategory(newCategory);
 			}
 
-			sortChildren();
+			getContent().sortChildren();
 		}
 	}
 
 	protected void initCategoryViewModel() {
-		categoryViewModel.entityName = "other activity";
+		viewModel.setEntityName("other activity");
 
-		categoryViewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
+		viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
 	}
 }

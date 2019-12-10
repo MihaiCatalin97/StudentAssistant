@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
+
         <variable
             name="course"
-            type="com.lonn.studentassistant.viewModels.entities.CourseViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -24,7 +24,7 @@
             android:text="@{course.courseName}"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/courseType"
@@ -32,19 +32,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:gravity="center"
             android:text="@{course.courseType}"
             android:textSize="18sp"
-            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/courseTitle" />
+
         <TextView
 
             android:id="@+id/courseYearAndSemester"
             style="@style/DarkBlueTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@{course.courseYearSemester}"
             android:textSize="18sp"
-            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/courseType" />
 
         <TextView
@@ -78,17 +79,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/courseWebSite"
             app:layout_constraintTop_toBottomOf="@id/courseWebSite">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory
                     android:id="@+id/professorsBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:category_title="Professors"
-                    app:view_type="partial">
+                    app:view_type="PARTIAL">
 
                 </com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory>
 
@@ -97,8 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:category_title="Schedule"
-                    app:view_type="partial"
-                    app:generate_child_categories="days"/>
+                    app:subcategories_to_generate="days"
+                    app:view_type="PARTIAL" />
 
             </LinearLayout>
         </ScrollView>

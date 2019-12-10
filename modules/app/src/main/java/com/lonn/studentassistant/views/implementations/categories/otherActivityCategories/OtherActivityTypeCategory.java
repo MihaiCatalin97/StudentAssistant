@@ -20,7 +20,7 @@ public class OtherActivityTypeCategory extends OtherActivityBaseCategory {
     }
 
     public boolean shouldContain(OtherActivity otherActivity) {
-        return otherActivity.getType().equals(categoryViewModel.categoryName);
+        return otherActivity.getType().equals(viewModel.getCategoryTitle());
     }
 
     public void generateChildCategories(OtherActivity otherActivity) {
