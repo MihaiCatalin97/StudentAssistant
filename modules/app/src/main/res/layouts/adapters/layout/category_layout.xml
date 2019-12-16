@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:bind="http://schemas.android.com/tools">
+<layout>
 
     <data>
 
         <import type="android.view.View" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity" />
 
         <variable
             name="categoryModel"
@@ -70,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:visibility="@{categoryModel.permissionLevel>0? View.VISIBLE : View.GONE}"
+                android:visibility="@{(categoryModel.permissionLevel>0)? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}" />
         </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent>
     </RelativeLayout>

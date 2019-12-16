@@ -24,17 +24,6 @@ public class ScheduleBaseCategory extends ScrollViewCategory<RecurringClass> {
 		return true;
 	}
 
-	public void generateChildCategories(RecurringClass scheduleClass) {
-		if (getViewModel().getSubCategoriesToGenerate().equals("days")) {
-			String dayString = Utils.dayToString(scheduleClass.getDay());
-			if (!containsChildCategoryWithName(dayString)) {
-				ScheduleDayCategory newCategory = new ScheduleDayCategory(getContext());
-				newCategory.getViewModel().setCategoryTitle(dayString);
-				addChildCategory(newCategory);
-			}
-		}
-	}
-
 	protected void initCategoryViewModel() {
 		viewModel.setEntityName("schedule class");
 

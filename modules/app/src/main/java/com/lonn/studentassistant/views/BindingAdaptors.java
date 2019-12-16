@@ -4,70 +4,87 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.lonn.studentassistant.common.interfaces.Function;
 import com.lonn.studentassistant.common.interfaces.Predicate;
-import com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
+import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
 
 import java.util.List;
 
+import static com.lonn.studentassistant.views.EntityViewType.valueOf;
+
 public class BindingAdaptors {
-	@BindingAdapter("srcCompat")
-	public static void bindSrcCompat(ImageView imageView, int resourceId) {
-		imageView.setImageResource(resourceId);
-	}
+    @BindingAdapter("srcCompat")
+    public static void setSrcCompat(ImageView imageView, int resourceId) {
+        imageView.setImageResource(resourceId);
+    }
 
-	@BindingAdapter("childEntities")
-	public static void createChildEntities(CourseSemesterCategory category,
-										   List entities) {
-		if (entities != null && category != null) {
-			category.addEntities(entities);
-		}
-	}
+    @BindingAdapter("android:childEntities")
+    public static <T extends BaseEntity> void setChildEntities(ScrollViewCategory<T> category,
+                                                               List<T> entities) {
+        if (entities != null && category != null) {
+            category.addEntities(entities);
+        }
+    }
 
-	@BindingAdapter("should_contain")
-	public static void setShouldContain(CourseSemesterCategory category,
-										Predicate shouldContain) {
-		category.getViewModel().setShouldContain(shouldContain);
-	}
+    @BindingAdapter("android:shouldContain")
+    public static <T extends BaseEntity> void setShouldContain(ScrollViewCategory<T> category,
+                                                               Predicate<T> shouldContain) {
+        category.getViewModel()
+                .setShouldContain(shouldContain);
+    }
 
-	@BindingAdapter("view_type")
-	public static void setViewType(CourseSemesterCategory category,
-								   String type) {
-		category.getViewModel().setViewType(EntityViewType.valueOf(type.toUpperCase()));
-	}
+    @BindingAdapter("android:viewType")
+    public static void setViewType(ScrollViewCategory category,
+                                   String type) {
+        category.getViewModel()
+                .setViewType(valueOf(type.toUpperCase()));
+    }
 
-	@BindingAdapter("show_empty")
-	public static void setShowEmpty(CourseSemesterCategory category,
-									Boolean showEmpty) {
-		category.getViewModel().setShowEmpty(showEmpty);
-	}
+    @BindingAdapter("android:showEmpty")
+    public static void setShowEmpty(ScrollViewCategory category,
+                                    Boolean showEmpty) {
+        category.getViewModel()
+                .setShowEmpty(showEmpty);
+    }
 
-	@BindingAdapter("show_header")
-	public static void setShowHeader(CourseSemesterCategory category,
-									 Boolean showHeader) {
-		category.getViewModel().setShowHeader(showHeader);
-	}
+    @BindingAdapter("android:showHeader")
+    public static void bindShowHeader(ScrollViewCategory category,
+                                      Boolean showHeader) {
+        category.getViewModel()
+                .setShowHeader(showHeader);
+    }
 
-	@BindingAdapter("category_title")
-	public static void setCategoryTitle(CourseSemesterCategory category,
-										String title) {
-		category.getViewModel().setCategoryTitle(title);
-	}
+    @BindingAdapter("android:subcategoryGeneratorFunction")
+    public static <T extends BaseEntity> void setChildCategoryTypes(ScrollViewCategory<T> categoryView,
+                                                                    Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
+        for (CategoryViewModel<T> category : subcategoryGeneratorFunction.apply(categoryView.getViewModel())) {
+            categoryView.addView(new ScrollViewCategory<T>(
+                    categoryView.getContext(),
+                    category));
+        }
+    }
 
-	@BindingAdapter("subcategories_to_generate")
-	public static void setChildCategoryTypes(CourseSemesterCategory category,
-											 String subCategoriesToGenerate) {
-		category.getViewModel().setSubCategoriesToGenerate(subCategoriesToGenerate);
-	}
+    @BindingAdapter("android:permissionLevel")
+    public static void setPermissionLevel(ScrollViewCategory category,
+                                          Integer permissionLevel) {
+        category.getViewModel()
+                .setPermissionLevel(permissionLevel);
+    }
 
-	@BindingAdapter("permission_level")
-	public static void setPermissionLevel(CourseSemesterCategory category,
-										  Integer permissionLevel) {
-		category.getViewModel().setPermissionLevel(permissionLevel);
-	}
+    @BindingAdapter("android:entityName")
+    public static void setEntityName(ScrollViewCategory category,
+                                     String entityName) {
+        category.getViewModel()
+                .setEntityName(entityName);
+    }
 
-	@BindingAdapter("entity_name")
-	public static void setEntityName(CourseSemesterCategory category,
-									 String entityName) {
-		category.getViewModel().setEntityName(entityName);
-	}
+    @BindingAdapter("android:categoryTitle")
+    public static void setCategoryTitle(ScrollViewCategory category, String title) {
+        if (category != null && category.getViewModel() != null) {
+            category.getViewModel()
+                    .setCategoryTitle(title);
+        }
+    }
 }

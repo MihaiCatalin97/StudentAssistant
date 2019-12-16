@@ -24,19 +24,6 @@ public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
 		return true;
 	}
 
-	public void generateChildCategories(OtherActivity otherActivity) {
-		if (getViewModel().getSubCategoriesToGenerate().equals("types")) {
-			if (!containsChildCategoryWithName(otherActivity.getType())) {
-				OtherActivityTypeCategory newCategory = new OtherActivityTypeCategory(getContext());
-
-				newCategory.getViewModel().setCategoryTitle(otherActivity.getType());
-				addChildCategory(newCategory);
-			}
-
-			getContent().sortChildren();
-		}
-	}
-
 	protected void initCategoryViewModel() {
 		viewModel.setEntityName("other activity");
 

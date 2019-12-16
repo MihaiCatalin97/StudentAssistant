@@ -25,24 +25,6 @@ public class ProfessorBaseCategory extends ScrollViewCategory<Professor> {
 		return true;
 	}
 
-	public void generateChildCategories(Professor professor) {
-		if (getViewModel().getSubCategoriesToGenerate().equals("courses")) {
-			Course auxCourse = new Course();
-
-			for (String course : professor.getCourses()) {
-				auxCourse.setDisciplineName(course.replace("~", "."));
-
-				if (!containsChildCategoryWithName(auxCourse.getDisciplineName())) {
-					ProfessorCourseCategory newCategory = new ProfessorCourseCategory(getContext());
-					newCategory.getViewModel().setCategoryTitle(auxCourse.getDisciplineName());
-					addChildCategory(newCategory);
-				}
-			}
-
-			getContent().sortChildren();
-		}
-	}
-
 	protected void initCategoryViewModel() {
 		viewModel.setEntityName("professor");
 
