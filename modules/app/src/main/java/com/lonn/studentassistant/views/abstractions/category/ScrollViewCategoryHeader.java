@@ -13,8 +13,4 @@ public class ScrollViewCategoryHeader extends LinearLayout {
 	public ScrollViewCategoryHeader(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-
-	public ScrollViewCategoryHeader(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
 }

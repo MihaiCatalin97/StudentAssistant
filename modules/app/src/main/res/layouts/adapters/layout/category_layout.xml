@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:visibility="@{(categoryModel.permissionLevel>0)? View.VISIBLE  : View.GONE}"
+                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory)? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}" />
         </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent>
     </RelativeLayout>

@@ -10,25 +10,4 @@ public class CourseBaseCategory extends ScrollViewCategory<Course> {
     public CourseBaseCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    public CourseBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public boolean shouldContain(Course course) {
-        return true;
-    }
-
-    public void generateChildCategories(Course course) {
-    }
-
-    protected void initCategoryViewModel() {
-        viewModel.setEntityName("discipline");
-
-        getContent().setOnAddTap(() -> {
-
-        });
-
-        viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-    }
 }

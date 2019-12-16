@@ -23,105 +23,105 @@ import static android.view.View.VISIBLE;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 
 public class StudentActivity extends NavBarActivity {
-	public ScrollViewCategory<Course> coursesBaseCategory;
-	public ScrollViewCategory<Professor> professorsBaseCategory;
-	public ScrollViewCategory<OtherActivity> otherActivitiesBaseCategory;
-	public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
-	public ScrollViewCategory<Course> coursesProfileCategory;
-	public ScrollViewCategory<OtherActivity> otherActivitiesProfileCategory;
-	private StudentViewModel studentViewModel;
-	private StudentActivityMainLayoutBinding binding;
+    public ScrollViewCategory<Course> coursesBaseCategory;
+    public ScrollViewCategory<Professor> professorsBaseCategory;
+    public ScrollViewCategory<OtherActivity> otherActivitiesBaseCategory;
+    public ScrollViewCategory<ScheduleClass> scheduleClassBaseCategory;
+    public ScrollViewCategory<Course> coursesProfileCategory;
+    public ScrollViewCategory<OtherActivity> otherActivitiesProfileCategory;
+    private StudentViewModel studentViewModel;
+    private StudentActivityMainLayoutBinding binding;
 
-	public void updateEntity(Student student) {
-		if (studentViewModel == null) {
-			studentViewModel = new StudentViewModel(student);
-			binding.setStudent(studentViewModel);
-		}
-		else {
-			studentViewModel.update(student);
-		}
-	}
+    public void updateEntity(Student student) {
+        if (studentViewModel == null) {
+            studentViewModel = new StudentViewModel(student);
+            binding.setStudent(studentViewModel);
+        }
+        else {
+            studentViewModel.update(student);
+        }
+    }
 
-	@Override
-	public void onBackPressed() {
-		if (findViewById(R.id.layoutHome).getVisibility() == VISIBLE) {
-			super.onBackPressed();
-		}
-		else {
-			handleNavBarAction(R.id.nav_home);
-		}
-	}
+    @Override
+    public void onBackPressed() {
+        if (findViewById(R.id.layoutHome).getVisibility() == VISIBLE) {
+            super.onBackPressed();
+        }
+        else {
+            handleNavBarAction(R.id.nav_home);
+        }
+    }
 
-	@Override
-	public void onStart() {
-		super.onStart();
+    @Override
+    public void onStart() {
+        super.onStart();
 
-		firebaseConnection.execute(new GetRequest<Course>()
-				.databaseTable(COURSES)
-				.onSuccess(courses -> {
-					binding.setCourses(courses);
-					binding.notifyPropertyChanged(com.lonn.studentassistant.BR._all);
-				})
-				.onError(error -> {
-					Log.e("Error loading courses", error.getMessage());
-					showSnackBar("An error occurred while loading your courses.");
-				}));
-	}
+        firebaseConnection.execute(new GetRequest<Course>()
+                .databaseTable(COURSES)
+                .onSuccess(courses -> {
+                    binding.setCourses(courses);
+                    binding.notifyPropertyChanged(com.lonn.studentassistant.BR.courses);
+                })
+                .onError(error -> {
+                    Log.e("Error loading courses", error.getMessage());
+                    showSnackBar("An error occurred while loading your courses.");
+                }));
+    }
 
-	public void handleNavBarAction(int id) {
-		if (id == R.id.nav_home) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutHome).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_profile) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutProfile).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_schedule) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutSchedule).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_grades) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutGrades).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_messages) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutMessages).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_professors) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutProfessors).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_courses) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutCourses).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_administrative) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutAdministrative).setVisibility(VISIBLE);
-		}
-		else if (id == R.id.nav_otherActivities) {
-			Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
-			findViewById(R.id.layoutOtherActivities).setVisibility(VISIBLE);
-		}
-	}
+    public void handleNavBarAction(int id) {
+        if (id == R.id.nav_home) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutHome).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_profile) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutProfile).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_schedule) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutSchedule).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_grades) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutGrades).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_messages) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutMessages).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_professors) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutProfessors).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_courses) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutCourses).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_administrative) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutAdministrative).setVisibility(VISIBLE);
+        }
+        else if (id == R.id.nav_otherActivities) {
+            Utils.hideViews(Utils.getVisibleChildren(findViewById(R.id.layoutMain)));
+            findViewById(R.id.layoutOtherActivities).setVisibility(VISIBLE);
+        }
+    }
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
-	}
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
-		professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
-		otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
-		scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
+        coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
+        professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
+        otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
+        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
 
-		ScrollView profilePage = findViewById(R.id.layoutProfile);
-		coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
-		otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
-	}
+        ScrollView profilePage = findViewById(R.id.layoutProfile);
+        coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
+        otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
+    }
 }

@@ -49,25 +49,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:permissionLevel="@{1}"
-                    android:categoryTitle="@{`First Year`}"
-                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 1}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
-
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:permissionLevel="@{1}"
-                    android:categoryTitle="@{`Second Year`}"
-                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 2}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
-
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:permissionLevel="@{1}"
-                    android:categoryTitle="@{`Third Year`}"
-                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 3}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
+                    android:showHeader="@{false}"
+                    android:entityName="@{`course`}"
+                    android:showEmpty="@{false}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}"
+                    android:childEntities="@{courses}"/>
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

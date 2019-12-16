@@ -15,15 +15,4 @@ public class OtherActivityYearCategory extends OtherActivityBaseCategory {
     public OtherActivityYearCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    public OtherActivityYearCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public boolean shouldContain(OtherActivity otherActivity) {
-        return Utils.yearToString(otherActivity.getYear()).equals(viewModel.getCategoryTitle());
-    }
-
-    public void generateChildCategories(OtherActivity otherActivity) {
-    }
 }

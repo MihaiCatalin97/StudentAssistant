@@ -10,15 +10,4 @@ public class CourseYearCategory extends CourseBaseCategory {
     public CourseYearCategory(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    public CourseYearCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
-
-    public boolean shouldContain(Course course) {
-        return Utils.yearToString(course.getYear()).equals(viewModel.getCategoryTitle());
-    }
-
-    public void generateChildCategories(Course course) {
-    }
 }

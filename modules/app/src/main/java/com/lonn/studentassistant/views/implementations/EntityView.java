@@ -54,11 +54,6 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
 		init(context);
 	}
 
-	public EntityView(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		init(context);
-	}
-
 	public void inflateLayout(final Context context) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 

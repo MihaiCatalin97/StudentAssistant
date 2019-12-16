@@ -30,8 +30,8 @@ public class CategoryViewModel<T extends BaseEntity> extends BaseObservable {
     public CategoryViewModel() {
     }
 
-    public CategoryViewModel<T> addSubcategory(CategoryViewModel<T> categoryViewModel) {
-        childCategories.add(categoryViewModel);
+    public CategoryViewModel<T> addSubcategories(List<CategoryViewModel<T>> categoryViewModels) {
+        childCategories.addAll(categoryViewModels);
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }

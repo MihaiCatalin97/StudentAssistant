@@ -15,18 +15,4 @@ public class OtherActivityBaseCategory extends ScrollViewCategory<OtherActivity>
 	public OtherActivityBaseCategory(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-
-	public OtherActivityBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
-
-	public boolean shouldContain(OtherActivity otherActivity) {
-		return true;
-	}
-
-	protected void initCategoryViewModel() {
-		viewModel.setEntityName("other activity");
-
-		viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-	}
 }

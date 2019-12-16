@@ -2,7 +2,7 @@ package com.lonn.studentassistant.firebaselayer.entities.enums;
 
 import androidx.annotation.NonNull;
 
-public enum Specializations {
+public enum Specialization {
     INFORMATICA("Informatica"),
     INGINERIA_SISTEMELOR_SOFT("Ingineria sistemelor soft"),
     LINGVISTICA_COMPUTATIONALA("Lingvistica computationala"),
@@ -12,7 +12,7 @@ public enum Specializations {
 
     String specializationName;
 
-    Specializations(String specializationName){
+    Specialization(String specializationName){
         this.specializationName = specializationName;
     }
 

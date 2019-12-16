@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializations;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +23,7 @@ public class Student extends HashableEntity implements Cloneable {
     private String group;
     private int year;
 
-    private CycleSpecializations cycleAndSpecialization;
+    private CycleSpecialization cycleAndSpecialization;
 
     private List<String> otherActivities = new LinkedList<>();
     private List<String> optionalCourses = new LinkedList<>();

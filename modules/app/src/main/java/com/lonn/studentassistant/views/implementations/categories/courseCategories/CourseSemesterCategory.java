@@ -11,15 +11,4 @@ public class CourseSemesterCategory extends CourseBaseCategory {
 	public CourseSemesterCategory(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-
-	public CourseSemesterCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
-
-	public boolean shouldContain(Course course) {
-		return Utils.semesterToString(course.getSemester()).equals(viewModel.getCategoryTitle());
-	}
-
-	public void generateChildCategories(Course course) {
-	}
 }

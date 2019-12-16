@@ -16,18 +16,4 @@ public class ProfessorBaseCategory extends ScrollViewCategory<Professor> {
 	public ProfessorBaseCategory(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
-
-	public ProfessorBaseCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-	}
-
-	public boolean shouldContain(Professor professor) {
-		return true;
-	}
-
-	protected void initCategoryViewModel() {
-		viewModel.setEntityName("professor");
-
-		viewModel.notifyPropertyChanged(com.lonn.studentassistant.BR.entityName);
-	}
 }

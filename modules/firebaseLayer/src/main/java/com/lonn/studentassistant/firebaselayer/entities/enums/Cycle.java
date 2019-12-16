@@ -2,13 +2,13 @@ package com.lonn.studentassistant.firebaselayer.entities.enums;
 
 import androidx.annotation.NonNull;
 
-public enum Cycles {
+public enum Cycle {
     LICENTA("Licenta"),
     MASTER("Master");
 
     String cycleName;
 
-    Cycles(String cycleName) {
+    Cycle(String cycleName) {
         this.cycleName = cycleName;
     }
 

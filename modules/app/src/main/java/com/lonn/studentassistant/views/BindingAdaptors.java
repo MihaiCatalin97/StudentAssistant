@@ -57,13 +57,10 @@ public class BindingAdaptors {
     }
 
     @BindingAdapter("android:subcategoryGeneratorFunction")
-    public static <T extends BaseEntity> void setChildCategoryTypes(ScrollViewCategory<T> categoryView,
+    public static <T extends BaseEntity> void setSubcategoryGeneratorFunction(ScrollViewCategory<T> categoryView,
                                                                     Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
-        for (CategoryViewModel<T> category : subcategoryGeneratorFunction.apply(categoryView.getViewModel())) {
-            categoryView.addView(new ScrollViewCategory<T>(
-                    categoryView.getContext(),
-                    category));
-        }
+        categoryView.addChildCategories(subcategoryGeneratorFunction
+                .apply(categoryView.getViewModel()));
     }
 
     @BindingAdapter("android:permissionLevel")
