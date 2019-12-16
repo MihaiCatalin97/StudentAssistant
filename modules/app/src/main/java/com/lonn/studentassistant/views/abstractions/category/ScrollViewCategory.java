@@ -14,7 +14,6 @@ import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
 import com.lonn.studentassistant.views.abstractions.ExpandAnimation;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
-import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.Collection;
 import java.util.List;
@@ -27,155 +26,141 @@ import static com.lonn.studentassistant.R.id.layoutCategoryHeader;
 import static com.lonn.studentassistant.R.id.layoutCategoryMain;
 import static com.lonn.studentassistant.R.layout.category_layout;
 
-public abstract class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T> {
-	protected CategoryViewModel<T> viewModel = new CategoryViewModel<>();
-	protected ScrollViewCategoryHeader header;
-	protected ScrollViewCategoryContent<T> content;
+public class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T> {
+    protected CategoryViewModel<T> viewModel = new CategoryViewModel<>();
+    protected ScrollViewCategoryHeader header;
+    protected ScrollViewCategoryContent<T> content;
 
-	protected boolean expanded = false;
+    protected boolean expanded = false;
 
-	public ScrollViewCategory(Context context) {
-		super(context);
-		//generate child categories
+    public ScrollViewCategory(Context context) {
+        super(context);
+        init(context);
+    }
 
-		init(context);
-	}
+    public ScrollViewCategory(Context context, CategoryViewModel<T> viewModel) {
+        super(context);
+        this.viewModel = viewModel;
+        init(context);
+    }
 
-	public ScrollViewCategory(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		//generate child categories
-		init(context);
-	}
+    public ScrollViewCategory(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
 
-	public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr) {
-		super(context, attrs, defStyleAttr);
-		//generate child categories
-		init(context);
-	}
+    public ScrollViewCategory(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
 
-	public CategoryViewModel<T> getViewModel() {
-		return viewModel;
-	}
+    public CategoryViewModel<T> getViewModel() {
+        return viewModel;
+    }
 
-	protected abstract void initCategoryViewModel();
+    public boolean containsChildCategoryWithName(String categoryName) {
+        for (CategoryViewModel category : viewModel.getChildCategories()) {
+            if (category.getCategoryTitle().equals(categoryName)) {
+                return true;
+            }
+        }
 
-	public boolean containsChildCategoryWithName(String categoryName) {
-		for (CategoryViewModel category : viewModel.getChildCategories()) {
-			if (category.getCategoryTitle().equals(categoryName)) {
-				return true;
-			}
-		}
+        return false;
+    }
 
-		return false;
-	}
+    public void addChildCategory(ScrollViewCategory<T> category) {
+        addView(category);
+    }
 
-	public void addChildCategory(ScrollViewCategory<T> category) {
-		addView(category);
-	}
+    public ScrollViewCategoryContent<T> getContent() {
+        return content;
+    }
 
-	protected void initContent() {
-		content = findViewById(layoutCategoryMain).findViewById(layoutCategoryContent);
-		header = findViewById(layoutCategoryMain).findViewById(layoutCategoryHeader);
+    public void addEntities(List<T> entities) {
+        if (getViewModel().isEndCategory()) {
+            for (T entity : entities) {
+                viewModel.addEntity(entity);
+                getContent().addEntity(entity,
+                        viewModel.getViewType(),
+                        viewModel.getPermissionLevel());
+            }
+        }
+        else {
+            for (CategoryViewModel<T> subcategory : getSubCategories()) {
+                for (T entity : entities) {
+                    if (subcategory.getShouldContain().test(entity)) {
+                        subcategory.addEntity(entity);
+                    }
+                }
+            }
+        }
+    }
 
-		header.setOnClickListener(v -> {
-			expanded = !expanded;
-			animateExpand();
-		});
+    public Collection<CategoryViewModel<T>> getSubCategories() {
+        return viewModel.getChildCategories();
+    }
 
-		if (getChildCount() == 1 && !viewModel.isShowEmpty()) {
-			setVisibility(View.GONE);
-		}
-	}
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        if (child instanceof ScrollViewItem) {
+            getContent().addView(child, index, params);
+        }
+        else {
+            super.addView(child, index, params);
+        }
 
-	public ScrollViewCategoryContent<T> getContent() {
-		return content;
-	}
+        if (header != null) {
+            header.bringToFront();
+        }
+    }
 
-	private void animateExpand() {
-		RotateAnimation animation =
-				new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
-						RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
+    protected void initContent() {
+        content = findViewById(layoutCategoryMain).findViewById(layoutCategoryContent);
+        header = findViewById(layoutCategoryMain).findViewById(layoutCategoryHeader);
 
-		animation.setDuration(500);
-		animation.setFillAfter(true);
-		animation.setFillBefore(true);
+        header.setOnClickListener(v -> {
+            expanded = !expanded;
+            animateExpand();
+        });
 
-		header.findViewById(arrowCategory).startAnimation(animation);
+        if (getChildCount() == 1 && !viewModel.isShowEmpty()) {
+            setVisibility(View.GONE);
+        }
+    }
 
-		ExpandAnimation expandAnimation = new ExpandAnimation();
-		expandAnimation.setDuration(500);
-		expandAnimation.start(content);
-	}
+    @Override
+    protected void inflateLayout(Context context) {
+        LayoutInflater layoutInflater = (LayoutInflater)
+                context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        if (layoutInflater != null) {
+            CategoryLayoutBinding binding = DataBindingUtil.inflate(
+                    layoutInflater,
+                    category_layout,
+                    this,
+                    true);
+            binding.setCategoryModel(viewModel);
+        }
+    }
 
-	@Override
-	protected void inflateLayout(Context context) {
-		LayoutInflater layoutInflater = (LayoutInflater)
-				context.getSystemService(LAYOUT_INFLATER_SERVICE);
-		if (layoutInflater != null) {
-			CategoryLayoutBinding binding = DataBindingUtil.inflate(
-					layoutInflater,
-					category_layout,
-					this,
-					true);
-			binding.setCategoryModel(viewModel);
-		}
-	}
+    @Override
+    protected void init(Context context) {
+        super.init(context);
+        initContent();
+    }
 
-	public void addEntities(List<T> entities) {
-		if (getViewModel().isEndCategory()) {
-			for (T entity : entities) {
-				viewModel.addEntity(entity);
-				getContent().addEntity(entity,
-						viewModel.getViewType(),
-						viewModel.getPermissionLevel());
-			}
-		}
-		else {
-			for (CategoryViewModel<T> subcategory : getSubCategories()) {
-				for (T entity : entities) {
-					if (subcategory.getShouldContain().test(entity)) {
-						subcategory.addEntity(entity);
-					}
-				}
-			}
-		}
-	}
+    private void animateExpand() {
+        RotateAnimation animation =
+                new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
+                        RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
 
-	public Collection<CategoryViewModel<T>> getSubCategories() {
-		return viewModel.getChildCategories();
-	}
+        animation.setDuration(500);
+        animation.setFillAfter(true);
+        animation.setFillBefore(true);
 
-	@Override
-	protected void init(Context context) {
-		super.init(context);
-		initContent();
-		initCategoryViewModel();
-	}
+        header.findViewById(arrowCategory).startAnimation(animation);
 
-	@Override
-	public void addView(View child, int index, ViewGroup.LayoutParams params) {
-		if (child instanceof ScrollViewCategory) {
-			addView((ScrollViewCategory<T>) child, index, params);
-		}
-		else if (child instanceof EntityView) {
-			addView((EntityView<T>) child, index, params);
-		}
-		else {
-			super.addView(child, index, params);
-		}
-
-		if (header != null) {
-			header.bringToFront();
-		}
-	}
-
-	private void addView(ScrollViewCategory<T> child, int index, ViewGroup.LayoutParams params) {
-		viewModel.addSubcategory(child.viewModel);
-		content.addView(child, index, params);
-	}
-
-	private void addView(EntityView<T> child, int index, ViewGroup.LayoutParams params) {
-		viewModel.addEntity(child.getEntity());
-		content.addView(child, index, params);
-	}
+        ExpandAnimation expandAnimation = new ExpandAnimation();
+        expandAnimation.setDuration(500);
+        expandAnimation.start(content);
+    }
 }

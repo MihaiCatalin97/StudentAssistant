@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.implementations.student.StudentActivity">
 
     <data>
 
@@ -227,17 +228,17 @@
                     android:id="@+id/coursesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:category_title="My optional courses"
-                    app:permission_level="1"
-                    app:show_empty="true" />
+                    android:categoryTitle="@{`My optional courses`}"
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityEnrolledCategory
                     android:id="@+id/otherActivitiesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:category_title="My other activities"
-                    app:permission_level="1"
-                    app:show_empty="true" />
+                    android:categoryTitle="@{`My other activities`}"
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{true}" />
 
             </LinearLayout>
 

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.implementations.student.StudentActivity">
 
     <data>
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+
+        <import type="com.lonn.studentassistant.views.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel" />
 
         <import type="com.lonn.studentassistant.views.EntityViewType" />
 
@@ -40,57 +45,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory
-                    android:id="@+id/coursesBaseCategory"
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:permissionLevel="@{1}"
+                    android:categoryTitle="@{`First Year`}"
+                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 1}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
 
-                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:permissionLevel="@{1}"
+                    android:categoryTitle="@{`Second Year`}"
+                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 2}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
 
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
-
-                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
-
-                    <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                        <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseSemesterCategory
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:category_title="@{`Second semester`}"
-                            app:show_empty="@{true}"
-                            app:show_header="@{true}"
-                            app:view_type="@{`FULL`}" />
-                    </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory>
-                </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory>
-
+                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:permissionLevel="@{1}"
+                    android:categoryTitle="@{`Third Year`}"
+                    android:shouldContain="@{(course) -> ((Course)course).getYear() == 3}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.semesterCategories((CategoryViewModel)category)}" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
