@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/scheduleBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

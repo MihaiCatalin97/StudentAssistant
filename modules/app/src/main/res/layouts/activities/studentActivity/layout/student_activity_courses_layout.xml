@@ -14,6 +14,8 @@
 
         <import type="com.lonn.studentassistant.views.EntityViewType" />
 
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
         <variable
             name="courses"
             type="java.util.List&lt;Course&gt;" />
@@ -45,15 +47,16 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseYearCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:permissionLevel="@{1}"
-                    android:showHeader="@{false}"
+                    android:childEntities="@{courses}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:entityName="@{`course`}"
+                    android:permissionLevel="@{1}"
                     android:showEmpty="@{false}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}"
-                    android:childEntities="@{courses}"/>
+                    android:showHeader="@{false}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

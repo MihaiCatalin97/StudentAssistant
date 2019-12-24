@@ -35,4 +35,8 @@ public enum CycleSpecialization {
         }
         return cycle.toString() + " " + specialization.toString();
     }
+
+    public Cycle getCycle() {
+        return cycle;
+    }
 }

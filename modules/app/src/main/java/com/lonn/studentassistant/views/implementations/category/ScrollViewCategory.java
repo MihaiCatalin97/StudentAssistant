@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.abstractions.category;
+package com.lonn.studentassistant.views.implementations.category;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
-import com.lonn.studentassistant.views.abstractions.ExpandAnimation;
+import com.lonn.studentassistant.views.ExpandAnimation;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 import java.util.Collection;
@@ -61,10 +61,14 @@ public class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T> 
 
     public void addEntities(List<T> entities) {
         for (T entity : entities) {
-            addEntity(entity);
+            addOrUpdateEntity(entity);
         }
 
         hideIfEmpty();
+    }
+
+    public ScrollViewCategoryContent<T> getContent() {
+        return content;
     }
 
     public Collection<CategoryViewModel<T>> getSubCategories() {
@@ -115,17 +119,17 @@ public class ScrollViewCategory<T extends BaseEntity> extends ScrollViewItem<T> 
         }
     }
 
-    private void addEntity(T entity) {
+    private void addOrUpdateEntity(T entity) {
         if (viewModel.getShouldContain().test(entity)) {
             if (getViewModel().isEndCategory()) {
                 viewModel.addEntity(entity);
-                content.addEntity(entity,
+                content.addOrUpdateEntity(entity,
                         viewModel.getViewType(),
                         viewModel.getPermissionLevel());
             }
             else {
                 for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
-                    subcategory.addEntity(entity);
+                    subcategory.addOrUpdateEntity(entity);
                 }
             }
         }

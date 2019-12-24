@@ -4,14 +4,16 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.BR;
-import com.lonn.studentassistant.common.interfaces.Function;
+import com.lonn.studentassistant.common.interfaces.Comparator;
 import com.lonn.studentassistant.common.interfaces.Predicate;
-import com.lonn.studentassistant.common.interfaces.Supplier;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.views.EntityViewType;
+import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
 
@@ -22,9 +24,10 @@ public class CategoryViewModel<T extends BaseEntity> extends BaseObservable {
     private int permissionLevel = 0;
     private String categoryTitle = "Category Title";
     private String entityName = "entity";
+    private Comparator<EntityView> entitiesComparator;
 
     private List<CategoryViewModel<T>> childCategories = new ArrayList<>();
-    private List<T> childEntities = new ArrayList<>();
+    private Map<String, T> childEntities = new HashMap<>();
     private Predicate<T> shouldContain = e -> true;
 
     public CategoryViewModel() {
@@ -32,6 +35,17 @@ public class CategoryViewModel<T extends BaseEntity> extends BaseObservable {
 
     public CategoryViewModel<T> addSubcategories(List<CategoryViewModel<T>> categoryViewModels) {
         childCategories.addAll(categoryViewModels);
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public Comparator<EntityView> getEntitiesComparator() {
+        return entitiesComparator;
+    }
+
+    public CategoryViewModel<T> setEntitiesComparator(Comparator<EntityView> entitiesComparator) {
+        this.entitiesComparator = entitiesComparator;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
@@ -48,7 +62,7 @@ public class CategoryViewModel<T extends BaseEntity> extends BaseObservable {
     }
 
     public CategoryViewModel<T> addEntity(T entity) {
-        this.childEntities.add(entity);
+        this.childEntities.put(entity.getKey(), entity);
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
@@ -65,14 +79,8 @@ public class CategoryViewModel<T extends BaseEntity> extends BaseObservable {
     }
 
     @Bindable
-    public List<T> getChildEntities() {
+    public Map<String, T> getChildEntities() {
         return childEntities;
-    }
-
-    public CategoryViewModel<T> setChildEntities(List<T> childEntities) {
-        this.childEntities = childEntities;
-        this.notifyPropertyChanged(BR.categoryModel);
-        return this;
     }
 
     @Bindable

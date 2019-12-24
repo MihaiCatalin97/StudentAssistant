@@ -17,10 +17,11 @@ import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.entities.StudentViewModel;
-import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
+import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 import static android.view.View.VISIBLE;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
 
 public class StudentActivity extends NavBarActivity {
     public ScrollViewCategory<Course> coursesBaseCategory;
@@ -63,8 +64,19 @@ public class StudentActivity extends NavBarActivity {
                     binding.notifyPropertyChanged(com.lonn.studentassistant.BR.courses);
                 })
                 .onError(error -> {
-                    Log.e("Error loading courses", error.getMessage());
-                    showSnackBar("An error occurred while loading your courses.");
+                    Log.e("Loading courses", error.getMessage());
+                    showSnackBar("An error occurred while loading the courses.");
+                }));
+
+        firebaseConnection.execute(new GetRequest<Professor>()
+                .databaseTable(PROFESSORS)
+                .onSuccess(professors -> {
+                    binding.setProfessors(professors);
+                    binding.notifyPropertyChanged(com.lonn.studentassistant.BR.professors);
+                })
+                .onError(error -> {
+                    Log.e("Loading professors", error.getMessage());
+                    showSnackBar("An error occurred while loading the professors.");
                 }));
     }
 

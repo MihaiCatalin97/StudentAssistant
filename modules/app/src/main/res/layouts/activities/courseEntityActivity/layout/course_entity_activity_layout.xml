@@ -88,16 +88,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/professorsBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
-                    android:viewType="@{`PARTIAL`}">
+                    android:viewType="@{`PARTIAL`}"/>
 
-                </com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory>
-
-                <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/scheduleBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

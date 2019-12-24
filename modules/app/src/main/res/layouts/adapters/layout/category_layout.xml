@@ -22,7 +22,7 @@
         android:layout_marginBottom="@{categoryModel.showHeader? @dimen/dim_16dp : @dimen/dim_0dp}"
         android:background="@{categoryModel.showHeader? @drawable/dark_stroke_solid_background : null}">
 
-        <com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryHeader
+        <com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryHeader
             android:id="@+id/layoutCategoryHeader"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -52,9 +52,9 @@
                 android:layout_weight="0.1"
                 android:contentDescription="Arrow"
                 app:srcCompat="@drawable/ic_arrow_down" />
-        </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryHeader>
+        </com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryHeader>
 
-        <com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent
+        <com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryContent
             android:id="@+id/layoutCategoryContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -74,6 +74,6 @@
                 android:layout_marginBottom="8dp"
                 android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory)? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}" />
-        </com.lonn.studentassistant.views.abstractions.category.ScrollViewCategoryContent>
+        </com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryContent>
     </RelativeLayout>
 </layout>

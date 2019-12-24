@@ -224,7 +224,7 @@
                 app:layout_constraintLeft_toLeftOf="@id/titleProfileLayout"
                 app:layout_constraintTop_toBottomOf="@id/profileGroupLayout">
 
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.OptionalCourseEnrolledCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/coursesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />
 
-                <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityEnrolledCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/otherActivitiesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

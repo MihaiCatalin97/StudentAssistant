@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.abstractions;
+package com.lonn.studentassistant.views;
 
 import android.view.View;
 import android.view.ViewGroup;

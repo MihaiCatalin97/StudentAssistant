@@ -11,8 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialogBuilders.DialogBuilder;
 
@@ -51,7 +51,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 
             intent.putExtra("entity", ((EntityView) parent).getEntity());
 
-            getBaseContext().startActivity(intent);
+            v.getContext().startActivity(intent);
         }
     }
 

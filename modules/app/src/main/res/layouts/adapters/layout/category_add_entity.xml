@@ -12,8 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/dotted_transparent_background"
         android:padding="5dp"
-        android:onClick="tapAdd"
-        android:tag="@{categoryModel.entityName}">
+        android:onClick="tapAdd">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconPlus"

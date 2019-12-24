@@ -104,22 +104,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/coursesBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Courses`}">
+                    android:categoryTitle="@{`Courses`}"/>
 
-                </com.lonn.studentassistant.views.implementations.categories.courseCategories.CourseBaseCategory>
-
-                <com.lonn.studentassistant.views.implementations.categories.otherActivityCategories.OtherActivityBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/otherActivitiesBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Other activities`}"
                     android:viewType="@{`PARTIAL`}" />
 
-                <com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/scheduleBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -4,6 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.implementations.student.StudentActivity">
 
+    <data>
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+
+        <import type="com.lonn.studentassistant.views.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
+        <variable
+            name="professors"
+            type="java.util.List&lt;Professor&gt;" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -30,12 +47,17 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/professorsBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Professors`}"
-                    android:showHeader="@{false}"/>
+                    android:childEntities="@{professors}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}"
+                    android:entityName="@{`professor`}"
+                    android:permissionLevel="@{1}"
+                    android:shouldContain="@{() -> true}"
+                    android:showEmpty="@{false}"
+                    android:showHeader="@{false}" />
 
             </LinearLayout>
         </ScrollView>

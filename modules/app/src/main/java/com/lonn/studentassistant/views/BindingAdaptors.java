@@ -4,11 +4,13 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
+import com.lonn.studentassistant.common.interfaces.Comparator;
 import com.lonn.studentassistant.common.interfaces.Function;
 import com.lonn.studentassistant.common.interfaces.Predicate;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.entities.CategoryViewModel;
-import com.lonn.studentassistant.views.abstractions.category.ScrollViewCategory;
+import com.lonn.studentassistant.views.implementations.EntityView;
+import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 import java.util.List;
 
@@ -19,6 +21,18 @@ public class BindingAdaptors {
     public static void setSrcCompat(ImageView imageView, int resourceId) {
         imageView.setImageResource(resourceId);
     }
+
+    @BindingAdapter("srcCompat")
+    public static void setSrcCompat(ImageView imageView, String base64Resource) {
+    }
+
+    @BindingAdapter("android:childEntityComparator")
+    public static <T extends BaseEntity> void setChildEntities(ScrollViewCategory<T> category,
+                                                               Comparator<EntityView> comparator) {
+        category.getViewModel().setEntitiesComparator(comparator);
+        category.getContent().setEntityViewComparator(comparator);
+    }
+
 
     @BindingAdapter("android:childEntities")
     public static <T extends BaseEntity> void setChildEntities(ScrollViewCategory<T> category,
@@ -58,7 +72,7 @@ public class BindingAdaptors {
 
     @BindingAdapter("android:subcategoryGeneratorFunction")
     public static <T extends BaseEntity> void setSubcategoryGeneratorFunction(ScrollViewCategory<T> categoryView,
-                                                                    Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
+                                                                              Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
         categoryView.addChildCategories(subcategoryGeneratorFunction
                 .apply(categoryView.getViewModel()));
     }

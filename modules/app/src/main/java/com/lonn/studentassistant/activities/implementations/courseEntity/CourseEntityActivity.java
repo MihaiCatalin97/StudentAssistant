@@ -10,13 +10,14 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.views.implementations.categories.professorCategories.ProfessorBaseCategory;
-import com.lonn.studentassistant.views.implementations.categories.scheduleCategories.ScheduleBaseCategory;
+import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 public class CourseEntityActivity extends FirebaseConnectedActivity {
-    public ProfessorBaseCategory professorBaseCategory;
-    public ScheduleBaseCategory scheduleBaseCategory;
+    public ScrollViewCategory<Professor> professorBaseCategory;
+    public ScrollViewCategory<ScheduleClass> scheduleBaseCategory;
     private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;
     private boolean editPrivilege;

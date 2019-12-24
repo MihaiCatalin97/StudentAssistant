@@ -5,6 +5,8 @@
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+
         <variable
             name="user"
             type="com.lonn.studentassistant.viewModels.entities.UserViewModel" />
@@ -16,11 +18,14 @@
         <variable
             name="courses"
             type="java.util.List&lt;Course&gt;" />
+
+        <variable
+            name="professors"
+            type="java.util.List&lt;Professor&gt;" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:bind="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -52,7 +57,8 @@
             <include
                 android:id="@+id/layoutMain"
                 layout="@layout/student_activity_content_layout"
-                app:allCourses="@{courses}"
+                app:courses="@{courses}"
+                app:professors="@{professors}"
                 app:student="@{student}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

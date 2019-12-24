@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="entity"
-            type="com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel"/>
+            type="com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp">
@@ -17,27 +19,27 @@
             android:id="@+id/entityImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
             android:contentDescription="Entity image"
-            app:srcCompat="@{entity.image}"
-            android:visibility="@{entity.image == 0? View.GONE : View.VISIBLE}"
-            android:onClick="tapScrollViewEntityLayout"/>
+            android:onClick="tapScrollViewEntityLayout"
+            android:scaleType="fitCenter"
+            android:visibility="@{entity.image == null? View.GONE : View.VISIBLE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@{entity.image}" />
 
         <TextView
-            style="@style/DarkBlueSubtitle"
             android:id="@+id/entityField1"
+            style="@style/DarkBlueSubtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="start"
+            android:onClick="tapScrollViewEntityLayout"
+            android:text="@{entity.field1}"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
             app:layout_constraintRight_toRightOf="parent"
-            android:text="@{entity.field1}"
-            android:gravity="start"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:onClick="tapScrollViewEntityLayout"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/entityField2"
@@ -45,11 +47,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintTop_toBottomOf="@id/entityField1"
-            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            android:layout_marginLeft="16dp"
+            android:onClick="tapScrollViewEntityLayout"
             android:text="@{entity.field2}"
-            android:onClick="tapScrollViewEntityLayout"/>
+            app:layout_constraintLeft_toRightOf="@id/entityImage"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toBottomOf="@id/entityField1" />
 
         <TextView
             android:id="@+id/entityField3"
@@ -57,25 +60,26 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintTop_toBottomOf="@id/entityField2"
-            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
-            android:text="@{entity.field3}"
+            android:layout_marginLeft="16dp"
             android:maxLines="2"
-            android:onClick="tapScrollViewEntityLayout"/>
+            android:onClick="tapScrollViewEntityLayout"
+            android:text="@{entity.field3}"
+            app:layout_constraintLeft_toRightOf="@id/entityImage"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toBottomOf="@id/entityField2" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/entityRemoveButton"
+            android:layout_width="30dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{entity.permissionLevel > 0? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/entityField2"
-            android:layout_width="30dp"
-            android:layout_height="0dp"
-            app:srcCompat="@drawable/ic_close"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="4dp"
-            android:visibility="@{entity.permissionLevel > 0? View.VISIBLE:View.GONE}"
-            android:onClick="tapRemove"/>
+            app:srcCompat="@drawable/ic_close" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

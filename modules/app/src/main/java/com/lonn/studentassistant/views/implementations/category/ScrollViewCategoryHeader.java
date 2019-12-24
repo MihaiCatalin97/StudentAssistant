@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.abstractions.category;
+package com.lonn.studentassistant.views.implementations.category;
 
 import android.content.Context;
 import android.util.AttributeSet;

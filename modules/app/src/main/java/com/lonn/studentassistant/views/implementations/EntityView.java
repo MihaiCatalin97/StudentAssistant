@@ -18,100 +18,85 @@ import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static com.lonn.studentassistant.views.EntityViewType.FULL;
+import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
 
 public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
-	protected EntityViewType viewType;
-	protected T entity;
-	protected ScrollViewEntityViewModel model;
-	protected ViewDataBinding binding;
-	protected int permissionLevel = 0;
+    protected EntityViewType viewType;
+    protected T entity;
+    protected ScrollViewEntityViewModel model;
+    protected ViewDataBinding binding;
+    protected int permissionLevel = 0;
 
-	public EntityView(Context context, T entity, EntityViewType viewType, int permissionLevel) {
-		super(context);
+    public EntityView(Context context, EntityViewType viewType, int permissionLevel) {
+        super(context);
 
-		this.entity = entity;
-		this.viewType = viewType;
-		this.permissionLevel = permissionLevel;
+        this.viewType = viewType;
+        this.permissionLevel = permissionLevel;
 
-		init(context);
+        init(context);
+    }
 
-		if (entity != null) {
-			if (viewType.equals(FULL)) {
-				model = ScrollViewEntityViewModel.full(entity);
-			}
-			else {
-				model = ScrollViewEntityViewModel.partial(entity);
-			}
+    public EntityView(Context context, AttributeSet set) {
+        super(context, set);
+        init(context);
+    }
 
-			model.permissionLevel = permissionLevel;
-			setDataBindingVariable(model);
-		}
-	}
+    public ScrollViewEntityViewModel getModel() {
+        return model;
+    }
 
-	public EntityView(Context context, AttributeSet set) {
-		super(context, set);
-		init(context);
-	}
+    public void inflateLayout(final Context context) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-	public void inflateLayout(final Context context) {
-		LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        if (inflater != null) {
+            binding = DataBindingUtil.inflate(inflater, getLayoutId(), this, true);
+        }
+    }
 
-		if (inflater != null) {
-			binding = DataBindingUtil.inflate(inflater, getLayoutId(), this, true);
-		}
-	}
+    public void addOrUpdateEntity(T newEntity) {
+        entity = newEntity;
 
-	public void addOrUpdateEntity(T newEntity) {
-		entity = newEntity;
+        model = getScrollViewEntityViewModel(viewType, entity);
+        model.permissionLevel = permissionLevel;
+        setDataBindingVariable(model);
+    }
 
-		if (viewType.equals(FULL)) {
-			model = ScrollViewEntityViewModel.full(entity);
-		}
-		else {
-			model = ScrollViewEntityViewModel.partial(entity);
-		}
+    public void delete(T newEntity) {
+    }
 
-		model.permissionLevel = permissionLevel;
-		setDataBindingVariable(model);
-	}
+    public void delete(String key) {
+    }
 
-	public void delete(T newEntity) {
-	}
+    public boolean shouldContain(T entity) {
+        return true;
+    }
 
-	public void delete(String key) {
-	}
+    public Class getEntityClass() {
+        return entity.getClass();
+    }
 
-	public boolean shouldContain(T entity) {
-		return true;
-	}
+    public T getEntity() {
+        return entity;
+    }
 
-	public Class getEntityClass() {
-		return entity.getClass();
-	}
+    public Class getActivityClass() {
+        return model.entityActivityClass;
+    }
 
-	public T getEntity() {
-		return entity;
-	}
+    protected int getLayoutId() {
+        if (entity instanceof ScheduleClass || entity instanceof Grade) {
+            return R.layout.entity_table_row_view;
+        }
 
-	public Class getActivityClass() {
-		return model.entityActivityClass;
-	}
+        return R.layout.entity_constraint_layout_view;
+    }
 
-	protected int getLayoutId() {
-		if (entity instanceof ScheduleClass || entity instanceof Grade) {
-			return R.layout.entity_table_row_view;
-		}
-
-		return R.layout.entity_constraint_layout_view;
-	}
-
-	private void setDataBindingVariable(ScrollViewEntityViewModel model) {
-		if (entity instanceof Grade || entity instanceof ScheduleClass) {
-			((EntityTableRowViewBinding) binding).setEntity(model);
-		}
-		else {
-			((EntityConstraintLayoutViewBinding) binding).setEntity(model);
-		}
-	}
+    private void setDataBindingVariable(ScrollViewEntityViewModel model) {
+        if (entity instanceof Grade || entity instanceof ScheduleClass) {
+            ((EntityTableRowViewBinding) binding).setEntity(model);
+        }
+        else {
+            ((EntityConstraintLayoutViewBinding) binding).setEntity(model);
+        }
+    }
 }
