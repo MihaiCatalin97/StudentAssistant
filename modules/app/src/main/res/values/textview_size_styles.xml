@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="DarkBlueShadowedH1" parent="LightBlueShadow_DarkBlue">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="DarkBlueShadowedH2" parent="LightBlueShadow_DarkBlue">
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="DarkBlueShadowedH3" parent="LightBlueShadow_DarkBlue">
+        <item name="android:textSize">16.38sp</item>
+    </style>
+
+    <style name="DarkBlueShadowedH4" parent="LightBlueShadow_DarkBlue">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DarkBlueShadowedH5" parent="LightBlueShadow_DarkBlue">
+        <item name="android:textSize">11.62sp</item>
+    </style>
+
+    <style name="LightBlueShadowedH1" parent="DarkBlueShadow_LightBlue">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="LightBlueShadowedH2" parent="DarkBlueShadow_LightBlue">
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="LightBlueShadowedH3" parent="DarkBlueShadow_LightBlue">
+        <item name="android:textSize">16.38sp</item>
+    </style>
+
+    <style name="LightBlueShadowedH4" parent="DarkBlueShadow_LightBlue">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="LightBlueShadowedH5" parent="DarkBlueShadow_LightBlue">
+        <item name="android:textSize">11.62sp</item>
+    </style>
+
+    <style name="DarkBlueH1" parent="DarkBlue">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="DarkBlueH2" parent="DarkBlue">
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="DarkBlueH3" parent="DarkBlue">
+        <item name="android:textSize">16.38sp</item>
+    </style>
+
+    <style name="DarkBlueH4" parent="DarkBlue">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="DarkBlueH5" parent="DarkBlue">
+        <item name="android:textSize">11.62sp</item>
+    </style>
+
+    <style name="LightBlueH1" parent="LightBlue">
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="LightBlueH2" parent="LightBlue">
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <style name="LightBlueH3" parent="LightBlue">
+        <item name="android:textSize">16.38sp</item>
+    </style>
+
+    <style name="LightBlueH4" parent="LightBlue">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="LightBlueH5" parent="LightBlue">
+        <item name="android:textSize">11.62sp</item>
+    </style>
+</resources>

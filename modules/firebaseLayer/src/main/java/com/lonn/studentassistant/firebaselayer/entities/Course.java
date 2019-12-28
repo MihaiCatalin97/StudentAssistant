@@ -14,4 +14,13 @@ public class Course extends Discipline {
     private Integer pack;
 
     private CycleSpecialization cycleAndSpecialization;
+
+    public void setCycleAndSpecialization(String cycleAndSpecialization) {
+        this.cycleAndSpecialization = CycleSpecialization.valueOf(cycleAndSpecialization);
+    }
+
+    public Course setCycleAndSpecialization(CycleSpecialization cycleAndSpecialization) {
+        this.cycleAndSpecialization = cycleAndSpecialization;
+        return this;
+    }
 }

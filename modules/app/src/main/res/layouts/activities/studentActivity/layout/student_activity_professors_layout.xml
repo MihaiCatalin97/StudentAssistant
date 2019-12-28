@@ -2,15 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.student.StudentActivity">
+    tools:context=".activities.implementations.StudentActivity">
 
     <data>
 
+        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.EntityViewModel" />
+
         <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
 
-        <import type="com.lonn.studentassistant.views.CategoryGenerator" />
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel" />
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
         <import type="com.lonn.studentassistant.views.EntityViewType" />
 
@@ -18,7 +22,7 @@
 
         <variable
             name="professors"
-            type="java.util.List&lt;Professor&gt;" />
+            type="java.util.List&lt;ProfessorViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +31,7 @@
 
         <TextView
             android:id="@+id/titleProfessorsLayout"
-            style="@style/DarkBlueTitle"
+            style="@style/DarkTitleShadowed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

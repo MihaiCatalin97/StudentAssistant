@@ -7,7 +7,7 @@ import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashField;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,7 +74,7 @@ public class DatabaseContextWithIdentification<T extends HashableEntity> extends
                     log.error("Error deleting identification for " +
                             "entity with key " + key + ": " + error.getMessage());
                 },
-                Predicate.where(IdentificationHashFields.ENTITY_KEY)
+                Predicate.where(IdentificationHashField.ENTITY_KEY)
                         .equalTo(key),
                 false);
     }

@@ -9,9 +9,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.activities.implementations.login.LoginActivity;
+import com.lonn.studentassistant.activities.implementations.LoginActivity;
 import com.lonn.studentassistant.databinding.AccountCreationActivityLayoutBinding;
-import com.lonn.studentassistant.databinding.StudentCheckActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.requests.RegisterRequest;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.RegistrationValidator;

@@ -1,52 +1,19 @@
 package com.lonn.studentassistant.viewModels.entities;
 
-import android.view.View;
-
-import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-public class OtherActivityViewModel extends BaseObservable {
+@Builder
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class OtherActivityViewModel extends DisciplineViewModel<OtherActivity> {
     @Bindable
-    public String activityName, description, website, type;
-
-    public int semester, year;
-    public List<String> professors;
-
-    public OtherActivityViewModel(OtherActivity activity) {
-        update(activity);
-    }
-
-    public void update(OtherActivity activity) {
-
-        this.activityName = activity.getDisciplineName();
-        this.type = activity.getType();
-        this.semester = activity.getSemester();
-        this.year = activity.getYear();
-        this.description = activity.getDescription();
-        this.professors = new ArrayList<>(activity.getProfessors());
-        this.website = activity.getWebsite();
-
-        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
-    }
-
-    @Bindable
-    public String getActivityType() {
-        return type;
-    }
-
-    @Bindable
-    public String getActivityYearSemester() {
-        return Utils.yearToString(year) + ", " + Utils.semesterToString(semester);
-    }
-
-    @Bindable
-    public int getWebsiteVisible() {
-        return (website != null) ? View.VISIBLE : View.GONE;
-    }
+    public String type;
 }

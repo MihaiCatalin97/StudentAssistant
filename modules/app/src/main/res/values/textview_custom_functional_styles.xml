@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="EntityActivityTitle" parent="DarkTitleShadowed">
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="EntityActivitySubtitle" parent="DarkNormalShadowed">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="EntityActivityContentTitle" parent="DarkSubtitleShadowed">
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginTop">8dp</item>
+    </style>
+
+    <style name="EntityActivityContentText" parent="DarkNormal">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingLeft">6dp</item>
+    </style>
+
+    <style name="EntityActivityContentLink" parent="DarkLink">
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:paddingLeft">6dp</item>
+    </style>
+
+    <style name="CategoryEntityTitle" parent="DarkSubtitleShadowed">
+        <item name="android:gravity">start</item>
+        <item name="android:onClick">tapScrollViewEntityLayout</item>
+    </style>
+
+    <style name="CategoryEntityText" parent="DarkBlueShadowedH4">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:onClick">tapScrollViewEntityLayout</item>
+    </style>
+</resources>

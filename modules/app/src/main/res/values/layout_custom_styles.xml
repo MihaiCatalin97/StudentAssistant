@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="EntityActivityWrapper" parent="NormalPaddingLayout">
+        <item name="android:background">@drawable/solid_background</item>
+    </style>
+
+    <style name="CategoryEntityWrapper">
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+</resources>

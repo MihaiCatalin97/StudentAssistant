@@ -18,5 +18,5 @@ public class GetRequest<T extends BaseEntity> {
     private Boolean subscribe = true;
     private Consumer<List<T>> onSuccess;
     private Consumer<DatabaseError> onError;
-    private Predicate<T> predicate;
+    private Predicate<? super T> predicate;
 }

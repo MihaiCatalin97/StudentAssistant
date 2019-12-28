@@ -6,14 +6,14 @@
         <import type="android.view.View" />
 
         <variable
-            name="entity"
-            type="com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel" />
+            name="entityViewModel"
+            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/CategoryEntityWrapper"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/entityImage"
@@ -22,19 +22,19 @@
             android:contentDescription="Entity image"
             android:onClick="tapScrollViewEntityLayout"
             android:scaleType="fitCenter"
-            android:visibility="@{entity.image == null? View.GONE : View.VISIBLE}"
+            android:visibility="@{entityViewModel.image == null? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@{entity.image}" />
+            app:srcCompat="@{entityViewModel.image}" />
 
         <TextView
             android:id="@+id/entityField1"
-            style="@style/DarkBlueSubtitle"
+            style="@style/CategoryEntityTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
             android:onClick="tapScrollViewEntityLayout"
-            android:text="@{entity.field1}"
+            android:text="@{entityViewModel.field1}"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
@@ -43,27 +43,22 @@
 
         <TextView
             android:id="@+id/entityField2"
-            style="@style/SmallDarkBlueTextView"
+            style="@style/CategoryEntityText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:onClick="tapScrollViewEntityLayout"
-            android:text="@{entity.field2}"
+            android:text="@{entityViewModel.field2}"
+            android:visibility="@{(entityViewModel.field2LineCount == 0)? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
             app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
             app:layout_constraintTop_toBottomOf="@id/entityField1" />
 
         <TextView
             android:id="@+id/entityField3"
-            style="@style/SmallDarkBlueTextView"
+            style="@style/CategoryEntityText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:maxLines="2"
-            android:onClick="tapScrollViewEntityLayout"
-            android:text="@{entity.field3}"
+            android:text="@{entityViewModel.field3}"
+            android:visibility="@{(entityViewModel.field3LineCount == 0)? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
             app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
             app:layout_constraintTop_toBottomOf="@id/entityField2" />
@@ -75,7 +70,7 @@
             android:layout_marginBottom="4dp"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{entity.permissionLevel > 0? View.VISIBLE:View.GONE}"
+            android:visibility="@{entityViewModel.permissionLevel > 0? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/entityField2"

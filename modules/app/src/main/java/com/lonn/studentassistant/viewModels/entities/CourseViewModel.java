@@ -1,38 +1,22 @@
 package com.lonn.studentassistant.viewModels.entities;
 
-import android.view.View;
-
-import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.common.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
-public class CourseViewModel extends BaseObservable {
-    @Bindable
-    public String courseName, description, website;
-
-    public int pack, semester, year;
-    public List<String> professors;
-
-    public CourseViewModel(Course course) {
-        update(course);
-    }
-
-    public void update(Course course) {
-        this.courseName = course.getDisciplineName();
-        this.pack = course.getPack();
-        this.semester = course.getSemester();
-        this.year = course.getYear();
-        this.description = course.getDescription();
-        this.professors = new ArrayList<>(course.getProfessors());
-        this.website = course.getWebsite();
-
-        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
-    }
+@Builder
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class CourseViewModel extends DisciplineViewModel<Course> {
+    public int pack;
+    public CycleSpecialization cycleSpecialization;
 
     @Bindable
     public String getCourseType() {
@@ -43,15 +27,4 @@ public class CourseViewModel extends BaseObservable {
             return "Optional discipline (Pack " + pack + ")";
         }
     }
-
-    @Bindable
-    public String getCourseYearSemester() {
-        return Utils.yearToString(year) + ", " + Utils.semesterToString(semester);
-    }
-
-    @Bindable
-    public int getWebsiteVisible() {
-        return (website != null) ? View.VISIBLE : View.GONE;
-    }
-
 }

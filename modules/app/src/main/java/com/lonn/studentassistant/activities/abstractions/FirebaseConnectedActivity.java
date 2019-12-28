@@ -22,6 +22,10 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
     protected FirebaseConnection firebaseConnection;
     private Handler handler = new Handler();
 
+    public FirebaseConnection getFirebaseConnection() {
+        return firebaseConnection;
+    }
+
     public void showSnackBar(String message) {
         showSnackBar(message, Snackbar.LENGTH_INDEFINITE);
     }
@@ -49,7 +53,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
         if (parent != null) {
             Intent intent = new Intent(getBaseContext(), ((EntityView) parent).getActivityClass());
 
-            intent.putExtra("entity", ((EntityView) parent).getEntity());
+            intent.putExtra("entityViewModel", ((EntityView) parent).getEntityViewModel());
 
             v.getContext().startActivity(intent);
         }

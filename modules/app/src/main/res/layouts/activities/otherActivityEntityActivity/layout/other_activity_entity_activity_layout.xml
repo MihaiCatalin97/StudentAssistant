@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.otheractivityEntity.OtherActivityEntityActivity">
+    tools:context=".activities.implementations.OtherActivityEntityActivity">
 
     <data>
 
@@ -19,40 +19,40 @@
 
         <TextView
             android:id="@+id/activityTitle"
-            style="@style/DarkBlueTitle"
+            style="@style/DarkTitleShadowed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@{otherActivity.activityName}"
+            android:text="@{otherActivity.name}"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/activityType"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:gravity="center"
-            android:text="@{otherActivity.activityType}"
+            android:text="@{otherActivity.type}"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/activityTitle" />
 
         <TextView
             android:id="@+id/activityYearAndSemester"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{otherActivity.activityYearSemester}"
+            android:text="@{otherActivity.yearSemester}"
             android:textSize="18sp"
             app:layout_constraintTop_toBottomOf="@id/activityType" />
 
         <TextView
             android:id="@+id/activityDescription"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -64,7 +64,7 @@
 
         <TextView
             android:id="@+id/activityWebSite"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{otherActivity.website}"

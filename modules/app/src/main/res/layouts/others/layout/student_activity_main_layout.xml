@@ -3,9 +3,15 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.EntityViewModel" />
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
 
         <variable
             name="user"
@@ -17,11 +23,11 @@
 
         <variable
             name="courses"
-            type="java.util.List&lt;Course&gt;" />
+            type="java.util.List&lt;CourseViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.List&lt;Professor&gt;" />
+            type="java.util.List&lt;ProfessorViewModel&gt;" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -38,7 +44,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".activities.implementations.student.StudentActivity">
+            tools:context=".activities.implementations.StudentActivity">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"

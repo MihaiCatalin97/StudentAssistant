@@ -1,0 +1,157 @@
+package com.lonn.studentassistant.viewModels;
+
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+
+import com.lonn.studentassistant.BR;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.functionalIntefaces.Comparator;
+import com.lonn.studentassistant.functionalIntefaces.Predicate;
+import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.views.EntityViewType;
+import com.lonn.studentassistant.views.implementations.EntityView;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.lonn.studentassistant.views.EntityViewType.FULL;
+
+public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T>> extends BaseObservable {
+    private EntityViewType viewType = FULL;
+    private boolean showHeader = true;
+    private boolean showEmpty = true;
+    private int permissionLevel = 0;
+    private String categoryTitle = "Category Title";
+    private String entityName = "entityViewModel";
+    private Comparator<EntityView> entitiesComparator;
+
+    private List<CategoryViewModel<T, U>> childCategories = new ArrayList<>();
+    private Map<String, U> childEntities = new HashMap<>();
+    private Predicate<U> shouldContain = e -> true;
+
+    public CategoryViewModel() {
+    }
+
+    public CategoryViewModel<T, U> addSubcategories(List<CategoryViewModel<T, U>> categoryViewModels) {
+        childCategories.addAll(categoryViewModels);
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public Comparator<EntityView> getEntitiesComparator() {
+        return entitiesComparator;
+    }
+
+    public CategoryViewModel<T, U> setEntitiesComparator(Comparator<EntityView> entitiesComparator) {
+        this.entitiesComparator = entitiesComparator;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public Predicate<U> getShouldContain() {
+        return shouldContain;
+    }
+
+    public CategoryViewModel<T, U> setShouldContain(Predicate<U> shouldContain) {
+        this.shouldContain = shouldContain;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    public CategoryViewModel<T, U> addEntity(U entity) {
+        this.childEntities.put(entity.getKey(), entity);
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public List<CategoryViewModel<T, U>> getChildCategories() {
+        return childCategories;
+    }
+
+    public CategoryViewModel<T, U> setChildCategories(List<CategoryViewModel<T, U>> childCategories) {
+        this.childCategories = childCategories;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public Map<String, U> getChildEntities() {
+        return childEntities;
+    }
+
+    @Bindable
+    public EntityViewType getViewType() {
+        return viewType;
+    }
+
+    public CategoryViewModel<T, U> setViewType(EntityViewType viewType) {
+        this.viewType = viewType;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public boolean isShowHeader() {
+        return showHeader;
+    }
+
+    public CategoryViewModel<T, U> setShowHeader(boolean showHeader) {
+        this.showHeader = showHeader;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public boolean isShowEmpty() {
+        return showEmpty;
+    }
+
+    public CategoryViewModel<T, U> setShowEmpty(boolean showEmpty) {
+        this.showEmpty = showEmpty;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public boolean isEndCategory() {
+        return childCategories.size() == 0;
+    }
+
+    @Bindable
+    public int getPermissionLevel() {
+        return permissionLevel;
+    }
+
+    public CategoryViewModel<T, U> setPermissionLevel(int permissionLevel) {
+        this.permissionLevel = permissionLevel;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public String getCategoryTitle() {
+        return categoryTitle;
+    }
+
+    public CategoryViewModel<T, U> setCategoryTitle(String categoryTitle) {
+        this.categoryTitle = categoryTitle;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+
+    @Bindable
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public CategoryViewModel<T, U> setEntityName(String entityName) {
+        this.entityName = entityName;
+        this.notifyPropertyChanged(BR.categoryModel);
+        return this;
+    }
+}

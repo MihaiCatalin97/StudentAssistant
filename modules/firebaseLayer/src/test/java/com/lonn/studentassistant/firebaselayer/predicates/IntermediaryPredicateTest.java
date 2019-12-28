@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.predicates;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseField;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 
 public class IntermediaryPredicateTest {
     @Mock
-    private CourseFields<Object> entityField;
+    private CourseField<Object> entityField;
 
     @Mock
     private Object comparingValue;

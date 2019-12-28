@@ -9,7 +9,7 @@
 
         <variable
             name="categoryModel"
-            type="com.lonn.studentassistant.viewModels.entities.CategoryViewModel" />
+            type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.validation.validators;
 
 import com.lonn.studentassistant.validation.ValidationResult;
-import com.lonn.studentassistant.common.interfaces.Predicate;
+import com.lonn.studentassistant.functionalIntefaces.Predicate;
 
 class ValidationRule<T> {
     private Predicate<T> predicate;

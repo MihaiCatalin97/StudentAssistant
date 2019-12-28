@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DarkTitleShadowed" parent="DarkBlueShadowedH1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DarkSubtitleShadowed" parent="DarkBlueShadowedH2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DarkNormalShadowed" parent="DarkBlueShadowedH3" />
+
+    <style name="DarkSmallShadowed" parent="DarkBlueShadowedH4" />
+
+    <style name="DarkTitle" parent="DarkBlueH1">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DarkSubtitle" parent="DarkBlueH2">
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DarkNormal" parent="DarkBlueH3" />
+
+    <style name="DarkSmall" parent="DarkBlueH4" />
+
+    <style name="DarkLink" parent="DarkNormal" />
+</resources>

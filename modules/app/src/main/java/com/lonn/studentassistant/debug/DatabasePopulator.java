@@ -3,7 +3,7 @@ package com.lonn.studentassistant.debug;
 import com.lonn.scheduleparser.ParseResult;
 import com.lonn.scheduleparser.UAICScheduleParser;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.common.Logger;
+import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.entities.Administrator;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
@@ -87,8 +87,8 @@ public class DatabasePopulator {
 				saveParsedEntities(parseResult.getCourses(), "courses");
 				saveParsedEntities(parseResult.getProfessors(), "professors");
 				saveParsedEntities(parseResult.getOtherActivities(), "other activities");
-				saveParsedEntities(parseResult.getOneTimeClasses(), "one time classes");
-				saveParsedEntities(parseResult.getRecurringClasses(), "recurring classes");
+				saveParsedEntities(parseResult.getOneTimeClasses(), "one time scheduleClasses");
+				saveParsedEntities(parseResult.getRecurringClasses(), "recurring scheduleClasses");
 			}
 			catch (InterruptedException | ExecutionException exception) {
 				parentActivity.showSnackBar("An error occurred while parsing the schedule!",

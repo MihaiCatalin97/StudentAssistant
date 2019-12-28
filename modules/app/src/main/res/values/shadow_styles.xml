@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Shadow">
+        <item name="android:shadowRadius">3</item>
+        <item name="android:shadowDx">3</item>
+        <item name="android:shadowDy">3</item>
+    </style>
+
+    <style name="LightBlueShadow" parent="Shadow">
+        <item name="android:shadowColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="DarkBlueShadow" parent="Shadow">
+        <item name="android:shadowColor">@color/colorPrimaryDark</item>
+    </style>
+</resources>

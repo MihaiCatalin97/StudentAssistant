@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.student.StudentActivity">
+    tools:context=".activities.implementations.StudentActivity">
 
     <data>
 
@@ -30,7 +30,7 @@
 
             <TextView
                 android:id="@+id/titleProfileLayout"
-                style="@style/DarkBlueSubtitle"
+                style="@style/DarkSubtitleShadowed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -49,7 +49,7 @@
                 app:layout_constraintTop_toBottomOf="@id/titleProfileLayout">
 
                 <TextView
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
@@ -58,7 +58,7 @@
 
                 <EditText
                     android:id="@+id/profileEmailEditText"
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -93,7 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@id/profileEmailLayout">
 
                 <TextView
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
@@ -102,7 +102,7 @@
 
                 <EditText
                     android:id="@+id/profilePhoneEditText"
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -137,7 +137,7 @@
                 app:layout_constraintTop_toBottomOf="@id/profilePhoneLayout">
 
                 <TextView
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
@@ -146,7 +146,7 @@
 
                 <EditText
                     android:id="@+id/profileGroupEditText"
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -182,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/profileEmailTextView"
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
@@ -191,7 +191,7 @@
 
                 <EditText
                     android:id="@+id/profileYearEditText"
-                    style="@style/DarkBlueTextView"
+                    style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"

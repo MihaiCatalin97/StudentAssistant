@@ -3,9 +3,15 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.EntityViewModel" />
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
 
         <variable
             name="student"
@@ -13,11 +19,11 @@
 
         <variable
             name="courses"
-            type="java.util.List&lt;Course&gt;" />
+            type="java.util.List&lt;CourseViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.List&lt;Professor&gt;" />
+            type="java.util.List&lt;ProfessorViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,7 +34,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/solid_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.implementations.student.StudentActivity"
+        tools:context=".activities.implementations.StudentActivity"
         tools:showIn="@layout/student_activity_main_layout">
 
         <include

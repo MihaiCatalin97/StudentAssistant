@@ -2,7 +2,7 @@ package com.lonn.studentassistant.firebaselayer.predicates;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseField;
 import com.lonn.studentassistant.firebaselayer.predicates.operators.Operator;
 
 import org.junit.Before;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 public class PredicateTest {
     @Mock
-    private CourseFields<Object> entityField;
+    private CourseField<Object> entityField;
 
     @Before
     public void init() {
@@ -34,7 +34,7 @@ public class PredicateTest {
 
     @Test
     public void apply_shouldCallOperatorApplyOnDatabaseOrderByChild_whenFieldIsId() {
-        CourseFields<String> filteringField = CourseFields.COURSE_NAME;
+        CourseField<String> filteringField = CourseField.COURSE_NAME;
         Operator.OperatorFilter mockFilter = mock(Operator.OperatorFilter.class);
         Query mockQuery = mock(Query.class);
         Query mockResultQuery = mock(Query.class);

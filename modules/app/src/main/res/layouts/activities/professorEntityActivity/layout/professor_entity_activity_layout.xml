@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.professorEntity.ProfessorEntityActivity">
+    tools:context=".activities.implementations.ProfessorEntityActivity">
 
     <data>
 
@@ -31,7 +31,7 @@
 
         <TextView
             android:id="@+id/professorName"
-            style="@style/DarkBlueTitle"
+            style="@style/DarkTitleShadowed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -44,7 +44,7 @@
 
         <TextView
             android:id="@+id/professorEmail"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/professorPhoneNumber"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{`Phone number: ` + professor.phoneNumber}"
@@ -69,7 +69,7 @@
 
         <TextView
             android:id="@+id/professorWebsite"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{`Website: ` + professor.website}"
@@ -81,7 +81,7 @@
 
         <TextView
             android:id="@+id/professorCabinet"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{`Cabinet: ` + professor.cabinet}"

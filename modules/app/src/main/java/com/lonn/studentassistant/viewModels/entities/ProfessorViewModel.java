@@ -2,37 +2,29 @@ package com.lonn.studentassistant.viewModels.entities;
 
 import android.view.View;
 
-import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProfessorViewModel extends BaseObservable {
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+@Builder
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class ProfessorViewModel extends EntityViewModel<Professor> {
     @Bindable
     public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
     @Bindable
-    public int professorImage = R.drawable.ic_default_picture_person;
-    public List<Course> courses;
-
-    public ProfessorViewModel(Professor professor) {
-        update(professor);
-    }
-
-    public void update(Professor professor) {
-        this.firstName = professor.getFirstName();
-        this.lastName = professor.getLastName();
-        this.rank = professor.getLevel();
-        this.email = professor.getEmail();
-        this.phoneNumber = professor.getPhoneNumber();
-        this.website = professor.getWebsite();
-        this.cabinet = professor.getCabinet();
-
-        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
-    }
+    public String professorImage;
+    public List<CourseViewModel> courses = new ArrayList<>();
 
     @Bindable
     public String getFullName() {

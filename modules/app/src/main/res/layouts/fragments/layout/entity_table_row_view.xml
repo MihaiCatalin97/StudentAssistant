@@ -3,8 +3,8 @@
     <data>
         <import type="android.view.View"/>
         <variable
-            name="entity"
-            type="com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel"/>
+            name="entityViewModel"
+            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel"/>
     </data>
     <TableRow
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,11 +16,11 @@
         android:background="@drawable/table_line">
         <TextView
             android:id="@+id/entityField1"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="0.12"
-            android:text="@{entity.field1}"
+            android:text="@{entityViewModel.field1}"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
@@ -29,42 +29,42 @@
             android:padding="2dp"/>
         <TextView
             android:id="@+id/entityField2"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="0.56"
-            android:text="@{entity.field2}"
+            android:text="@{entityViewModel.field2}"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
             android:gravity="center"
-            android:maxLines="@{entity.field2LineCount}"
+            android:maxLines="@{entityViewModel.field2LineCount}"
             android:padding="2dp"/>
         <TextView
             android:id="@+id/entityField3"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="0.2"
-            android:text="@{entity.field3}"
+            android:text="@{entityViewModel.field3}"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
             android:gravity="center"
-            android:lines="@{entity.field3LineCount}"
+            android:lines="@{entityViewModel.field3LineCount}"
             android:padding="2dp"/>
         <TextView
             android:id="@+id/entityField4"
-            style="@style/DarkBlueTextView"
+            style="@style/DarkBlueShadowedH3"
             android:layout_height="match_parent"
             android:layout_width="0dp"
             android:layout_weight="0.12"
-            android:text="@{entity.field4}"
+            android:text="@{entityViewModel.field4}"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeTextType="uniform"
             android:gravity="center"
-            android:lines="@{entity.field4LineCount}"
+            android:lines="@{entityViewModel.field4LineCount}"
             android:padding="2dp"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -74,6 +74,6 @@
             app:srcCompat="@drawable/ic_close"
             android:scaleType="fitCenter"
             android:layout_marginBottom="4dp"
-            android:visibility="@{entity.permissionLevel > 2? View.VISIBLE:View.GONE}"/>
+            android:visibility="@{entityViewModel.permissionLevel > 2? View.VISIBLE:View.GONE}"/>
     </TableRow>
 </layout>

@@ -9,7 +9,7 @@ import com.lonn.studentassistant.firebaselayer.config.FirebaseConfig;
 import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.CourseField;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.testingapplication.TestingActivity;
 import com.lonn.studentassistant.testingapplication.testUtils.CourseUtils;
@@ -100,7 +100,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.PACK)
+                Predicate.where(CourseField.PACK)
                         .equalTo(filterValue));
 
         try {
@@ -123,7 +123,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.PACK)
+                Predicate.where(CourseField.PACK)
                         .lessEqual(filterValue));
 
         try {
@@ -146,7 +146,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.PACK)
+                Predicate.where(CourseField.PACK)
                         .greaterEqual(filterValue));
 
         try {
@@ -169,7 +169,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.COURSE_NAME)
+                Predicate.where(CourseField.COURSE_NAME)
                         .equalTo(filterValue));
 
         try {
@@ -192,7 +192,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.COURSE_NAME)
+                Predicate.where(CourseField.COURSE_NAME)
                         .lessEqual(filterValue));
 
         try {
@@ -215,7 +215,7 @@ public class CourseDatabaseContextGetITest {
 
         courseContext.get(databaseResultFuture::complete,
                 (error) -> fail(error.getMessage()),
-                Predicate.where(CourseFields.COURSE_NAME)
+                Predicate.where(CourseField.COURSE_NAME)
                         .greaterEqual(filterValue));
 
         try {

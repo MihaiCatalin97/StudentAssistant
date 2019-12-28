@@ -2,44 +2,34 @@ package com.lonn.studentassistant.viewModels.entities;
 
 import android.view.View;
 
-import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ScheduleClassViewModel extends BaseObservable {
-    public String courseKey;
-    public List<String> rooms;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+@Builder
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass> {
     public int day, startHour, endHour;
-    public List<String> professorKeys;
+    public List<String> rooms;
+    public List<ProfessorViewModel> professors = new ArrayList<>();
+    public Discipline discipline;
 
     @Bindable
     public String type, parity;
     @Bindable
     public List<String> groups;
-
-    public ScheduleClassViewModel(RecurringClass scheduleClass) {
-        update(scheduleClass);
-    }
-
-    public void update(RecurringClass scheduleClass) {
-        this.type = scheduleClass.getType();
-        this.day = scheduleClass.getDay();
-        this.courseKey = scheduleClass.getDiscipline();
-        this.rooms = new LinkedList<>(scheduleClass.getRooms());
-        this.groups = new LinkedList<>(scheduleClass.getGroups());
-        this.professorKeys = new LinkedList<>(scheduleClass.getProfessors());
-        this.startHour = scheduleClass.getStartHour();
-        this.endHour = scheduleClass.getEndHour();
-        this.parity = scheduleClass.getParity();
-
-        notifyPropertyChanged(com.lonn.studentassistant.BR._all);
-    }
 
     @Bindable
     public int getParityVisible() {
@@ -74,26 +64,11 @@ public class ScheduleClassViewModel extends BaseObservable {
     }
 
     @Bindable
-    public String getCourseName() {
-        Course auxCourse = new Course();
-        auxCourse.setDisciplineName(courseKey.replace("~", "."));
-
-        String courseName = auxCourse.getKey();
-        int legth = 0;
-        String[] words = courseName.split(" ");
-        String result = "";
-
-        for (String word : words) {
-            result += word + " ";
-            legth += word.length() + 1;
-
-            if (legth > 20) {
-                result += "\n";
-                legth = 0;
-            }
+    public String getDisciplineName() {
+        if (discipline == null) {
+            return "";
         }
-
-        return result;
+        return discipline.getDisciplineName();
     }
 
     @Bindable

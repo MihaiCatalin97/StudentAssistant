@@ -1,11 +1,11 @@
 package com.lonn.studentassistant.viewModels.entities;
 
-import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.lonn.studentassistant.firebaselayer.entities.User;
 
-public class UserViewModel extends BaseObservable {
+public class UserViewModel extends EntityViewModel<User> {
     @Bindable
     public String email, name;
 

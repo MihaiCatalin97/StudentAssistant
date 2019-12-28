@@ -1,53 +1,51 @@
 package com.lonn.studentassistant.viewModels;
 
-import com.lonn.studentassistant.activities.implementations.courseEntity.CourseEntityActivity;
-import com.lonn.studentassistant.activities.implementations.otheractivityEntity.OtherActivityEntityActivity;
-import com.lonn.studentassistant.activities.implementations.professorEntity.ProfessorEntityActivity;
-import com.lonn.studentassistant.common.Utils;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.activities.implementations.CourseEntityActivity;
+import com.lonn.studentassistant.activities.implementations.OtherActivityEntityActivity;
+import com.lonn.studentassistant.activities.implementations.ProfessorEntityActivity;
+import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
+import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
+import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
 
 public class ScrollViewEntityViewModelFactory {
     public static ScrollViewEntityViewModel getScrollViewEntityViewModel(EntityViewType viewType,
-                                                                         BaseEntity entity) {
-        if (entity instanceof Course) {
+                                                                         EntityViewModel entity) {
+        if (entity instanceof CourseViewModel) {
             if (viewType.equals(FULL)) {
-                return full((Course) entity);
+                return full((CourseViewModel) entity);
             }
-            return partial((Course) entity);
+            return partial((CourseViewModel) entity);
         }
-        if (entity instanceof Professor) {
+        if (entity instanceof ProfessorViewModel) {
             if (viewType.equals(FULL)) {
-                return full((Professor) entity);
+                return full((ProfessorViewModel) entity);
             }
-            return partial((Professor) entity);
+            return partial((ProfessorViewModel) entity);
         }
-        if (entity instanceof OtherActivity) {
+        if (entity instanceof OtherActivityViewModel) {
             if (viewType.equals(FULL)) {
-                return full((OtherActivity) entity);
+                return full((OtherActivityViewModel) entity);
             }
-            return partial((OtherActivity) entity);
+            return partial((OtherActivityViewModel) entity);
         }
-        if (entity instanceof RecurringClass) {
+        if (entity instanceof ScheduleClassViewModel) {
             if (viewType.equals(FULL)) {
-                return full((RecurringClass) entity);
+                return full((ScheduleClassViewModel) entity);
             }
-            return partial((RecurringClass) entity);
+            return partial((ScheduleClassViewModel) entity);
         }
         return null;
     }
 
-    private static ScrollViewEntityViewModel partial(Course course) {
-        String title = course.getDisciplineName();
-        String subtitle = course.getPack() == 0 ? "Mandatory discipline" : "Optional discipline (pack " + course.getPack() + ")";
+    private static ScrollViewEntityViewModel partial(CourseViewModel course) {
+        String title = course.getName();
+        String subtitle = course.getCourseType();
         String description;
 
         if (course.getWebsite() == null) {
@@ -60,16 +58,28 @@ public class ScrollViewEntityViewModelFactory {
         return new ScrollViewEntityViewModel(null, title, subtitle, description, CourseEntityActivity.class);
     }
 
-    private static ScrollViewEntityViewModel full(Course course) {
-        String title = course.getDisciplineName();
-        String subtitle = course.getPack() == 0 ? "Mandatory discipline" : "Optional discipline (pack " + course.getPack() + ")";
+    private static ScrollViewEntityViewModel full(CourseViewModel course) {
+        String title = course.getName();
+        String subtitle = course.getCourseType();
         String description = Utils.yearToString(course.getYear()) + ", " + Utils.semesterToString(course.getSemester());
 
         return new ScrollViewEntityViewModel(null, title, subtitle, description, CourseEntityActivity.class);
     }
 
-    private static ScrollViewEntityViewModel partial(Professor professor) {
-        String title = (professor.getLevel() != null ? (professor.getLevel() + " ") : "") +
+    private static ScrollViewEntityViewModel partial(ProfessorViewModel professor) {
+        String title = (professor.getRank() != null ? (professor.getRank() + " ") : "") +
+                professor.getLastName() + " " +
+                professor.getFirstName();
+
+        return new ScrollViewEntityViewModel(professor.getProfessorImage(),
+                title,
+                null,
+                null,
+                ProfessorEntityActivity.class);
+    }
+
+    private static ScrollViewEntityViewModel full(ProfessorViewModel professor) {
+        String title = (professor.getRank() != null ? (professor.getRank() + " ") : "") +
                 professor.getLastName() + " " +
                 professor.getFirstName();
 
@@ -90,39 +100,17 @@ public class ScrollViewEntityViewModelFactory {
                 ProfessorEntityActivity.class);
     }
 
-    private static ScrollViewEntityViewModel full(Professor professor) {
-        String title = (professor.getLevel() != null ? (professor.getLevel() + " ") : "") +
-                professor.getLastName() + " " +
-                professor.getFirstName();
-
-        String subtitle;
-        if (professor.getCabinet() != null) {
-            subtitle = "Cabinet: " + professor.getCabinet();
-        }
-        else {
-            subtitle = professor.getWebsite();
-        }
-
-        String description = professor.getEmail();
-
-        return new ScrollViewEntityViewModel(professor.getProfessorImage(),
-                title,
-                subtitle,
-                description,
-                ProfessorEntityActivity.class);
-    }
-
-    private static ScrollViewEntityViewModel partial(OtherActivity otherActivity) {
-        String title = otherActivity.getDisciplineName();
+    private static ScrollViewEntityViewModel partial(OtherActivityViewModel otherActivity) {
+        String title = otherActivity.getName();
         String subtitle = otherActivity.getType();
-        String description = Utils.yearToString(otherActivity.getYear()) + ", " + Utils.semesterToString(otherActivity.getSemester());
+        String description = otherActivity.getYearSemester();
 
         return new ScrollViewEntityViewModel(null, title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    private static ScrollViewEntityViewModel full(OtherActivity otherActivity) {
-        String title = otherActivity.getDisciplineName();
-        String subtitle = Utils.yearToString(otherActivity.getYear()) + ", " + Utils.semesterToString(otherActivity.getSemester());
+    private static ScrollViewEntityViewModel full(OtherActivityViewModel otherActivity) {
+        String title = otherActivity.getName();
+        String subtitle = otherActivity.getYearSemester();
         String description;
 
         if (otherActivity.getWebsite() == null) {
@@ -135,22 +123,20 @@ public class ScrollViewEntityViewModelFactory {
         return new ScrollViewEntityViewModel(null, title, subtitle, description, OtherActivityEntityActivity.class);
     }
 
-    private static ScrollViewEntityViewModel partial(RecurringClass scheduleClass) {
-        ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
-        String field1 = model.getHours();
-        String field2 = model.getCourseName();
-        String field3 = model.getFormattedType();
-        String field4 = model.getRooms();
+    private static ScrollViewEntityViewModel partial(ScheduleClassViewModel scheduleClass) {
+        String field1 = scheduleClass.getHours();
+        String field2 = scheduleClass.getDisciplineName();
+        String field3 = scheduleClass.getFormattedType();
+        String field4 = scheduleClass.getRooms();
 
         return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }
 
-    private static ScrollViewEntityViewModel full(RecurringClass scheduleClass) {
-        ScheduleClassViewModel model = new ScheduleClassViewModel(scheduleClass);
-        String field1 = model.getHours();
-        String field2 = model.getCourseName();
-        String field3 = model.getFormattedType();
-        String field4 = model.getRooms();
+    private static ScrollViewEntityViewModel full(ScheduleClassViewModel scheduleClass) {
+        String field1 = scheduleClass.getHours();
+        String field2 = scheduleClass.getDisciplineName();
+        String field3 = scheduleClass.getFormattedType();
+        String field4 = scheduleClass.getRooms();
 
         return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
     }

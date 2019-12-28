@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.EntityFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.EntityField;
 import com.lonn.studentassistant.firebaselayer.predicates.operators.Operator;
 
 import lombok.AccessLevel;
@@ -15,11 +15,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class Predicate<T extends BaseEntity> {
     @Getter(AccessLevel.PROTECTED)
-    private EntityFields<T, ?> field;
+    private EntityField<T, ?> field;
     @Getter(AccessLevel.PROTECTED)
     private Operator.OperatorFilter operatorFilter;
 
-    public static <T extends BaseEntity, V> IntermediaryPredicate<T, V> where(EntityFields<T, V> field) {
+    public static <T extends BaseEntity, V> IntermediaryPredicate<T, V> where(EntityField<T, V> field) {
         return new IntermediaryPredicate<>(field);
     }
 

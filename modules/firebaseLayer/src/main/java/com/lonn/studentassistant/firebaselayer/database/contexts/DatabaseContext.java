@@ -76,7 +76,7 @@ public class DatabaseContext<T extends BaseEntity> implements IDatabaseContext<T
     @Override
     public void get(Consumer<List<T>> onSuccess,
                     Consumer<DatabaseError> onError,
-                    Predicate<T> predicate,
+                    Predicate<? super T> predicate,
                     Boolean subscribe) {
         Query queryReference = getDatabase();
         if (queryReference != null) {

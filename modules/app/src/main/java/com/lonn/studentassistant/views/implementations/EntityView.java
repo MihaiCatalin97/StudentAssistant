@@ -10,10 +10,11 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
-import com.lonn.studentassistant.viewModels.entities.ScrollViewEntityViewModel;
+import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.GradeViewModel;
+import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
@@ -22,18 +23,20 @@ import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFact
 
 public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
     protected EntityViewType viewType;
-    protected T entity;
+    protected EntityViewModel<T> entityViewModel;
     protected ScrollViewEntityViewModel model;
     protected ViewDataBinding binding;
     protected int permissionLevel = 0;
 
-    public EntityView(Context context, EntityViewType viewType, int permissionLevel) {
+    public EntityView(Context context, EntityViewType viewType, int permissionLevel, EntityViewModel<T> entityViewModel) {
         super(context);
 
         this.viewType = viewType;
         this.permissionLevel = permissionLevel;
+        this.entityViewModel = entityViewModel;
 
         init(context);
+        updateEntity(entityViewModel);
     }
 
     public EntityView(Context context, AttributeSet set) {
@@ -53,10 +56,10 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
         }
     }
 
-    public void addOrUpdateEntity(T newEntity) {
-        entity = newEntity;
+    public void updateEntity(EntityViewModel<T> newEntity) {
+        entityViewModel = newEntity;
 
-        model = getScrollViewEntityViewModel(viewType, entity);
+        model = getScrollViewEntityViewModel(viewType, entityViewModel);
         model.permissionLevel = permissionLevel;
         setDataBindingVariable(model);
     }
@@ -72,11 +75,11 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
     }
 
     public Class getEntityClass() {
-        return entity.getClass();
+        return entityViewModel.getClass();
     }
 
-    public T getEntity() {
-        return entity;
+    public EntityViewModel<T> getEntityViewModel() {
+        return entityViewModel;
     }
 
     public Class getActivityClass() {
@@ -84,7 +87,7 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
     }
 
     protected int getLayoutId() {
-        if (entity instanceof ScheduleClass || entity instanceof Grade) {
+        if (entityViewModel instanceof ScheduleClassViewModel || entityViewModel instanceof GradeViewModel) {
             return R.layout.entity_table_row_view;
         }
 
@@ -92,11 +95,11 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
     }
 
     private void setDataBindingVariable(ScrollViewEntityViewModel model) {
-        if (entity instanceof Grade || entity instanceof ScheduleClass) {
-            ((EntityTableRowViewBinding) binding).setEntity(model);
+        if (entityViewModel instanceof ScheduleClassViewModel || entityViewModel instanceof GradeViewModel) {
+            ((EntityTableRowViewBinding) binding).setEntityViewModel(model);
         }
         else {
-            ((EntityConstraintLayoutViewBinding) binding).setEntity(model);
+            ((EntityConstraintLayoutViewBinding) binding).setEntityViewModel(model);
         }
     }
 }

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.student.StudentActivity">
+    tools:context=".activities.implementations.StudentActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -10,7 +10,7 @@
 
         <TextView
             android:id="@+id/titleScheduleLayout"
-            style="@style/DarkBlueTitle"
+            style="@style/DarkTitleShadowed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"

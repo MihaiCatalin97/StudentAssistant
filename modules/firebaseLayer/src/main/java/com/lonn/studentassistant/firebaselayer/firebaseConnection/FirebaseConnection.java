@@ -14,8 +14,8 @@ import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashFields;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.UserFields;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashField;
+import com.lonn.studentassistant.firebaselayer.predicates.fields.UserField;
 import com.lonn.studentassistant.firebaselayer.requests.CredentialsCheckRequest;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
 import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
@@ -123,7 +123,7 @@ public class FirebaseConnection {
                     if (identifications.size() == 1) {
                         execute(new GetRequest<User>()
                                 .databaseTable(DatabaseTableContainer.USERS)
-                                .predicate(Predicate.where(UserFields.IDENTIFICATION_HASH)
+                                .predicate(Predicate.where(UserField.IDENTIFICATION_HASH)
                                         .equalTo(request.identificationHash()))
                                 .onSuccess((users) -> {
                                     if (users.size() == 0) {
@@ -155,7 +155,7 @@ public class FirebaseConnection {
                     logger.logCredentialsCheckFail(request.identificationHash(), error.getMessage());
                     request.onError().consume(error.getMessage());
                 })
-                .predicate(Predicate.where(IdentificationHashFields.HASH)
+                .predicate(Predicate.where(IdentificationHashField.ID)
                         .equalTo(request.identificationHash()))
                 .subscribe(false));
     }

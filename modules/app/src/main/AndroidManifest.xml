@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".activities.implementations.login.LoginActivity"
+            android:name=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
             <intent-filter>
@@ -37,18 +37,18 @@
         </activity>
 
         <activity
-            android:name=".activities.implementations.student.StudentActivity"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:name=".activities.implementations.StudentActivity"
+            android:parentActivityName=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.debug.DebugActivity"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:name=".activities.implementations.DebugActivity"
+            android:parentActivityName=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activities.implementations.register.accountChoice.AccountChoiceActivity"
-            android:parentActivityName=".activities.implementations.login.LoginActivity"
+            android:parentActivityName=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
@@ -72,15 +72,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.courseEntity.CourseEntityActivity"
+            android:name=".activities.implementations.CourseEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.professorEntity.ProfessorEntityActivity"
+            android:name=".activities.implementations.ProfessorEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.otheractivityEntity.OtherActivityEntityActivity"
+            android:name=".activities.implementations.OtherActivityEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

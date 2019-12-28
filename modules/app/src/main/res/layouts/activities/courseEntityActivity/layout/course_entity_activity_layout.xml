@@ -1,109 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.courseEntity.CourseEntityActivity">
+    tools:context=".activities.implementations.CourseEntityActivity">
 
     <data>
+
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
         <variable
             name="course"
             type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
+        style="@style/EntityActivityWrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/solid_background"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/courseTitle"
-            style="@style/DarkBlueTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="@{course.courseName}"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/courseType"
-            style="@style/DarkBlueTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="center"
-            android:text="@{course.courseType}"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/courseTitle" />
-
-        <TextView
-
-            android:id="@+id/courseYearAndSemester"
-            style="@style/DarkBlueTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@{course.courseYearSemester}"
-            android:textSize="18sp"
-            app:layout_constraintTop_toBottomOf="@id/courseType" />
-
-        <TextView
-            android:id="@+id/courseDescription"
-            style="@style/DarkBlueTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="@{course.description}"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseYearAndSemester" />
-
-        <TextView
-            android:id="@+id/courseWebSite"
-            style="@style/DarkBlueTextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{course.website}"
-            android:textSize="18sp"
-            android:visibility="@{course.websiteVisible}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/courseDescription" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="@id/courseWebSite"
-            app:layout_constraintTop_toBottomOf="@id/courseWebSite">
-
-            <LinearLayout
+            <TextView
+                style="@style/EntityActivityTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="@{course.name}" />
 
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/professorsBaseCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Professors`}"
-                    android:viewType="@{`PARTIAL`}"/>
+            <TextView
+                style="@style/EntityActivitySubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{course.courseType}" />
 
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/scheduleBaseCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Schedule`}"
-                    android:viewType="@{`PARTIAL`}" />
+            <TextView
+                style="@style/EntityActivitySubtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{course.yearSemester}" />
 
-            </LinearLayout>
-        </ScrollView>
+            <TextView
+                style="@style/EntityActivityContentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                style="@style/EntityActivityContentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{course.description}" />
+
+            <TextView
+                style="@style/EntityActivityContentTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Website" />
+
+            <TextView
+                style="@style/EntityActivityContentText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{course.website}"
+                android:visibility="@{course.websiteVisible}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Files`}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Professors`}"
+                android:childEntities="@{course.professors}"
+                android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Schedule`}"
+                android:childEntities="@{course.scheduleClasses}"
+                android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
+        </LinearLayout>
+    </ScrollView>
 </layout>
