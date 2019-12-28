@@ -24,7 +24,7 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
     public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
     @Bindable
     public String professorImage;
-    public List<CourseViewModel> courses = new ArrayList<>();
+    public List<CourseViewModel> courses;
 
     @Bindable
     public String getFullName() {

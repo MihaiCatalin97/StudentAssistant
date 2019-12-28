@@ -26,18 +26,18 @@ import static com.lonn.studentassistant.R.id.layoutCategoryHeader;
 import static com.lonn.studentassistant.R.id.layoutCategoryMain;
 import static com.lonn.studentassistant.R.layout.category_layout;
 
-public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<T>> extends ScrollViewItem<T> {
+public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>> extends ScrollViewItem {
     protected boolean expanded = false;
-    private CategoryViewModel<T, U> viewModel = new CategoryViewModel<>();
+    private CategoryViewModel<T> viewModel = new CategoryViewModel<>();
     private ScrollViewCategoryHeader header;
-    private ScrollViewCategoryContent<T, U> content;
+    private ScrollViewCategoryContent<T> content;
 
     public ScrollViewCategory(Context context) {
         super(context);
         init(context);
     }
 
-    public ScrollViewCategory(Context context, CategoryViewModel<T, U> viewModel) {
+    public ScrollViewCategory(Context context, CategoryViewModel<T> viewModel) {
         super(context);
         this.viewModel = viewModel;
         init(context);
@@ -48,11 +48,11 @@ public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<
         init(context);
     }
 
-    public CategoryViewModel<T, U> getViewModel() {
+    public CategoryViewModel<T> getViewModel() {
         return viewModel;
     }
 
-    public void addChildCategories(List<CategoryViewModel<T, U>> categories) {
+    public void addChildCategories(List<CategoryViewModel<T>> categories) {
         getViewModel().addSubcategories(categories);
 
         addCategoriesToContent(categories);
@@ -60,19 +60,19 @@ public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<
         hideIfEmpty();
     }
 
-    public void addEntities(List<U> entities) {
-        for (U entity : entities) {
+    public void addEntities(List<T> entities) {
+        for (T entity : entities) {
             addOrUpdateEntity(entity);
         }
 
         hideIfEmpty();
     }
 
-    public ScrollViewCategoryContent<T, U> getContent() {
+    public ScrollViewCategoryContent<T> getContent() {
         return content;
     }
 
-    public Collection<CategoryViewModel<T, U>> getSubCategories() {
+    public Collection<CategoryViewModel<T>> getSubCategories() {
         return viewModel.getChildCategories();
     }
 
@@ -108,9 +108,9 @@ public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<
         initContent();
     }
 
-    private void addCategoriesToContent(List<CategoryViewModel<T, U>> categories) {
-        for (CategoryViewModel<T, U> category : categories) {
-            ScrollViewCategory<T, U> scrollViewCategory = new ScrollViewCategory<>(getContext(),
+    private void addCategoriesToContent(List<CategoryViewModel<T>> categories) {
+        for (CategoryViewModel<T> category : categories) {
+            ScrollViewCategory<T> scrollViewCategory = new ScrollViewCategory<>(getContext(),
                     category);
 
             scrollViewCategory.addCategoriesToContent(scrollViewCategory.getViewModel()
@@ -120,7 +120,7 @@ public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<
         }
     }
 
-    private void addOrUpdateEntity(U entity) {
+    private void addOrUpdateEntity(T entity) {
         if (viewModel.getShouldContain().test(entity)) {
             if (getViewModel().isEndCategory()) {
                 viewModel.addEntity(entity);
@@ -129,7 +129,7 @@ public class ScrollViewCategory<T extends BaseEntity, U extends EntityViewModel<
                         viewModel.getPermissionLevel());
             }
             else {
-                for (ScrollViewCategory<T, U> subcategory : content.subcategoryViews.values()) {
+                for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
                     subcategory.addOrUpdateEntity(entity);
                 }
             }

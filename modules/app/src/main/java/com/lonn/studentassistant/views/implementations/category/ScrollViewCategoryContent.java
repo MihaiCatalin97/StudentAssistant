@@ -18,9 +18,9 @@ import java.util.Map;
 
 import static com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR;
 
-public class ScrollViewCategoryContent<T extends BaseEntity, U extends EntityViewModel<T>> extends LinearLayout {
+public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseEntity>> extends LinearLayout {
     protected Map<String, EntityView<T>> childEntityViews = new HashMap<>();
-    protected Map<String, ScrollViewCategory<T, U>> subcategoryViews = new HashMap<>();
+    protected Map<String, ScrollViewCategory<T>> subcategoryViews = new HashMap<>();
     private Comparator<EntityView> entityViewComparator = ASCENDING_TITLE_COMPARATOR;
 
     public ScrollViewCategoryContent(Context context, AttributeSet attrs) {
@@ -31,7 +31,7 @@ public class ScrollViewCategoryContent<T extends BaseEntity, U extends EntityVie
         findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> runnable.run());
     }
 
-    public void addOrUpdateEntity(EntityViewModel<T> entity, EntityViewType viewType, int permissionLevel) {
+    public void addOrUpdateEntity(T entity, EntityViewType viewType, int permissionLevel) {
         EntityView<T> entityView = childEntityViews.get(entity.getKey());
 
         if (entityView == null) {
@@ -50,7 +50,7 @@ public class ScrollViewCategoryContent<T extends BaseEntity, U extends EntityVie
                 entityView);
     }
 
-    public void addSubcategory(ScrollViewCategory<T, U> subCategory) {
+    public void addSubcategory(ScrollViewCategory<T> subCategory) {
         subcategoryViews.put(subCategory.getViewModel().getCategoryTitle(),
                 subCategory);
 

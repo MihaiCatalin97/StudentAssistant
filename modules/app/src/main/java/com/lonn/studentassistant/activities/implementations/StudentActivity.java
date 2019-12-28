@@ -30,12 +30,12 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
 
 public class StudentActivity extends NavBarActivity {
-    public ScrollViewCategory<Course, CourseViewModel> coursesBaseCategory;
-    public ScrollViewCategory<Professor, ProfessorViewModel> professorsBaseCategory;
-    public ScrollViewCategory<OtherActivity, OtherActivityViewModel> otherActivitiesBaseCategory;
-    public ScrollViewCategory<ScheduleClass, ScheduleClassViewModel> scheduleClassBaseCategory;
-    public ScrollViewCategory<Course, CourseViewModel> coursesProfileCategory;
-    public ScrollViewCategory<OtherActivity, OtherActivityViewModel> otherActivitiesProfileCategory;
+    public ScrollViewCategory<CourseViewModel> coursesBaseCategory;
+    public ScrollViewCategory<ProfessorViewModel> professorsBaseCategory;
+    public ScrollViewCategory<OtherActivityViewModel> otherActivitiesBaseCategory;
+    public ScrollViewCategory<ScheduleClassViewModel> scheduleClassBaseCategory;
+    public ScrollViewCategory<CourseViewModel> coursesProfileCategory;
+    public ScrollViewCategory<OtherActivityViewModel> otherActivitiesProfileCategory;
     private StudentViewModel studentViewModel;
     private StudentActivityMainLayoutBinding binding;
 

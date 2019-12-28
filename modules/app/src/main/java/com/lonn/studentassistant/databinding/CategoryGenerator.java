@@ -9,17 +9,16 @@ import com.lonn.studentassistant.viewModels.CategoryViewModel;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
 import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
-import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryGenerator {
-    public static <T extends Course, U extends EntityViewModel<T>> List<CategoryViewModel<T, U>> studyCycleCategories(CategoryViewModel<T, U> parentCategory) {
-        List<CategoryViewModel<T, U>> subcategories = new ArrayList<>();
+    public static <T extends EntityViewModel<? extends Course>> List<CategoryViewModel<T>> studyCycleCategories(CategoryViewModel<T> parentCategory) {
+        List<CategoryViewModel<T>> subcategories = new ArrayList<>();
 
         for (CycleSpecialization cycleSpecialization : CycleSpecialization.values()) {
-            subcategories.add(new CategoryViewModel<T, U>()
+            subcategories.add(new CategoryViewModel<T>()
                     .setCategoryTitle(cycleSpecialization.toString())
                     .setEntityName(parentCategory.getEntityName())
                     .setViewType(parentCategory.getViewType())
@@ -36,32 +35,32 @@ public class CategoryGenerator {
         return subcategories;
     }
 
-    public static <T extends Course, U extends EntityViewModel<T>> List<CategoryViewModel<T, U>> yearCategories(CategoryViewModel<T, U> parentCategory,
-                                                                                                             int numberOfYears) {
-        List<CategoryViewModel<T, U>> subcategories = new ArrayList<>();
+    public static <T extends EntityViewModel<? extends Course>> List<CategoryViewModel<T>> yearCategories(CategoryViewModel<T> parentCategory,
+                                                                                                          int numberOfYears) {
+        List<CategoryViewModel<T>> subcategories = new ArrayList<>();
 
         for (int yearIndex = 1; yearIndex <= numberOfYears; yearIndex++) {
             String yearString = Year.valueOf(yearIndex).getYearString() + " year";
             final int year = yearIndex;
 
-            subcategories.add(new CategoryViewModel<T, U>()
+            subcategories.add(new CategoryViewModel<T>()
                     .setCategoryTitle(yearString)
                     .setEntityName(parentCategory.getEntityName())
                     .setViewType(parentCategory.getViewType())
                     .setPermissionLevel(parentCategory.getPermissionLevel())
                     .setShowEmpty(parentCategory.isShowEmpty())
                     .setShowHeader(true)
-                    .setShouldContain((discipline) -> ((CourseViewModel)discipline).getYear() == year));
+                    .setShouldContain((discipline) -> ((CourseViewModel) discipline).getYear() == year));
         }
 
         return subcategories;
     }
 
-    public static <T extends ScheduleClass, U extends EntityViewModel<T>> List<CategoryViewModel<T, U>> scheduleCategories(CategoryViewModel<T, U> parentCategory) {
-        List<CategoryViewModel<T, U>> subcategories = new ArrayList<>();
+    public static <T extends EntityViewModel<? extends ScheduleClass>> List<CategoryViewModel<T>> scheduleCategories(CategoryViewModel<T> parentCategory) {
+        List<CategoryViewModel<T>> subcategories = new ArrayList<>();
 
         for (WeekDay weekDay : WeekDay.values()) {
-            subcategories.add(new CategoryViewModel<T, U>()
+            subcategories.add(new CategoryViewModel<T>()
                     .setCategoryTitle(weekDay.getDayStringEng())
                     .setEntityName(parentCategory.getEntityName())
                     .setViewType(parentCategory.getViewType())

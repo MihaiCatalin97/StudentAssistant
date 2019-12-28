@@ -9,6 +9,8 @@ import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.adapters.abstractions.ViewModelAdapter;
 import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
 
+import java.util.ArrayList;
+
 import static com.lonn.studentassistant.BR._all;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.OTHER_ACTIVITIES;
@@ -31,6 +33,7 @@ public class ScheduleClassAdapter extends ViewModelAdapter<ScheduleClass, Schedu
                 .type(scheduleClass.getType())
                 .rooms(scheduleClass.getRooms())
                 .groups(scheduleClass.getGroups())
+                .professors(new ArrayList<>())
                 .build()
                 .setKey(scheduleClass.getKey());
     }

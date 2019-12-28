@@ -10,6 +10,8 @@ import com.lonn.studentassistant.viewModels.adapters.ProfessorAdapter;
 import com.lonn.studentassistant.viewModels.adapters.ScheduleClassAdapter;
 import com.lonn.studentassistant.viewModels.entities.DisciplineViewModel;
 
+import java.util.ArrayList;
+
 import static com.lonn.studentassistant.BR._all;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ONE_TIME_CLASSES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
@@ -28,6 +30,8 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                 .setWebsite(discipline.getWebsite())
                 .setYear(discipline.getYear())
                 .setSemester(discipline.getSemester())
+                .setProfessors(new ArrayList<>())
+                .setScheduleClasses(new ArrayList<>())
                 .setKey(discipline.getKey());
 
         return disciplineViewModel;

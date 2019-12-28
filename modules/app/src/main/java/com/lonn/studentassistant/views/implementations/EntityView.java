@@ -10,7 +10,6 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.GradeViewModel;
@@ -21,14 +20,14 @@ import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
 
-public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
+public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
     protected EntityViewType viewType;
-    protected EntityViewModel<T> entityViewModel;
+    protected T entityViewModel;
     protected ScrollViewEntityViewModel model;
     protected ViewDataBinding binding;
     protected int permissionLevel = 0;
 
-    public EntityView(Context context, EntityViewType viewType, int permissionLevel, EntityViewModel<T> entityViewModel) {
+    public EntityView(Context context, EntityViewType viewType, int permissionLevel, T entityViewModel) {
         super(context);
 
         this.viewType = viewType;
@@ -56,7 +55,7 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
         }
     }
 
-    public void updateEntity(EntityViewModel<T> newEntity) {
+    public void updateEntity(T newEntity) {
         entityViewModel = newEntity;
 
         model = getScrollViewEntityViewModel(viewType, entityViewModel);
@@ -78,7 +77,7 @@ public class EntityView<T extends BaseEntity> extends ScrollViewItem<T> {
         return entityViewModel.getClass();
     }
 
-    public EntityViewModel<T> getEntityViewModel() {
+    public T getEntityViewModel() {
         return entityViewModel;
     }
 

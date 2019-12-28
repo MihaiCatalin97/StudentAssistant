@@ -66,24 +66,24 @@ public class BindingAdapters {
     }
 
     @BindingAdapter("android:childEntityComparator")
-    public static <T extends BaseEntity, U extends EntityViewModel<T>> void setChildEntityComparator(ScrollViewCategory<T, U> category,
-                                                                                                     Comparator<EntityView> comparator) {
+    public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntityComparator(ScrollViewCategory<T> category,
+                                                                                                  Comparator<EntityView> comparator) {
         category.getViewModel().setEntitiesComparator(comparator);
         category.getContent().setEntityViewComparator(comparator);
     }
 
 
     @BindingAdapter("android:childEntities")
-    public static <T extends BaseEntity, U extends EntityViewModel<T>> void setChildEntities(ScrollViewCategory<T, U> category,
-                                                                                             List<U> entities) {
+    public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntities(ScrollViewCategory<T> category,
+                                                                                          List<T> entities) {
         if (entities != null && category != null) {
             category.addEntities(entities);
         }
     }
 
     @BindingAdapter("android:shouldContain")
-    public static <T extends BaseEntity, U extends EntityViewModel<T>> void setShouldContain(ScrollViewCategory<T, U> category,
-                                                                                             Predicate<U> shouldContain) {
+    public static <T extends EntityViewModel<? extends BaseEntity>> void setShouldContain(ScrollViewCategory<T> category,
+                                                                                          Predicate<T> shouldContain) {
         category.getViewModel()
                 .setShouldContain(shouldContain);
     }
@@ -110,8 +110,8 @@ public class BindingAdapters {
     }
 
     @BindingAdapter("android:subcategoryGeneratorFunction")
-    public static <T extends BaseEntity, U extends EntityViewModel<T>> void setSubcategoryGeneratorFunction(ScrollViewCategory<T, U> categoryView,
-                                                                                                            Function<CategoryViewModel<T, U>, List<CategoryViewModel<T, U>>> subcategoryGeneratorFunction) {
+    public static <T extends EntityViewModel<? extends BaseEntity>> void setSubcategoryGeneratorFunction(ScrollViewCategory<T> categoryView,
+                                                                                                         Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
         categoryView.addChildCategories(subcategoryGeneratorFunction
                 .apply(categoryView.getViewModel()));
     }

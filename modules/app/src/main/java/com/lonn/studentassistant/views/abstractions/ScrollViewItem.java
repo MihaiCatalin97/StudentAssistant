@@ -6,7 +6,7 @@ import android.widget.LinearLayout;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
-public abstract class ScrollViewItem<T extends BaseEntity> extends LinearLayout {
+public abstract class ScrollViewItem extends LinearLayout {
     public ScrollViewItem(Context context) {
         super(context);
     }

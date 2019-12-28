@@ -28,8 +28,8 @@ import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where
 import static com.lonn.studentassistant.firebaselayer.predicates.fields.ProfessorField.ID;
 
 public class CourseEntityActivity extends FirebaseConnectedActivity {
-    public ScrollViewCategory<Professor, ProfessorViewModel> professorBaseCategory;
-    public ScrollViewCategory<ScheduleClass, ScheduleClassViewModel> scheduleBaseCategory;
+    public ScrollViewCategory<ProfessorViewModel> professorBaseCategory;
+    public ScrollViewCategory<ScheduleClassViewModel> scheduleBaseCategory;
     private CourseViewModel courseViewModel;
     private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;

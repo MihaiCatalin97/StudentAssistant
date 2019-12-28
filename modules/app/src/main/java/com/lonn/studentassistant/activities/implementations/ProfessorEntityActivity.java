@@ -20,9 +20,9 @@ import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 public class ProfessorEntityActivity extends FirebaseConnectedActivity {
-    public ScrollViewCategory<Course, CourseViewModel> courseBaseCategory;
-    public ScrollViewCategory<OtherActivity, OtherActivityViewModel> otherActivityBaseCategory;
-    public ScrollViewCategory<ScheduleClass, ScheduleClassViewModel> scheduleClassBaseCategory;
+    public ScrollViewCategory<CourseViewModel> courseBaseCategory;
+    public ScrollViewCategory<OtherActivityViewModel> otherActivityBaseCategory;
+    public ScrollViewCategory<ScheduleClassViewModel> scheduleClassBaseCategory;
     private ProfessorEntityActivityLayoutBinding binding;
     private ProfessorViewModel viewModel;
     private boolean editPrivilege;

@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass> {
     public int day, startHour, endHour;
     public List<String> rooms;
-    public List<ProfessorViewModel> professors = new ArrayList<>();
+    public List<ProfessorViewModel> professors;
     public Discipline discipline;
 
     @Bindable

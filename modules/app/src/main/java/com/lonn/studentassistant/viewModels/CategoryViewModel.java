@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
 
-public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T>> extends BaseObservable {
+public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> extends BaseObservable {
     private EntityViewType viewType = FULL;
     private boolean showHeader = true;
     private boolean showEmpty = true;
@@ -27,14 +27,14 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
     private String entityName = "entityViewModel";
     private Comparator<EntityView> entitiesComparator;
 
-    private List<CategoryViewModel<T, U>> childCategories = new ArrayList<>();
-    private Map<String, U> childEntities = new HashMap<>();
-    private Predicate<U> shouldContain = e -> true;
+    private List<CategoryViewModel<T>> childCategories = new ArrayList<>();
+    private Map<String, T> childEntities = new HashMap<>();
+    private Predicate<T> shouldContain = e -> true;
 
     public CategoryViewModel() {
     }
 
-    public CategoryViewModel<T, U> addSubcategories(List<CategoryViewModel<T, U>> categoryViewModels) {
+    public CategoryViewModel<T> addSubcategories(List<CategoryViewModel<T>> categoryViewModels) {
         childCategories.addAll(categoryViewModels);
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -45,42 +45,42 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return entitiesComparator;
     }
 
-    public CategoryViewModel<T, U> setEntitiesComparator(Comparator<EntityView> entitiesComparator) {
+    public CategoryViewModel<T> setEntitiesComparator(Comparator<EntityView> entitiesComparator) {
         this.entitiesComparator = entitiesComparator;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
 
     @Bindable
-    public Predicate<U> getShouldContain() {
+    public Predicate<T> getShouldContain() {
         return shouldContain;
     }
 
-    public CategoryViewModel<T, U> setShouldContain(Predicate<U> shouldContain) {
+    public CategoryViewModel<T> setShouldContain(Predicate<T> shouldContain) {
         this.shouldContain = shouldContain;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
 
-    public CategoryViewModel<T, U> addEntity(U entity) {
+    public CategoryViewModel<T> addEntity(T entity) {
         this.childEntities.put(entity.getKey(), entity);
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
 
     @Bindable
-    public List<CategoryViewModel<T, U>> getChildCategories() {
+    public List<CategoryViewModel<T>> getChildCategories() {
         return childCategories;
     }
 
-    public CategoryViewModel<T, U> setChildCategories(List<CategoryViewModel<T, U>> childCategories) {
+    public CategoryViewModel<T> setChildCategories(List<CategoryViewModel<T>> childCategories) {
         this.childCategories = childCategories;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
     }
 
     @Bindable
-    public Map<String, U> getChildEntities() {
+    public Map<String, T> getChildEntities() {
         return childEntities;
     }
 
@@ -89,7 +89,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return viewType;
     }
 
-    public CategoryViewModel<T, U> setViewType(EntityViewType viewType) {
+    public CategoryViewModel<T> setViewType(EntityViewType viewType) {
         this.viewType = viewType;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -100,7 +100,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return showHeader;
     }
 
-    public CategoryViewModel<T, U> setShowHeader(boolean showHeader) {
+    public CategoryViewModel<T> setShowHeader(boolean showHeader) {
         this.showHeader = showHeader;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -111,7 +111,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return showEmpty;
     }
 
-    public CategoryViewModel<T, U> setShowEmpty(boolean showEmpty) {
+    public CategoryViewModel<T> setShowEmpty(boolean showEmpty) {
         this.showEmpty = showEmpty;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -127,7 +127,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return permissionLevel;
     }
 
-    public CategoryViewModel<T, U> setPermissionLevel(int permissionLevel) {
+    public CategoryViewModel<T> setPermissionLevel(int permissionLevel) {
         this.permissionLevel = permissionLevel;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -138,7 +138,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return categoryTitle;
     }
 
-    public CategoryViewModel<T, U> setCategoryTitle(String categoryTitle) {
+    public CategoryViewModel<T> setCategoryTitle(String categoryTitle) {
         this.categoryTitle = categoryTitle;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
@@ -149,7 +149,7 @@ public class CategoryViewModel<T extends BaseEntity, U extends EntityViewModel<T
         return entityName;
     }
 
-    public CategoryViewModel<T, U> setEntityName(String entityName) {
+    public CategoryViewModel<T> setEntityName(String entityName) {
         this.entityName = entityName;
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
