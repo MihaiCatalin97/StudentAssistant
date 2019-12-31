@@ -84,7 +84,7 @@ public class DatabasePopulator {
 			try {
 				ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
 
-				saveParsedEntities(parseResult.getCourses(), "courses");
+				saveParsedEntities(parseResult.getCourses(), "optionalCourses");
 				saveParsedEntities(parseResult.getProfessors(), "professors");
 				saveParsedEntities(parseResult.getOtherActivities(), "other activities");
 				saveParsedEntities(parseResult.getOneTimeClasses(), "one time scheduleClasses");

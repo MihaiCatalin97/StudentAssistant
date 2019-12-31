@@ -1,14 +1,13 @@
 package com.lonn.studentassistant.databinding;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class CategoryGenerator {
         return subcategories;
     }
 
-    public static <T extends EntityViewModel<? extends ScheduleClass>> List<CategoryViewModel<T>> scheduleCategories(CategoryViewModel<T> parentCategory) {
+    public static <T extends RecurringClassViewModel> List<CategoryViewModel<T>> scheduleCategories(CategoryViewModel<T> parentCategory) {
         List<CategoryViewModel<T>> subcategories = new ArrayList<>();
 
         for (WeekDay weekDay : WeekDay.values()) {
@@ -67,8 +66,7 @@ public class CategoryGenerator {
                     .setPermissionLevel(parentCategory.getPermissionLevel())
                     .setShowEmpty(parentCategory.isShowEmpty())
                     .setShowHeader(true)
-                    .setShouldContain((scheduleClass) -> scheduleClass instanceof ScheduleClassViewModel &&
-                            ((ScheduleClassViewModel) scheduleClass).day == weekDay.getDayInt()));
+                    .setShouldContain((scheduleClass) -> scheduleClass.day == weekDay.getDayInt()));
         }
 
         return subcategories;

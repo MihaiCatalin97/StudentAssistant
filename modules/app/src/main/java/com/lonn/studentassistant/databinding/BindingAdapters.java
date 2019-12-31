@@ -11,7 +11,7 @@ import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 

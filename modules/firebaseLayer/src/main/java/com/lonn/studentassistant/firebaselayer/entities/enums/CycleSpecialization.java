@@ -39,4 +39,19 @@ public enum CycleSpecialization {
     public Cycle getCycle() {
         return cycle;
     }
+
+    public String getInitials() {
+        if (cycle.equals(MASTER)) {
+            StringBuilder result = new StringBuilder(5);
+            result.append("M");
+
+            for (String specializationWord : specialization.toString().split(" ")) {
+                result.append(specializationWord.toUpperCase().charAt(0));
+            }
+            return result.toString();
+        }
+        else {
+            return "I";
+        }
+    }
 }

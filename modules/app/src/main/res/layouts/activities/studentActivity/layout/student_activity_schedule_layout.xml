@@ -4,6 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.implementations.StudentActivity">
 
+    <data>
+
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+
+        <variable
+            name="oneTimeClasses"
+            type="java.util.List&lt;OneTimeClassViewModel&gt;" />
+
+        <variable
+            name="recurringClasses"
+            type="java.util.List&lt;RecurringClassViewModel&gt;" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -31,11 +50,20 @@
                 android:orientation="vertical">
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/scheduleBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Schedule`}"
-                    android:showHeader="@{false}" />
+                    android:categoryTitle="@{`Recurring classes`}"
+                    android:childEntities="@{recurringClasses}"
+                    android:showHeader="@{true}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`One time classes`}"
+                    android:childEntities="@{oneTimeClasses}"
+                    android:showHeader="@{true}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
 
             </LinearLayout>
         </ScrollView>

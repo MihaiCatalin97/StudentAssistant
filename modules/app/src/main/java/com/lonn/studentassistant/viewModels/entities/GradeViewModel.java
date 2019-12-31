@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.viewModels.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
 import lombok.Builder;
 import lombok.Data;

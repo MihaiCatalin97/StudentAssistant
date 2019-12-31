@@ -4,6 +4,7 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.viewModels.entities.abstractions.DisciplineViewModel;
 
 import lombok.Builder;
 import lombok.Data;

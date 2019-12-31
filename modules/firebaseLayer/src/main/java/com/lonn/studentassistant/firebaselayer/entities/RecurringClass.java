@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
+import androidx.annotation.NonNull;
+
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 
 import lombok.Data;
@@ -11,4 +13,10 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 public class RecurringClass extends ScheduleClass {
     private int day;
+
+    @Override
+    @NonNull
+    public String toString() {
+        return getDay() + " " + getStartHour() + " " + getEndHour() + " " + getRooms().get(0);
+    }
 }

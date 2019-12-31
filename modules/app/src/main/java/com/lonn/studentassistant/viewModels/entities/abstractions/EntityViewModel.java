@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.viewModels.entities;
+package com.lonn.studentassistant.viewModels.entities.abstractions;
 
 import androidx.databinding.BaseObservable;
 

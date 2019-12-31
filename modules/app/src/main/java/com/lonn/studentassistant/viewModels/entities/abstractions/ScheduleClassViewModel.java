@@ -1,31 +1,32 @@
-package com.lonn.studentassistant.viewModels.entities;
+package com.lonn.studentassistant.viewModels.entities.abstractions;
 
 import android.view.View;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
+import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Builder
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass> {
-    public int day, startHour, endHour;
+@NoArgsConstructor
+public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends EntityViewModel<T> {
+    public int startHour, endHour;
     public List<String> rooms;
     public List<ProfessorViewModel> professors;
     public Discipline discipline;
 
+    @Bindable
+    public String disciplineName = "";
     @Bindable
     public String type, parity;
     @Bindable
@@ -59,19 +60,6 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass> {
     }
 
     @Bindable
-    public String getDay() {
-        return Utils.dayToString(day);
-    }
-
-    @Bindable
-    public String getDisciplineName() {
-        if (discipline == null) {
-            return "";
-        }
-        return discipline.getDisciplineName();
-    }
-
-    @Bindable
     public String getHours() {
         return getStartHour() + "\n" + getEndHour();
     }
@@ -89,6 +77,11 @@ public class ScheduleClassViewModel extends EntityViewModel<ScheduleClass> {
         }
 
         return result;
+    }
+
+    public void setDiscipline(Discipline discipline) {
+        this.discipline = discipline;
+        this.disciplineName = discipline.getDisciplineName();
     }
 
     @Bindable

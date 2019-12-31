@@ -13,7 +13,8 @@ public abstract class DisciplineParsingService<T extends Discipline> extends Par
     @Override
     protected Future<List<T>> parse() {
         return newSingleThreadExecutor().submit(() -> {
-            repository.addAll(parseSinglePage(COURSES_PAGE));
+            List<T> parseResult = parseSinglePage(COURSES_PAGE);
+            repository.addAll(parseResult);
             return repository.getAll();
         });
     }

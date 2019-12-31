@@ -12,13 +12,9 @@ import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.RecurringClassField;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
-import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 import java.util.List;
 
@@ -28,8 +24,6 @@ import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where
 import static com.lonn.studentassistant.firebaselayer.predicates.fields.ProfessorField.ID;
 
 public class CourseEntityActivity extends FirebaseConnectedActivity {
-    public ScrollViewCategory<ProfessorViewModel> professorBaseCategory;
-    public ScrollViewCategory<ScheduleClassViewModel> scheduleBaseCategory;
     private CourseViewModel courseViewModel;
     private CourseEntityActivityLayoutBinding binding;
     private boolean loadedProfessors = false;

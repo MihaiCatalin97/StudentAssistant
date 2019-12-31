@@ -8,21 +8,16 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.adapters.ProfessorAdapter;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 public class ProfessorEntityActivity extends FirebaseConnectedActivity {
     public ScrollViewCategory<CourseViewModel> courseBaseCategory;
     public ScrollViewCategory<OtherActivityViewModel> otherActivityBaseCategory;
-    public ScrollViewCategory<ScheduleClassViewModel> scheduleClassBaseCategory;
     private ProfessorEntityActivityLayoutBinding binding;
     private ProfessorViewModel viewModel;
     private boolean editPrivilege;
@@ -52,6 +47,5 @@ public class ProfessorEntityActivity extends FirebaseConnectedActivity {
 
         courseBaseCategory = findViewById(R.id.coursesBaseCategory);
         otherActivityBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
-        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
     }
 }

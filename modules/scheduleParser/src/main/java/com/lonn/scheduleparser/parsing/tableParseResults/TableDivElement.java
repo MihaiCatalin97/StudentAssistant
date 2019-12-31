@@ -21,8 +21,8 @@ public class TableDivElement {
 			StringBuilder anchorBuilder = new StringBuilder();
 
 			for (int anchorIndex = 0; anchorIndex < anchorsInsideDiv.size(); anchorIndex++) {
-				textBuilder.append(anchorsInsideDiv.text());
-				anchorBuilder.append(anchorsInsideDiv.attr("abs:href"));
+				textBuilder.append(anchorsInsideDiv.get(anchorIndex).text());
+				anchorBuilder.append(anchorsInsideDiv.get(anchorIndex).attr("abs:href"));
 
 				if (anchorIndex + 1 < anchorsInsideDiv.size()) {
 					textBuilder.append(", ");

@@ -2,7 +2,6 @@ package com.lonn.studentassistant.activities.implementations;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ScrollView;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -11,46 +10,38 @@ import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.viewModels.adapters.CourseAdapter;
+import com.lonn.studentassistant.viewModels.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.viewModels.adapters.ProfessorAdapter;
-import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
-import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
+import com.lonn.studentassistant.viewModels.adapters.RecurringClassAdapter;
+import com.lonn.studentassistant.viewModels.adapters.StudentAdapter;
+import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
 import com.lonn.studentassistant.viewModels.entities.StudentViewModel;
-import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static android.view.View.VISIBLE;
+import static com.lonn.studentassistant.BR.courses;
+import static com.lonn.studentassistant.BR.professors;
+import static com.lonn.studentassistant.BR.recurringClasses;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
 
 public class StudentActivity extends NavBarActivity {
-    public ScrollViewCategory<CourseViewModel> coursesBaseCategory;
-    public ScrollViewCategory<ProfessorViewModel> professorsBaseCategory;
-    public ScrollViewCategory<OtherActivityViewModel> otherActivitiesBaseCategory;
-    public ScrollViewCategory<ScheduleClassViewModel> scheduleClassBaseCategory;
-    public ScrollViewCategory<CourseViewModel> coursesProfileCategory;
-    public ScrollViewCategory<OtherActivityViewModel> otherActivitiesProfileCategory;
     private StudentViewModel studentViewModel;
     private StudentActivityMainLayoutBinding binding;
 
     private CourseAdapter courseAdapter = new CourseAdapter(this);
     private ProfessorAdapter professorAdapter = new ProfessorAdapter(this);
-
-    public void updateEntity(Student student) {
-        if (studentViewModel == null) {
-            studentViewModel = new StudentViewModel(student);
-            binding.setStudent(studentViewModel);
-        }
-        else {
-            studentViewModel.update(student);
-        }
-    }
+    private RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this);
+    private OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this);
 
     @Override
     public void onBackPressed() {
@@ -68,24 +59,43 @@ public class StudentActivity extends NavBarActivity {
 
         firebaseConnection.execute(new GetRequest<Course>()
                 .databaseTable(COURSES)
-                .onSuccess(courses -> {
-                    binding.setCourses(courseAdapter.adapt(courses));
-                    binding.notifyPropertyChanged(com.lonn.studentassistant.BR.courses);
+                .onSuccess(receivedCourses -> {
+                    binding.setCourses(courseAdapter.adapt(receivedCourses));
+                    binding.notifyPropertyChanged(courses);
                 })
                 .onError(error -> {
-                    Log.e("Loading courses", error.getMessage());
-                    showSnackBar("An error occurred while loading the courses.");
+                    Log.e("Loading optionalCourses", error.getMessage());
+                    showSnackBar("An error occurred while loading the optionalCourses.");
                 }));
 
         firebaseConnection.execute(new GetRequest<Professor>()
                 .databaseTable(PROFESSORS)
-                .onSuccess(professors -> {
-                    binding.setProfessors(professorAdapter.adapt(professors));
-                    binding.notifyPropertyChanged(com.lonn.studentassistant.BR.professors);
+                .onSuccess(receivedProfessors -> {
+                    binding.setProfessors(professorAdapter.adapt(receivedProfessors));
+                    binding.notifyPropertyChanged(professors);
                 })
                 .onError(error -> {
                     Log.e("Loading professors", error.getMessage());
                     showSnackBar("An error occurred while loading the professors.");
+                }));
+
+        firebaseConnection.execute(new GetRequest<RecurringClass>()
+                .databaseTable(RECURRING_CLASSES)
+                .onSuccess(receivedRecurringClasses -> {
+                    List<RecurringClassViewModel> recurringClassViewModels = new LinkedList<>();
+
+                    for (RecurringClass recurringClass : receivedRecurringClasses) {
+                        if (isPersonalScheduleClass(recurringClass, studentViewModel)) {
+                            recurringClassViewModels.add(recurringClassAdapter.adapt(recurringClass));
+                        }
+                    }
+
+                    binding.setRecurringClasses(recurringClassViewModels);
+                    binding.notifyPropertyChanged(recurringClasses);
+                })
+                .onError(error -> {
+                    Log.e("Loading R. classes", error.getMessage());
+                    showSnackBar("An error occurred while loading the recurring classes.");
                 }));
     }
 
@@ -136,13 +146,25 @@ public class StudentActivity extends NavBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        coursesBaseCategory = findViewById(R.id.coursesBaseCategory);
-        professorsBaseCategory = findViewById(R.id.professorsBaseCategory);
-        otherActivitiesBaseCategory = findViewById(R.id.otherActivitiesBaseCategory);
-        scheduleClassBaseCategory = findViewById(R.id.scheduleBaseCategory);
+        if (getIntent().getExtras() != null) {
+            Student student = (Student) getIntent().getExtras().get("student");
 
-        ScrollView profilePage = findViewById(R.id.layoutProfile);
-        coursesProfileCategory = profilePage.findViewById(R.id.coursesProfileCategory);
-        otherActivitiesProfileCategory = profilePage.findViewById(R.id.otherActivitiesProfileCategory);
+            if (student != null) {
+                studentViewModel = new StudentAdapter(this).adaptOne(student);
+            }
+        }
+    }
+
+    private boolean isPersonalScheduleClass(ScheduleClass scheduleClass,
+                                            StudentViewModel studentViewModel) {
+        String year = studentViewModel.getCycleSpecialization()
+                .getInitials() + studentViewModel.getYear();
+
+        String semiYear = year + studentViewModel.getGroup().charAt(0);
+        String group = year + studentViewModel.getGroup();
+
+        return scheduleClass.getGroups().contains(year) ||
+                scheduleClass.getGroups().contains(semiYear) ||
+                scheduleClass.getGroups().contains(group);
     }
 }

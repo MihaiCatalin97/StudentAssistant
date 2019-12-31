@@ -4,10 +4,9 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Builder;

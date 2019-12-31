@@ -12,7 +12,7 @@ import com.lonn.studentassistant.animations.ExpandAnimation;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.viewModels.entities;
+package com.lonn.studentassistant.viewModels.entities.abstractions;
 
 import android.view.View;
 
@@ -6,6 +6,7 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

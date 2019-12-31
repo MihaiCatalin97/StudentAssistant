@@ -7,7 +7,7 @@ import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.implementations.EntityView;
 

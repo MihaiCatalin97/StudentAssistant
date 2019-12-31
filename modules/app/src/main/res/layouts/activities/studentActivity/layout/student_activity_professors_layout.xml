@@ -8,7 +8,7 @@
 
         <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.EntityViewModel" />
+        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
 

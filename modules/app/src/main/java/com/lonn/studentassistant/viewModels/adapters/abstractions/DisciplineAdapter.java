@@ -6,9 +6,10 @@ import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.viewModels.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.viewModels.adapters.ProfessorAdapter;
-import com.lonn.studentassistant.viewModels.adapters.ScheduleClassAdapter;
-import com.lonn.studentassistant.viewModels.entities.DisciplineViewModel;
+import com.lonn.studentassistant.viewModels.adapters.RecurringClassAdapter;
+import com.lonn.studentassistant.viewModels.entities.abstractions.DisciplineViewModel;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,8 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
 
     protected U resolveLinks(U disciplineViewModel, T discipline) {
         ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
-        ScheduleClassAdapter scheduleClassAdapter = new ScheduleClassAdapter(this.firebaseConnectedActivity);
+        RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this.firebaseConnectedActivity);
+        OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this.firebaseConnectedActivity);
 
         for (String professorId : discipline.getProfessors()) {
             firebaseConnectedActivity.getFirebaseConnection()
@@ -61,7 +63,7 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                             .predicate(where(ID)
                                     .equalTo(scheduleClassId))
                             .onSuccess(recurringClasses -> {
-                                disciplineViewModel.scheduleClasses.addAll(scheduleClassAdapter.adapt(recurringClasses, false));
+                                disciplineViewModel.scheduleClasses.addAll(recurringClassAdapter.adapt(recurringClasses, false));
                                 disciplineViewModel.notifyPropertyChanged(_all);
                             })
                             .subscribe(false));
@@ -74,7 +76,7 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                             .predicate(where(ID)
                                     .equalTo(scheduleClassId))
                             .onSuccess(oneTimeClasses -> {
-                                disciplineViewModel.scheduleClasses.addAll(scheduleClassAdapter.adapt(oneTimeClasses, false));
+                                disciplineViewModel.scheduleClasses.addAll(oneTimeClassAdapter.adapt(oneTimeClasses, false));
                                 disciplineViewModel.notifyPropertyChanged(_all);
                             })
                             .subscribe(false));

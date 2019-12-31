@@ -3,15 +3,7 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
-
-        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
-
-        <import type="com.lonn.studentassistant.viewModels.entities.EntityViewModel" />
-
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
-
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
 
         <variable
             name="user"
@@ -21,13 +13,29 @@
             name="student"
             type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
 
+        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+
         <variable
             name="courses"
             type="java.util.List&lt;CourseViewModel&gt;" />
 
+        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+
         <variable
             name="professors"
             type="java.util.List&lt;ProfessorViewModel&gt;" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+
+        <variable
+            name="oneTimeClasses"
+            type="java.util.List&lt;OneTimeClassViewModel&gt;" />
+
+        <variable
+            name="recurringClasses"
+            type="java.util.List&lt;RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -64,7 +72,9 @@
                 android:id="@+id/layoutMain"
                 layout="@layout/student_activity_content_layout"
                 app:courses="@{courses}"
+                app:oneTimeClasses="@{oneTimeClasses}"
                 app:professors="@{professors}"
+                app:recurringClasses="@{recurringClasses}"
                 app:student="@{student}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -7,13 +7,22 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.register.accountChoice.AccountChoiceActivity;
-import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.firebaselayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.entities.User;
+import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.LoginRequest;
 
 import java.util.Map;
+
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.USERS;
+import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
+import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
 
 public class LoginActivity extends FirebaseConnectedActivity {
     private EditText emailEditText;
@@ -115,7 +124,7 @@ public class LoginActivity extends FirebaseConnectedActivity {
                 clearLoginFields();
             }
 
-            startActivity(new Intent(this, StudentActivity.class));
+            startNextActivity(email);
         }, 750);
 
         if (rememberCredentials) {
@@ -140,5 +149,30 @@ public class LoginActivity extends FirebaseConnectedActivity {
         emailEditText.setEnabled(true);
         passwordEditText.setEnabled(true);
         credentialsRememberCheckBox.setEnabled(true);
+    }
+
+    private void startNextActivity(String userEmail) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        firebaseConnection.execute(new GetRequest<User>()
+                .databaseTable(USERS)
+                .predicate(where(ID).equalTo(uid))
+                .onSuccess(users -> {
+                    User user = users.get(0);
+                    if (user != null) {
+                        firebaseConnection.execute(new GetRequest<Student>()
+                                .databaseTable(STUDENTS)
+                                .predicate(where(ID).equalTo(user.getPersonUUID()))
+                                .onSuccess(students -> {
+                                    Student student = students.get(0);
+                                    if (student != null) {
+                                        Intent studentActivityIntent = new Intent(this, StudentActivity.class);
+                                        studentActivityIntent.putExtra("student", student);
+
+                                        startActivity(studentActivityIntent);
+                                    }
+                                }));
+                    }
+                }));
     }
 }

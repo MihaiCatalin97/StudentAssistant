@@ -2,7 +2,7 @@ package com.lonn.studentassistant.viewModels.adapters.abstractions;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

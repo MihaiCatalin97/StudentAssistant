@@ -5,10 +5,10 @@ import com.lonn.studentassistant.activities.implementations.CourseEntityActivity
 import com.lonn.studentassistant.activities.implementations.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.ProfessorEntityActivity;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
-import com.lonn.studentassistant.viewModels.entities.ScheduleClassViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
@@ -129,7 +129,7 @@ public class ScrollViewEntityViewModelFactory {
         String field3 = scheduleClass.getFormattedType();
         String field4 = scheduleClass.getRooms();
 
-        return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
+        return new ScrollViewEntityViewModel(null, field1, field2, field3, field4, null);
     }
 
     private static ScrollViewEntityViewModel full(ScheduleClassViewModel scheduleClass) {
@@ -138,6 +138,6 @@ public class ScrollViewEntityViewModelFactory {
         String field3 = scheduleClass.getFormattedType();
         String field4 = scheduleClass.getRooms();
 
-        return new ScrollViewEntityViewModel(field1, field2, field3, field4, null);
+        return new ScrollViewEntityViewModel(null, field1, field2, field3, field4, null);
     }
 }

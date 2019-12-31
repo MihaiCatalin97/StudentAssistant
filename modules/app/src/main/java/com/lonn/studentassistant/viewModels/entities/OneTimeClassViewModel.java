@@ -2,8 +2,10 @@ package com.lonn.studentassistant.viewModels.entities;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
-import com.lonn.studentassistant.viewModels.entities.abstractions.DisciplineViewModel;
+import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
+
+import java.util.Date;
 
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +16,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class OtherActivityViewModel extends DisciplineViewModel<OtherActivity> {
+public class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeClass> {
     @Bindable
-    public String type;
+    public Date date;
 }

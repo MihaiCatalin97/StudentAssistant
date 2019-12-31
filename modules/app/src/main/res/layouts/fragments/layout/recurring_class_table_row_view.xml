@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="entityViewModel"
-            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
+            name="recurringClass"
+            type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
     </data>
 
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
@@ -27,7 +27,7 @@
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
-            android:text="@{entityViewModel.field1}"
+            android:text="@{recurringClass.hours}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -39,9 +39,9 @@
             android:layout_height="match_parent"
             android:layout_weight="0.56"
             android:gravity="center"
-            android:maxLines="@{entityViewModel.field2LineCount}"
+            android:maxLines="@{2}"
             android:padding="2dp"
-            android:text="@{entityViewModel.field2}"
+            android:text="@{recurringClass.disciplineName}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -53,9 +53,9 @@
             android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:gravity="center"
-            android:lines="@{entityViewModel.field3LineCount}"
+            android:lines="@{recurringClass.typeNumberOfLines}"
             android:padding="2dp"
-            android:text="@{entityViewModel.field3}"
+            android:text="@{recurringClass.formattedType}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -67,9 +67,9 @@
             android:layout_height="match_parent"
             android:layout_weight="0.12"
             android:gravity="center"
-            android:lines="@{entityViewModel.field4LineCount}"
+            android:lines="@{recurringClass.numberOfRooms}"
             android:padding="2dp"
-            android:text="@{entityViewModel.field4}"
+            android:text="@{recurringClass.rooms}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -80,7 +80,6 @@
             android:layout_height="30dp"
             android:layout_marginBottom="4dp"
             android:scaleType="fitCenter"
-            android:visibility="@{entityViewModel.permissionLevel > 2? View.VISIBLE:View.GONE}"
             app:srcCompat="@drawable/ic_close" />
     </TableRow>
 </layout>

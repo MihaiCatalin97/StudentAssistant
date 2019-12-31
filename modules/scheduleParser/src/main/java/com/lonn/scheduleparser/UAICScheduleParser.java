@@ -31,6 +31,7 @@ public class UAICScheduleParser {
 			courseParsingService.deleteAll();
 			otherActivityParsingService.deleteAll();
 			recurringClassParsingService.deleteAll();
+			oneTimeClassParsingService.deleteAll();
 
 			ParseResult parseResult = new ParseResult();
 
