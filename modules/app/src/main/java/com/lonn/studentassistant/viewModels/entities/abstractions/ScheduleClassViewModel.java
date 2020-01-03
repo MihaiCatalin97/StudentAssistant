@@ -4,16 +4,20 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
+import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 
 import java.util.List;
+import java.util.StringJoiner;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+
+import static com.lonn.studentassistant.Utils.hourToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -39,24 +43,12 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 
     @Bindable
     public String getStartHour() {
-        String minuteString = Integer.toString(startHour % 100);
-
-        if (minuteString.length() == 1) {
-            minuteString = "0" + minuteString;
-        }
-
-        return startHour / 100 + ":" + minuteString;
+        return hourToString(startHour);
     }
 
     @Bindable
     public String getEndHour() {
-        String minuteString = Integer.toString(endHour % 100);
-
-        if (minuteString.length() == 1) {
-            minuteString = "0" + minuteString;
-        }
-
-        return endHour / 100 + ":" + minuteString;
+        return hourToString(endHour);
     }
 
     @Bindable

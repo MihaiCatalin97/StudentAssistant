@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,12 +9,15 @@
         <import type="com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity" />
 
         <variable
+            name="isTable"
+            type="Boolean" />
+
+        <variable
             name="categoryModel"
             type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
     </data>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <RelativeLayout
         android:id="@+id/layoutCategoryMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -59,9 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layoutCategoryHeader"
-            android:layout_marginLeft="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
-            android:layout_marginTop="@{categoryModel.showHeader? @dimen/dim_8dp : @dimen/dim_0dp}"
-            android:layout_marginRight="@{categoryModel.showHeader? @dimen/dim_10dp : @dimen/dim_0dp}"
+            android:layout_marginStart="@{categoryModel.showHeader &amp;&amp; !isTable? @dimen/dim_10dp : @dimen/dim_0dp}"
+            android:layout_marginTop="@{categoryModel.showHeader &amp;&amp; !isTable? @dimen/dim_8dp : @dimen/dim_0dp}"
+            android:layout_marginEnd="@{categoryModel.showHeader &amp;&amp; !isTable?  @dimen/dim_10dp : @dimen/dim_0dp}"
             android:orientation="vertical"
             android:visibility="@{categoryModel.showHeader? View.GONE : View.VISIBLE}">
 
@@ -70,8 +74,8 @@
                 layout="@layout/category_add_entity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory)? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}" />
         </com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryContent>

@@ -87,13 +87,6 @@ public class Utils {
         return "Unknown semester";
     }
 
-    static String getTagValue(String tag) {
-        if (tag.split(">").length > 1) {
-            return tag.split(">")[1].split("<")[0].trim();
-        }
-        return tag.split(">")[0].split("<")[0].trim();
-    }
-
     public static int getId(String resourceName, Class<?> c) {
         try {
             Field idField = c.getDeclaredField(resourceName);
@@ -174,5 +167,25 @@ public class Utils {
         }
 
         view.setPadding(0, 0, 0, 0);
+    }
+
+    public static String hourToString(int hour) {
+        String minuteString = Integer.toString(hour % 100);
+        String hourString = Integer.toString(hour / 100);
+
+        minuteString = padLeftWithZeros(minuteString);
+        hourString = padLeftWithZeros(hourString);
+
+        return hourString + ":" + minuteString;
+    }
+
+    private static String padLeftWithZeros(String stringToPad) {
+        if (stringToPad.length() == 0) {
+            return "00";
+        }
+        else if (stringToPad.length() == 1) {
+            return "0" + stringToPad;
+        }
+        return stringToPad;
     }
 }

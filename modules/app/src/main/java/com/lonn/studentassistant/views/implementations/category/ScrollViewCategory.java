@@ -3,7 +3,6 @@ package com.lonn.studentassistant.views.implementations.category;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.animation.RotateAnimation;
 
 import androidx.databinding.DataBindingUtil;
@@ -31,6 +30,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
     private CategoryViewModel<T> viewModel = new CategoryViewModel<>();
     private ScrollViewCategoryHeader header;
     private ScrollViewCategoryContent<T> content;
+    private CategoryLayoutBinding binding;
 
     public ScrollViewCategory(Context context) {
         super(context);
@@ -48,14 +48,36 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
         init(context);
     }
 
+    public CategoryLayoutBinding getBinding() {
+        return binding;
+    }
+
+    public void setIsTable(Boolean isTable) {
+        if (this.viewModel.isEndCategory()) {
+            if (isTable == null) {
+                isTable = false;
+            }
+
+            binding.setIsTable(isTable);
+        }
+        else {
+            binding.setIsTable(false);
+
+            for (ScrollViewCategory category : content.subcategoryViews.values()) {
+                category.setIsTable(isTable);
+            }
+        }
+    }
+
     public CategoryViewModel<T> getViewModel() {
         return viewModel;
     }
 
-    public void addChildCategories(List<CategoryViewModel<T>> categories) {
+    public void addChildCategories(Collection<CategoryViewModel<T>> categories) {
         getViewModel().addSubcategories(categories);
 
         addCategoriesToContent(categories);
+        setIsTable(binding.getIsTable());
 
         hideIfEmpty();
     }
@@ -63,6 +85,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
     public void addEntities(List<T> entities) {
         for (T entity : entities) {
             addOrUpdateEntity(entity);
+        }
+
+        for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+            subcategory.addEntities(entities);
         }
 
         hideIfEmpty();
@@ -93,7 +119,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
         LayoutInflater layoutInflater = (LayoutInflater)
                 context.getSystemService(LAYOUT_INFLATER_SERVICE);
         if (layoutInflater != null) {
-            CategoryLayoutBinding binding = DataBindingUtil.inflate(
+            binding = DataBindingUtil.inflate(
                     layoutInflater,
                     category_layout,
                     this,
@@ -108,7 +134,17 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
         initContent();
     }
 
-    private void addCategoriesToContent(List<CategoryViewModel<T>> categories) {
+    protected int getNumberOfChildren() {
+        int result = getViewModel().getChildEntities().values().size();
+
+        for (ScrollViewCategory<T> category : getContent().subcategoryViews.values()) {
+            result += category.getNumberOfChildren();
+        }
+
+        return result;
+    }
+
+    private void addCategoriesToContent(Collection<CategoryViewModel<T>> categories) {
         for (CategoryViewModel<T> category : categories) {
             ScrollViewCategory<T> scrollViewCategory = new ScrollViewCategory<>(getContext(),
                     category);
@@ -128,19 +164,16 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
                         viewModel.getViewType(),
                         viewModel.getPermissionLevel());
             }
-            else {
-                for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
-                    subcategory.addOrUpdateEntity(entity);
-                }
-            }
         }
     }
 
     private void hideIfEmpty() {
-        if (viewModel.getChildCategories().size() == 0 &&
-                viewModel.getChildEntities().size() == 0 &&
+        if (getNumberOfChildren() == 0 &&
                 !viewModel.isShowEmpty()) {
-            setVisibility(View.GONE);
+            setVisibility(GONE);
+        }
+        else if (getNumberOfChildren() != 0) {
+            setVisibility(VISIBLE);
         }
     }
 

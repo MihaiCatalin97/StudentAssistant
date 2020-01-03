@@ -20,38 +20,23 @@ import java.util.List;
 import static com.lonn.studentassistant.views.EntityViewType.valueOf;
 
 public class BindingAdapters {
-    @BindingAdapter("android:layout_marginBottom")
-    public static void setLayoutMarginBottom(View view, float margin) {
-        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            layoutParams.bottomMargin = (int) margin;
-            view.setLayoutParams(layoutParams);
-        }
-    }
+    @BindingAdapter(value = {"android:layout_marginEnd", "android:layout_marginStart",
+            "android:layout_marginLeft", "android:layout_marginRight",
+            "android:layout_marginTop",
+            "android:layout_marginBottom"}, requireAll = false)
+    public static void setMargins(View view, float marginEnd, float marginStart,
+                                  float marginLeft, float marginRight,
+                                  float marginTop,
+                                  float marginBottom) {
+        int leftMargin = marginLeft == 0 ? (int) marginStart : (int) marginLeft;
+        int rightMargin = marginRight == 0 ? (int) marginEnd : (int) marginRight;
 
-    @BindingAdapter("android:layout_marginLeft")
-    public static void setLayoutMarginLeft(View view, float margin) {
         if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            layoutParams.leftMargin = (int) margin;
-            view.setLayoutParams(layoutParams);
-        }
-    }
-
-    @BindingAdapter("android:layout_marginTop")
-    public static void setLayoutMarginTop(View view, float margin) {
-        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            layoutParams.topMargin = (int) margin;
-            view.setLayoutParams(layoutParams);
-        }
-    }
-
-    @BindingAdapter("android:layout_marginRight")
-    public static void setLayoutMarginRight(View view, float margin) {
-        if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-            layoutParams.rightMargin = (int) margin;
+            layoutParams.rightMargin = rightMargin;
+            layoutParams.leftMargin = leftMargin;
+            layoutParams.topMargin = (int) marginTop;
+            layoutParams.bottomMargin = (int) marginBottom;
             view.setLayoutParams(layoutParams);
         }
     }
@@ -72,12 +57,23 @@ public class BindingAdapters {
         category.getContent().setEntityViewComparator(comparator);
     }
 
-
     @BindingAdapter("android:childEntities")
     public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntities(ScrollViewCategory<T> category,
                                                                                           List<T> entities) {
         if (entities != null && category != null) {
+            if (category.getViewModel().getGeneratorFunction() != null) {
+                category.addChildCategories(category.getViewModel().getGeneratorFunction()
+                        .apply(category.getViewModel()));
+            }
             category.addEntities(entities);
+        }
+    }
+
+    @BindingAdapter("android:isTable")
+    public static void setIsTable(ScrollViewCategory category,
+                                  Boolean isTable) {
+        if (isTable != null && isTable) {
+            category.setIsTable(isTable);
         }
     }
 
@@ -114,6 +110,12 @@ public class BindingAdapters {
                                                                                                          Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
         categoryView.addChildCategories(subcategoryGeneratorFunction
                 .apply(categoryView.getViewModel()));
+    }
+
+    @BindingAdapter("android:subcategoryDynamicGeneratorFunction")
+    public static <T extends EntityViewModel<? extends BaseEntity>> void setSubcategoryDynamicGeneratorFunction(ScrollViewCategory<T> categoryView,
+                                                                                                                Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
+        categoryView.getViewModel().setGeneratorFunction(subcategoryGeneratorFunction);
     }
 
     @BindingAdapter("android:permissionLevel")

@@ -10,10 +10,9 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.databinding.RecurringClassTableRowViewBinding;
+import com.lonn.studentassistant.databinding.ScheduleTableRowViewBinding;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.GradeViewModel;
-import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
@@ -88,10 +87,10 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
     }
 
     protected int getLayoutId() {
-        if (entityViewModel instanceof RecurringClassViewModel) {
-            return R.layout.recurring_class_table_row_view;
+        if (entityViewModel instanceof ScheduleClassViewModel) {
+            return R.layout.schedule_table_row_view;
         }
-        else if (entityViewModel instanceof ScheduleClassViewModel || entityViewModel instanceof GradeViewModel) {
+        else if (entityViewModel instanceof GradeViewModel) {
             return R.layout.entity_table_row_view;
         }
 
@@ -99,10 +98,10 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
     }
 
     private void setDataBindingVariable(ScrollViewEntityViewModel model) {
-        if (entityViewModel instanceof RecurringClassViewModel) {
-            ((RecurringClassTableRowViewBinding) binding).setRecurringClass((RecurringClassViewModel) entityViewModel);
+        if (entityViewModel instanceof ScheduleClassViewModel) {
+            ((ScheduleTableRowViewBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
         }
-        else if (entityViewModel instanceof ScheduleClassViewModel || entityViewModel instanceof GradeViewModel) {
+        else if (entityViewModel instanceof GradeViewModel) {
             ((EntityTableRowViewBinding) binding).setEntityViewModel(model);
         }
         else {

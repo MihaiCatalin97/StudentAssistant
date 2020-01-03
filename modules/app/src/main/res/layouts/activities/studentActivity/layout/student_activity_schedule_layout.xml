@@ -14,6 +14,8 @@
 
         <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
 
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
         <variable
             name="oneTimeClasses"
             type="java.util.List&lt;OneTimeClassViewModel&gt;" />
@@ -54,16 +56,21 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Recurring classes`}"
                     android:childEntities="@{recurringClasses}"
-                    android:showHeader="@{true}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:showEmpty="@{false}"
+                    android:showHeader="@{false}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
+                    app:isTable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`One time classes`}"
                     android:childEntities="@{oneTimeClasses}"
-                    android:showHeader="@{true}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:showHeader="@{false}"
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses)}"
+                    app:isTable="@{true}" />
 
             </LinearLayout>
         </ScrollView>

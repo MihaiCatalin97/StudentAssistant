@@ -6,13 +6,21 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel;
 import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Collections.sort;
+
 public class CategoryGenerator {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM YYYY (EEEE)");
+
     public static <T extends EntityViewModel<? extends Course>> List<CategoryViewModel<T>> studyCycleCategories(CategoryViewModel<T> parentCategory) {
         List<CategoryViewModel<T>> subcategories = new ArrayList<>();
 
@@ -67,6 +75,34 @@ public class CategoryGenerator {
                     .setShowEmpty(parentCategory.isShowEmpty())
                     .setShowHeader(true)
                     .setShouldContain((scheduleClass) -> scheduleClass.day == weekDay.getDayInt()));
+        }
+
+        return subcategories;
+    }
+
+    public static <T extends OneTimeClassViewModel> List<CategoryViewModel<T>> oneTimeScheduleCategories(CategoryViewModel<T> parentCategory,
+                                                                                                         List<T> scheduleClasses) {
+        List<CategoryViewModel<T>> subcategories = new ArrayList<>();
+        List<Date> categoriesAdded = new LinkedList<>();
+
+
+        if (scheduleClasses != null) {
+            sort(scheduleClasses, (s1, s2) -> s1.date.compareTo(s2.date));
+
+            for (T scheduleClass : scheduleClasses) {
+                if (!categoriesAdded.contains(scheduleClass.date)) {
+                    subcategories.add(new CategoryViewModel<T>()
+                            .setCategoryTitle(simpleDateFormat.format(scheduleClass.date))
+                            .setEntityName(parentCategory.getEntityName())
+                            .setViewType(parentCategory.getViewType())
+                            .setPermissionLevel(parentCategory.getPermissionLevel())
+                            .setShowEmpty(parentCategory.isShowEmpty())
+                            .setShowHeader(true)
+                            .setShouldContain((schClass) -> schClass.date.equals(scheduleClass.date)));
+
+                    categoriesAdded.add(scheduleClass.date);
+                }
+            }
         }
 
         return subcategories;

@@ -6,20 +6,24 @@
         <import type="android.view.View" />
 
         <variable
-            name="recurringClass"
-            type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+            name="scheduleClass"
+            type="com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel" />
     </data>
 
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="50dp"
         android:background="@drawable/table_line"
         android:gravity="center"
+        android:layout_marginTop="-2dp"
         android:weightSum="1">
 
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
         <TextView
-            android:id="@+id/entityField1"
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -27,59 +31,80 @@
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
-            android:text="@{recurringClass.hours}"
+            android:text="@{scheduleClass.hours}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
 
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
         <TextView
-            android:id="@+id/entityField2"
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.56"
             android:gravity="center"
-            android:maxLines="@{2}"
+            android:maxLines="@{3}"
             android:padding="2dp"
-            android:text="@{recurringClass.disciplineName}"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeMinTextSize="6sp"
+            android:text="@{scheduleClass.disciplineName}"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform" />
 
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
         <TextView
-            android:id="@+id/entityField3"
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:gravity="center"
-            android:lines="@{recurringClass.typeNumberOfLines}"
+            android:lines="@{scheduleClass.typeNumberOfLines}"
             android:padding="2dp"
-            android:text="@{recurringClass.formattedType}"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeMinTextSize="6sp"
+            android:text="@{scheduleClass.formattedType}"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="8sp"
             app:autoSizeTextType="uniform" />
 
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
         <TextView
-            android:id="@+id/entityField4"
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.12"
             android:gravity="center"
-            android:lines="@{recurringClass.numberOfRooms}"
+            android:lines="@{scheduleClass.numberOfRooms}"
             android:padding="2dp"
-            android:text="@{recurringClass.rooms}"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeMinTextSize="6sp"
+            android:text="@{scheduleClass.rooms}"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="8sp"
             app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/entityRemoveButton"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_marginBottom="4dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_close" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
     </TableRow>
 </layout>

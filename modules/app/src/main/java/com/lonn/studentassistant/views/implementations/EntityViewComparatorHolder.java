@@ -16,4 +16,8 @@ public class EntityViewComparatorHolder {
 
         return professor1Name.compareTo(professor2Name);
     };
+
+    public static Comparator<EntityView> ASCENDING_FIELD1_COMPARATOR = (entityView1, entityView2) ->
+            entityView1.getModel().field1.compareTo(entityView2.getModel().field2);
+    ;
 }

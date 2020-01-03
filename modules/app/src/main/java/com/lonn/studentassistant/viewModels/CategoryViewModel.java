@@ -6,12 +6,14 @@ import androidx.databinding.Bindable;
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
+import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +28,7 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
     private String categoryTitle = "Category Title";
     private String entityName = "entityViewModel";
     private Comparator<EntityView> entitiesComparator;
+    private Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> generatorFunction;
 
     private List<CategoryViewModel<T>> childCategories = new ArrayList<>();
     private Map<String, T> childEntities = new HashMap<>();
@@ -34,7 +37,15 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
     public CategoryViewModel() {
     }
 
-    public CategoryViewModel<T> addSubcategories(List<CategoryViewModel<T>> categoryViewModels) {
+    public Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> getGeneratorFunction() {
+        return generatorFunction;
+    }
+
+    public void setGeneratorFunction(Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> generatorFunction) {
+        this.generatorFunction = generatorFunction;
+    }
+
+    public CategoryViewModel<T> addSubcategories(Collection<CategoryViewModel<T>> categoryViewModels) {
         childCategories.addAll(categoryViewModels);
         this.notifyPropertyChanged(BR.categoryModel);
         return this;
