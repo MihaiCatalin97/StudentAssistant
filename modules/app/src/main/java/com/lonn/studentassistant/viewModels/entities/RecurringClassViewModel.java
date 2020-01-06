@@ -2,7 +2,7 @@ package com.lonn.studentassistant.viewModels.entities;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
 

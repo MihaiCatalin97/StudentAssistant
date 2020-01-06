@@ -4,20 +4,18 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 
 import java.util.List;
-import java.util.StringJoiner;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import static com.lonn.studentassistant.Utils.hourToString;
+import static com.lonn.studentassistant.utils.Utils.hourToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)

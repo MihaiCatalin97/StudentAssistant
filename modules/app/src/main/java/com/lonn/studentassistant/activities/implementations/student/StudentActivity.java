@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.Student;

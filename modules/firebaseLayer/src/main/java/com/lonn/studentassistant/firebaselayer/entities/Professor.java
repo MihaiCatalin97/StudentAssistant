@@ -13,7 +13,6 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Professor extends HashableEntity {
-    private String professorImage;
     private String scheduleLink;
     private String firstName;
     private String lastName;
@@ -23,6 +22,9 @@ public class Professor extends HashableEntity {
     private String website;
     private String cabinet;
 
+    private String professorImageMetadataKey;
+
+    private List<String> filesMetadata = new LinkedList<>();
     private List<String> courses = new LinkedList<>();
     private List<String> otherActivities = new LinkedList<>();
     private List<String> scheduleClasses = new LinkedList<>();

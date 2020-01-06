@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.viewModels;
 
-import com.lonn.studentassistant.Utils;
+import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.activities.implementations.entityActivities.course.CourseEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.professor.ProfessorEntityActivity;

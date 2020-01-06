@@ -33,7 +33,7 @@ public class ProfessorAdapter extends ViewModelAdapter<Professor, ProfessorViewM
                 .cabinet(professor.getCabinet())
                 .email(professor.getEmail())
                 .phoneNumber(professor.getPhoneNumber())
-                .professorImage(professor.getProfessorImage())
+                .professorImage(professor.getProfessorImageMetadataKey())
                 .rank(professor.getLevel())
                 .website(professor.getWebsite())
                 .courses(new ArrayList<>())

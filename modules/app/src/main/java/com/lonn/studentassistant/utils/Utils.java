@@ -1,4 +1,4 @@
-package com.lonn.studentassistant;
+package com.lonn.studentassistant.utils;
 
 import android.app.Activity;
 import android.graphics.Point;
