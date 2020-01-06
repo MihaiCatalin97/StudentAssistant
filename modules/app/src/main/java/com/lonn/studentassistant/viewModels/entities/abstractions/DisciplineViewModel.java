@@ -6,7 +6,9 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
+import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,8 @@ public abstract class DisciplineViewModel<T extends Discipline> extends EntityVi
 
     public int semester, year;
     public List<ProfessorViewModel> professors = new ArrayList<>();
-    public List<ScheduleClassViewModel> scheduleClasses = new ArrayList<>();
+    public List<RecurringClassViewModel> recurringClasses = new ArrayList<>();
+    public List<OneTimeClassViewModel> oneTimeClasses = new ArrayList<>();
 
     @Bindable
     public String getYearSemester() {

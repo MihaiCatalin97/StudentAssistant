@@ -15,11 +15,11 @@
 
         <variable
             name="courses"
-            type="java.util.List&lt;CourseViewModel&gt;" />
+            type="java.util.Collection&lt;CourseViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.List&lt;ProfessorViewModel&gt;" />
+            type="java.util.Collection&lt;ProfessorViewModel&gt;" />
 
         <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
 
@@ -27,11 +27,18 @@
 
         <variable
             name="oneTimeClasses"
-            type="java.util.List&lt;OneTimeClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.List&lt;RecurringClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
+
+
+        <import type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel" />
+
+        <variable
+            name="otherActivities"
+            type="java.util.Collection&lt;OtherActivityViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -42,7 +49,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/solid_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context=".activities.implementations.StudentActivity"
+        tools:context=".activities.implementations.student.StudentActivity"
         tools:showIn="@layout/student_activity_main_layout">
 
         <include
@@ -111,7 +118,8 @@
             layout="@layout/student_activity_other_activities_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:otherActivities="@{otherActivities}"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

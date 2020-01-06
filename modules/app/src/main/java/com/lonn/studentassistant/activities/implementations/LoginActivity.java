@@ -12,6 +12,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.Utils;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.register.accountChoice.AccountChoiceActivity;
+import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;

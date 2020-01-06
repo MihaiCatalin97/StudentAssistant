@@ -4,7 +4,9 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
+import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
 import java.util.List;
@@ -24,6 +26,9 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
     @Bindable
     public String professorImage;
     public List<CourseViewModel> courses;
+    public List<OtherActivityViewModel> otherActivities;
+    public List<OneTimeClassViewModel> oneTimeClasses;
+    public List<RecurringClassViewModel> recurringClasses;
 
     @Bindable
     public String getFullName() {

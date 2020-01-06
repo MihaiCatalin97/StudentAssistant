@@ -17,13 +17,19 @@
 
         <variable
             name="courses"
-            type="java.util.List&lt;CourseViewModel&gt;" />
+            type="java.util.Collection&lt;CourseViewModel&gt;" />
+
+        <import type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel" />
+
+        <variable
+            name="otherActivities"
+            type="java.util.Collection&lt;OtherActivityViewModel&gt;" />
 
         <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
 
         <variable
             name="professors"
-            type="java.util.List&lt;ProfessorViewModel&gt;" />
+            type="java.util.Collection&lt;ProfessorViewModel&gt;" />
 
         <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
 
@@ -31,11 +37,11 @@
 
         <variable
             name="oneTimeClasses"
-            type="java.util.List&lt;OneTimeClassViewModel&gt;" />
+            type="java.util.Map&lt;String,com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.List&lt;RecurringClassViewModel&gt;" />
+            type="java.util.Map&lt;String,com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,7 +58,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".activities.implementations.StudentActivity">
+            tools:context=".activities.implementations.student.StudentActivity">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
@@ -72,10 +78,11 @@
                 android:id="@+id/layoutMain"
                 layout="@layout/student_activity_content_layout"
                 app:courses="@{courses}"
-                app:oneTimeClasses="@{oneTimeClasses}"
+                app:oneTimeClasses="@{oneTimeClasses.values()}"
                 app:professors="@{professors}"
-                app:recurringClasses="@{recurringClasses}"
-                app:student="@{student}" />
+                app:recurringClasses="@{recurringClasses.values()}"
+                app:student="@{student}"
+                app:otherActivities="@{otherActivities}"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"

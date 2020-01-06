@@ -66,6 +66,7 @@
             android:layout_marginStart="@{categoryModel.showHeader &amp;&amp; !isTable? @dimen/dim_10dp : @dimen/dim_0dp}"
             android:layout_marginTop="@{categoryModel.showHeader &amp;&amp; !isTable? @dimen/dim_8dp : @dimen/dim_0dp}"
             android:layout_marginEnd="@{categoryModel.showHeader &amp;&amp; !isTable?  @dimen/dim_10dp : @dimen/dim_0dp}"
+            android:layout_marginBottom="@{categoryModel.showHeader &amp;&amp; !isTable?  @dimen/dim_10dp : @dimen/dim_0dp}"
             android:orientation="vertical"
             android:visibility="@{categoryModel.showHeader? View.GONE : View.VISIBLE}">
 
@@ -75,7 +76,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory)? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}" />
         </com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryContent>

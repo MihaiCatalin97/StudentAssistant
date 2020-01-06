@@ -1,1 +1,1 @@
-include ':modules:app', ':modules:firebaselayer', ':modules:testingapplication', ':modules:scheduleParser'
+include ':modules:app', ':modules:firebaselayer', ':modules:scheduleParser'

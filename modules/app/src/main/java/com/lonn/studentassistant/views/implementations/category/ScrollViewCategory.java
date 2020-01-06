@@ -82,7 +82,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
         hideIfEmpty();
     }
 
-    public void addEntities(List<T> entities) {
+    public void addEntities(Collection<T> entities) {
         for (T entity : entities) {
             addOrUpdateEntity(entity);
         }

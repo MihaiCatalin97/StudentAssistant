@@ -21,6 +21,8 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
                 .group(student.getGroup())
                 .year(student.getYear())
                 .cycleSpecialization(student.getCycleAndSpecialization())
+                .optionalCourseKeys(student.getOptionalCourses())
+                .otherActivityKeys(student.getOtherActivities())
                 .build()
                 .setKey(student.getKey());
     }

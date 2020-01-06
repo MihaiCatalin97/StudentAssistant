@@ -2,9 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.OtherActivityEntityActivity">
+    tools:context=".activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity">
 
     <data>
+
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
         <variable
             name="otherActivity"
@@ -12,17 +18,15 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/solid_background"
-        android:padding="8dp">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/activityTitle"
             style="@style/DarkTitleShadowed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:gravity="center"
             android:text="@{otherActivity.name}"
             android:textSize="24sp"
@@ -92,14 +96,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
-                    android:viewType="@{`PARTIAL`}" />
+                    android:entityName="@{`professor`}"
+                    android:childEntities="@{otherActivity.professors}"/>
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`Regular schedule`}"
+                    android:childEntities="@{otherActivity.recurringClasses}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:showEmpty="@{false}"
+                    android:showHeader="@{false}"
+                    android:entityName="@{`regular class`}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
+                    app:isTable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/scheduleBaseCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Schedule`}"
-                    android:viewType="@{`PARTIAL`}" />
+                    android:categoryTitle="@{`Special schedule`}"
+                    android:childEntities="@{otherActivity.oneTimeClasses}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:showHeader="@{false}"
+                    android:showEmpty="@{false}"
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, otherActivity.oneTimeClasses)}"
+                    app:isTable="@{true}" />
 
             </LinearLayout>
         </ScrollView>

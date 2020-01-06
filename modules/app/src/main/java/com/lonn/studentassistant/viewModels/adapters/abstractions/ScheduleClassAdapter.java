@@ -39,6 +39,14 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
     }
 
     protected U resolveLinks(U viewModel, T scheduleClass) {
+        linkProfessors(viewModel, scheduleClass);
+        linkCourses(viewModel, scheduleClass);
+        linkOtherActivities(viewModel, scheduleClass);
+
+        return viewModel;
+    }
+
+    private void linkProfessors(U viewModel, T scheduleClass) {
         ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
 
         for (String professorId : scheduleClass.getProfessors()) {
@@ -52,7 +60,9 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
                             })
                             .subscribe(false));
         }
+    }
 
+    private void linkCourses(U viewModel, T scheduleClass) {
         firebaseConnectedActivity.getFirebaseConnection()
                 .execute(new GetRequest<Course>()
                         .databaseTable(COURSES)
@@ -64,7 +74,9 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
                             }
                         })
                         .subscribe(false));
+    }
 
+    private void linkOtherActivities(U viewModel, T scheduleClass) {
         firebaseConnectedActivity.getFirebaseConnection()
                 .execute(new GetRequest<OtherActivity>()
                         .databaseTable(OTHER_ACTIVITIES)
@@ -76,7 +88,5 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
                             }
                         })
                         .subscribe(false));
-
-        return viewModel;
     }
 }

@@ -15,6 +15,7 @@ import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewMode
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.lonn.studentassistant.views.EntityViewType.valueOf;
@@ -59,7 +60,7 @@ public class BindingAdapters {
 
     @BindingAdapter("android:childEntities")
     public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntities(ScrollViewCategory<T> category,
-                                                                                          List<T> entities) {
+                                                                                          Collection<T> entities) {
         if (entities != null && category != null) {
             if (category.getViewModel().getGeneratorFunction() != null) {
                 category.addChildCategories(category.getViewModel().getGeneratorFunction()

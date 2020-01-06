@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.CourseEntityActivity">
+    tools:context=".activities.implementations.entityActivities.course.CourseEntityActivity">
 
     <data>
 
@@ -17,7 +17,7 @@
     </data>
 
     <ScrollView
-        style="@style/EntityActivityWrapper"
+        style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -84,9 +84,18 @@
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:categoryTitle="@{`Schedule`}"
-                android:childEntities="@{course.scheduleClasses}"
+                android:categoryTitle="@{`Regular schedule`}"
+                android:childEntities="@{course.recurringClasses}"
+                android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                 android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Special schedule`}"
+                android:childEntities="@{course.oneTimeClasses}"
+                android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, course.oneTimeClasses)}" />
         </LinearLayout>
     </ScrollView>
 </layout>

@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".activities.implementations.StudentActivity"
+            android:name=".activities.implementations.student.StudentActivity"
             android:parentActivityName=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -72,15 +72,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.CourseEntityActivity"
+            android:name=".activities.implementations.entityActivities.course.CourseEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.ProfessorEntityActivity"
+            android:name=".activities.implementations.entityActivities.professor.ProfessorEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.OtherActivityEntityActivity"
+            android:name=".activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
     </application>

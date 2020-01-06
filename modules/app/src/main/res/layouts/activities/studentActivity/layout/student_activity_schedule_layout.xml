@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.StudentActivity">
+    tools:context=".activities.implementations.student.StudentActivity">
 
     <data>
 
@@ -18,16 +18,20 @@
 
         <variable
             name="oneTimeClasses"
-            type="java.util.List&lt;OneTimeClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.List&lt;RecurringClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingRight="6dp"
+        android:paddingBottom="8dp"
+        android:paddingLeft="6dp">
 
         <TextView
             android:id="@+id/titleScheduleLayout"
@@ -41,7 +45,6 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="@id/titleScheduleLayout"
             app:layout_constraintTop_toBottomOf="@id/titleScheduleLayout">
@@ -50,6 +53,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="start"
+                    android:text="Regular schedule" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -62,10 +74,19 @@
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
                     app:isTable="@{true}" />
 
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="start"
+                    android:text="Special schedule" />
+
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`One time classes`}"
+                    android:entityName="@{`one time class`}"
                     android:childEntities="@{oneTimeClasses}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:showHeader="@{false}"

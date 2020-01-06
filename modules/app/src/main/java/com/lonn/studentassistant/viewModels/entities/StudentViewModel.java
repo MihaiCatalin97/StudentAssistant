@@ -23,5 +23,8 @@ public class StudentViewModel extends EntityViewModel<Student> {
     @Bindable
     public int studentImage, year;
     public List<CourseViewModel> optionalCourses;
+    public List<String> optionalCourseKeys;
+    public List<OtherActivityViewModel> otherActivities;
+    public List<String> otherActivityKeys;
     public CycleSpecialization cycleSpecialization;
 }

@@ -1,9 +1,9 @@
 package com.lonn.studentassistant.viewModels;
 
 import com.lonn.studentassistant.Utils;
-import com.lonn.studentassistant.activities.implementations.CourseEntityActivity;
-import com.lonn.studentassistant.activities.implementations.OtherActivityEntityActivity;
-import com.lonn.studentassistant.activities.implementations.ProfessorEntityActivity;
+import com.lonn.studentassistant.activities.implementations.entityActivities.course.CourseEntityActivity;
+import com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity;
+import com.lonn.studentassistant.activities.implementations.entityActivities.professor.ProfessorEntityActivity;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;

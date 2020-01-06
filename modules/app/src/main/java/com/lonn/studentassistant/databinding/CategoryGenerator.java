@@ -12,6 +12,7 @@ import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewMode
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,15 +82,16 @@ public class CategoryGenerator {
     }
 
     public static <T extends OneTimeClassViewModel> List<CategoryViewModel<T>> oneTimeScheduleCategories(CategoryViewModel<T> parentCategory,
-                                                                                                         List<T> scheduleClasses) {
+                                                                                                         Collection<T> scheduleClasses) {
         List<CategoryViewModel<T>> subcategories = new ArrayList<>();
         List<Date> categoriesAdded = new LinkedList<>();
 
 
         if (scheduleClasses != null) {
-            sort(scheduleClasses, (s1, s2) -> s1.date.compareTo(s2.date));
+            List<T> scheduleClassesList = new ArrayList<>(scheduleClasses);
+            sort(scheduleClassesList, (s1, s2) -> s1.date.compareTo(s2.date));
 
-            for (T scheduleClass : scheduleClasses) {
+            for (T scheduleClass : scheduleClassesList) {
                 if (!categoriesAdded.contains(scheduleClass.date)) {
                     subcategories.add(new CategoryViewModel<T>()
                             .setCategoryTitle(simpleDateFormat.format(scheduleClass.date))

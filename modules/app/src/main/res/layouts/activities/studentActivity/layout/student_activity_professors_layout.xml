@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.StudentActivity">
+    tools:context=".activities.implementations.student.StudentActivity">
 
     <data>
 
@@ -22,10 +22,11 @@
 
         <variable
             name="professors"
-            type="java.util.List&lt;ProfessorViewModel&gt;" />
+            type="java.util.Collection&lt;ProfessorViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -34,7 +35,6 @@
             style="@style/DarkTitleShadowed"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="Professors"
             app:layout_constraintTop_toTopOf="parent" />
 

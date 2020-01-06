@@ -32,16 +32,23 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                 .setYear(discipline.getYear())
                 .setSemester(discipline.getSemester())
                 .setProfessors(new ArrayList<>())
-                .setScheduleClasses(new ArrayList<>())
+                .setOneTimeClasses(new ArrayList<>())
+                .setRecurringClasses(new ArrayList<>())
                 .setKey(discipline.getKey());
 
         return disciplineViewModel;
     }
 
     protected U resolveLinks(U disciplineViewModel, T discipline) {
+        linkProfessors(disciplineViewModel, discipline);
+        linkRecurringClasses(disciplineViewModel, discipline);
+        linkOneTimeClasses(disciplineViewModel, discipline);
+
+        return disciplineViewModel;
+    }
+
+    private void linkProfessors(U disciplineViewModel, T discipline) {
         ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
-        RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this.firebaseConnectedActivity);
-        OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this.firebaseConnectedActivity);
 
         for (String professorId : discipline.getProfessors()) {
             firebaseConnectedActivity.getFirebaseConnection()
@@ -55,19 +62,10 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                             })
                             .subscribe(false));
         }
+    }
 
-        for (String scheduleClassId : discipline.getScheduleClasses()) {
-            firebaseConnectedActivity.getFirebaseConnection()
-                    .execute(new GetRequest<RecurringClass>()
-                            .databaseTable(RECURRING_CLASSES)
-                            .predicate(where(ID)
-                                    .equalTo(scheduleClassId))
-                            .onSuccess(recurringClasses -> {
-                                disciplineViewModel.scheduleClasses.addAll(recurringClassAdapter.adapt(recurringClasses, false));
-                                disciplineViewModel.notifyPropertyChanged(_all);
-                            })
-                            .subscribe(false));
-        }
+    private void linkOneTimeClasses(U disciplineViewModel, T discipline) {
+        OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this.firebaseConnectedActivity);
 
         for (String scheduleClassId : discipline.getScheduleClasses()) {
             firebaseConnectedActivity.getFirebaseConnection()
@@ -76,12 +74,27 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
                             .predicate(where(ID)
                                     .equalTo(scheduleClassId))
                             .onSuccess(oneTimeClasses -> {
-                                disciplineViewModel.scheduleClasses.addAll(oneTimeClassAdapter.adapt(oneTimeClasses, false));
+                                disciplineViewModel.oneTimeClasses.addAll(oneTimeClassAdapter.adapt(oneTimeClasses));
                                 disciplineViewModel.notifyPropertyChanged(_all);
                             })
                             .subscribe(false));
         }
+    }
 
-        return disciplineViewModel;
+    private void linkRecurringClasses(U disciplineViewModel, T discipline) {
+        RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this.firebaseConnectedActivity);
+
+        for (String scheduleClassId : discipline.getScheduleClasses()) {
+            firebaseConnectedActivity.getFirebaseConnection()
+                    .execute(new GetRequest<RecurringClass>()
+                            .databaseTable(RECURRING_CLASSES)
+                            .predicate(where(ID)
+                                    .equalTo(scheduleClassId))
+                            .onSuccess(recurringClasses -> {
+                                disciplineViewModel.recurringClasses.addAll(recurringClassAdapter.adapt(recurringClasses));
+                                disciplineViewModel.notifyPropertyChanged(_all);
+                            })
+                            .subscribe(false));
+        }
     }
 }
