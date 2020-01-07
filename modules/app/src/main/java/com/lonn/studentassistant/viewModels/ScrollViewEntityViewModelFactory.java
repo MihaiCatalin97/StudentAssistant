@@ -1,13 +1,14 @@
 package com.lonn.studentassistant.viewModels;
 
-import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.activities.implementations.entityActivities.course.CourseEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.professor.ProfessorEntityActivity;
+import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.viewModels.entities.FileViewModel;
 import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
 import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 
@@ -39,6 +40,12 @@ public class ScrollViewEntityViewModelFactory {
                 return full((ScheduleClassViewModel) entity);
             }
             return partial((ScheduleClassViewModel) entity);
+        }
+        if (entity instanceof FileViewModel) {
+            if (viewType.equals(FULL)) {
+                return full((FileViewModel) entity);
+            }
+            return partial((FileViewModel) entity);
         }
         return null;
     }
@@ -139,5 +146,21 @@ public class ScrollViewEntityViewModelFactory {
         String field4 = scheduleClass.getRooms();
 
         return new ScrollViewEntityViewModel(null, field1, field2, field3, field4, null);
+    }
+
+    private static ScrollViewEntityViewModel partial(FileViewModel fileViewModel) {
+        String field1 = fileViewModel.getFileTitle();
+        String field2 = fileViewModel.getFileDescription();
+        String field3 = fileViewModel.getFileSize();
+
+        return new ScrollViewEntityViewModel(null, field1, field2, field3, null, null);
+    }
+
+    private static ScrollViewEntityViewModel full(FileViewModel fileViewModel) {
+        String field1 = fileViewModel.getFileTitle();
+        String field2 = fileViewModel.getFileDescription();
+        String field3 = fileViewModel.getFileSize();
+
+        return new ScrollViewEntityViewModel(null, field1, field2, field3, null, null);
     }
 }

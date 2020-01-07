@@ -1,14 +1,6 @@
 apply plugin: "com.android.application"
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('D:\\Projects\\Android\\cheie2.jks')
-            storePassword 'wanted_boy15'
-            keyAlias = 'Lonn'
-            keyPassword 'wanted_boy15'
-        }
-    }
     dataBinding {
         enabled = true
     }
@@ -36,11 +28,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.debug
         }
     }
 

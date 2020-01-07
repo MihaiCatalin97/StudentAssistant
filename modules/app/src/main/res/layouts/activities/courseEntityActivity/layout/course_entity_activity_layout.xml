@@ -75,8 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Files`}"
-                android:permissionLevel="@{1}"
-                android:entityName="@{`file`}"/>
+                android:childEntities="@{course.filesMetadata}"
+                android:entityName="@{`file`}"
+                android:permissionLevel="@{1}" />
 
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                 android:layout_width="match_parent"

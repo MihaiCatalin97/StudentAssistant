@@ -1,11 +1,13 @@
 package com.lonn.studentassistant.viewModels.adapters.abstractions;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.viewModels.adapters.FileMetadataAdapter;
 import com.lonn.studentassistant.viewModels.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.viewModels.adapters.ProfessorAdapter;
 import com.lonn.studentassistant.viewModels.adapters.RecurringClassAdapter;
@@ -14,6 +16,7 @@ import com.lonn.studentassistant.viewModels.entities.abstractions.DisciplineView
 import java.util.ArrayList;
 
 import static com.lonn.studentassistant.BR._all;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_METADATA;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ONE_TIME_CLASSES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
@@ -43,8 +46,26 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
         linkProfessors(disciplineViewModel, discipline);
         linkRecurringClasses(disciplineViewModel, discipline);
         linkOneTimeClasses(disciplineViewModel, discipline);
+        linkFiles(disciplineViewModel, discipline);
 
         return disciplineViewModel;
+    }
+
+    private void linkFiles(U disciplineViewModel, T discipline) {
+        FileMetadataAdapter fileMetadataAdapter = new FileMetadataAdapter(this.firebaseConnectedActivity);
+
+        for (String fileMetadataId : discipline.getFilesMetadata()) {
+            firebaseConnectedActivity.getFirebaseConnection()
+                    .execute(new GetRequest<FileMetadata>()
+                            .databaseTable(FILE_METADATA)
+                            .predicate(where(ID)
+                                    .equalTo(fileMetadataId))
+                            .onSuccess(files -> {
+                                disciplineViewModel.filesMetadata.addAll(fileMetadataAdapter.adapt(files, false));
+                                disciplineViewModel.notifyPropertyChanged(_all);
+                            })
+                            .subscribe(false));
+        }
     }
 
     private void linkProfessors(U disciplineViewModel, T discipline) {

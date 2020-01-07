@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.activities.implementations.LoginActivity;
 import com.lonn.studentassistant.activities.implementations.register.AccountCreationActivity;
 import com.lonn.studentassistant.firebaselayer.requests.CredentialsCheckRequest;
 
@@ -39,5 +40,10 @@ abstract class CredentialsCheckActivity extends FirebaseConnectedActivity {
 
         accountCreationActivityIntent.putExtra("personKey", personKey);
         this.startActivity(accountCreationActivityIntent);
+    }
+
+    public void backToLogin(View view) {
+        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginActivityIntent);
     }
 }

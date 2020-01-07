@@ -15,14 +15,18 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class FileViewModel extends EntityViewModel<FileMetadata> {
-	@Bindable
-	public String fileName;
-	public long fileSize;
-	@Bindable
-	public String fileType;
+    @Bindable
+    public String fileName;
+    @Bindable
+    public String fileTitle;
+    @Bindable
+    public String fileDescription;
+    public long fileSize;
+    @Bindable
+    public String fileType;
 
-	@Bindable
-	public String getFileSize(){
-		return fileSize/1024f + " MB";
-	}
+    @Bindable
+    public String getFileSize() {
+        return fileSize / 1024f + " MB";
+    }
 }

@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.activities.implementations.LoginActivity;
 import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.AdministratorCheckActivity;
 import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.ProfessorCheckActivity;
 import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.StudentCheckActivity;
@@ -37,5 +38,9 @@ public class AccountChoiceActivity extends FirebaseConnectedActivity {
 
     protected void inflateLayout() {
         DataBindingUtil.setContentView(this, R.layout.accout_choice_activity_layout);
+    }
+
+    public void backToLogin(View view) {
+        super.onBackPressed();
     }
 }
