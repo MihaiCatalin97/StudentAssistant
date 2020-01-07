@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3E80B4"
+    android:background="@drawable/solid_background"
     android:orientation="vertical"
+    android:padding="@dimen/dim_16dp"
     android:weightSum="1">
 
     <TextView
         android:id="@+id/fileInputDialogTitle"
+        style="@style/DarkTitleShadowed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -23,25 +25,28 @@
         android:id="@+id/fileInputDialogFileTitleLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_8dp"
+        android:layout_marginBottom="@dimen/dim_8dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1"
         app:layout_constraintTop_toBottomOf="@id/fileInputDialogTitle">
 
         <TextView
-            android:layout_width="0dp"
+            style="@style/DarkNormal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.3"
-            android:text="File title"
+            android:text="Title:"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/fileInputDialogFileTitle"
+            style="@style/DarkNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.7"
+            android:layout_marginStart="@dimen/dim_8dp"
+            android:layout_marginEnd="@dimen/dim_8dp"
+            android:layout_weight="1"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -50,25 +55,29 @@
         android:id="@+id/fileInputDialogFileDescriptionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dim_8dp"
+        android:layout_marginBottom="@dimen/dim_8dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1"
         app:layout_constraintTop_toBottomOf="@id/fileInputDialogFileTitleLayout">
 
         <TextView
-            android:layout_width="0dp"
+            style="@style/DarkNormal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.3"
-            android:text="File description"
+            android:maxLines="1"
+            android:text="Description:"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/fileInputDialogFileDescription"
+            style="@style/DarkNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.7"
+            android:layout_marginStart="@dimen/dim_8dp"
+            android:layout_marginEnd="@dimen/dim_8dp"
+            android:layout_weight="1"
             android:lines="2"
             android:textStyle="bold" />
     </LinearLayout>
@@ -78,38 +87,43 @@
         android:id="@+id/fileInputDialogFileInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:layout_marginTop="@dimen/dim_8dp"
+        android:layout_marginBottom="@dimen/dim_8dp"
+        android:gravity="center_vertical|end"
         android:orientation="horizontal"
         android:weightSum="1"
         app:layout_constraintTop_toBottomOf="@id/fileInputDialogFileDescriptionLayout">
 
         <TextView
-            android:layout_width="0dp"
+            style="@style/DarkNormal"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.35"
             android:text="File:"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/fileInputDialogChosenFileName"
+            style="@style/DarkNormal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_weight="0.6"
+            android:layout_marginStart="@dimen/dim_8dp"
+            android:layout_marginEnd="@dimen/dim_8dp"
+            android:layout_weight="1"
+            android:text="(none)"
             android:textStyle="bold" />
 
         <Button
             android:id="@+id/fileInputDialogChooseButton"
-            android:layout_width="0dp"
+            style="@style/BlueRoundButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
-            android:text="+" />
+            android:text="Select"
+            app:autoSizeTextType="uniform" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:weightSum="1"
@@ -117,6 +131,7 @@
 
         <Button
             android:id="@+id/fileInputDialogNegativeButton"
+            style="@style/BlueRoundButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
@@ -129,6 +144,7 @@
 
         <Button
             android:id="@+id/fileInputDialogPositiveButton"
+            style="@style/BlueRoundButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"

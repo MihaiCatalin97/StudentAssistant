@@ -16,35 +16,27 @@ import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEnti
 import static java.util.Arrays.asList;
 
 public class CourseEntityActivityFirebaseDispatcher extends Dispatcher<Course> {
-    private CourseEntityActivityLayoutBinding binding;
+	private CourseEntityActivityLayoutBinding binding;
 
-    private CourseAdapter courseAdapter;
+	private CourseAdapter courseAdapter;
 
-    CourseEntityActivityFirebaseDispatcher(CourseEntityActivity entityActivity) {
-        super(entityActivity);
-        this.binding = entityActivity.binding;
+	CourseEntityActivityFirebaseDispatcher(CourseEntityActivity entityActivity) {
+		super(entityActivity);
+		this.binding = entityActivity.binding;
 
-        courseAdapter = new CourseAdapter(entityActivity);
-    }
+		courseAdapter = new CourseAdapter(entityActivity);
+	}
 
-    protected List<Object> getAggregatedItemsToCheck() {
-        return asList(binding.getCourse().getOneTimeClasses(),
-                binding.getCourse().getRecurringClasses(),
-                binding.getCourse().getProfessors());
-    }
-
-    void loadAll() {
-        if (shouldLoad()) {
-            firebaseConnection.execute(new GetRequest<Course>()
-                    .databaseTable(COURSES)
-                    .predicate(where(ID).equalTo(binding.getCourse().getKey()))
-                    .onSuccess(receivedEntities -> {
-                        binding.setCourse(courseAdapter.adapt(receivedEntities.get(0)));
-                    })
-                    .onError(error -> {
-                        Log.e("Loading course", error.getMessage());
-                        entityActivity.showSnackBar("An error occurred while loading the course.");
-                    }));
-        }
-    }
+	void loadAll() {
+		firebaseConnection.execute(new GetRequest<Course>()
+				.databaseTable(COURSES)
+				.predicate(where(ID).equalTo(binding.getCourse().getKey()))
+				.onSuccess(receivedEntities -> {
+					binding.setCourse(courseAdapter.adapt(receivedEntities.get(0)));
+				})
+				.onError(error -> {
+					Log.e("Loading course", error.getMessage());
+					entityActivity.showSnackBar("An error occurred while loading the course.");
+				}));
+	}
 }

@@ -80,6 +80,7 @@
             android:layout_height="30dp"
             android:layout_marginBottom="4dp"
             android:scaleType="fitCenter"
+            android:onClick="tapRemove"
             android:visibility="@{entityViewModel.permissionLevel > 2? View.VISIBLE:View.GONE}"
             app:srcCompat="@drawable/ic_close" />
     </TableRow>

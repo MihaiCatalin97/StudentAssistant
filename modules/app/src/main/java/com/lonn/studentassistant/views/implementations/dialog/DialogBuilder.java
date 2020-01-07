@@ -1,8 +1,7 @@
-package com.lonn.studentassistant.views.implementations.dialogBuilders;
+package com.lonn.studentassistant.views.implementations.dialog;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.Window;
 
 import com.lonn.studentassistant.R;

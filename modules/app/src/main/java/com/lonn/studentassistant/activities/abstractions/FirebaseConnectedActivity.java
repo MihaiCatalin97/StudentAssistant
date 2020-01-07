@@ -13,92 +13,95 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
-import com.lonn.studentassistant.views.implementations.dialogBuilders.DialogBuilder;
+import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import java.util.List;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
-    protected FirebaseConnection firebaseConnection;
-    private Handler handler = new Handler();
+	protected FirebaseConnection firebaseConnection;
+	private Handler handler = new Handler();
 
-    public FirebaseConnection getFirebaseConnection() {
-        return firebaseConnection;
-    }
+	public FirebaseConnection getFirebaseConnection() {
+		return firebaseConnection;
+	}
 
-    public void showSnackBar(String message) {
-        showSnackBar(message, Snackbar.LENGTH_INDEFINITE);
-    }
+	public void showSnackBar(String message) {
+		showSnackBar(message, Snackbar.LENGTH_INDEFINITE);
+	}
 
-    public void showSnackBar(String message, int length) {
-        Snackbar snackbar;
+	public void showSnackBar(String message, int length) {
+		Snackbar snackbar;
 
-//        if (findViewById(R.id.fab) != null) {
-//            snackbar = Snackbar.make(findViewById(R.id.fab), message, length);
-//        }
-//        else {
-        snackbar = Snackbar.make(findViewById(android.R.id.content), message, length);
-//        }
+		snackbar = Snackbar.make(findViewById(android.R.id.content), message, length);
 
-        snackbar.show();
-    }
+		snackbar.show();
+	}
 
-    public void tapScrollViewEntityLayout(View v) {
-        ViewGroup parent = (ViewGroup) v.getParent();
+	public void tapScrollViewEntityLayout(View v) {
+		ViewGroup parent = (ViewGroup) v.getParent();
 
-        while (parent != null && !(parent instanceof EntityView)) {
-            parent = (ViewGroup) parent.getParent();
-        }
+		while (parent != null && !(parent instanceof EntityView)) {
+			parent = (ViewGroup) parent.getParent();
+		}
 
-        if (parent != null) {
-            Intent intent = new Intent(getBaseContext(), ((EntityView) parent).getActivityClass());
+		Class entityActivityClass = null;
+		EntityViewModel entityViewModel = null;
 
-            intent.putExtra("entityViewModel", ((EntityView) parent).getEntityViewModel());
+		if (parent != null &&
+				((EntityView) parent).getModel() != null) {
+			entityViewModel = ((EntityView) parent).getEntityViewModel();
+			entityActivityClass = ((EntityView) parent).getModel().getEntityActivityClass();
 
-            v.getContext().startActivity(intent);
-        }
-    }
+		}
 
-    public void tapRemove(View v) {
-        ViewGroup parent = (ViewGroup) v.getParent();
+		if (entityActivityClass != null) {
+			Intent intent = new Intent(getBaseContext(), entityActivityClass);
 
-        while (parent != null && !(parent instanceof EntityView)) {
-            parent = (ViewGroup) parent.getParent();
-        }
-    }
+			intent.putExtra("entityViewModel", entityViewModel);
 
-    public void tapAdd(View v) {
-    }
+			v.getContext().startActivity(intent);
+		}
+	}
 
-    public void showDialog(List<BaseEntity> entities, String title, String positiveButtonText) {
-        DialogBuilder builder = new DialogBuilder(FirebaseConnectedActivity.this, entities, title, positiveButtonText);
-        builder.showDialog();
-    }
+	public void tapRemove(View v) {
+		ViewGroup parent = (ViewGroup) v.getParent();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        firebaseConnection = FirebaseConnection.getInstance(getBaseContext());
-        inflateLayout();
-    }
+		while (parent != null && !(parent instanceof EntityView)) {
+			parent = (ViewGroup) parent.getParent();
+		}
+	}
 
-    protected abstract void inflateLayout();
+	public void showDialog(List<BaseEntity> entities, String title, String positiveButtonText) {
+		DialogBuilder builder = new DialogBuilder(FirebaseConnectedActivity.this, entities, title, positiveButtonText);
+		builder.showDialog();
+	}
 
-    protected void executeWithDelay(Runnable runnable, long delay) {
-        handler.postDelayed(runnable, delay);
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		firebaseConnection = FirebaseConnection.getInstance(getBaseContext());
+		inflateLayout();
+	}
 
-    protected void hideKeyboard() {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+	protected abstract void inflateLayout();
 
-        View view = getCurrentFocus();
+	protected void executeWithDelay(Runnable runnable, long delay) {
+		handler.postDelayed(runnable, delay);
+	}
 
-        if (view == null) {
-            view = new View(this);
-        }
+	protected void hideKeyboard() {
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 
-        if (inputMethodManager != null) {
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
+		View view = getCurrentFocus();
+
+		if (view == null) {
+			view = new View(this);
+		}
+
+		if (inputMethodManager != null) {
+			inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
 }

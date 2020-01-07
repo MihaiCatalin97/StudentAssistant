@@ -9,25 +9,25 @@ import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 
 public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEntity>> extends FirebaseConnectedActivity {
-    protected abstract void loadAll();
+	protected abstract void loadAll();
 
-    @Override
-    public void onStart() {
-        super.onStart();
+	@Override
+	public void onStart() {
+		super.onStart();
 
-        loadAll();
+		loadAll();
 
-        checkAuthenticationAndSignOut();
-    }
+		checkAuthenticationAndSignOut();
+	}
 
-    public T getEntityFromIntent(Intent intent) {
-        return (T) intent.getSerializableExtra("entityViewModel");
-    }
+	public T getEntityFromIntent(Intent intent) {
+		return (T) intent.getSerializableExtra("entityViewModel");
+	}
 
-    protected void checkAuthenticationAndSignOut() {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-            FirebaseAuth.getInstance().signOut();
-            NavUtils.navigateUpFromSameTask(this);
-        }
-    }
+	protected void checkAuthenticationAndSignOut() {
+		if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+			FirebaseAuth.getInstance().signOut();
+			NavUtils.navigateUpFromSameTask(this);
+		}
+	}
 }

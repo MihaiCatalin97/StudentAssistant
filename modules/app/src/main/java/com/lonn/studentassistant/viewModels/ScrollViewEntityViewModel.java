@@ -3,7 +3,10 @@ package com.lonn.studentassistant.viewModels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import lombok.Getter;
+
 public class ScrollViewEntityViewModel extends BaseObservable {
+    @Getter
     public Class entityActivityClass;
     @Bindable
     public int permissionLevel = 0;

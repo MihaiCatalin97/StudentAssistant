@@ -46,15 +46,19 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
         return viewModel;
     }
 
-    private void linkProfessors(U viewModel, T scheduleClass) {
+    private void linkProfessors(U viewModel, T entity) {
         ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
 
-        for (String professorId : scheduleClass.getProfessors()) {
+        for (String professorId : entity.getProfessors()) {
             firebaseConnectedActivity.getFirebaseConnection()
                     .execute(new GetRequest<Professor>()
                             .databaseTable(PROFESSORS)
                             .predicate(where(ID).equalTo(professorId))
                             .onSuccess(professors -> {
+                                if (viewModel.professors == null) {
+                                    viewModel.professors = new ArrayList<>();
+                                }
+
                                 viewModel.professors.addAll(professorAdapter.adapt(professors, false));
                                 viewModel.notifyPropertyChanged(_all);
                             })
@@ -62,11 +66,11 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
         }
     }
 
-    private void linkCourses(U viewModel, T scheduleClass) {
+    private void linkCourses(U viewModel, T entity) {
         firebaseConnectedActivity.getFirebaseConnection()
                 .execute(new GetRequest<Course>()
                         .databaseTable(COURSES)
-                        .predicate(where(ID).equalTo(scheduleClass.getDiscipline()))
+                        .predicate(where(ID).equalTo(entity.getDiscipline()))
                         .onSuccess(courses -> {
                             if (courses.size() > 0) {
                                 viewModel.setDiscipline(courses.get(0));

@@ -16,26 +16,4 @@ public abstract class Dispatcher<T extends BaseEntity> {
         firebaseConnection = entityActivity.getFirebaseConnection();
 
     }
-
-    protected abstract List<Object> getAggregatedItemsToCheck();
-
-    protected boolean shouldLoad() {
-        for (Object objectToCheck : getAggregatedItemsToCheck()) {
-            if (objectToCheck instanceof Collection) {
-                if (isEmptyOrNull((Collection) objectToCheck)) {
-                    return true;
-                }
-            }
-            else if (objectToCheck == null) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private boolean isEmptyOrNull(Collection<?> listOfEntities) {
-        return listOfEntities == null ||
-                listOfEntities.size() == 0;
-    }
 }

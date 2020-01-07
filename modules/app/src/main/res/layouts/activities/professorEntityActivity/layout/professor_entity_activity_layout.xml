@@ -6,11 +6,15 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.utils.Utils" />
 
         <variable
             name="professor"
@@ -22,16 +26,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/professorImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:contentDescription="Professor Image"
-            android:scaleType="fitCenter"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/professorImageCardView"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            app:cardCornerRadius="100dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@{professor.professorImage}" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/professorImage"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:contentDescription="Professor Image"
+                android:scaleType="fitCenter"
+                app:defaultSrcCompat="@{Utils.getDefaultPersonImageForName(professor.firstName)}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@{professor.professorImage}" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="150dp"
+            android:layout_marginTop="150dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:layout_constraintLeft_toLeftOf="@id/professorImageCardView"
+            app:layout_constraintTop_toTopOf="@id/professorImageCardView">
+
+            <ImageView
+                android:id="@+id/professorImageUploadButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="Add image button"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_plus" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/professorName"
@@ -44,7 +82,7 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/professorImage" />
+            app:layout_constraintTop_toBottomOf="@id/professorImageCardView" />
 
         <TextView
             android:id="@+id/professorEmail"

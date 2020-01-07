@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/dotted_transparent_background"
-        android:padding="5dp"
-        android:onClick="tapAdd">
+        android:padding="5dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iconPlus"

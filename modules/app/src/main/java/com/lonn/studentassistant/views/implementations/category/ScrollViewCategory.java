@@ -10,11 +10,14 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.animations.ExpandAnimation;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
@@ -25,7 +28,7 @@ import static com.lonn.studentassistant.R.id.layoutCategoryMain;
 import static com.lonn.studentassistant.R.layout.category_layout;
 
 public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>> extends ScrollViewItem {
-	protected boolean expanded = false;
+	protected boolean expanded = false, animated = false;
 	private CategoryViewModel<T> viewModel = new CategoryViewModel<>();
 	private ScrollViewCategoryHeader header;
 	private ScrollViewCategoryContent<T> content;
@@ -80,13 +83,35 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		hideIfEmpty();
 	}
 
-	public void addEntities(Collection<T> entities) {
+	public void setEntities(Collection<T> entities) {
 		for (T entity : entities) {
 			addOrUpdateEntity(entity);
 		}
 
+		List<String> entitiesToRemove = new LinkedList<>();
+
+		for (String existingEntityKey : viewModel.getChildEntities().keySet()) {
+			boolean found = false;
+
+			for (T receivedEntity : entities) {
+				if (receivedEntity.getKey().equals(existingEntityKey)) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				entitiesToRemove.add(existingEntityKey);
+			}
+		}
+
+		for (String entityToRemove : entitiesToRemove) {
+			viewModel.getChildEntities().remove(entityToRemove);
+			content.removeEntityByKey(entityToRemove);
+		}
+
 		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
-			subcategory.addEntities(entities);
+			subcategory.setEntities(entities);
 		}
 
 		hideIfEmpty();
@@ -172,22 +197,32 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	private void animateExpand() {
-		RotateAnimation animation =
-				new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
-						RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
+		if (!animated) {
+			animated = true;
 
-		animation.setDuration(500);
-		animation.setFillAfter(true);
-		animation.setFillBefore(true);
+			RotateAnimation animation =
+					new RotateAnimation(expanded ? 0 : 180, expanded ? 180 : 360,
+							RELATIVE_TO_SELF, 0.5f, RELATIVE_TO_SELF, 0.5f);
 
-		header.findViewById(arrowCategory).startAnimation(animation);
+			animation.setDuration(500);
+			animation.setFillAfter(true);
+			animation.setFillBefore(true);
 
-		ExpandAnimation expandAnimation = new ExpandAnimation();
-		expandAnimation.setDuration(500);
-		expandAnimation.start(content);
+			header.findViewById(arrowCategory).startAnimation(animation);
+
+			ExpandAnimation expandAnimation = new ExpandAnimation();
+			expandAnimation.setDuration(500);
+			expandAnimation.start(content);
+
+			getHandler().postDelayed(() -> animated = false, 500);
+		}
 	}
 
 	public void setOnAddAction(Runnable runnable) {
 		this.getContent().setOnAddTap(runnable);
+	}
+
+	public void setOnDeleteAction(Consumer<T> onDeleteTap) {
+		this.getContent().setOnDeleteTap(onDeleteTap);
 	}
 }

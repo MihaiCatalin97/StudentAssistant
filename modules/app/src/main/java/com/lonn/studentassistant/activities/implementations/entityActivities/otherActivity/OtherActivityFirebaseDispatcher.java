@@ -16,35 +16,27 @@ import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEnti
 import static java.util.Arrays.asList;
 
 public class OtherActivityFirebaseDispatcher extends Dispatcher<OtherActivity> {
-    private OtherActivityEntityActivityLayoutBinding binding;
+	private OtherActivityEntityActivityLayoutBinding binding;
 
-    private OtherActivityAdapter adapter;
+	private OtherActivityAdapter adapter;
 
-    OtherActivityFirebaseDispatcher(OtherActivityEntityActivity entityActivity) {
-        super(entityActivity);
-        this.binding = entityActivity.binding;
+	OtherActivityFirebaseDispatcher(OtherActivityEntityActivity entityActivity) {
+		super(entityActivity);
+		this.binding = entityActivity.binding;
 
-        adapter = new OtherActivityAdapter(entityActivity);
-    }
+		adapter = new OtherActivityAdapter(entityActivity);
+	}
 
-    protected List<Object> getAggregatedItemsToCheck() {
-        return asList(binding.getOtherActivity().getOneTimeClasses(),
-                binding.getOtherActivity().getRecurringClasses(),
-                binding.getOtherActivity().getProfessors());
-    }
-
-    void loadAll() {
-        if (shouldLoad()) {
-            firebaseConnection.execute(new GetRequest<OtherActivity>()
-                    .databaseTable(OTHER_ACTIVITIES)
-                    .predicate(where(ID).equalTo(binding.getOtherActivity().getKey()))
-                    .onSuccess(receivedEntities -> {
-                        binding.setOtherActivity(adapter.adapt(receivedEntities.get(0)));
-                    })
-                    .onError(error -> {
-                        Log.e("Loading other activity", error.getMessage());
-                        entityActivity.showSnackBar("An error occurred while loading activity.");
-                    }));
-        }
-    }
+	void loadAll() {
+		firebaseConnection.execute(new GetRequest<OtherActivity>()
+				.databaseTable(OTHER_ACTIVITIES)
+				.predicate(where(ID).equalTo(binding.getOtherActivity().getKey()))
+				.onSuccess(receivedEntities -> {
+					binding.setOtherActivity(adapter.adapt(receivedEntities.get(0)));
+				})
+				.onError(error -> {
+					Log.e("Loading other activity", error.getMessage());
+					entityActivity.showSnackBar("An error occurred while loading activity.");
+				}));
+	}
 }

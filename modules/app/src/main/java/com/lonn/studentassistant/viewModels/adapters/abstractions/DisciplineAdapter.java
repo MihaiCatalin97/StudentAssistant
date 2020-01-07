@@ -24,98 +24,106 @@ import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where
 import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
 
 public abstract class DisciplineAdapter<T extends Discipline, U extends DisciplineViewModel<T>> extends ViewModelAdapter<T, U> {
-    protected DisciplineAdapter(FirebaseConnectedActivity firebaseConnectedActivity) {
-        super(firebaseConnectedActivity);
-    }
+	protected DisciplineAdapter(FirebaseConnectedActivity firebaseConnectedActivity) {
+		super(firebaseConnectedActivity);
+	}
 
-    protected U adaptOne(U disciplineViewModel, T discipline) {
-        disciplineViewModel.setName(discipline.getDisciplineName())
-                .setDescription(discipline.getDescription())
-                .setWebsite(discipline.getWebsite())
-                .setYear(discipline.getYear())
-                .setSemester(discipline.getSemester())
-                .setProfessors(new ArrayList<>())
-                .setOneTimeClasses(new ArrayList<>())
-                .setRecurringClasses(new ArrayList<>())
-                .setKey(discipline.getKey());
+	protected U adaptOne(U disciplineViewModel, T discipline) {
+		disciplineViewModel.setName(discipline.getDisciplineName())
+				.setDescription(discipline.getDescription())
+				.setWebsite(discipline.getWebsite())
+				.setYear(discipline.getYear())
+				.setSemester(discipline.getSemester())
+				.setKey(discipline.getKey());
 
-        return disciplineViewModel;
-    }
+		return disciplineViewModel;
+	}
 
-    protected U resolveLinks(U disciplineViewModel, T discipline) {
-        linkProfessors(disciplineViewModel, discipline);
-        linkRecurringClasses(disciplineViewModel, discipline);
-        linkOneTimeClasses(disciplineViewModel, discipline);
-        linkFiles(disciplineViewModel, discipline);
+	protected U resolveLinks(U disciplineViewModel, T discipline) {
+		linkProfessors(disciplineViewModel, discipline);
+		linkRecurringClasses(disciplineViewModel, discipline);
+		linkOneTimeClasses(disciplineViewModel, discipline);
+		linkFiles(disciplineViewModel, discipline);
 
-        return disciplineViewModel;
-    }
+		return disciplineViewModel;
+	}
 
-    private void linkFiles(U disciplineViewModel, T discipline) {
-        FileMetadataAdapter fileMetadataAdapter = new FileMetadataAdapter(this.firebaseConnectedActivity);
+	private void linkFiles(U disciplineViewModel, T discipline) {
+		FileMetadataAdapter fileMetadataAdapter = new FileMetadataAdapter(this.firebaseConnectedActivity);
 
-        for (String fileMetadataId : discipline.getFilesMetadata()) {
-            firebaseConnectedActivity.getFirebaseConnection()
-                    .execute(new GetRequest<FileMetadata>()
-                            .databaseTable(FILE_METADATA)
-                            .predicate(where(ID)
-                                    .equalTo(fileMetadataId))
-                            .onSuccess(files -> {
-                                disciplineViewModel.filesMetadata.addAll(fileMetadataAdapter.adapt(files, false));
-                                disciplineViewModel.notifyPropertyChanged(_all);
-                            })
-                            .subscribe(false));
-        }
-    }
+		for (String fileMetadataId : discipline.getFilesMetadata()) {
+			firebaseConnectedActivity.getFirebaseConnection()
+					.execute(new GetRequest<FileMetadata>()
+							.databaseTable(FILE_METADATA)
+							.predicate(where(ID).equalTo(fileMetadataId))
+							.onSuccess(files -> {
+								if (disciplineViewModel.filesMetadata == null) {
+									disciplineViewModel.filesMetadata = new ArrayList<>();
+								}
 
-    private void linkProfessors(U disciplineViewModel, T discipline) {
-        ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
+								disciplineViewModel.filesMetadata.addAll(fileMetadataAdapter.adapt(files, false));
+								disciplineViewModel.notifyPropertyChanged(_all);
+							}));
+		}
+	}
 
-        for (String professorId : discipline.getProfessors()) {
-            firebaseConnectedActivity.getFirebaseConnection()
-                    .execute(new GetRequest<Professor>()
-                            .databaseTable(PROFESSORS)
-                            .predicate(where(ID)
-                                    .equalTo(professorId))
-                            .onSuccess(professors -> {
-                                disciplineViewModel.professors.addAll(professorAdapter.adapt(professors, false));
-                                disciplineViewModel.notifyPropertyChanged(_all);
-                            })
-                            .subscribe(false));
-        }
-    }
+	private void linkProfessors(U disciplineViewModel, T discipline) {
+		ProfessorAdapter professorAdapter = new ProfessorAdapter(this.firebaseConnectedActivity);
 
-    private void linkOneTimeClasses(U disciplineViewModel, T discipline) {
-        OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this.firebaseConnectedActivity);
+		for (String professorId : discipline.getProfessors()) {
+			firebaseConnectedActivity.getFirebaseConnection()
+					.execute(new GetRequest<Professor>()
+							.databaseTable(PROFESSORS)
+							.predicate(where(ID)
+									.equalTo(professorId))
+							.onSuccess(professors -> {
+								if (disciplineViewModel.professors == null) {
+									disciplineViewModel.professors = new ArrayList<>();
+								}
 
-        for (String scheduleClassId : discipline.getScheduleClasses()) {
-            firebaseConnectedActivity.getFirebaseConnection()
-                    .execute(new GetRequest<OneTimeClass>()
-                            .databaseTable(ONE_TIME_CLASSES)
-                            .predicate(where(ID)
-                                    .equalTo(scheduleClassId))
-                            .onSuccess(oneTimeClasses -> {
-                                disciplineViewModel.oneTimeClasses.addAll(oneTimeClassAdapter.adapt(oneTimeClasses));
-                                disciplineViewModel.notifyPropertyChanged(_all);
-                            })
-                            .subscribe(false));
-        }
-    }
+								disciplineViewModel.professors.addAll(professorAdapter.adapt(professors, false));
+								disciplineViewModel.notifyPropertyChanged(_all);
+							}));
+		}
+	}
 
-    private void linkRecurringClasses(U disciplineViewModel, T discipline) {
-        RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this.firebaseConnectedActivity);
+	private void linkOneTimeClasses(U disciplineViewModel, T discipline) {
+		OneTimeClassAdapter oneTimeClassAdapter = new OneTimeClassAdapter(this.firebaseConnectedActivity);
 
-        for (String scheduleClassId : discipline.getScheduleClasses()) {
-            firebaseConnectedActivity.getFirebaseConnection()
-                    .execute(new GetRequest<RecurringClass>()
-                            .databaseTable(RECURRING_CLASSES)
-                            .predicate(where(ID)
-                                    .equalTo(scheduleClassId))
-                            .onSuccess(recurringClasses -> {
-                                disciplineViewModel.recurringClasses.addAll(recurringClassAdapter.adapt(recurringClasses));
-                                disciplineViewModel.notifyPropertyChanged(_all);
-                            })
-                            .subscribe(false));
-        }
-    }
+		for (String scheduleClassId : discipline.getScheduleClasses()) {
+			firebaseConnectedActivity.getFirebaseConnection()
+					.execute(new GetRequest<OneTimeClass>()
+							.databaseTable(ONE_TIME_CLASSES)
+							.predicate(where(ID)
+									.equalTo(scheduleClassId))
+							.onSuccess(oneTimeClasses -> {
+								if (disciplineViewModel.oneTimeClasses == null) {
+									disciplineViewModel.oneTimeClasses = new ArrayList<>();
+								}
+
+								disciplineViewModel.oneTimeClasses.addAll(oneTimeClassAdapter.adapt(oneTimeClasses));
+								disciplineViewModel.notifyPropertyChanged(_all);
+							}));
+		}
+	}
+
+	private void linkRecurringClasses(U viewModel, T entity) {
+		RecurringClassAdapter recurringClassAdapter = new RecurringClassAdapter(this.firebaseConnectedActivity);
+
+		for (String scheduleClassId : entity.getScheduleClasses()) {
+			firebaseConnectedActivity.getFirebaseConnection()
+					.execute(new GetRequest<RecurringClass>()
+							.databaseTable(RECURRING_CLASSES)
+							.predicate(where(ID)
+									.equalTo(scheduleClassId))
+							.onSuccess(recurringClasses -> {
+								if (viewModel.recurringClasses == null) {
+									viewModel.recurringClasses = new ArrayList<>();
+								}
+
+								viewModel.recurringClasses.addAll(recurringClassAdapter.adapt(recurringClasses));
+								viewModel.notifyPropertyChanged(_all);
+							}));
+		}
+	}
 }
