@@ -1,15 +1,34 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
-import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
+import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Data
 @Accessors(fluent = true)
-public class CredentialsCheckRequest {
-    private String identificationHash;
-    private Consumer<IdentificationHash> onSuccess;
-    private Consumer<String> onError;
+@EqualsAndHashCode(callSuper = false)
+public class CredentialsCheckRequest extends Request<IdentificationHash, Exception> {
+	private String identificationHash;
+
+	public CredentialsCheckRequest onSuccess(Consumer<IdentificationHash> onSuccess) {
+		this.onSuccess = onSuccess;
+		return this;
+	}
+
+	public CredentialsCheckRequest onError(Consumer<Exception> onError) {
+		this.onError = onError;
+		return this;
+	}
+
+	public Consumer<IdentificationHash> onSuccess(){
+		return onSuccess;
+	}
+
+	public Consumer<Exception> onError(){
+		return onError;
+	}
 }

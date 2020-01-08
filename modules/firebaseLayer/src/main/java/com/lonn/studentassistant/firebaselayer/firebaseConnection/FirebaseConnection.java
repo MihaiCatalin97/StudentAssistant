@@ -21,6 +21,7 @@ import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.LoginRequest;
 import com.lonn.studentassistant.firebaselayer.requests.RegisterRequest;
+import com.lonn.studentassistant.firebaselayer.requests.Request;
 import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
 import java.util.HashMap;
@@ -81,6 +82,31 @@ public class FirebaseConnection {
 		return instance;
 	}
 
+	@SuppressWarnings("unchecked")
+	public void execute(Request request) {
+		if (request instanceof GetRequest) {
+			execute((GetRequest) request);
+		}
+		else if (request instanceof SaveRequest) {
+			execute((SaveRequest) request);
+		}
+		else if (request instanceof DeleteByIdRequest) {
+			execute((DeleteByIdRequest) request);
+		}
+		else if (request instanceof DeleteAllRequest) {
+			execute((DeleteAllRequest) request);
+		}
+		else if (request instanceof LoginRequest) {
+			execute((LoginRequest) request);
+		}
+		else if (request instanceof CredentialsCheckRequest) {
+			execute((CredentialsCheckRequest) request);
+		}
+		else if (request instanceof RegisterRequest) {
+			execute((RegisterRequest) request);
+		}
+	}
+
 	public <T extends BaseEntity> void execute(GetRequest<T> request) {
 		@SuppressWarnings("unchecked")
 		DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
@@ -122,11 +148,11 @@ public class FirebaseConnection {
 		mAuth.signInWithEmailAndPassword(request.username(), request.password())
 				.addOnSuccessListener((authResult) -> {
 					logger.logLoginSuccess(request.username());
-					request.onSuccess().run();
+					request.onSuccess().consume(null);
 				})
 				.addOnFailureListener((exception) -> {
 					logger.logLoginFail(request.username(), exception.getMessage());
-					request.onError().run();
+					request.onError().consume(null);
 				});
 	}
 
@@ -148,13 +174,13 @@ public class FirebaseConnection {
 										String errorMessage = "This person already has an account";
 										logger.logCredentialsCheckFail(request.identificationHash(),
 												errorMessage);
-										request.onError().consume(errorMessage);
+										request.onError().consume(new Exception(errorMessage));
 									}
 								})
 								.onError((error) -> {
 									logger.logCredentialsCheckFail(request.identificationHash(),
 											error.getMessage());
-									request.onError().consume(error.getMessage());
+									request.onError().consume(new Exception(error.getMessage()));
 								})
 								.subscribe(false));
 
@@ -162,12 +188,12 @@ public class FirebaseConnection {
 					else {
 						String errorMessage = "Invalid credentials";
 						logger.logCredentialsCheckFail(request.identificationHash(), errorMessage);
-						request.onError().consume(errorMessage);
+						request.onError().consume(new Exception(errorMessage));
 					}
 				})
 				.onError((error) -> {
 					logger.logCredentialsCheckFail(request.identificationHash(), error.getMessage());
-					request.onError().consume(error.getMessage());
+					request.onError().consume(new Exception(error.getMessage()));
 				})
 				.predicate(Predicate.where(IdentificationHashField.ID)
 						.equalTo(request.identificationHash()))
@@ -187,26 +213,26 @@ public class FirebaseConnection {
 					execute(new SaveRequest<>()
 							.databaseTable(USERS)
 							.entity(registeringUser)
-							.onSuccess(() -> {
+							.onSuccess((u) -> {
 								logger.logRegistrationLinkingSuccess(newUser.getUid(),
 										request.personUUID());
 
 								request.onSuccess().consume(newUser);
 							})
-							.onError((exception) -> {
+							.onError((Exception exception) -> {
 								if (exception.getMessage() != null) {
 									logger.logRegistrationLinkingFail(newUser.getUid(),
 											request.personUUID(),
 											exception.getMessage());
 									newUser.delete();
-									request.onError().consume(exception.getMessage());
+									request.onError().consume(exception);
 								}
 							}));
 
 				})
 				.addOnFailureListener((exception) -> {
 					logger.logRegisterFail(request.email(), exception.getMessage());
-					request.onError().consume(exception.getMessage());
+					request.onError().consume(exception);
 				});
 	}
 

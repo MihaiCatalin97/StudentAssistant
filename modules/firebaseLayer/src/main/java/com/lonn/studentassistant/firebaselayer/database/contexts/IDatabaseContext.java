@@ -9,13 +9,13 @@ import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import java.util.List;
 
 public interface IDatabaseContext<T extends BaseEntity> {
-    void saveOrUpdate(T entity, Runnable onSuccess, Consumer<Exception> onError);
+    void saveOrUpdate(T entity, Consumer<Void> onSuccess, Consumer<Exception> onError);
 
-    void delete(String key, Runnable onSuccess, Consumer<Exception> onError);
+    void delete(String key, Consumer<Void> onSuccess, Consumer<Exception> onError);
 
-    void get(Consumer<List<T>> onSuccess, Consumer<DatabaseError> onError, Boolean subscribe);
+    void get(Consumer<List<T>> onSuccess, Consumer<Exception> onError, Boolean subscribe);
 
-    void get(Consumer<List<T>> onSuccess, Consumer<DatabaseError> onError, Predicate<? super T> predicate, Boolean subscribe);
+    void get(Consumer<List<T>> onSuccess, Consumer<Exception> onError, Predicate<? super T> predicate, Boolean subscribe);
 
-    void deleteAll(Runnable onSuccess, Consumer<Exception> onError);
+    void deleteAll(Consumer<Void> onSuccess, Consumer<Exception> onError);
 }

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -51,5 +53,65 @@ public class Utils {
 			Log.e("Error while hashing", e.toString());
 			return null;
 		}
+	}
+
+	public static String yearToString(int year) {
+		if (year == 1) {
+			return "First year";
+		}
+		if (year == 2) {
+			return "Second year";
+		}
+		if (year == 3) {
+			return "Third year";
+		}
+		if (year == 4) {
+			return "Master First year";
+		}
+		if (year == 5) {
+			return "Master Second year";
+		}
+
+		return "Unknown year";
+	}
+
+	public static String semesterToString(int semester) {
+		if (semester == 1) {
+			return "First semester";
+		}
+		if (semester == 2) {
+			return "Second semester";
+		}
+
+		return "Unknown semester";
+	}
+
+	public static String dayToString(int day) {
+		WeekDay weekDay = WeekDay.getByInt(day);
+
+		if (weekDay != null) {
+			return weekDay.getDayStringEng();
+		}
+		return null;
+	}
+
+	public static String hourToString(int hour) {
+		String minuteString = Integer.toString(hour % 100);
+		String hourString = Integer.toString(hour / 100);
+
+		minuteString = padLeftWithZeros(minuteString);
+		hourString = padLeftWithZeros(hourString);
+
+		return hourString + ":" + minuteString;
+	}
+
+	private static String padLeftWithZeros(String stringToPad) {
+		if (stringToPad.length() == 0) {
+			return "00";
+		}
+		else if (stringToPad.length() == 1) {
+			return "0" + stringToPad;
+		}
+		return stringToPad;
 	}
 }
