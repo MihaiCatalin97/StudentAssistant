@@ -3,42 +3,38 @@ package com.lonn.studentassistant.debug;
 import com.lonn.scheduleparser.ParseResult;
 import com.lonn.scheduleparser.UAICScheduleParser;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer;
-import com.lonn.studentassistant.firebaselayer.entities.Administrator;
-import com.lonn.studentassistant.firebaselayer.entities.Student;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.requests.DeleteAllRequest;
-import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ADMINISTRATORS;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {
 	private static final Logger LOGGER = Logger.ofClass(DatabasePopulator.class);
-	private FirebaseConnection firebaseConnection;
 	private FirebaseConnectedActivity parentActivity;
+	private FirebaseApi firebaseApi;
 
-	public DatabasePopulator(FirebaseConnection firebaseConnection, FirebaseConnectedActivity parentActivity) {
-		this.firebaseConnection = firebaseConnection;
+	public DatabasePopulator(FirebaseConnectedActivity parentActivity) {
 		this.parentActivity = parentActivity;
+		this.firebaseApi = parentActivity.getFirebaseApi();
 	}
 
 	public void deleteUsersTable() {
-		firebaseConnection.execute(new DeleteAllRequest().databaseTable(DatabaseTableContainer.USERS));
+		//
 	}
 
 	public void populateStudentsTable() {
 		for (int i = 0; i < 10; i++)
-			firebaseConnection.execute(new SaveRequest<Student>()
-					.entity(new Student()
+			firebaseApi.getStudentService()
+					.save(new StudentViewModel()
 							.setStudentId(Integer.toString(i))
 							.setLastName("Mihai")
 							.setFirstName("Catalin")
@@ -46,33 +42,32 @@ public class DatabasePopulator {
 							.setEmail("email@email.com")
 							.setPhoneNumber("0742664239")
 							.setGroup("B5")
-							.setYear(3)));
+							.setYear(3))
+					.onCompleteDoNothing();
 	}
 
 	public void deleteStudentsTable() {
-		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(STUDENTS));
+		firebaseApi.getStudentService()
+				.deleteAll()
+				.onCompleteDoNothing();
 	}
 
 	public void deleteCoursesTable() {
-		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(COURSES));
+		firebaseApi.getCourseService()
+				.deleteAll()
+				.onCompleteDoNothing();
 	}
 
 	public void deleteProfessorsTable() {
-		firebaseConnection.execute(new DeleteAllRequest()
-				.databaseTable(PROFESSORS));
+		firebaseApi.getProfessorService()
+				.deleteAll()
+				.onCompleteDoNothing();
 	}
 
 	public void populateAdministratorsTable() {
-		Administrator administrator = new Administrator()
-				.setFirstName("Catalin")
-				.setLastName("Mihai")
-				.setAdministratorKey("123");
-
-		firebaseConnection.execute(new SaveRequest<>()
-				.databaseTable(ADMINISTRATORS)
-				.entity(administrator));
+		firebaseApi.getAdministratorService()
+				.deleteAll()
+				.onCompleteDoNothing();
 	}
 
 	public void parseSchedule() {
@@ -84,11 +79,11 @@ public class DatabasePopulator {
 			try {
 				ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
 
-				saveParsedEntities(parseResult.getCourses(), "optionalCourses");
-				saveParsedEntities(parseResult.getProfessors(), "professors");
-				saveParsedEntities(parseResult.getOtherActivities(), "other activities");
-				saveParsedEntities(parseResult.getOneTimeClasses(), "one time scheduleClasses");
-				saveParsedEntities(parseResult.getRecurringClasses(), "recurring scheduleClasses");
+				saveCourses(parseResult.getCourses());
+				saveProfessors(parseResult.getProfessors());
+				saveOtherActivities(parseResult.getOtherActivities());
+				saveOneTimeClasses(parseResult.getOneTimeClasses());
+				saveRecurringClasses(parseResult.getRecurringClasses());
 			}
 			catch (InterruptedException | ExecutionException exception) {
 				parentActivity.showSnackBar("An error occurred while parsing the schedule!",
@@ -98,19 +93,43 @@ public class DatabasePopulator {
 		});
 	}
 
-	private <T extends BaseEntity> void saveParsedEntities(List<T> entitiesToSave,
-														   String entityName) {
-		firebaseConnection.execute(new SaveRequest<T>()
-				.entities(entitiesToSave)
-				.onSuccess(() ->
-						parentActivity.showSnackBar("Saved " + entityName, 1000)
-				)
-				.onError((Exception exception) -> {
-							parentActivity.showSnackBar(
-									"An error occurred while saving the " + entityName,
-									1000);
-							LOGGER.error("Failed saving " + entityName, exception);
-						}
-				));
+	private void saveCourses(List<Course> courses) {
+		for (Course course : courses) {
+			firebaseApi.getCourseService()
+					.save(course)
+					.onCompleteDoNothing();
+		}
+	}
+
+	private void saveProfessors(List<Professor> professors) {
+		for (Professor professor : professors) {
+			firebaseApi.getProfessorService()
+					.save(professor)
+					.onCompleteDoNothing();
+		}
+	}
+
+	private void saveOtherActivities(List<OtherActivity> otherActivities) {
+		for (OtherActivity otherActivity : otherActivities) {
+			firebaseApi.getOtherActivityService()
+					.save(otherActivity)
+					.onCompleteDoNothing();
+		}
+	}
+
+	private void saveRecurringClasses(List<RecurringClass> recurringClasses) {
+		for (RecurringClass recurringClass : recurringClasses) {
+			firebaseApi.getRecurringClassService()
+					.save(recurringClass)
+					.onCompleteDoNothing();
+		}
+	}
+
+	private void saveOneTimeClasses(List<OneTimeClass> oneTimeClasses) {
+		for (OneTimeClass oneTimeClass : oneTimeClasses) {
+			firebaseApi.getOneTimeClassService()
+					.save(oneTimeClass)
+					.onCompleteDoNothing();
+		}
 	}
 }

@@ -8,11 +8,12 @@ import androidx.databinding.BindingAdapter;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 

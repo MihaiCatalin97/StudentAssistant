@@ -23,6 +23,7 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
 	public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
 	@Bindable
 	public String professorImage;
+	public String professorImageMetadataKey;
 	public List<String> courses;
 	public List<String> otherActivities;
 	public List<String> oneTimeClasses;
@@ -68,5 +69,11 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
 	@Bindable
 	public int getCoursesVisible() {
 		return (courses != null && courses.size() > 0) ? View.VISIBLE : View.GONE;
+	}
+
+	@Override
+	public ProfessorViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
 	}
 }

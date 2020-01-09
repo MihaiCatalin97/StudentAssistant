@@ -13,42 +13,49 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Professor extends HashableEntity {
-    private String scheduleLink;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String phoneNumber;
-    private String level;
-    private String website;
-    private String cabinet;
+	private String scheduleLink;
+	private String firstName;
+	private String lastName;
+	private String email;
+	private String phoneNumber;
+	private String level;
+	private String website;
+	private String cabinet;
 
-    private String professorImageMetadataKey;
+	private String professorImageMetadataKey;
 
-    private List<String> filesMetadata = new LinkedList<>();
-    private List<String> courses = new LinkedList<>();
-    private List<String> otherActivities = new LinkedList<>();
-    private List<String> scheduleClasses = new LinkedList<>();
+	private List<String> filesMetadata = new LinkedList<>();
+	private List<String> courses = new LinkedList<>();
+	private List<String> otherActivities = new LinkedList<>();
+	private List<String> recurringClasses = new LinkedList<>();
+	private List<String> oneTimeClasses = new LinkedList<>();
 
-    @Override
-    public String computeHashingString() {
-        return getFirstName() + getLastName() + getPhoneNumber();
-    }
+	@Override
+	public String computeHashingString() {
+		return getFirstName() + getLastName() + getPhoneNumber();
+	}
 
-    public void addCourse(String courseKey) {
-        if (!courses.contains(courseKey)) {
-            courses.add(courseKey);
-        }
-    }
+	public void addCourse(String courseKey) {
+		if (!courses.contains(courseKey)) {
+			courses.add(courseKey);
+		}
+	}
 
-    public void addOtherActivity(String otherActivityKey) {
-        if (!otherActivities.contains(otherActivityKey)) {
-            otherActivities.add(otherActivityKey);
-        }
-    }
+	public void addOtherActivity(String otherActivityKey) {
+		if (!otherActivities.contains(otherActivityKey)) {
+			otherActivities.add(otherActivityKey);
+		}
+	}
 
-    public void addScheduleClass(String scheduleClassKey) {
-        if (!scheduleClasses.contains(scheduleClassKey)) {
-            scheduleClasses.add(scheduleClassKey);
-        }
-    }
+	public void addRecurringClass(String scheduleClassKey) {
+		if (!recurringClasses.contains(scheduleClassKey)) {
+			recurringClasses.add(scheduleClassKey);
+		}
+	}
+
+	public void addOneTimeClass(String scheduleClassKey) {
+		if (!oneTimeClasses.contains(scheduleClassKey)) {
+			oneTimeClasses.add(scheduleClassKey);
+		}
+	}
 }

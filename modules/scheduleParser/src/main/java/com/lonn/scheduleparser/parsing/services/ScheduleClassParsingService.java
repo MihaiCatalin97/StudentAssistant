@@ -3,8 +3,10 @@ package com.lonn.scheduleparser.parsing.services;
 import com.lonn.scheduleparser.parsing.Logger;
 import com.lonn.scheduleparser.parsing.abstractions.ParsingService;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 
@@ -79,7 +81,11 @@ public abstract class ScheduleClassParsingService<T extends ScheduleClass> exten
 
 	private <U extends Discipline> void linkScheduleClassToDiscipline(U discipline, T scheduleClass) {
 		scheduleClass.setDiscipline(discipline.getKey());
-		discipline.addScheduleClass(scheduleClass.getKey());
+
+		if (scheduleClass instanceof RecurringClass)
+			discipline.addRecurringClass(scheduleClass.getKey());
+		else if (scheduleClass instanceof OneTimeClass)
+			discipline.addOneTimeClass(scheduleClass.getKey());
 	}
 
 	private <U extends Discipline> void linkScheduleClassAndDisciplineToProfessors(T scheduleClass, U discipline) {
@@ -110,7 +116,11 @@ public abstract class ScheduleClassParsingService<T extends ScheduleClass> exten
 	}
 
 	private void linkScheduleClassToProfessor(T scheduleClass, Professor professor) {
-		professor.addScheduleClass(scheduleClass.getKey());
+		if (scheduleClass instanceof RecurringClass)
+			professor.addRecurringClass(scheduleClass.getKey());
+		else if (scheduleClass instanceof OneTimeClass)
+			professor.addOneTimeClass(scheduleClass.getKey());
+
 		scheduleClass.addProfessor(professor.getKey());
 	}
 

@@ -8,13 +8,15 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.EntityActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
-import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.FileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.ProfessorImageUploadDialog;
 
 import static android.content.Intent.createChooser;
 
 public class ProfessorEntityActivity extends EntityActivity<ProfessorViewModel> {
+	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
 	ProfessorEntityActivityLayoutBinding binding;
 	private ProfessorViewModel viewModel;
 	private ProfessorEntityActivityFirebaseDispatcher dispatcher;

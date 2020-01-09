@@ -13,9 +13,9 @@ import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
 import com.lonn.studentassistant.databinding.ScheduleTableRowViewBinding;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
-import com.lonn.studentassistant.viewModels.entities.GradeViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 

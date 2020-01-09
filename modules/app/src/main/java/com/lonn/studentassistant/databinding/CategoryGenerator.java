@@ -5,10 +5,10 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializatio
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
-import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel;
-import com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

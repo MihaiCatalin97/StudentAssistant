@@ -2,6 +2,7 @@ package com.lonn.studentassistant.firebaselayer.database;
 
 import com.lonn.studentassistant.firebaselayer.entities.Administrator;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
@@ -25,7 +26,7 @@ public class DatabaseTableContainer {
     public static final DatabaseTable<User> USERS;
     public static final DatabaseTable<IdentificationHash> IDENTIFICATION_HASHES;
     public static final DatabaseTable<FileMetadata> FILE_METADATA;
-    public static final DatabaseTable<FileMetadata> FILE_CONTENT;
+    public static final DatabaseTable<FileContent> FILE_CONTENT;
 
     static {
         ADMINISTRATORS = new DatabaseTable<>(Administrator.class, "Administrators");
@@ -39,7 +40,7 @@ public class DatabaseTableContainer {
         USERS = new DatabaseTable<>(User.class, "Users");
         IDENTIFICATION_HASHES = new DatabaseTable<>(IdentificationHash.class, "IdentificationHashes");
         FILE_METADATA = new DatabaseTable<>(FileMetadata.class, "Files/Metadata");
-        FILE_CONTENT = new DatabaseTable<>(FileMetadata.class, "Files/Content");
+        FILE_CONTENT = new DatabaseTable<>(FileContent.class, "Files/Content");
     }
 
     public static <T extends BaseEntity> DatabaseTable valueOf(Class<T> entityClass) {

@@ -8,7 +8,7 @@
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
 
         <variable
             name="otherActivities"

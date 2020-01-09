@@ -8,22 +8,12 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.EntityActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
-import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
-import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.FileViewModel;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.CourseFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.FileUploadDialog;
-
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_CONTENT;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_METADATA;
-import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
-import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
 
 public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
@@ -31,7 +21,6 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 	private CourseViewModel viewModel;
 	private CourseEntityActivityFirebaseDispatcher dispatcher;
 	private FileUploadDialog fileUploadDialog;
-	private ScrollViewCategory<FileViewModel> filesCategory;
 
 	protected void loadAll() {
 		dispatcher.loadAll();
@@ -49,7 +38,7 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 		binding.setCourse(viewModel);
 
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
-		filesCategory = findViewById(R.id.filesCategory);
+		ScrollViewCategory<FileMetadataViewModel> filesCategory = findViewById(R.id.filesCategory);
 
 		filesCategory.setOnAddAction(() -> {
 			fileUploadDialog = new CourseFileUploadDialog(this,
@@ -57,14 +46,12 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 			fileUploadDialog.show();
 		});
 
-		filesCategory.setOnDeleteAction((FileViewModel fileViewModel) -> {
-			firebaseConnection.execute(new DeleteByIdRequest()
-					.databaseTable(FILE_METADATA)
-					.key(fileViewModel.getKey()));
+		filesCategory.setOnDeleteAction((FileMetadataViewModel fileViewModel) -> {
+			firebaseApi.getFileMetadataService()
+					.deleteById(fileViewModel.getKey());
 
-			firebaseConnection.execute(new DeleteByIdRequest()
-					.databaseTable(FILE_CONTENT)
-					.key(fileViewModel.getFileContentKey()));
+			firebaseApi.getFileContentService()
+					.deleteById(fileViewModel.getFileContentKey());
 
 			removeMetadataFromCourse(viewModel.getKey(), fileViewModel.getKey());
 		});
@@ -77,17 +64,13 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 	}
 
 	private void removeMetadataFromCourse(String courseKey, String fileMetadataKey) {
-		getFirebaseConnection().execute(new GetRequest<Course>()
-				.databaseTable(COURSES)
-				.predicate(where(ID).equalTo(courseKey))
-				.onSuccess((courses) -> {
-					Course course = courses.get(0);
+		getFirebaseApi().getCourseService()
+				.getById(courseKey)
+				.onComplete(course -> {
 					course.getFilesMetadata().remove(fileMetadataKey);
 
-					getFirebaseConnection().execute(new SaveRequest<Course>()
-							.databaseTable(COURSES)
-							.entity(course));
-				})
-				.subscribe(false));
+					getFirebaseApi().getCourseService()
+							.save(course);
+				});
 	}
 }

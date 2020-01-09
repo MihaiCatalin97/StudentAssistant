@@ -3,13 +3,13 @@ package com.lonn.studentassistant.viewModels;
 import com.lonn.studentassistant.activities.implementations.entityActivities.course.CourseEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.professor.ProfessorEntityActivity;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.utils.Utils;
-import com.lonn.studentassistant.viewModels.entities.CourseViewModel;
-import com.lonn.studentassistant.viewModels.entities.FileViewModel;
-import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
-import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
-import com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
@@ -41,11 +41,11 @@ public class ScrollViewEntityViewModelFactory {
 			}
 			return partial((ScheduleClassViewModel) entity);
 		}
-		if (entity instanceof FileViewModel) {
+		if (entity instanceof FileMetadataViewModel) {
 			if (viewType.equals(FULL)) {
-				return full((FileViewModel) entity);
+				return full((FileMetadataViewModel) entity);
 			}
-			return partial((FileViewModel) entity);
+			return partial((FileMetadataViewModel) entity);
 		}
 		return null;
 	}
@@ -148,7 +148,7 @@ public class ScrollViewEntityViewModelFactory {
 		return new ScrollViewEntityViewModel(null, field1, field2, field3, field4, null);
 	}
 
-	private static ScrollViewEntityViewModel partial(FileViewModel fileViewModel) {
+	private static ScrollViewEntityViewModel partial(FileMetadataViewModel fileViewModel) {
 		String field1 = fileViewModel.getFileTitle();
 		String field2;
 		String field3;
@@ -166,7 +166,7 @@ public class ScrollViewEntityViewModelFactory {
 		return new ScrollViewEntityViewModel(null, field1, field2, field3, null, null);
 	}
 
-	private static ScrollViewEntityViewModel full(FileViewModel fileViewModel) {
+	private static ScrollViewEntityViewModel full(FileMetadataViewModel fileViewModel) {
 		String field1 = fileViewModel.getFileTitle();
 		String field2;
 		String field3;

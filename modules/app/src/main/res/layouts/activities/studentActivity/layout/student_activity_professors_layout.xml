@@ -6,9 +6,9 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
 

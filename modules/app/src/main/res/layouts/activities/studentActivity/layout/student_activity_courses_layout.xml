@@ -6,13 +6,13 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
         <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
 

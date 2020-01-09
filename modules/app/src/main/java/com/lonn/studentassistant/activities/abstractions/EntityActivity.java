@@ -6,7 +6,7 @@ import androidx.core.app.NavUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEntity>> extends FirebaseConnectedActivity {
 	protected abstract void loadAll();

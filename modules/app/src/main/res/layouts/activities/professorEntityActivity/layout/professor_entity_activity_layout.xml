@@ -18,7 +18,23 @@
 
         <variable
             name="professor"
-            type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+
+        <variable
+            name="courses"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+
+        <variable
+            name="otherActivities"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+
+        <variable
+            name="recurringClasses"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
+
+        <variable
+            name="oneTimeClasses"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,8 +72,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="150dp"
             android:layout_marginTop="150dp"
-            app:cardCornerRadius="20dp"
             app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="20dp"
             app:layout_constraintLeft_toLeftOf="@id/professorImageCardView"
             app:layout_constraintTop_toTopOf="@id/professorImageCardView">
 
@@ -150,21 +166,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Courses`}"
-                    android:childEntities="@{professor.courses}"
-                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}" />
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:childEntities="@{courses}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Other activities`}"
-                    android:childEntities="@{professor.otherActivities}"
+                    android:childEntities="@{otherActivities}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Regular schedule`}"
-                    android:childEntities="@{professor.recurringClasses}"
+                    android:childEntities="@{recurringClasses}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
@@ -175,12 +191,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Special schedule`}"
-                    android:childEntities="@{professor.oneTimeClasses}"
+                    android:childEntities="@{oneTimeClasses}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
-                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, professor.oneTimeClasses)}" />
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses)}" />
 
             </LinearLayout>
         </ScrollView>

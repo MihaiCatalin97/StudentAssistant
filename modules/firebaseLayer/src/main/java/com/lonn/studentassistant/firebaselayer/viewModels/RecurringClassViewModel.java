@@ -22,4 +22,10 @@ public class RecurringClassViewModel extends ScheduleClassViewModel<RecurringCla
 	public String getDay() {
 		return Utils.dayToString(day);
 	}
+
+	@Override
+	public RecurringClassViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

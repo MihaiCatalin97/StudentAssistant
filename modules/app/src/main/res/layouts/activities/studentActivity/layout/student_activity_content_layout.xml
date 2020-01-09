@@ -3,15 +3,15 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
 
         <variable
             name="courses"
@@ -21,20 +21,20 @@
             name="professors"
             type="java.util.Collection&lt;ProfessorViewModel&gt;" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
 
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
 
         <variable
             name="otherActivities"

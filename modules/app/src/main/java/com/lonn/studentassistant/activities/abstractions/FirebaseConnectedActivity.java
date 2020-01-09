@@ -11,20 +11,21 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import java.util.List;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
-	protected FirebaseConnection firebaseConnection;
+	protected FirebaseApi firebaseApi;
 	private Handler handler = new Handler();
 
-	public FirebaseConnection getFirebaseConnection() {
-		return firebaseConnection;
+	public FirebaseApi getFirebaseApi() {
+		return firebaseApi;
 	}
 
 	public void showSnackBar(String message) {
@@ -81,7 +82,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		firebaseConnection = FirebaseConnection.getInstance(getBaseContext());
+		firebaseApi = FirebaseApi.getApi(getBaseContext());
 		inflateLayout();
 	}
 
@@ -103,5 +104,10 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		if (inputMethodManager != null) {
 			inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 		}
+	}
+
+	public void logAndShowError(String errorMessage, Exception exception, Logger logger) {
+		logger.error(errorMessage, exception);
+		showSnackBar(errorMessage, 1000);
 	}
 }

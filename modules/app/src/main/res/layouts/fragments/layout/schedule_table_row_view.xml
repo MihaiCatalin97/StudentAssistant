@@ -7,7 +7,7 @@
 
         <variable
             name="scheduleClass"
-            type="com.lonn.studentassistant.viewModels.entities.abstractions.ScheduleClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
     </data>
 
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"

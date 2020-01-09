@@ -28,4 +28,10 @@ public class CourseViewModel extends DisciplineViewModel<Course> {
 			return "Optional discipline (Pack " + pack + ")";
 		}
 	}
+
+	@Override
+	public CourseViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

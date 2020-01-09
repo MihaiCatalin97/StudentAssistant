@@ -17,4 +17,10 @@ import lombok.experimental.Accessors;
 public class OtherActivityViewModel extends DisciplineViewModel<OtherActivity> {
 	@Bindable
 	public String type;
+
+	@Override
+	public OtherActivityViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

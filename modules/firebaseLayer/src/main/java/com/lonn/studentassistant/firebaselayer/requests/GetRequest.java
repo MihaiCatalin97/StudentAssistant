@@ -14,17 +14,17 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = false)
-public class GetRequest<T extends BaseEntity> extends Request<List<T>, Exception> {
-	private DatabaseTable databaseTable;
+public class GetRequest<T extends BaseEntity, V extends Throwable> extends Request<List<T>, V> {
+	private DatabaseTable<T> databaseTable;
 	private Boolean subscribe = true;
 	private Predicate<? super T> predicate;
 
-	public GetRequest<T> onSuccess(Consumer<List<T>> onSuccess) {
+	public GetRequest<T, V> onSuccess(Consumer<List<T>> onSuccess) {
 		this.onSuccess = onSuccess;
 		return this;
 	}
 
-	public GetRequest<T> onError(Consumer<Exception> onError) {
+	public GetRequest<T, V> onError(Consumer<V> onError) {
 		this.onError = onError;
 		return this;
 	}
@@ -33,7 +33,7 @@ public class GetRequest<T extends BaseEntity> extends Request<List<T>, Exception
 		return onSuccess;
 	}
 
-	public Consumer<Exception> onError(){
+	public Consumer<V> onError(){
 		return onError;
 	}
 }

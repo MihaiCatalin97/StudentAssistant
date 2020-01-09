@@ -19,6 +19,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.debug.DatabasePopulator;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.views.implementations.EntityView;
 
 public class DebugActivity extends FirebaseConnectedActivity {
     private DatabasePopulator populator;
@@ -73,7 +74,7 @@ public class DebugActivity extends FirebaseConnectedActivity {
     protected void onCreate(Bundle savedBundle) {
         super.onCreate(savedBundle);
 
-        populator = new DatabasePopulator(FirebaseConnection.getInstance(getBaseContext()), this);
+        populator = new DatabasePopulator(this);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.INTERNET}, 1);
@@ -101,16 +102,5 @@ public class DebugActivity extends FirebaseConnectedActivity {
                 Log.e("Error", databaseError.getMessage());
             }
         });
-
-
-//
-//        firebaseConnection.execute(new GetRequest<Student>()
-//                .databaseTable(DatabaseTable.STUDENTS)
-//                .subscribe(false)
-//                .onSuccess(students -> {
-//                    for (Student student : students)
-//                        Log.e("Student", student.toString());
-//                })
-//                .onError(error -> Log.e("Error", error.getMessage())));
     }
 }

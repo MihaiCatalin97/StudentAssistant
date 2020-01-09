@@ -87,4 +87,10 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 	public int getNumberOfRooms() {
 		return rooms.size();
 	}
+
+	@Override
+	public ScheduleClassViewModel<T> setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

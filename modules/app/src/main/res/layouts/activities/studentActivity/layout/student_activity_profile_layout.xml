@@ -8,7 +8,7 @@
 
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
     </data>
 
     <ScrollView

@@ -1,35 +1,31 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
-import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseListTask;
-import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseSingleTask;
-import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseTask;
+import com.lonn.studentassistant.firebaselayer.adapters.CourseAdapter;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 
-import java.util.List;
-
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
-import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
-import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
 
-public class CourseService {
-	private FirebaseConnection firebaseConnection;
+public class CourseService extends Service<Course, Exception, CourseViewModel> {
+	private static CourseService instance;
 
-	CourseService(FirebaseConnection firebaseConnection) {
-		this.firebaseConnection = firebaseConnection;
+	public static CourseService getInstance(FirebaseConnection firebaseConnection) {
+		if (instance == null) {
+			instance = new CourseService(firebaseConnection);
+		}
+
+		return instance;
 	}
 
-	public FirebaseTask<List<Course>, Exception> getAll() {
-		FirebaseTask<List<CourseViewModel>, Exception> task = new FirebaseListTask<>(firebaseConnection,
-				new GetRequest<Course>()
-				.databaseTable(COURSES));
+	private CourseService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new CourseAdapter();
 	}
 
-	public FirebaseTask<Course, Exception> getById(String id) {
-		return new FirebaseSingleTask<>(firebaseConnection, new GetRequest<Course>()
-				.databaseTable(COURSES)
-				.predicate(where(ID).equalTo(id)));
+	@Override
+	protected DatabaseTable<Course> getDatabaseTable() {
+		return COURSES;
 	}
 }

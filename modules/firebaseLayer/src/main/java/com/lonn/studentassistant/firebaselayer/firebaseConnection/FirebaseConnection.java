@@ -107,7 +107,7 @@ public class FirebaseConnection {
 		}
 	}
 
-	public <T extends BaseEntity> void execute(GetRequest<T> request) {
+	public <T extends BaseEntity> void execute(GetRequest<T, Exception> request) {
 		@SuppressWarnings("unchecked")
 		DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
 
@@ -117,7 +117,7 @@ public class FirebaseConnection {
 		}
 	}
 
-	public <T extends BaseEntity> void execute(SaveRequest<T> request) {
+	public <T extends BaseEntity> void execute(SaveRequest<T, Exception> request) {
 		@SuppressWarnings("unchecked")
 		DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
 
@@ -157,11 +157,11 @@ public class FirebaseConnection {
 	}
 
 	public void execute(final CredentialsCheckRequest request) {
-		execute(new GetRequest<IdentificationHash>()
+		execute(new GetRequest<IdentificationHash, Exception>()
 				.databaseTable(IDENTIFICATION_HASHES)
 				.onSuccess((identifications) -> {
 					if (identifications.size() == 1) {
-						execute(new GetRequest<User>()
+						execute(new GetRequest<User, Exception>()
 								.databaseTable(USERS)
 								.predicate(Predicate.where(UserField.IDENTIFICATION_HASH)
 										.equalTo(request.identificationHash()))
@@ -210,7 +210,7 @@ public class FirebaseConnection {
 							.setUserId(newUser.getUid())
 							.setPersonUUID(request.personUUID());
 
-					execute(new SaveRequest<>()
+					execute(new SaveRequest<User, Exception>()
 							.databaseTable(USERS)
 							.entity(registeringUser)
 							.onSuccess((u) -> {

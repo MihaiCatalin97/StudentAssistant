@@ -19,4 +19,10 @@ import lombok.experimental.Accessors;
 public class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeClass> {
 	@Bindable
 	public Date date;
+
+	@Override
+	public OneTimeClassViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

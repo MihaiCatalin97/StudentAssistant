@@ -16,8 +16,4 @@ public class FileMetadata extends BaseEntity {
     private String fileContentKey;
     private String fileTitle;
     private String fileDescription;
-
-    public String getFullFileName() {
-        return fileName + "." + fileType;
-    }
 }

@@ -27,7 +27,7 @@ public class DatabaseContextWithIdentification<T extends HashableEntity> extends
 
     @Override
     public void saveOrUpdate(T entity,
-                             Runnable onSuccess,
+                             Consumer<Void> onSuccess,
                              Consumer<Exception> onError) {
         if (getDatabase() != null) {
             Task<Void> dbTask = getDatabase().child(entity
@@ -39,7 +39,7 @@ public class DatabaseContextWithIdentification<T extends HashableEntity> extends
 
         IdentificationHash identificationHash = IdentificationHash.of(entity);
         entityIdentificationDatabaseContext.saveOrUpdate(identificationHash,
-                () -> log.info("Successfully updated identification " +
+                (none) -> log.info("Successfully updated identification " +
                         "for entity with key" + entity.getKey()),
                 (error) -> log.error("Error updating identification for " +
                         "entity with key " + entity.getKey() + ": " + error.getMessage()));
@@ -47,7 +47,7 @@ public class DatabaseContextWithIdentification<T extends HashableEntity> extends
 
     @Override
     public void delete(String key,
-                       Runnable onSuccess,
+                       Consumer<Void> onSuccess,
                        Consumer<Exception> onError) {
         if (getDatabase() != null) {
             Task<Void> dbTask = getDatabase().child(key).removeValue();
@@ -59,7 +59,7 @@ public class DatabaseContextWithIdentification<T extends HashableEntity> extends
                     if (identifications.size() > 0) {
                         for (IdentificationHash identification : identifications) {
                             entityIdentificationDatabaseContext.delete(identification.getKey(),
-                                    () -> log.info("Successfully deleted identification " +
+                                    (none) -> log.info("Successfully deleted identification " +
                                             "for entity with key" + key),
                                     (error) -> log.error("Error deleting identification for " +
                                             "entity with key " + key + ": " + error.getMessage()));

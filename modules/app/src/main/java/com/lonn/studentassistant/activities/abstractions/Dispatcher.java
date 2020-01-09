@@ -1,19 +1,15 @@
 package com.lonn.studentassistant.activities.abstractions;
 
+import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel;
-
-import java.util.Collection;
-import java.util.List;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 public abstract class Dispatcher<T extends BaseEntity> {
-    protected FirebaseConnection firebaseConnection;
-    protected EntityActivity<? extends EntityViewModel<T>> entityActivity;
+	protected FirebaseApi firebaseApi;
+	protected EntityActivity<? extends EntityViewModel<T>> entityActivity;
 
-    protected Dispatcher(EntityActivity<? extends EntityViewModel<T>> entityActivity) {
-        this.entityActivity = entityActivity;
-        firebaseConnection = entityActivity.getFirebaseConnection();
-
-    }
+	protected Dispatcher(EntityActivity<? extends EntityViewModel<T>> entityActivity) {
+		this.entityActivity = entityActivity;
+		firebaseApi = entityActivity.getFirebaseApi();
+	}
 }

@@ -3,45 +3,45 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.viewModels.entities.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
             name="user"
-            type="com.lonn.studentassistant.viewModels.entities.UserViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel" />
 
         <variable
             name="student"
-            type="com.lonn.studentassistant.viewModels.entities.StudentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
 
         <variable
             name="courses"
             type="java.util.Collection&lt;CourseViewModel&gt;" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
 
         <variable
             name="otherActivities"
             type="java.util.Collection&lt;OtherActivityViewModel&gt;" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.ProfessorViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
         <variable
             name="professors"
             type="java.util.Collection&lt;ProfessorViewModel&gt;" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.Map&lt;String,com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
+            type="java.util.Map&lt;String,com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.Map&lt;String,com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
+            type="java.util.Map&lt;String,com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"

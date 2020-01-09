@@ -20,7 +20,8 @@ public abstract class Discipline extends BaseEntity{
 
     private List<String> filesMetadata = new LinkedList<>();
     private List<String> professors = new LinkedList<>();
-    private List<String> scheduleClasses = new LinkedList<>();
+    private List<String> recurringClasses = new LinkedList<>();
+    private List<String> oneTimeClasses = new LinkedList<>();
 
     public void addProfessor(String professorKey) {
         if (!professors.contains(professorKey)) {
@@ -28,9 +29,15 @@ public abstract class Discipline extends BaseEntity{
         }
     }
 
-    public void addScheduleClass(String scheduleClassKey) {
-        if (!scheduleClasses.contains(scheduleClassKey)) {
-            scheduleClasses.add(scheduleClassKey);
+    public void addRecurringClass(String scheduleClassKey) {
+        if (!recurringClasses.contains(scheduleClassKey)) {
+            recurringClasses.add(scheduleClassKey);
+        }
+    }
+
+    public void addOneTimeClass(String scheduleClassKey) {
+        if (!oneTimeClasses.contains(scheduleClassKey)) {
+            oneTimeClasses.add(scheduleClassKey);
         }
     }
 }

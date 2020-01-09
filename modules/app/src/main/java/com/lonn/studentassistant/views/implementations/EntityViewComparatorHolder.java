@@ -1,7 +1,7 @@
 package com.lonn.studentassistant.views.implementations;
 
+import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
-import com.lonn.studentassistant.viewModels.entities.ProfessorViewModel;
 
 public class EntityViewComparatorHolder {
     public static Comparator<EntityView> ASCENDING_TITLE_COMPARATOR = (entityView1, entityView2) ->

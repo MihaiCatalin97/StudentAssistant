@@ -13,4 +13,10 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class GradeViewModel extends EntityViewModel<Grade> {
+
+	@Override
+	public GradeViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

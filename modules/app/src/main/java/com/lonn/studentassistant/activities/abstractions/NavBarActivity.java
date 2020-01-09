@@ -17,9 +17,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.viewModels.entities.UserViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -139,6 +140,7 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 		navigationView.setNavigationItemSelectedListener(this);
 
 		NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
-		binding.setPassedUsed(new UserViewModel(FirebaseAuth.getInstance().getCurrentUser()));
+		FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+		binding.setPassedUsed(new UserViewModel(currentUser));
 	}
 }

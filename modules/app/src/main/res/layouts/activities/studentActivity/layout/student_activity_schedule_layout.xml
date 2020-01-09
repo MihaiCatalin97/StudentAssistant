@@ -10,19 +10,19 @@
 
         <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
 
-        <import type="com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.OneTimeClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.viewModels.entities.RecurringClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

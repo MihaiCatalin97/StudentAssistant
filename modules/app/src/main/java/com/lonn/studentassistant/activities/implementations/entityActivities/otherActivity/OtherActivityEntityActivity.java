@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.EntityActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
-import com.lonn.studentassistant.viewModels.entities.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 
 public class OtherActivityEntityActivity extends EntityActivity<OtherActivityViewModel> {
     OtherActivityEntityActivityLayoutBinding binding;

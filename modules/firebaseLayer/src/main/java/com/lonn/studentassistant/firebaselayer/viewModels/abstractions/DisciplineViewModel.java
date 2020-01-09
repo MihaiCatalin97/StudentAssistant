@@ -40,4 +40,10 @@ public abstract class DisciplineViewModel<T extends Discipline> extends EntityVi
 	public int getWebsiteVisible() {
 		return (website != null) ? View.VISIBLE : View.GONE;
 	}
+
+	@Override
+	public DisciplineViewModel<T> setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

@@ -11,10 +11,8 @@ import android.widget.Toast;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.firebaselayer.entities.FileContent;
-import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
-import com.lonn.studentassistant.firebaselayer.requests.DeleteByIdRequest;
-import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.file.CustomFileReader;
 
@@ -22,8 +20,6 @@ import java.io.IOException;
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.createChooser;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_CONTENT;
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_METADATA;
 
 public abstract class FileUploadDialog extends Dialog {
 	public static final int SELECT_FILE_REQUEST_CODE = 123;
@@ -31,8 +27,8 @@ public abstract class FileUploadDialog extends Dialog {
 	private static final Logger LOGGER = Logger.ofClass(FileUploadDialog.class);
 	protected FirebaseConnectedActivity firebaseConnectedActivity;
 	private String aggregatedEntityKey;
-	private FileMetadata fileMetadata;
-	private FileContent fileContent;
+	private FileMetadataViewModel fileMetadata;
+	private FileContentViewModel fileContent;
 	private EditText fileTitleEditText;
 	private EditText fileDescriptionEditText;
 	private TextView fileNameText;
@@ -46,9 +42,9 @@ public abstract class FileUploadDialog extends Dialog {
 		this.aggregatedEntityKey = aggregatedEntityKey;
 		customFileReader = new CustomFileReader(firebaseConnectedActivity.getContentResolver());
 
-		fileMetadata = new FileMetadata();
+		fileMetadata = new FileMetadataViewModel();
 
-		fileContent = new FileContent()
+		fileContent = new FileContentViewModel()
 				.setFileMetadataKey(fileMetadata.getKey());
 
 		fileMetadata.setFileContentKey(fileContent.getKey());
@@ -130,7 +126,7 @@ public abstract class FileUploadDialog extends Dialog {
 		fileNameText = findViewById(R.id.fileInputDialogChosenFileName);
 	}
 
-	private void saveFile(FileContent fileContent, FileMetadata fileMetadata) {
+	private void saveFile(FileContentViewModel fileContent, FileMetadataViewModel fileMetadata) {
 		try {
 			fileContent = fileContent
 					.setFileContentBase64(customFileReader.readBase64(selectedFileUri));
@@ -139,36 +135,36 @@ public abstract class FileUploadDialog extends Dialog {
 			logAndShowException("An error occurred while reading the file", exception);
 		}
 
-		firebaseConnectedActivity.getFirebaseConnection().execute(new SaveRequest<FileContent>()
-				.entity(fileContent)
-				.databaseTable(FILE_CONTENT)
-				.onSuccess(() -> saveFileMetadata(fileMetadata))
-				.onError((error) ->
-						logAndShowException("An error occurred while uploading the file", error)
-				));
+		firebaseConnectedActivity.getFirebaseApi()
+				.getFileContentService()
+				.save(fileContent)
+				.onComplete(none -> linkFileToEntity(aggregatedEntityKey, fileMetadata),
+						error -> logAndShowException("An error orccured while uploading the file", error));
 	}
 
-	private void saveFileMetadata(FileMetadata fileMetadata) {
-		firebaseConnectedActivity.getFirebaseConnection().execute(new SaveRequest<FileMetadata>()
-				.entity(fileMetadata)
-				.databaseTable(FILE_METADATA)
-				.onSuccess(() -> linkFileToEntity(aggregatedEntityKey, fileMetadata))
-				.onError((error) -> {
-					logAndShowException("An error occurred while uploading the file", error);
-					deleteFileContent(fileMetadata.getFileContentKey());
-				}));
+	private void saveFileMetadata(FileMetadataViewModel fileMetadata) {
+		firebaseConnectedActivity.getFirebaseApi()
+				.getFileMetadataService()
+				.save(fileMetadata)
+				.onComplete(none -> linkFileToEntity(aggregatedEntityKey, fileMetadata),
+						error -> {
+							logAndShowException("An error occurred while uploading the file", error);
+							deleteFileContent(fileMetadata.getFileContentKey());
+						});
 	}
 
 	protected void deleteFileMetadata(String fileMetadataKey) {
-		firebaseConnectedActivity.getFirebaseConnection().execute(new DeleteByIdRequest()
-				.databaseTable(FILE_METADATA)
-				.key(fileMetadataKey));
+		firebaseConnectedActivity.getFirebaseApi()
+				.getFileMetadataService()
+				.deleteById(fileMetadataKey)
+				.onCompleteDoNothing();
 	}
 
 	protected void deleteFileContent(String fileContentKey) {
-		firebaseConnectedActivity.getFirebaseConnection().execute(new DeleteByIdRequest()
-				.databaseTable(FILE_CONTENT)
-				.key(fileContentKey));
+		firebaseConnectedActivity.getFirebaseApi()
+				.getFileContentService()
+				.deleteById(fileContentKey)
+				.onCompleteDoNothing();
 	}
 
 	protected void logAndShowException(String errorMessage, Exception exception) {
@@ -176,7 +172,7 @@ public abstract class FileUploadDialog extends Dialog {
 		LOGGER.error(errorMessage, exception);
 	}
 
-	protected abstract void linkFileToEntity(String aggregatedEntityKey, FileMetadata fileMetadata);
+	protected abstract void linkFileToEntity(String aggregatedEntityKey, FileMetadataViewModel fileMetadata);
 
 	protected abstract boolean shouldHaveMetadata();
 }

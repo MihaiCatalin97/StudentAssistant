@@ -11,58 +11,57 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.LoginActivity;
 import com.lonn.studentassistant.databinding.AccountCreationActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.RegisterRequest;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.RegistrationValidator;
 
 public class AccountCreationActivity extends FirebaseConnectedActivity {
-    private String personUUID;
-    private RegistrationValidator registrationValidator = new RegistrationValidator();
-    RegistrationInformation newAccountCredentials = new RegistrationInformation();
+	private String personUUID;
+	private RegistrationValidator registrationValidator = new RegistrationValidator();
+	RegistrationInformation newAccountCredentials = new RegistrationInformation();
 
-    public void tapCreateAccountButton(View v) {
-        ValidationResult registerValidationResult = registrationValidator.validate(newAccountCredentials);
+	public void tapCreateAccountButton(View v) {
+		ValidationResult registerValidationResult = registrationValidator.validate(newAccountCredentials);
 
-        if (!registerValidationResult.isValid()) {
-            Toast.makeText(this.getBaseContext(),
-                    registerValidationResult.getErrorMessage(),
-                    Toast.LENGTH_LONG)
-                    .show();
+		if (!registerValidationResult.isValid()) {
+			Toast.makeText(this.getBaseContext(),
+					registerValidationResult.getErrorMessage(),
+					Toast.LENGTH_LONG)
+					.show();
 
-            return;
-        }
+			return;
+		}
 
-        hideKeyboard();
-        showSnackBar("Registering...");
+		hideKeyboard();
+		showSnackBar("Registering...");
 
-        firebaseConnection.execute(new RegisterRequest()
-                .email(newAccountCredentials.getEmail())
-                .password(newAccountCredentials.getPassword())
-                .personUUID(personUUID)
-                .onSuccess((user) -> {
-                    showSnackBar("Account created successfully!", 1000);
-                    executeWithDelay(this::backToLogin, 1500);
-                })
-                .onError((errorMessage) -> {
-                    showSnackBar(errorMessage, 1000);
-                }));
-    }
+		FirebaseConnection.getInstance(getBaseContext()).execute(new RegisterRequest()
+				.email(newAccountCredentials.getEmail())
+				.password(newAccountCredentials.getPassword())
+				.personUUID(personUUID)
+				.onSuccess((user) -> {
+					showSnackBar("Account created successfully!", 1000);
+					executeWithDelay(this::backToLogin, 1500);
+				})
+				.onError((exception) -> showSnackBar(exception.getMessage(), 1000)));
+	}
 
-    protected void inflateLayout() {
-        AccountCreationActivityLayoutBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.account_creation_activity_layout);
+	protected void inflateLayout() {
+		AccountCreationActivityLayoutBinding binding =
+				DataBindingUtil.setContentView(this, R.layout.account_creation_activity_layout);
 
-        binding.setCredentials(newAccountCredentials);
-    }
+		binding.setCredentials(newAccountCredentials);
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        personUUID = getIntent().getStringExtra("personKey");
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		personUUID = getIntent().getStringExtra("personKey");
+	}
 
-    private void backToLogin() {
-        Intent loginActivityIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginActivityIntent);
-    }
+	private void backToLogin() {
+		Intent loginActivityIntent = new Intent(this, LoginActivity.class);
+		startActivity(loginActivityIntent);
+	}
 }

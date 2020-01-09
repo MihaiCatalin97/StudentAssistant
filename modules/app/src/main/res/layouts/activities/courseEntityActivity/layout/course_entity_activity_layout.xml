@@ -14,7 +14,23 @@
 
         <variable
             name="course"
-            type="com.lonn.studentassistant.viewModels.entities.CourseViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
+
+        <variable
+            name="files"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
+            name="professors"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+
+        <variable
+            name="oneTimeClasses"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
+
+        <variable
+            name="recurringClasses"
+            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
     </data>
 
     <ScrollView
@@ -75,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Files`}"
-                android:childEntities="@{course.filesMetadata}"
+                android:childEntities="@{files}"
                 android:entityName="@{`file`}"
                 android:permissionLevel="@{1}" />
 
@@ -83,14 +99,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Professors`}"
-                android:childEntities="@{course.professors}"
+                android:childEntities="@{professors}"
                 android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}" />
 
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Regular schedule`}"
-                android:childEntities="@{course.recurringClasses}"
+                android:childEntities="@{recurringClasses}"
                 android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                 android:showEmpty="@{false}"
                 android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
@@ -100,10 +116,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Special schedule`}"
-                android:childEntities="@{course.oneTimeClasses}"
+                android:childEntities="@{oneTimeClasses}"
                 android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                 android:showEmpty="@{false}"
-                android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, course.oneTimeClasses)}"
+                android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses)}"
                 app:isTable="@{true}" />
         </LinearLayout>
     </ScrollView>
