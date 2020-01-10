@@ -1,6 +1,5 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
-import com.lonn.studentassistant.firebaselayer.adapters.CourseAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.FileMetadataAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
@@ -12,17 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class FileMetadataService extends Service<FileMetadata, Exception, FileMetadataViewModel> {
 	private static FileMetadataService instance;
 
+	private FileMetadataService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new FileMetadataAdapter();
+	}
+
 	public static FileMetadataService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new FileMetadataService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private FileMetadataService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new FileMetadataAdapter();
 	}
 
 	@Override

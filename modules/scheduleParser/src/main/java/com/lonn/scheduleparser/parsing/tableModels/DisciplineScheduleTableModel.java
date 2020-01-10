@@ -14,12 +14,6 @@ public class DisciplineScheduleTableModel {
 	public static final TableColumn PACKAGE;
 	public static final SparseArray<TableColumn> COLUMN_INDEX_MAP;
 
-	private static TableColumn createColumn(Integer columnIndex) {
-		TableColumn result = new TableColumn( columnIndex);
-		COLUMN_INDEX_MAP.put(columnIndex, result);
-		return result;
-	}
-
 	static {
 		COLUMN_INDEX_MAP = new SparseArray<>();
 
@@ -34,10 +28,16 @@ public class DisciplineScheduleTableModel {
 		PACKAGE = createColumn(8);
 	}
 
-	public static TableColumn getColumnByIndex(Integer columnIndex) {
-		return COLUMN_INDEX_MAP.get(columnIndex);
+	private DisciplineScheduleTableModel() {
 	}
 
-	private DisciplineScheduleTableModel() {
+	private static TableColumn createColumn(Integer columnIndex) {
+		TableColumn result = new TableColumn(columnIndex);
+		COLUMN_INDEX_MAP.put(columnIndex, result);
+		return result;
+	}
+
+	public static TableColumn getColumnByIndex(Integer columnIndex) {
+		return COLUMN_INDEX_MAP.get(columnIndex);
 	}
 }

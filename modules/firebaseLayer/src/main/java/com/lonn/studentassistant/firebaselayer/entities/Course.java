@@ -1,7 +1,10 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,16 +14,16 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Course extends Discipline {
-    private Integer pack;
+	private Integer pack;
 
-    private CycleSpecialization cycleAndSpecialization;
+	private List<CycleSpecializationYear> cycleSpecializationYears = new ArrayList<>();
 
-    public void setCycleAndSpecialization(String cycleAndSpecialization) {
-        this.cycleAndSpecialization = CycleSpecialization.valueOf(cycleAndSpecialization);
-    }
+	public void addCycleSpecializationYear(String cycleSpecializationYear) {
+		this.cycleSpecializationYears.add(CycleSpecializationYear.valueOf(cycleSpecializationYear));
+	}
 
-    public Course setCycleAndSpecialization(CycleSpecialization cycleAndSpecialization) {
-        this.cycleAndSpecialization = cycleAndSpecialization;
-        return this;
-    }
+	public Course addCycleSpecializationYear(CycleSpecializationYear cycleSpecializationYear) {
+		this.cycleSpecializationYears.add(cycleSpecializationYear);
+		return this;
+	}
 }

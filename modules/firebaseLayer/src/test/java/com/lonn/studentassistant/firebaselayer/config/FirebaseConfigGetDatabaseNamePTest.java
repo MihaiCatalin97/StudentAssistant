@@ -22,44 +22,44 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class FirebaseConfigGetDatabaseNamePTest {
-    @Parameter
-    public Context mockContext;
+	@Parameter
+	public Context mockContext;
 
-    @Parameter(value = 1)
-    public String expectedDatabaseName;
+	@Parameter(value = 1)
+	public String expectedDatabaseName;
 
-    @Mock
-    private FirebaseConfig config;
+	@Mock
+	private FirebaseConfig config;
 
-    @Parameters
-    public static Object[][] dataProvider() {
-        Object[][] parameters = new Object[3][];
+	@Parameters
+	public static Object[][] dataProvider() {
+		Object[][] parameters = new Object[3][];
 
-        String getStringResult = UUID.randomUUID().toString();
-        Context mockedContext = Mockito.mock(MockContext.class);
+		String getStringResult = UUID.randomUUID().toString();
+		Context mockedContext = Mockito.mock(MockContext.class);
 
-        MockResources mockResources = Mockito.mock(MockResources.class);
-        Mockito.when(mockResources.getString(R.string.database_name)).thenReturn(getStringResult);
-        Mockito.when(mockedContext.getResources()).thenReturn(mockResources);
+		MockResources mockResources = Mockito.mock(MockResources.class);
+		Mockito.when(mockResources.getString(R.string.database_name)).thenReturn(getStringResult);
+		Mockito.when(mockedContext.getResources()).thenReturn(mockResources);
 
-        parameters[0] = new Object[]{null, "unknown"};
-        parameters[1] = new Object[]{Mockito.mock(MockContext.class), "unknown"};
-        parameters[2] = new Object[]{mockedContext, getStringResult};
+		parameters[0] = new Object[]{null, "unknown"};
+		parameters[1] = new Object[]{Mockito.mock(MockContext.class), "unknown"};
+		parameters[2] = new Object[]{mockedContext, getStringResult};
 
-        return parameters;
-    }
+		return parameters;
+	}
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        Mockito.when(config.getContext()).thenReturn(mockContext);
-        Mockito.when(config.getDatabaseName()).thenCallRealMethod();
-    }
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		Mockito.when(config.getContext()).thenReturn(mockContext);
+		Mockito.when(config.getDatabaseName()).thenCallRealMethod();
+	}
 
-    @Test
-    public void getDatabaseName_shouldReturnTheCorrectString() {
-        String result = config.getDatabaseName();
+	@Test
+	public void getDatabaseName_shouldReturnTheCorrectString() {
+		String result = config.getDatabaseName();
 
-        assertEquals(expectedDatabaseName, result);
-    }
+		assertEquals(expectedDatabaseName, result);
+	}
 }

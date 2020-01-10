@@ -24,11 +24,11 @@ public class DeleteByIdRequest extends Request<Void, Exception> {
 		return this;
 	}
 
-	public Consumer<Void> onSuccess(){
+	public Consumer<Void> onSuccess() {
 		return onSuccess;
 	}
 
-	public Consumer<Exception> onError(){
+	public Consumer<Exception> onError() {
 		return onError;
 	}
 }

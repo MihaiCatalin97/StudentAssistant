@@ -18,19 +18,19 @@
 
         <variable
             name="files"
-            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -111,32 +111,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Files`}"
-                    android:entityName="@{`File`}"
-                    android:showEmpty="@{true}"/>
-
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Files`}"
-                    android:entityName="@{`file`}"
-                    android:childEntities="@{files}"/>
+                    android:childEntities="@{files.values()}"
+                    android:entityName="@{`file`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
-                    android:entityName="@{`professor`}"
-                    android:childEntities="@{professors}"/>
+                    android:childEntities="@{professors.values()}"
+                    android:entityName="@{`professor`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Regular schedule`}"
-                    android:childEntities="@{recurringClasses}"
+                    android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:entityName="@{`regular class`}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
-                    android:entityName="@{`regular class`}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
                     app:isTable="@{true}" />
 
@@ -144,11 +137,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Special schedule`}"
-                    android:childEntities="@{oneTimeClasses}"
+                    android:childEntities="@{oneTimeClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
-                    android:showHeader="@{true}"
                     android:showEmpty="@{false}"
-                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses)}"
+                    android:showHeader="@{true}"
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
                     app:isTable="@{true}" />
 
             </LinearLayout>

@@ -11,6 +11,10 @@ import static com.lonn.scheduleparser.parsing.tableModels.DisciplinesMainPageTab
 import static com.lonn.scheduleparser.parsing.tableParseResults.TableDivElement.fromTableDiv;
 
 public class DisciplinesMainPageParseResult extends ParseResult {
+	private DisciplinesMainPageParseResult() {
+		columnValueMap = new HashMap<>();
+	}
+
 	public static DisciplinesMainPageParseResult fromRow(Element tableRow) {
 		DisciplinesMainPageParseResult result = new DisciplinesMainPageParseResult();
 		Elements tableDivs = tableRow.select("td");
@@ -23,9 +27,5 @@ public class DisciplinesMainPageParseResult extends ParseResult {
 		}
 
 		return result;
-	}
-
-	private DisciplinesMainPageParseResult() {
-		columnValueMap = new HashMap<>();
 	}
 }

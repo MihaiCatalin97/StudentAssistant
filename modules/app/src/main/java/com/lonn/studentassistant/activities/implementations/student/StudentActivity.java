@@ -7,7 +7,6 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
@@ -16,30 +15,13 @@ import static android.view.View.VISIBLE;
 
 public class StudentActivity extends NavBarActivity {
 	private static final Logger LOGGER = Logger.ofClass(StudentActivity.class);
-	StudentViewModel studentViewModel;
 	StudentActivityMainLayoutBinding binding;
 
 	private StudentActivityFirebaseDispatcher dispatcher;
 
 	@Override
-	public void onBackPressed() {
-		if (findViewById(R.id.layoutHome).getVisibility() == VISIBLE) {
-			super.onBackPressed();
-		}
-		else {
-			handleNavBarAction(R.id.nav_home);
-		}
-	}
-
-	@Override
 	public void onStart() {
 		super.onStart();
-
-		dispatcher.loadCourses();
-		dispatcher.loadProfessors();
-		dispatcher.loadOtherActivities();
-		dispatcher.loadOneTimeClasses(studentViewModel);
-		dispatcher.loadRecurringClasses(studentViewModel);
 	}
 
 	public void handleNavBarAction(int id) {
@@ -81,21 +63,31 @@ public class StudentActivity extends NavBarActivity {
 		}
 	}
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
-		dispatcher = new StudentActivityFirebaseDispatcher(this);
+	@Override
+	public void onBackPressed() {
+		if (findViewById(R.id.layoutHome).getVisibility() == VISIBLE) {
+			super.onBackPressed();
+		}
+		else {
+			handleNavBarAction(R.id.nav_home);
+		}
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getIntent().getExtras() != null) {
-			Student student = (Student) getIntent().getExtras().get("student");
+		String studentKey = null;
 
-			if (student != null) {
-				studentViewModel = null;
-			}
+		if(getIntent().getExtras() != null){
+			 studentKey = getIntent().getExtras().getString("personId");
 		}
+
+		dispatcher.loadAll(studentKey);
+	}
+
+	protected void inflateLayout() {
+		binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
+		dispatcher = new StudentActivityFirebaseDispatcher(this);
 	}
 }

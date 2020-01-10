@@ -13,9 +13,9 @@
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="-2dp"
         android:background="@drawable/table_line"
         android:gravity="center"
-        android:layout_marginTop="-2dp"
         android:weightSum="1">
 
         <RelativeLayout
@@ -27,7 +27,7 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.12"
+            android:layout_weight="0.10"
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
@@ -45,7 +45,7 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="0.56"
+            android:layout_weight="0.60"
             android:gravity="center"
             android:maxLines="@{3}"
             android:padding="2dp"
@@ -68,8 +68,8 @@
             android:lines="@{scheduleClass.typeNumberOfLines}"
             android:padding="2dp"
             android:text="@{scheduleClass.formattedType}"
-            app:autoSizeMaxTextSize="12sp"
-            app:autoSizeMinTextSize="8sp"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
             app:autoSizeTextType="uniform" />
 
         <RelativeLayout
@@ -81,7 +81,7 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.12"
+            android:layout_weight="0.10"
             android:gravity="center"
             android:lines="@{scheduleClass.numberOfRooms}"
             android:padding="2dp"
@@ -89,19 +89,6 @@
             app:autoSizeMaxTextSize="12sp"
             app:autoSizeMinTextSize="8sp"
             app:autoSizeTextType="uniform" />
-
-        <RelativeLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/entityRemoveButton"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitCenter"
-            android:onClick="tapRemove"
-            app:srcCompat="@drawable/ic_close" />
 
         <RelativeLayout
             android:layout_width="2dp"

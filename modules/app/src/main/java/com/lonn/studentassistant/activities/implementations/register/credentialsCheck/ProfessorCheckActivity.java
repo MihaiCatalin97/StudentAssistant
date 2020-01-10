@@ -8,17 +8,17 @@ import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 import com.lonn.studentassistant.viewModels.authentication.ProfessorCredentials;
 
 public class ProfessorCheckActivity extends CredentialsCheckActivity {
-    private ProfessorCredentials professorCredentials = new ProfessorCredentials();
+	private ProfessorCredentials professorCredentials = new ProfessorCredentials();
 
-    protected void inflateLayout() {
-        ProfessorCheckActivityLayoutBinding binding =
-                DataBindingUtil.setContentView(this, R.layout.professor_check_activity_layout);
+	protected void inflateLayout() {
+		ProfessorCheckActivityLayoutBinding binding =
+				DataBindingUtil.setContentView(this, R.layout.professor_check_activity_layout);
 
-        binding.setCredentials(professorCredentials);
-    }
+		binding.setCredentials(professorCredentials);
+	}
 
-    protected String getCredentialsHash() {
-        return IdentificationHash.of(professorCredentials.toProfessor())
-                .getHash();
-    }
+	protected String getCredentialsHash() {
+		return IdentificationHash.of(professorCredentials.toProfessor())
+				.getHash();
+	}
 }

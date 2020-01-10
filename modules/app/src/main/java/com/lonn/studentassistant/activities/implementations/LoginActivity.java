@@ -7,12 +7,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
@@ -65,10 +59,6 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		}
 	}
 
-	protected void inflateLayout() {
-		setContentView(R.layout.login_activity_layout);
-	}
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,6 +81,10 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		}
 
 		Utils.init(this);
+	}
+
+	protected void inflateLayout() {
+		setContentView(R.layout.login_activity_layout);
 	}
 
 	private void setLoginFields(String email, String password, boolean rememberCredentials) {
@@ -160,22 +154,39 @@ public class LoginActivity extends FirebaseConnectedActivity {
 
 		firebaseApi.getUserService()
 				.getById(uid)
-				.onComplete(user -> firebaseApi
-								.getStudentService()
-								.getById(user.personUUID)
-								.onComplete(student -> {
-											Intent studentActivityIntent = new Intent(this,
-													StudentActivity.class);
-
-											studentActivityIntent.putExtra("student", student);
-
-											startActivity(studentActivityIntent);
-										},
-										error -> logAndShowError("An error occurred while logging in!",
-												new Exception("Unknown account"),
-												LOGGER)),
-						error -> logAndShowError("An error occurred while loading your data",
-								error,
+				.onComplete(user -> {
+							switch (String.valueOf(user.accountType).toLowerCase()) {
+								case "student": {
+									startActivity(StudentActivity.class, user.personUUID);
+									break;
+								}
+								case "professor": {
+									// TODO: Start professor activity
+									break;
+								}
+								case "administrator": {
+									// TODO: Start administrator activity
+									break;
+								}
+								default: {
+									logAndShowError("Unknown account type",
+											new Exception("Unknown account type `" + user.accountType + "`"),
+											LOGGER);
+									break;
+								}
+							}
+						},
+						error -> logAndShowError("An error occurred while logging in!",
+								new Exception("Unknown account"),
 								LOGGER));
+	}
+
+	private void startActivity(Class<? extends FirebaseConnectedActivity> activityClass,
+							   String personId) {
+		Intent activityIntent = new Intent(this, activityClass);
+
+		activityIntent.putExtra("personId", personId);
+
+		startActivity(activityIntent);
 	}
 }

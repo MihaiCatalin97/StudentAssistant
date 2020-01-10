@@ -16,9 +16,9 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @Accessors(chain = true)
 public class ParseResult {
-    private List<Professor> professors;
-    private List<Course> courses;
-    private List<OtherActivity> otherActivities;
-    private List<OneTimeClass> oneTimeClasses;
-    private List<RecurringClass> recurringClasses;
+	private List<Professor> professors;
+	private List<Course> courses;
+	private List<OtherActivity> otherActivities;
+	private List<OneTimeClass> oneTimeClasses;
+	private List<RecurringClass> recurringClasses;
 }

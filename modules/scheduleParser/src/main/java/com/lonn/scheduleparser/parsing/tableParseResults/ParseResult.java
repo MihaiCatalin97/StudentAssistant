@@ -7,6 +7,9 @@ import java.util.Map;
 class ParseResult {
 	protected Map<TableColumn, TableDivElement> columnValueMap;
 
+	protected ParseResult() {
+	}
+
 	public String getTextOfColumn(TableColumn tableColumn) {
 		TableDivElement parsedElement = columnValueMap.get(tableColumn);
 
@@ -23,8 +26,5 @@ class ParseResult {
 			return parsedElement.getElementHref();
 		}
 		return null;
-	}
-
-	protected ParseResult(){
 	}
 }

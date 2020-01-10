@@ -60,7 +60,8 @@
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{false}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}" />
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}"
+                    android:viewType="@{EntityViewType.PARTIAL}" />
             </LinearLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

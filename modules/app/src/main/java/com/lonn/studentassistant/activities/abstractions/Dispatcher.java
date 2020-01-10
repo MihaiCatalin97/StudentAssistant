@@ -1,15 +1,29 @@
 package com.lonn.studentassistant.activities.abstractions;
 
+import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
-public abstract class Dispatcher<T extends BaseEntity> {
-	protected FirebaseApi firebaseApi;
-	protected EntityActivity<? extends EntityViewModel<T>> entityActivity;
+import java.util.LinkedList;
+import java.util.List;
 
-	protected Dispatcher(EntityActivity<? extends EntityViewModel<T>> entityActivity) {
-		this.entityActivity = entityActivity;
-		firebaseApi = entityActivity.getFirebaseApi();
+public abstract class Dispatcher {
+	protected FirebaseApi firebaseApi;
+	protected FirebaseConnectedActivity activity;
+
+	protected Dispatcher(FirebaseConnectedActivity activity) {
+		this.activity = activity;
+		firebaseApi = activity.getFirebaseApi();
+	}
+
+	protected void removeNonExistingEntities(BindableHashMap<?> hashMap, List<String> existingEntityKeys) {
+		List<String> entitiesToBeRemoved = new LinkedList<>(hashMap.keySet());
+
+		entitiesToBeRemoved.removeAll(existingEntityKeys);
+
+		for (String entityToBeRemoved : entitiesToBeRemoved) {
+			hashMap.remove(entityToBeRemoved);
+		}
 	}
 }

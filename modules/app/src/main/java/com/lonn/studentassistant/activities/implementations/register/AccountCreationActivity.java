@@ -17,9 +17,9 @@ import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.RegistrationValidator;
 
 public class AccountCreationActivity extends FirebaseConnectedActivity {
+	RegistrationInformation newAccountCredentials = new RegistrationInformation();
 	private String personUUID;
 	private RegistrationValidator registrationValidator = new RegistrationValidator();
-	RegistrationInformation newAccountCredentials = new RegistrationInformation();
 
 	public void tapCreateAccountButton(View v) {
 		ValidationResult registerValidationResult = registrationValidator.validate(newAccountCredentials);
@@ -47,17 +47,17 @@ public class AccountCreationActivity extends FirebaseConnectedActivity {
 				.onError((exception) -> showSnackBar(exception.getMessage(), 1000)));
 	}
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		personUUID = getIntent().getStringExtra("personKey");
+	}
+
 	protected void inflateLayout() {
 		AccountCreationActivityLayoutBinding binding =
 				DataBindingUtil.setContentView(this, R.layout.account_creation_activity_layout);
 
 		binding.setCredentials(newAccountCredentials);
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		personUUID = getIntent().getStringExtra("personKey");
 	}
 
 	private void backToLogin() {

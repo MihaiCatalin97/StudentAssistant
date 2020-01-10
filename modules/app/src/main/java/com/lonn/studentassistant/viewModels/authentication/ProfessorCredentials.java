@@ -9,17 +9,17 @@ import lombok.ToString;
 
 @ToString
 public class ProfessorCredentials extends BaseObservable {
-    @Bindable
-    public String firstName;
-    @Bindable
-    public String lastName;
-    @Bindable
-    public String phoneNumber;
+	@Bindable
+	public String firstName;
+	@Bindable
+	public String lastName;
+	@Bindable
+	public String phoneNumber;
 
-    public Professor toProfessor() {
-        return new Professor()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setPhoneNumber(phoneNumber);
-    }
+	public Professor toProfessor() {
+		return new Professor()
+				.setFirstName(firstName)
+				.setLastName(lastName)
+				.setPhoneNumber(phoneNumber);
+	}
 }

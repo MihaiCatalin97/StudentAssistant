@@ -10,7 +10,11 @@ import java.util.HashMap;
 import static com.lonn.scheduleparser.parsing.tableModels.DisciplineScheduleTableModel.getColumnByIndex;
 import static com.lonn.scheduleparser.parsing.tableParseResults.TableDivElement.fromTableDiv;
 
-public class DisciplineScheduleParseResult extends ParseResult{
+public class DisciplineScheduleParseResult extends ParseResult {
+	private DisciplineScheduleParseResult() {
+		columnValueMap = new HashMap<>();
+	}
+
 	public static DisciplineScheduleParseResult fromRow(Element tableRow) {
 		DisciplineScheduleParseResult result = new DisciplineScheduleParseResult();
 		Elements tableDivs = tableRow.select("td");
@@ -23,9 +27,5 @@ public class DisciplineScheduleParseResult extends ParseResult{
 		}
 
 		return result;
-	}
-
-	private DisciplineScheduleParseResult() {
-		columnValueMap = new HashMap<>();
 	}
 }

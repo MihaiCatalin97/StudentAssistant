@@ -2,8 +2,6 @@ package com.lonn.studentassistant.firebaselayer.requests;
 
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
-import java.util.List;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -25,11 +23,11 @@ public class LoginRequest extends Request<Void, Exception> {
 		return this;
 	}
 
-	public Consumer<Void> onSuccess(){
+	public Consumer<Void> onSuccess() {
 		return onSuccess;
 	}
 
-	public Consumer<Exception> onError(){
+	public Consumer<Exception> onError() {
 		return onError;
 	}
 }

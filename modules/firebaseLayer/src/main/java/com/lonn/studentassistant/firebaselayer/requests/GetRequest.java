@@ -29,11 +29,11 @@ public class GetRequest<T extends BaseEntity, V extends Throwable> extends Reque
 		return this;
 	}
 
-	public Consumer<List<T>> onSuccess(){
+	public Consumer<List<T>> onSuccess() {
 		return onSuccess;
 	}
 
-	public Consumer<V> onError(){
+	public Consumer<V> onError() {
 		return onError;
 	}
 }

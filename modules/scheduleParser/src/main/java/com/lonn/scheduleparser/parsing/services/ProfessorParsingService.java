@@ -12,24 +12,24 @@ import static com.lonn.scheduleparser.parsing.ScheduleConstants.PROFESSORS_PAGE;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class ProfessorParsingService extends ParsingService<Professor> {
-    private static ProfessorParsingService instance;
+	private static ProfessorParsingService instance;
 
-    private ProfessorParsingService() {
-        repository = ProfessorRepository.getInstance();
-        parser = new ProfessorParser();
-    }
+	private ProfessorParsingService() {
+		repository = ProfessorRepository.getInstance();
+		parser = new ProfessorParser();
+	}
 
-    public static ProfessorParsingService getInstance() {
-        if (instance == null) {
-            instance = new ProfessorParsingService();
-        }
-        return instance;
-    }
+	public static ProfessorParsingService getInstance() {
+		if (instance == null) {
+			instance = new ProfessorParsingService();
+		}
+		return instance;
+	}
 
-    protected Future<List<Professor>> parse() {
-        return newSingleThreadExecutor().submit(() -> {
-            repository.addAll(parseSinglePage(PROFESSORS_PAGE));
-            return repository.getAll();
-        });
-    }
+	protected Future<List<Professor>> parse() {
+		return newSingleThreadExecutor().submit(() -> {
+			repository.addAll(parseSinglePage(PROFESSORS_PAGE));
+			return repository.getAll();
+		});
+	}
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="LightBlueShadow_DarkBlue" parent="LightBlueShadow">
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>

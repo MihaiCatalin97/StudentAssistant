@@ -11,10 +11,15 @@ import com.lonn.studentassistant.firebaselayer.firebaseConnection.RequestLogger;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
 public class AuthenticationService {
-	private FirebaseAuth mAuth;
 	private static final RequestLogger LOGGER = new RequestLogger();
-	private FirebaseConnection firebaseConnection;
 	private static AuthenticationService instance;
+	private FirebaseAuth mAuth;
+	private FirebaseConnection firebaseConnection;
+
+	private AuthenticationService(FirebaseConnection firebaseConnection) {
+		this.firebaseConnection = firebaseConnection;
+		mAuth = FirebaseAuth.getInstance();
+	}
 
 	public static AuthenticationService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
@@ -22,11 +27,6 @@ public class AuthenticationService {
 		}
 
 		return instance;
-	}
-
-	private AuthenticationService(FirebaseConnection firebaseConnection) {
-		this.firebaseConnection = firebaseConnection;
-		mAuth = FirebaseAuth.getInstance();
 	}
 
 	public FirebaseTask<FirebaseUser, Throwable> register(final String personUUID,
@@ -81,9 +81,6 @@ public class AuthenticationService {
 			@Override
 			public void onComplete(Consumer<Void> onSuccess, @Nullable Consumer<Throwable> onError) {
 				mAuth.signInWithEmailAndPassword(email, password)
-						.addOnCompleteListener((task) -> {
-							onSuccess.consume(null);
-						})
 						.addOnSuccessListener((authResult) -> {
 							LOGGER.logLoginSuccess(email);
 							onSuccess.consume(null);

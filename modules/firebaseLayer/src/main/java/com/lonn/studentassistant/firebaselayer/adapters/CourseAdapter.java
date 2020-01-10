@@ -10,14 +10,14 @@ public class CourseAdapter extends DisciplineAdapter<Course, CourseViewModel> {
 	public CourseViewModel adapt(Course course) {
 		return super.adapt(builder()
 				.pack(course.getPack())
-				.cycleSpecialization(course.getCycleAndSpecialization())
+				.cycleSpecializationYears(course.getCycleSpecializationYears())
 				.build(), course);
 	}
 
 	public Course adapt(CourseViewModel courseViewModel) {
 		return super.adapt(new Course()
 						.setPack(courseViewModel.getPack())
-						.setCycleAndSpecialization(courseViewModel.getCycleSpecialization()),
+						.setCycleSpecializationYears(courseViewModel.getCycleSpecializationYears()),
 				courseViewModel);
 	}
 }

@@ -11,17 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class CourseService extends Service<Course, Exception, CourseViewModel> {
 	private static CourseService instance;
 
+	private CourseService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new CourseAdapter();
+	}
+
 	public static CourseService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new CourseService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private CourseService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new CourseAdapter();
 	}
 
 	@Override

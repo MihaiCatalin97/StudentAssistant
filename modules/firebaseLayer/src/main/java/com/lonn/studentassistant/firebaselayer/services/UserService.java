@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
+import com.lonn.studentassistant.firebaselayer.adapters.UserAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
@@ -10,16 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class UserService extends Service<User, Exception, UserViewModel> {
 	private static UserService instance;
 
+	private UserService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new UserAdapter();
+	}
+
 	public static UserService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new UserService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private UserService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
 	}
 
 	@Override

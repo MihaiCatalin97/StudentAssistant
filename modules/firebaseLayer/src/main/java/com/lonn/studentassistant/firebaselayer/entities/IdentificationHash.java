@@ -13,37 +13,38 @@ import lombok.ToString;
 @Setter
 @ToString
 public class IdentificationHash extends BaseEntity {
-    @Exclude
-    private String hash;
-    private String entityKey;
+	@Exclude
+	private String hash;
+	private String entityKey;
 
-    public static <T extends HashableEntity> IdentificationHash of(T hashableEntity) {
-        return generateHash(hashableEntity.computeHashingString(),
-                hashableEntity.getKey());
-    }
+	public static <T extends HashableEntity> IdentificationHash of(T hashableEntity) {
+		return generateHash(hashableEntity.computeHashingString(),
+				hashableEntity.getKey());
+	}
 
-    private static IdentificationHash generateHash(String stringToHash, String entityKey) {
-        IdentificationHash identificationHash = new IdentificationHash();
-        identificationHash.setHash(Utils.generateHashDigest(stringToHash));
-        identificationHash.setEntityKey(entityKey);
+	private static IdentificationHash generateHash(String stringToHash, String entityKey) {
+		IdentificationHash identificationHash = new IdentificationHash();
+		identificationHash.setHash(Utils.generateHashDigest(stringToHash));
+		identificationHash.setEntityKey(entityKey);
 
-        return identificationHash;
-    }
+		return identificationHash;
+	}
 
-    @Override
-    @Exclude
-    public String getKey() {
-        return hash;
-    }
+	@Override
+	@Exclude
+	public String getKey() {
+		return hash;
+	}
 
-    @Override
-    @Exclude
-    public void setKey(String keyString) {
-        this.hash = keyString;
-    }
+	@Override
+	@Exclude
+	public IdentificationHash setKey(String keyString) {
+		this.hash = keyString;
+		return this;
+	}
 
-    @Exclude
-    public String getHash() {
-        return hash;
-    }
+	@Exclude
+	public String getHash() {
+		return hash;
+	}
 }

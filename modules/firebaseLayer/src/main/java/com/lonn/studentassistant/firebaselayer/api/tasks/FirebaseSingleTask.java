@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.interfaces.Function;
+import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.Request;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
@@ -27,6 +28,10 @@ public class FirebaseSingleTask<T extends BaseEntity, V extends EntityViewModel<
 	private Request<List<T>, U> createRequest(Request<List<T>, U> request,
 											  Consumer<V> onSuccess,
 											  Consumer<U> onError) {
+		if (request instanceof GetRequest) {
+			((GetRequest) request).subscribe(subscribe);
+		}
+
 		return request.onSuccess(entities -> {
 			if (entities.size() > 0 && onSuccess != null) {
 				onSuccess.consume(transformer.apply(entities.get(0)));

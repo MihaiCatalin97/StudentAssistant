@@ -6,24 +6,25 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public abstract class BaseEntity implements Serializable {
-    @Exclude
-    private String key;
+	@Exclude
+	private String key;
 
-    public BaseEntity() {
-        this.key = UUID.randomUUID().toString();
-    }
+	public BaseEntity() {
+		this.key = UUID.randomUUID().toString();
+	}
 
-    protected BaseEntity(String key){
-        this.key = key;
-    }
+	protected BaseEntity(String key) {
+		this.key = key;
+	}
 
-    @Exclude
-    public String getKey() {
-        return key;
-    }
+	@Exclude
+	public String getKey() {
+		return key;
+	}
 
-    @Exclude
-    public void setKey(String keyString) {
-        key = keyString;
-    }
+	@Exclude
+	public BaseEntity setKey(String keyString) {
+		key = keyString;
+		return this;
+	}
 }

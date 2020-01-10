@@ -1,19 +1,22 @@
-package com.lonn.studentassistant.views.implementations.dialog.fileDialog;
+package com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.NoGUIUploadDialog;
 
-public class ProfessorImageUploadDialog extends FileUploadDialog {
+public class ProfessorImageUploadDialog extends NoGUIUploadDialog {
 
 	public ProfessorImageUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 									  String aggregatedEntityKey) {
-		super(firebaseConnectedActivity, aggregatedEntityKey);
+		super(firebaseConnectedActivity, aggregatedEntityKey, 100001,
+				"*/*", "image");
 	}
 
 	protected void linkFileToEntity(String professorKey, FileMetadataViewModel fileMetadata) {
 		firebaseConnectedActivity.getFirebaseApi()
 				.getProfessorService()
 				.getById(professorKey)
+				.subscribe(false)
 				.onComplete(professor -> {
 							professor.setProfessorImageMetadataKey(fileMetadata.getKey());
 
@@ -25,7 +28,7 @@ public class ProfessorImageUploadDialog extends FileUploadDialog {
 											"Successfully uploaded " + fileMetadata.getFullFileName(),
 											1000),
 											exception -> {
-												logAndShowException("An error occurred while linking the file to the professor",
+												logAndShowException("An error occurred while linking the image to the professor",
 														exception);
 
 												deleteFileContent(fileMetadata.getFileContentKey());
@@ -34,9 +37,5 @@ public class ProfessorImageUploadDialog extends FileUploadDialog {
 						},
 						exception -> logAndShowException("An error occurred while uploading the image",
 								exception));
-	}
-
-	protected boolean shouldHaveMetadata() {
-		return false;
 	}
 }

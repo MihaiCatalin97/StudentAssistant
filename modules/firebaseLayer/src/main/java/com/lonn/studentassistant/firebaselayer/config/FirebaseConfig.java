@@ -16,26 +16,26 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 public class FirebaseConfig {
-    @Getter(AccessLevel.PROTECTED)
-    private Context context;
+	@Getter(AccessLevel.PROTECTED)
+	private Context context;
 
-    public String getTableReference(DatabaseTable table) {
-        return getDatabaseName() + "/" + getTableName(table);
-    }
+	public String getTableReference(DatabaseTable table) {
+		return getDatabaseName() + "/" + getTableName(table);
+	}
 
-    String getTableName(@Nullable DatabaseTable databaseTable) {
-        if (databaseTable == null) {
-            return "UnknownTable";
-        }
+	String getTableName(@Nullable DatabaseTable databaseTable) {
+		if (databaseTable == null) {
+			return "UnknownTable";
+		}
 
-        return Utils.stringToFirstCapital(databaseTable.getTableName());
-    }
+		return Utils.stringToFirstCapital(databaseTable.getTableName());
+	}
 
-    String getDatabaseName() {
-        if (getContext() != null && getContext().getResources() != null) {
-            return getContext().getResources().getString(R.string.database_name);
-        }
+	String getDatabaseName() {
+		if (getContext() != null && getContext().getResources() != null) {
+			return getContext().getResources().getString(R.string.database_name);
+		}
 
-        return "unknown";
-    }
+		return "unknown";
+	}
 }

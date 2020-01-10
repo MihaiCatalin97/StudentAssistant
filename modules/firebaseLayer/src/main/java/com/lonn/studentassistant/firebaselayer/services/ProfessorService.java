@@ -11,17 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class ProfessorService extends Service<Professor, Exception, ProfessorViewModel> {
 	private static ProfessorService instance;
 
+	private ProfessorService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new ProfessorAdapter();
+	}
+
 	public static ProfessorService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new ProfessorService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private ProfessorService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new ProfessorAdapter();
 	}
 
 	@Override

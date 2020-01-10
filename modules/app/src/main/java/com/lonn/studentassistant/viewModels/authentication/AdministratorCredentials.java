@@ -9,17 +9,17 @@ import lombok.ToString;
 
 @ToString
 public class AdministratorCredentials extends BaseObservable {
-    @Bindable
-    public String firstName;
-    @Bindable
-    public String lastName;
-    @Bindable
-    public String administratorKey;
+	@Bindable
+	public String firstName;
+	@Bindable
+	public String lastName;
+	@Bindable
+	public String administratorKey;
 
-    public Administrator toAdministrator() {
-        return new Administrator()
-                .setFirstName(firstName)
-                .setLastName(lastName)
-                .setAdministratorKey(administratorKey);
-    }
+	public Administrator toAdministrator() {
+		return new Administrator()
+				.setFirstName(firstName)
+				.setLastName(lastName)
+				.setAdministratorKey(administratorKey);
+	}
 }

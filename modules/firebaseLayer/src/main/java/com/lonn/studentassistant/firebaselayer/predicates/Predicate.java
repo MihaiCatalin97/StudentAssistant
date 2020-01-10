@@ -14,26 +14,26 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public class Predicate<T extends BaseEntity> {
-    @Getter(AccessLevel.PROTECTED)
-    private EntityField<T, ?> field;
-    @Getter(AccessLevel.PROTECTED)
-    private Operator.OperatorFilter operatorFilter;
+	@Getter(AccessLevel.PROTECTED)
+	private EntityField<T, ?> field;
+	@Getter(AccessLevel.PROTECTED)
+	private Operator.OperatorFilter operatorFilter;
 
-    public static <T extends BaseEntity, V> IntermediaryPredicate<T, V> where(EntityField<T, V> field) {
-        return new IntermediaryPredicate<>(field);
-    }
+	public static <T extends BaseEntity, V> IntermediaryPredicate<T, V> where(EntityField<T, V> field) {
+		return new IntermediaryPredicate<>(field);
+	}
 
-    @NonNull
-    public Query apply(DatabaseReference database) {
-        Query query;
+	@NonNull
+	public Query apply(DatabaseReference database) {
+		Query query;
 
-        if (field.getFieldName().toLowerCase().equals("id")) {
-            query = database.orderByKey();
-        }
-        else {
-            query = database.orderByChild(field.getFieldName());
-        }
+		if (field.getFieldName().toLowerCase().equals("id")) {
+			query = database.orderByKey();
+		}
+		else {
+			query = database.orderByChild(field.getFieldName());
+		}
 
-        return operatorFilter.apply(query);
-    }
+		return operatorFilter.apply(query);
+	}
 }

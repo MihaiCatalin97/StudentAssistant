@@ -10,26 +10,26 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Parser<T extends BaseEntity> {
-    protected Mapper<T> mapper;
+	protected Mapper<T> mapper;
 
-    public List<T> parse(Document document) {
-        List<T> parsedEntities = new LinkedList<>();
-        Elements parsableElements = getListOfParsableElements(document);
+	public List<T> parse(Document document) {
+		List<T> parsedEntities = new LinkedList<>();
+		Elements parsableElements = getListOfParsableElements(document);
 
-        if (parsableElements != null) {
-            for (Element parsableElement : parsableElements) {
-                T parsedEntity = parseSingleEntity(parsableElement);
+		if (parsableElements != null) {
+			for (Element parsableElement : parsableElements) {
+				T parsedEntity = parseSingleEntity(parsableElement);
 
-                if (parsedEntity != null) {
-                    parsedEntities.add(parsedEntity);
-                }
-            }
-        }
+				if (parsedEntity != null) {
+					parsedEntities.add(parsedEntity);
+				}
+			}
+		}
 
-        return parsedEntities;
-    }
+		return parsedEntities;
+	}
 
-    protected abstract Elements getListOfParsableElements(Document document);
+	protected abstract Elements getListOfParsableElements(Document document);
 
-    protected abstract T parseSingleEntity(Element parsableElement);
+	protected abstract T parseSingleEntity(Element parsableElement);
 }

@@ -15,6 +15,7 @@ import com.lonn.studentassistant.logging.Logger;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization.LICENTA_INFORMATICA;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {
@@ -42,6 +43,7 @@ public class DatabasePopulator {
 							.setEmail("email@email.com")
 							.setPhoneNumber("0742664239")
 							.setGroup("B5")
+							.setCycleSpecialization(LICENTA_INFORMATICA)
 							.setYear(3))
 					.onCompleteDoNothing();
 	}

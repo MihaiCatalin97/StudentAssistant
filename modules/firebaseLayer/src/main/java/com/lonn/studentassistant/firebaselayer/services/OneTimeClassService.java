@@ -12,22 +12,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTimeClassViewModel> {
 	private static OneTimeClassService instance;
 
+	private OneTimeClassService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new OneTimeClassAdapter(firebaseConnection);
+	}
+
 	public static OneTimeClassService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new OneTimeClassService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private OneTimeClassService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new OneTimeClassAdapter(firebaseConnection);
-	}
-
-	@Override
-	protected DatabaseTable<OneTimeClass> getDatabaseTable() {
-		return ONE_TIME_CLASSES;
 	}
 
 	@Override
@@ -49,5 +44,10 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 				});
 
 		return result;
+	}
+
+	@Override
+	protected DatabaseTable<OneTimeClass> getDatabaseTable() {
+		return ONE_TIME_CLASSES;
 	}
 }

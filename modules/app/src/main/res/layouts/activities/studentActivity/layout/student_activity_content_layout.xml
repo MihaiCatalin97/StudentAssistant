@@ -3,10 +3,6 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
-
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
-
         <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
@@ -15,15 +11,11 @@
 
         <variable
             name="courses"
-            type="java.util.Collection&lt;CourseViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.Collection&lt;ProfessorViewModel&gt;" />
-
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
-
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
@@ -33,12 +25,17 @@
             name="recurringClasses"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
 
-
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
-
         <variable
             name="otherActivities"
-            type="java.util.Collection&lt;OtherActivityViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+
+        <variable
+            name="optionalCourses"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+
+        <variable
+            name="myOtherActivities"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -65,7 +62,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:student="@{student}" />
+            app:student="@{student}"
+            app:optionalCourses="@{optionalCourses}"
+            app:myOtherActivities="@{myOtherActivities}" />
 
         <include
             android:id="@+id/layoutSchedule"
@@ -119,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:otherActivities="@{otherActivities}"/>
+            app:otherActivities="@{otherActivities}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

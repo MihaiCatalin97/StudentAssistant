@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import static com.lonn.studentassistant.firebaselayer.Utils.semesterToString;
-import static com.lonn.studentassistant.firebaselayer.Utils.yearToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -25,7 +24,7 @@ public abstract class DisciplineViewModel<T extends Discipline> extends EntityVi
 	@Bindable
 	public String name, description, website;
 
-	public int semester, year;
+	public int semester;
 	public List<String> professors = new ArrayList<>();
 	public List<String> recurringClasses = new ArrayList<>();
 	public List<String> oneTimeClasses = new ArrayList<>();
@@ -33,7 +32,7 @@ public abstract class DisciplineViewModel<T extends Discipline> extends EntityVi
 
 	@Bindable
 	public String getYearSemester() {
-		return yearToString(year) + ", " + semesterToString(semester);
+		return semesterToString(semester);
 	}
 
 	@Bindable

@@ -28,6 +28,7 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
 	public List<String> otherActivities;
 	public List<String> oneTimeClasses;
 	public List<String> recurringClasses;
+	public List<String> filesMetadata;
 
 	@Bindable
 	public String getFullName() {

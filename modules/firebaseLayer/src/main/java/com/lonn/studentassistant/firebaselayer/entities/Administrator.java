@@ -10,12 +10,12 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class Administrator extends HashableEntity {
-    private String firstName;
-    private String lastName;
-    private String administratorKey;
+	private String firstName;
+	private String lastName;
+	private String administratorKey;
 
-    @Override
-    public String computeHashingString() {
-        return getFirstName() + getLastName() + getAdministratorKey();
-    }
+	@Override
+	public String computeHashingString() {
+		return getFirstName() + getLastName() + getAdministratorKey();
+	}
 }

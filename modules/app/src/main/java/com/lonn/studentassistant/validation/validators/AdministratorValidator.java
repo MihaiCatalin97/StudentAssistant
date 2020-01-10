@@ -9,20 +9,20 @@ import static com.lonn.studentassistant.validation.predicates.StringPredicates.i
 import static com.lonn.studentassistant.validation.predicates.StringPredicates.nonEmptyStringPredicate;
 
 public class AdministratorValidator extends Validator<Administrator> {
-    private static List<ValidationRule<Administrator>> validationRules;
+	private static List<ValidationRule<Administrator>> validationRules;
 
-    static {
-        validationRules = new ArrayList<>();
+	static {
+		validationRules = new ArrayList<>();
 
-        validationRules.add(ValidationRule.test(isValidName(Administrator::getFirstName))
-                .orError("Invalid first name"));
-        validationRules.add(ValidationRule.test(isValidName(Administrator::getLastName))
-                .orError("Invalid last name"));
-        validationRules.add(ValidationRule.test(nonEmptyStringPredicate(Administrator::getAdministratorKey))
-                .orError("Invalid administrator key"));
-    }
+		validationRules.add(ValidationRule.test(isValidName(Administrator::getFirstName))
+				.orError("Invalid first name"));
+		validationRules.add(ValidationRule.test(isValidName(Administrator::getLastName))
+				.orError("Invalid last name"));
+		validationRules.add(ValidationRule.test(nonEmptyStringPredicate(Administrator::getAdministratorKey))
+				.orError("Invalid administrator key"));
+	}
 
-    protected List<ValidationRule<Administrator>> getValidationRules() {
-        return validationRules;
-    }
+	protected List<ValidationRule<Administrator>> getValidationRules() {
+		return validationRules;
+	}
 }

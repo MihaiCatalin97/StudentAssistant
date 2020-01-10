@@ -13,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
@@ -48,11 +47,9 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		}
 
 		Class entityActivityClass = null;
-		EntityViewModel entityViewModel = null;
 
 		if (parent != null &&
 				((EntityView) parent).getModel() != null) {
-			entityViewModel = ((EntityView) parent).getEntityViewModel();
 			entityActivityClass = ((EntityView) parent).getModel().getEntityActivityClass();
 
 		}
@@ -60,7 +57,8 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		if (entityActivityClass != null) {
 			Intent intent = new Intent(getBaseContext(), entityActivityClass);
 
-			intent.putExtra("entityViewModel", entityViewModel);
+			intent.putExtra("entityKey", ((EntityView) parent).getEntityViewModel()
+					.getKey());
 
 			v.getContext().startActivity(intent);
 		}

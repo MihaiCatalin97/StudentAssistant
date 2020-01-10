@@ -9,6 +9,14 @@
         <variable
             name="student"
             type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
+
+        <variable
+            name="optionalCourses"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+
+        <variable
+            name="myOtherActivities"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
     </data>
 
     <ScrollView
@@ -182,7 +190,6 @@
                 app:layout_constraintTop_toBottomOf="@id/profileYearLayout">
 
                 <TextView
-                    android:id="@+id/profileEmailTextView"
                     style="@style/DarkBlueShadowedH3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -226,18 +233,20 @@
                 app:layout_constraintTop_toBottomOf="@id/profileGroupLayout">
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/coursesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`My optional courses`}"
+                    android:childEntities="@{optionalCourses}"
+                    android:entityName="@{`optional course`}"
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/otherActivitiesProfileCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My other activities`}"
+                    android:categoryTitle="@{`My activities`}"
+                    android:childEntities="@{myOtherActivities}"
+                    android:entityName="@{`activity`}"
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />
 

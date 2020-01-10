@@ -10,12 +10,15 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
-import com.lonn.studentassistant.databinding.ScheduleTableRowViewBinding;
+import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
+import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
+import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
@@ -45,16 +48,16 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		updateEntity(entityViewModel);
 	}
 
+	public EntityView(Context context, AttributeSet set) {
+		super(context, set);
+		init(context);
+	}
+
 	public void setOnDeleteTap(Consumer<T> onDeleteTap) {
 		findViewById(R.id.entityRemoveButton).setOnClickListener((view) -> {
 			if (onDeleteTap != null)
 				onDeleteTap.consume(entityViewModel);
 		});
-	}
-
-	public EntityView(Context context, AttributeSet set) {
-		super(context, set);
-		init(context);
 	}
 
 	public void inflateLayout(final Context context) {
@@ -74,10 +77,13 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	}
 
 	protected int getLayoutId() {
-		if (entityViewModel instanceof ScheduleClassViewModel) {
-			return R.layout.schedule_table_row_view;
+		if (entityViewModel instanceof RecurringClassViewModel) {
+			return R.layout.one_time_class_table_row;
 		}
-		else if (entityViewModel instanceof GradeViewModel) {
+		if (entityViewModel instanceof OneTimeClassViewModel) {
+			return R.layout.recurring_class_table_row;
+		}
+		if (entityViewModel instanceof GradeViewModel) {
 			return R.layout.entity_table_row_view;
 		}
 
@@ -85,8 +91,11 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	}
 
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {
-		if (entityViewModel instanceof ScheduleClassViewModel) {
-			((ScheduleTableRowViewBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+		if (entityViewModel instanceof RecurringClassViewModel) {
+			((OneTimeClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+		}
+		else if (entityViewModel instanceof OneTimeClassViewModel) {
+			((RecurringClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
 			((EntityTableRowViewBinding) binding).setEntityViewModel(model);

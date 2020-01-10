@@ -17,36 +17,36 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PredicateTest {
-    @Mock
-    private CourseField<Object> entityField;
+	@Mock
+	private CourseField<Object> entityField;
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
 
-    @Test
-    public void where_shouldReturnNewIntermediaryPredicateWithField() {
-        IntermediaryPredicate predicate = Predicate.where(entityField);
+	@Test
+	public void where_shouldReturnNewIntermediaryPredicateWithField() {
+		IntermediaryPredicate predicate = Predicate.where(entityField);
 
-        assertEquals(entityField, predicate.getField());
-    }
+		assertEquals(entityField, predicate.getField());
+	}
 
-    @Test
-    public void apply_shouldCallOperatorApplyOnDatabaseOrderByChild_whenFieldIsId() {
-        CourseField<String> filteringField = CourseField.COURSE_NAME;
-        Operator.OperatorFilter mockFilter = mock(Operator.OperatorFilter.class);
-        Query mockQuery = mock(Query.class);
-        Query mockResultQuery = mock(Query.class);
+	@Test
+	public void apply_shouldCallOperatorApplyOnDatabaseOrderByChild_whenFieldIsId() {
+		CourseField<String> filteringField = CourseField.COURSE_NAME;
+		Operator.OperatorFilter mockFilter = mock(Operator.OperatorFilter.class);
+		Query mockQuery = mock(Query.class);
+		Query mockResultQuery = mock(Query.class);
 
-        DatabaseReference mockDatabaseReference = mock(DatabaseReference.class);
-        when(mockDatabaseReference.orderByChild(filteringField.getFieldName())).thenReturn(mockQuery);
-        when(mockFilter.apply(mockQuery)).thenReturn(mockResultQuery);
+		DatabaseReference mockDatabaseReference = mock(DatabaseReference.class);
+		when(mockDatabaseReference.orderByChild(filteringField.getFieldName())).thenReturn(mockQuery);
+		when(mockFilter.apply(mockQuery)).thenReturn(mockResultQuery);
 
-        Query result = new Predicate<>(filteringField, mockFilter).apply(mockDatabaseReference);
+		Query result = new Predicate<>(filteringField, mockFilter).apply(mockDatabaseReference);
 
-        assertEquals(mockResultQuery, result);
-        verify(mockDatabaseReference, times(1)).orderByChild(filteringField.getFieldName());
-        verify(mockFilter, times(1)).apply(mockQuery);
-    }
+		assertEquals(mockResultQuery, result);
+		verify(mockDatabaseReference, times(1)).orderByChild(filteringField.getFieldName());
+		verify(mockFilter, times(1)).apply(mockQuery);
+	}
 }

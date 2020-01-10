@@ -12,11 +12,11 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public class RecurringClass extends ScheduleClass {
-    private int day;
+	private int day;
 
-    @Override
-    @NonNull
-    public String toString() {
-        return getDay() + " " + getStartHour() + " " + getEndHour() + " " + getRooms().get(0);
-    }
+	@Override
+	@NonNull
+	public String toString() {
+		return getDay() + " " + getStartHour() + " " + getEndHour() + " " + getRooms().get(0);
+	}
 }

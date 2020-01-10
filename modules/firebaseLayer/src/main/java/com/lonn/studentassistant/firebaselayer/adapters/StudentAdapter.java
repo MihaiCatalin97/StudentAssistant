@@ -14,7 +14,10 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
 				.phoneNumber(student.getPhoneNumber())
 				.group(student.getGroup())
 				.year(student.getYear())
+				.studentId(student.getStudentId())
 				.cycleSpecialization(student.getCycleAndSpecialization())
+				.optionalCourses(student.getOptionalCourses())
+				.otherActivities(student.getOtherActivities())
 				.build()
 				.setKey(student.getKey());
 	}
@@ -27,6 +30,9 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
 				.setPhoneNumber(studentViewModel.getPhoneNumber())
 				.setGroup(studentViewModel.getGroup())
 				.setYear(studentViewModel.getYear())
+				.setStudentId(studentViewModel.getStudentId())
+				.setOptionalCourses(studentViewModel.getOptionalCourses())
+				.setOtherActivities(studentViewModel.getOtherActivities())
 				.setCycleAndSpecialization(studentViewModel.getCycleSpecialization());
 
 		if (studentViewModel.getKey() != null) {

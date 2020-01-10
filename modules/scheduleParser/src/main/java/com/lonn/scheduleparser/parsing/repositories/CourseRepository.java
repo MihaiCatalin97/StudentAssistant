@@ -4,25 +4,25 @@ import com.lonn.scheduleparser.parsing.abstractions.Repository;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 
 public class CourseRepository extends Repository<Course> {
-    private static CourseRepository instance;
+	private static CourseRepository instance;
 
-    private CourseRepository() {
-    }
+	private CourseRepository() {
+	}
 
-    public static CourseRepository getInstance() {
-        if (instance == null) {
-            instance = new CourseRepository();
-        }
-        return instance;
-    }
+	public static CourseRepository getInstance() {
+		if (instance == null) {
+			instance = new CourseRepository();
+		}
+		return instance;
+	}
 
-    public Course findByScheduleLink(String scheduleLink) {
-        for (Course course : entities) {
-            if (course.getScheduleLink() != null &&
-                    course.getScheduleLink().equals(scheduleLink)) {
-                return course;
-            }
-        }
-        return null;
-    }
+	public Course findByScheduleLink(String scheduleLink) {
+		for (Course course : entities) {
+			if (course.getScheduleLink() != null &&
+					course.getScheduleLink().equals(scheduleLink)) {
+				return course;
+			}
+		}
+		return null;
+	}
 }

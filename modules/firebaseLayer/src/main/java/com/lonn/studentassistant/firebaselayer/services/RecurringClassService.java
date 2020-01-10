@@ -6,10 +6,16 @@ import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 
+import static androidx.databinding.library.baseAdapters.BR._all;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
 
 public class RecurringClassService extends Service<RecurringClass, Exception, RecurringClassViewModel> {
 	private static RecurringClassService instance;
+
+	private RecurringClassService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new RecurringClassAdapter(firebaseConnection);
+	}
 
 	public static RecurringClassService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
@@ -19,9 +25,25 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 		return instance;
 	}
 
-	private RecurringClassService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new RecurringClassAdapter(firebaseConnection);
+	@Override
+	protected RecurringClassViewModel transform(RecurringClass recurringClass) {
+		RecurringClassViewModel result = super.transform(recurringClass);
+
+		CourseService.getInstance(firebaseConnection)
+				.getById(recurringClass.getDiscipline())
+				.onComplete((discipline) -> {
+					result.setDisciplineName(discipline.getName());
+					result.notifyPropertyChanged(_all);
+				});
+
+		OtherActivityService.getInstance(firebaseConnection)
+				.getById(recurringClass.getDiscipline())
+				.onComplete((discipline) -> {
+					result.setDisciplineName(discipline.getName());
+					result.notifyPropertyChanged(_all);
+				});
+
+		return result;
 	}
 
 	@Override

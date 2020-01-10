@@ -1,6 +1,5 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
@@ -24,11 +23,11 @@ public class CredentialsCheckRequest extends Request<IdentificationHash, Excepti
 		return this;
 	}
 
-	public Consumer<IdentificationHash> onSuccess(){
+	public Consumer<IdentificationHash> onSuccess() {
 		return onSuccess;
 	}
 
-	public Consumer<Exception> onError(){
+	public Consumer<Exception> onError() {
 		return onError;
 	}
 }

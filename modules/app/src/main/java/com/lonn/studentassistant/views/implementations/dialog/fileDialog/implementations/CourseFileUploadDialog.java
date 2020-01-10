@@ -1,26 +1,21 @@
-package com.lonn.studentassistant.views.implementations.dialog.fileDialog;
+package com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
-import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.GUIUploadDialog;
 
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
-import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
-import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
-
-public class CourseFileUploadDialog extends FileUploadDialog {
-
+public class CourseFileUploadDialog extends GUIUploadDialog {
 	public CourseFileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 								  String aggregatedEntityKey) {
-		super(firebaseConnectedActivity, aggregatedEntityKey);
+		super(firebaseConnectedActivity, aggregatedEntityKey, 10000,
+				"*/*", "image");
 	}
 
 	protected void linkFileToEntity(String courseKey, FileMetadataViewModel fileMetadata) {
 		firebaseConnectedActivity.getFirebaseApi()
 				.getCourseService()
 				.getById(courseKey)
+				.subscribe(false)
 				.onComplete(course -> {
 					course.getFilesMetadata().add(fileMetadata.getKey());
 					firebaseConnectedActivity.showSnackBar("Uploading ");
@@ -37,9 +32,5 @@ public class CourseFileUploadDialog extends FileUploadDialog {
 									}
 							);
 				});
-	}
-
-	protected boolean shouldHaveMetadata() {
-		return true;
 	}
 }

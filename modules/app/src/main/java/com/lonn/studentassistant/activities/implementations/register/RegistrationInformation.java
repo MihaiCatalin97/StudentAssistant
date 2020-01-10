@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Accessors(chain = true)
 public class RegistrationInformation extends BaseEntity {
-    private String email;
-    private String password;
-    private String repeatPassword;
+	private String email;
+	private String password;
+	private String repeatPassword;
 }

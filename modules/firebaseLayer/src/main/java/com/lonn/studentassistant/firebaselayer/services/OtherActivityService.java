@@ -11,17 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class OtherActivityService extends Service<OtherActivity, Exception, OtherActivityViewModel> {
 	private static OtherActivityService instance;
 
+	private OtherActivityService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new OtherActivityAdapter();
+	}
+
 	public static OtherActivityService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new OtherActivityService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private OtherActivityService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new OtherActivityAdapter();
 	}
 
 	@Override

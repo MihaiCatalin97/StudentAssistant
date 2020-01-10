@@ -28,19 +28,19 @@ public class SaveRequest<T extends BaseEntity, V extends Throwable> extends Requ
 		return this;
 	}
 
-	public SaveRequest<T, V> entity(T entity) {
-		if (entity != null) {
-			this.entities = new ArrayList<>();
-			entities.add(entity);
-		}
-		return this;
-	}
-
 	public Consumer<Void> onSuccess() {
 		return onSuccess;
 	}
 
 	public Consumer<V> onError() {
 		return onError;
+	}
+
+	public SaveRequest<T, V> entity(T entity) {
+		if (entity != null) {
+			this.entities = new ArrayList<>();
+			entities.add(entity);
+		}
+		return this;
 	}
 }

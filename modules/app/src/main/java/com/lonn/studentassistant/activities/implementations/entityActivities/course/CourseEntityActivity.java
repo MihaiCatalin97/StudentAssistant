@@ -1,29 +1,24 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.course;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.EntityActivity;
+import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.CourseFileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.CourseFileUploadDialog;
 
-public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
+public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
 	CourseEntityActivityLayoutBinding binding;
-	private CourseViewModel viewModel;
 	private CourseEntityActivityFirebaseDispatcher dispatcher;
-	private FileUploadDialog fileUploadDialog;
 
-	protected void loadAll() {
-		dispatcher.loadAll();
+	protected void loadAll(String entityKey) {
+		dispatcher.loadAll(entityKey);
 	}
 
 	protected void inflateLayout() {
@@ -34,36 +29,11 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		viewModel = getEntityFromIntent(this.getIntent());
-		binding.setCourse(viewModel);
-
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
-		ScrollViewCategory<FileMetadataViewModel> filesCategory = findViewById(R.id.filesCategory);
-
-		filesCategory.setOnAddAction(() -> {
-			fileUploadDialog = new CourseFileUploadDialog(this,
-					viewModel.getKey());
-			fileUploadDialog.show();
-		});
-
-		filesCategory.setOnDeleteAction((FileMetadataViewModel fileViewModel) -> {
-			firebaseApi.getFileMetadataService()
-					.deleteById(fileViewModel.getKey());
-
-			firebaseApi.getFileContentService()
-					.deleteById(fileViewModel.getFileContentKey());
-
-			removeMetadataFromCourse(viewModel.getKey(), fileViewModel.getKey());
-		});
+		loadAll(entityKey);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		fileUploadDialog.setFile(requestCode, resultCode, data);
-	}
-
-	private void removeMetadataFromCourse(String courseKey, String fileMetadataKey) {
+	protected void removeFileMetadataFromEntity(String courseKey, String fileMetadataKey) {
 		getFirebaseApi().getCourseService()
 				.getById(courseKey)
 				.onComplete(course -> {
@@ -72,5 +42,9 @@ public class CourseEntityActivity extends EntityActivity<CourseViewModel> {
 					getFirebaseApi().getCourseService()
 							.save(course);
 				});
+	}
+
+	protected FileUploadDialog getFileUploadDialogInstance() {
+		return new CourseFileUploadDialog(this, entityKey);
 	}
 }

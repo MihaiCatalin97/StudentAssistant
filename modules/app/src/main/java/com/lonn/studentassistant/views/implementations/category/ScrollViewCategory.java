@@ -19,6 +19,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import lombok.Getter;
+
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.view.animation.Animation.RELATIVE_TO_SELF;
 import static com.lonn.studentassistant.R.id.arrowCategory;
@@ -29,9 +31,12 @@ import static com.lonn.studentassistant.R.layout.category_layout;
 
 public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>> extends ScrollViewItem {
 	protected boolean expanded = false, animated = false;
-	private CategoryViewModel<T> viewModel = new CategoryViewModel<>();
 	private ScrollViewCategoryHeader header;
+	@Getter
+	private CategoryViewModel<T> viewModel = new CategoryViewModel<>();
+	@Getter
 	private ScrollViewCategoryContent<T> content;
+	@Getter
 	private CategoryLayoutBinding binding;
 
 	public ScrollViewCategory(Context context) {
@@ -50,10 +55,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		init(context);
 	}
 
-	public CategoryLayoutBinding getBinding() {
-		return binding;
-	}
-
 	public void setIsTable(Boolean isTable) {
 		if (this.viewModel.isEndCategory()) {
 			if (isTable == null) {
@@ -70,10 +71,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 	}
 
-	public CategoryViewModel<T> getViewModel() {
-		return viewModel;
-	}
-
 	public void addChildCategories(Collection<CategoryViewModel<T>> categories) {
 		getViewModel().addSubcategories(categories);
 
@@ -88,37 +85,11 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 			addOrUpdateEntity(entity);
 		}
 
-		List<String> entitiesToRemove = new LinkedList<>();
-
-		for (String existingEntityKey : viewModel.getChildEntities().keySet()) {
-			boolean found = false;
-
-			for (T receivedEntity : entities) {
-				if (receivedEntity.getKey().equals(existingEntityKey)) {
-					found = true;
-					break;
-				}
-			}
-
-			if (!found) {
-				entitiesToRemove.add(existingEntityKey);
-			}
-		}
-
-		for (String entityToRemove : entitiesToRemove) {
-			viewModel.getChildEntities().remove(entityToRemove);
-			content.removeEntityByKey(entityToRemove);
-		}
+		removeNonExistingEntities(entities);
 
 		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
-			subcategory.setEntities(entities);
+			subcategory.removeNonExistingEntities(entities);
 		}
-
-		hideIfEmpty();
-	}
-
-	public ScrollViewCategoryContent<T> getContent() {
-		return content;
 	}
 
 	protected void initContent() {
@@ -183,7 +154,27 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 						viewModel.getViewType(),
 						viewModel.getPermissionLevel());
 			}
+			else {
+				for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+					subcategory.addOrUpdateEntity(entity);
+				}
+			}
 		}
+	}
+
+	private void removeNonExistingEntities(Collection<T> entities) {
+		List<String> entitiesToRemove = new LinkedList<>(viewModel.getChildEntities().keySet());
+
+		for (T receivedEntity : entities) {
+			entitiesToRemove.remove(receivedEntity.getKey());
+		}
+
+		for (String entityToRemove : entitiesToRemove) {
+			viewModel.getChildEntities().remove(entityToRemove);
+			content.removeEntityByKey(entityToRemove);
+		}
+
+		hideIfEmpty();
 	}
 
 	private void hideIfEmpty() {

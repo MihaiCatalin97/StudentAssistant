@@ -1,49 +1,58 @@
 package com.lonn.scheduleparser.parsing.mappers;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class CourseMapper extends DisciplineMapper<Course> {
-    @Override
-    public Course map(Element courseTableRow) {
-        Course result = super.map(courseTableRow);
+	@Override
+	public Course map(Element courseTableRow) {
+		Course result = super.map(courseTableRow);
 
-        if (result != null) {
-            return result.setCycleAndSpecialization(getCourseCycleAndSpecialization(courseTableRow));
-        }
+		if (result != null) {
+			for (CycleSpecializationYear cycleSpecializationYear : getCourseCycleSpecializationYears(courseTableRow)) {
+				result.addCycleSpecializationYear(cycleSpecializationYear);
+			}
 
-        return null;
-    }
+			return result;
+		}
 
-    @Override
-    protected Boolean shouldParseRow(Element tableRow) {
-        return tableRow.select("td")
-                .get(1)
-                .text()
-                .contains("anul");
-    }
+		return null;
+	}
 
-    @Override
-    protected Course newEntityInstance() {
-        return new Course();
-    }
+	@Override
+	protected Boolean shouldParseRow(Element tableRow) {
+		return tableRow.select("td")
+				.get(1)
+				.text()
+				.contains("anul");
+	}
 
-    private CycleSpecialization getCourseCycleAndSpecialization(Element tableRow) {
-        Elements tableDivs = tableRow.select("td");
-        String courseDescription = tableDivs.get(1)
-                .text();
+	@Override
+	protected Course newEntityInstance() {
+		return new Course();
+	}
 
-        for (CycleSpecialization cycleSpecialization : CycleSpecialization.values()) {
-            if (courseDescription.toLowerCase()
-                    .contains(cycleSpecialization.toString()
-                            .toLowerCase())) {
-                return cycleSpecialization;
-            }
-        }
+	private List<CycleSpecializationYear> getCourseCycleSpecializationYears(Element tableRow) {
+		Elements tableDivs = tableRow.select("td");
+		String courseDescription = tableDivs.get(1)
+				.text();
+		List<CycleSpecializationYear> result = new LinkedList<>();
 
-        return null;
-    }
+		for (CycleSpecializationYear cycleSpecializationYear : CycleSpecializationYear.values()) {
+			if (courseDescription.toLowerCase()
+					.contains(cycleSpecializationYear.toString()
+							.toLowerCase())) {
+
+				result.add(cycleSpecializationYear);
+			}
+		}
+
+		return result;
+	}
 }

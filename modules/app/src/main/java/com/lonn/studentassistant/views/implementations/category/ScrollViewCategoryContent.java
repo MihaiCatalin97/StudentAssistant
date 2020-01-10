@@ -14,6 +14,7 @@ import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.implementations.EntityView;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,6 +75,10 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 			removeView(entityView);
 			childEntityViews.remove(entityKey);
 		}
+	}
+
+	public Collection<ScrollViewCategory<T>> getSubcategories() {
+		return subcategoryViews.values();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="DarkBlueShadowedH1" parent="LightBlueShadow_DarkBlue">
         <item name="android:textSize">28sp</item>
     </style>

@@ -11,17 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class AdministratorService extends Service<Administrator, Exception, AdministratorViewModel> {
 	private static AdministratorService instance;
 
+	private AdministratorService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new AdministratorAdapter();
+	}
+
 	public static AdministratorService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new AdministratorService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private AdministratorService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new AdministratorAdapter();
 	}
 
 	@Override

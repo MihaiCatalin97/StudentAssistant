@@ -5,17 +5,17 @@ import com.lonn.studentassistant.validation.ValidationResult;
 import java.util.List;
 
 public abstract class Validator<T> {
-    public ValidationResult validate(T entity) {
-        for (ValidationRule<T> rule : getValidationRules()) {
-            ValidationResult validationResult = rule.validate(entity);
+	public ValidationResult validate(T entity) {
+		for (ValidationRule<T> rule : getValidationRules()) {
+			ValidationResult validationResult = rule.validate(entity);
 
-            if (!validationResult.isValid()) {
-                return validationResult;
-            }
-        }
+			if (!validationResult.isValid()) {
+				return validationResult;
+			}
+		}
 
-        return ValidationResult.valid();
-    }
+		return ValidationResult.valid();
+	}
 
-    protected abstract List<ValidationRule<T>> getValidationRules();
+	protected abstract List<ValidationRule<T>> getValidationRules();
 }

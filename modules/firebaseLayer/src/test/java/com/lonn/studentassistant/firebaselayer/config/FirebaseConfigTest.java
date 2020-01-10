@@ -13,17 +13,17 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(MockitoJUnitRunner.class)
 public class FirebaseConfigTest {
-    @Mock
-    private Context mockContext;
+	@Mock
+	private Context mockContext;
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-    }
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+	}
 
-    @Test
-    public void context_shouldContainConstructorParameter() {
-        FirebaseConfig config = new FirebaseConfig(mockContext);
-        assertEquals(config.getContext(), mockContext);
-    }
+	@Test
+	public void context_shouldContainConstructorParameter() {
+		FirebaseConfig config = new FirebaseConfig(mockContext);
+		assertEquals(config.getContext(), mockContext);
+	}
 }

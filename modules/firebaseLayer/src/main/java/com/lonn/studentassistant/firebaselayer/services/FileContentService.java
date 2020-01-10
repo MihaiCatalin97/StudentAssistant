@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
+import com.lonn.studentassistant.firebaselayer.adapters.FileContentAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
@@ -10,16 +11,17 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 public class FileContentService extends Service<FileContent, Exception, FileContentViewModel> {
 	private static FileContentService instance;
 
+	private FileContentService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+		adapter = new FileContentAdapter();
+	}
+
 	public static FileContentService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new FileContentService(firebaseConnection);
 		}
 
 		return instance;
-	}
-
-	private FileContentService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
 	}
 
 	@Override

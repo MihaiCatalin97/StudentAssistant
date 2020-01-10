@@ -20,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -141,6 +140,6 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 
 		NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
 		FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-		binding.setPassedUsed(new UserViewModel(currentUser));
+		//TODO: Load user
 	}
 }

@@ -12,6 +12,9 @@ public class TableDivElement {
 	private String elementText;
 	private String elementHref;
 
+	private TableDivElement() {
+	}
+
 	public static TableDivElement fromTableDiv(Element tableDiv) {
 		TableDivElement result = new TableDivElement();
 		Elements anchorsInsideDiv = tableDiv.select("a");
@@ -38,8 +41,5 @@ public class TableDivElement {
 		}
 
 		return result;
-	}
-
-	private TableDivElement() {
 	}
 }

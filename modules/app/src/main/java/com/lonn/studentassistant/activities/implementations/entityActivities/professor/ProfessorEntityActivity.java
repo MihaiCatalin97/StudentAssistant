@@ -6,24 +6,21 @@ import android.os.Bundle;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.activities.abstractions.EntityActivity;
+import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.FileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.ProfessorImageUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorImageUploadDialog;
 
-import static android.content.Intent.createChooser;
-
-public class ProfessorEntityActivity extends EntityActivity<ProfessorViewModel> {
+public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
 	ProfessorEntityActivityLayoutBinding binding;
-	private ProfessorViewModel viewModel;
 	private ProfessorEntityActivityFirebaseDispatcher dispatcher;
-	private FileUploadDialog fileUploadDialog;
+	private ProfessorImageUploadDialog imageUploadDialog;
 
-	protected void loadAll() {
-		dispatcher.loadAll();
+	protected void loadAll(String entityKey) {
+		dispatcher.loadAll(entityKey);
 	}
 
 	protected void inflateLayout() {
@@ -34,27 +31,32 @@ public class ProfessorEntityActivity extends EntityActivity<ProfessorViewModel> 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		viewModel = getEntityFromIntent(this.getIntent());
-		binding.setProfessor(viewModel);
-
 		dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
+		imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
 
 		findViewById(R.id.professorImageUploadButton).setOnClickListener((v) -> {
-			Intent intent = new Intent()
-					.setType("*/*")
-					.setAction(Intent.ACTION_GET_CONTENT);
-
-			startActivityForResult(createChooser(intent, "Select a file"),
-					FileUploadDialog.SELECT_FILE_REQUEST_CODE);
+			imageUploadDialog.show();
 		});
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		fileUploadDialog = new ProfessorImageUploadDialog(this, viewModel.getKey());
+		imageUploadDialog.setFile(requestCode, resultCode, data);
+	}
 
-		fileUploadDialog.setFile(requestCode, resultCode, data);
-		fileUploadDialog.readAndUpload();
+	protected void removeFileMetadataFromEntity(String entityKey, String fileMetadataKey) {
+		getFirebaseApi().getProfessorService()
+				.getById(entityKey)
+				.onComplete(professor -> {
+					professor.getFilesMetadata().remove(fileMetadataKey);
+
+					getFirebaseApi().getProfessorService()
+							.save(professor);
+				});
+	}
+
+	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
+		return new ProfessorFileUploadDialog(this, entityKey);
 	}
 }

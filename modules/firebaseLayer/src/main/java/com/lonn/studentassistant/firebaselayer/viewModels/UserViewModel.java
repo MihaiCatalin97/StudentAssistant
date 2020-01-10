@@ -2,18 +2,25 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 
 import androidx.databinding.Bindable;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public class UserViewModel extends EntityViewModel<User> {
 	@Bindable
-	public String email, name, personUUID;
-
-	public UserViewModel(FirebaseUser user) {
-		this.email = user.getEmail();
-		this.name = user.getDisplayName();
-	}
+	public String email, name, personUUID, accountType;
 
 	@Override
 	public UserViewModel setKey(String key) {

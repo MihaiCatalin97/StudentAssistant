@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="scheduleClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+    </data>
+
+    <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="-2dp"
+        android:background="@drawable/table_line"
+        android:gravity="center"
+        android:weightSum="1">
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.10"
+            android:gravity="center"
+            android:lines="2"
+            android:padding="2dp"
+            android:text="@{scheduleClass.hours}"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.50"
+            android:gravity="center"
+            android:maxLines="@{3}"
+            android:padding="2dp"
+            android:text="@{scheduleClass.disciplineName}"
+            app:autoSizeMaxTextSize="15sp"
+            app:autoSizeMinTextSize="12sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:lines="@{scheduleClass.typeNumberOfLines}"
+            android:padding="2dp"
+            android:text="@{scheduleClass.formattedType}"
+            app:autoSizeMaxTextSize="14sp"
+            app:autoSizeMinTextSize="10sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.10"
+            android:gravity="center"
+            android:lines="@{scheduleClass.numberOfRooms}"
+            android:padding="2dp"
+            android:text="@{scheduleClass.rooms}"
+            app:autoSizeMaxTextSize="12sp"
+            app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:lines="@{1}"
+            android:padding="2dp"
+            android:text="@{scheduleClass.parity}"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="6sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+    </TableRow>
+</layout>

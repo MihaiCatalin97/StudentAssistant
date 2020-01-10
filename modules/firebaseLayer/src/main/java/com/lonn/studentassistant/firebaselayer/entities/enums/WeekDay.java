@@ -1,55 +1,55 @@
 package com.lonn.studentassistant.firebaselayer.entities.enums;
 
 public enum WeekDay {
-    MONDAY("Monday", "Luni", 1),
-    TUESDAY("Tuesday", "Marti", 2),
-    WEDNESDAY("Wednesday", "Miercuri", 3),
-    THURSDAY("Thursday", "Joi", 4),
-    FRIDAY("Friday", "Vineri", 5),
-    SATURDAY("Saturday", "Sambata", 6),
-    SUNDAY("Sunday", "Duminica", 7);
+	MONDAY("Monday", "Luni", 1),
+	TUESDAY("Tuesday", "Marti", 2),
+	WEDNESDAY("Wednesday", "Miercuri", 3),
+	THURSDAY("Thursday", "Joi", 4),
+	FRIDAY("Friday", "Vineri", 5),
+	SATURDAY("Saturday", "Sambata", 6),
+	SUNDAY("Sunday", "Duminica", 7);
 
 
-    private String dayStringEng;
-    private String dayStringRo;
-    private int dayInt;
+	private String dayStringEng;
+	private String dayStringRo;
+	private int dayInt;
 
-    WeekDay(String dayStringEng, String dayStringRo, int dayInt) {
-        this.dayStringEng = dayStringEng;
-        this.dayStringRo = dayStringRo;
-        this.dayInt = dayInt;
-    }
+	WeekDay(String dayStringEng, String dayStringRo, int dayInt) {
+		this.dayStringEng = dayStringEng;
+		this.dayStringRo = dayStringRo;
+		this.dayInt = dayInt;
+	}
 
-    public static WeekDay getByString(String dayString) {
-        for (WeekDay day : WeekDay.values()) {
-            if (day.getDayStringEng().equals(dayString) ||
-                    day.getDayStringRo().equals(dayString)) {
-                return day;
-            }
-        }
+	public static WeekDay getByString(String dayString) {
+		for (WeekDay day : WeekDay.values()) {
+			if (day.getDayStringEng().equals(dayString) ||
+					day.getDayStringRo().equals(dayString)) {
+				return day;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public static WeekDay getByInt(int dayInt) {
-        for (WeekDay day : WeekDay.values()) {
-            if (day.getDayInt() == dayInt) {
-                return day;
-            }
-        }
+	public static WeekDay getByInt(int dayInt) {
+		for (WeekDay day : WeekDay.values()) {
+			if (day.getDayInt() == dayInt) {
+				return day;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public String getDayStringEng() {
-        return dayStringEng;
-    }
+	public String getDayStringEng() {
+		return dayStringEng;
+	}
 
-    public String getDayStringRo() {
-        return dayStringRo;
-    }
+	public String getDayStringRo() {
+		return dayStringRo;
+	}
 
-    public int getDayInt() {
-        return dayInt;
-    }
+	public int getDayInt() {
+		return dayInt;
+	}
 }

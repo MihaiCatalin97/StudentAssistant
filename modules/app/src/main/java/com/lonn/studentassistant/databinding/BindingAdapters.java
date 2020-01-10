@@ -8,19 +8,20 @@ import androidx.databinding.BindingAdapter;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
+import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 
 import java.util.Collection;
 import java.util.List;
 
-import static com.lonn.studentassistant.views.EntityViewType.valueOf;
+import static com.lonn.studentassistant.BR._all;
 
 public class BindingAdapters {
 	@BindingAdapter(value = {"android:layout_marginEnd", "android:layout_marginStart",
@@ -110,10 +111,28 @@ public class BindingAdapters {
 	}
 
 	@BindingAdapter("android:viewType")
-	public static void setViewType(ScrollViewCategory category,
-								   String type) {
-		category.getViewModel()
-				.setViewType(valueOf(type.toUpperCase()));
+	public static <T extends EntityViewModel<? extends BaseEntity>> void setViewType(ScrollViewCategory<T> category,
+																					 EntityViewType type) {
+		Consumer<ScrollViewCategory<T>> viewTypeRecursiveSetter = new Consumer<ScrollViewCategory<T>>() {
+			@Override
+			public void consume(ScrollViewCategory<T> scrollViewCategory) {
+				scrollViewCategory.getViewModel()
+						.setViewType(type);
+
+				for (CategoryViewModel categoryViewModel : scrollViewCategory.getViewModel().getChildCategories()) {
+					categoryViewModel.setViewType(type);
+				}
+
+				scrollViewCategory.getViewModel()
+						.notifyPropertyChanged(_all);
+
+				for (ScrollViewCategory<T> subcategory : scrollViewCategory.getContent().getSubcategories()) {
+					this.consume(subcategory);
+				}
+			}
+		};
+
+		viewTypeRecursiveSetter.consume(category);
 	}
 
 	@BindingAdapter("android:showEmpty")

@@ -18,111 +18,111 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class LessEqualTest {
-    @Mock
-    private DatabaseReference databaseReference;
-    private Random random = new Random();
+	@Mock
+	private DatabaseReference databaseReference;
+	private Random random = new Random();
 
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        when(databaseReference.startAt(Mockito.any(Double.class))).thenReturn(databaseReference);
-        when(databaseReference.endAt(Mockito.any(Double.class))).thenReturn(databaseReference);
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		when(databaseReference.startAt(Mockito.any(Double.class))).thenReturn(databaseReference);
+		when(databaseReference.endAt(Mockito.any(Double.class))).thenReturn(databaseReference);
 
-        when(databaseReference.startAt(Mockito.any(Boolean.class))).thenReturn(databaseReference);
-        when(databaseReference.endAt(Mockito.any(Boolean.class))).thenReturn(databaseReference);
+		when(databaseReference.startAt(Mockito.any(Boolean.class))).thenReturn(databaseReference);
+		when(databaseReference.endAt(Mockito.any(Boolean.class))).thenReturn(databaseReference);
 
-        when(databaseReference.startAt(Mockito.any(String.class))).thenReturn(databaseReference);
-        when(databaseReference.endAt(Mockito.any(String.class))).thenReturn(databaseReference);
-    }
+		when(databaseReference.startAt(Mockito.any(String.class))).thenReturn(databaseReference);
+		when(databaseReference.endAt(Mockito.any(String.class))).thenReturn(databaseReference);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsInteger() {
-        int value = random.nextInt();
-        LessEqual<Number> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsInteger() {
+		int value = random.nextInt();
+		LessEqual<Number> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value);
-        verify(databaseReference, times(1))
-                .endAt(value);
-    }
+		verify(databaseReference, times(0))
+				.startAt(value);
+		verify(databaseReference, times(1))
+				.endAt(value);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsDouble() {
-        double value = random.nextDouble();
-        LessEqual<Number> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsDouble() {
+		double value = random.nextDouble();
+		LessEqual<Number> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value);
-        verify(databaseReference, times(1))
-                .endAt(value);
-    }
+		verify(databaseReference, times(0))
+				.startAt(value);
+		verify(databaseReference, times(1))
+				.endAt(value);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsLong() {
-        long value = random.nextLong();
-        LessEqual<Number> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsLong() {
+		long value = random.nextLong();
+		LessEqual<Number> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value);
-        verify(databaseReference, times(1))
-                .endAt(value);
-    }
+		verify(databaseReference, times(0))
+				.startAt(value);
+		verify(databaseReference, times(1))
+				.endAt(value);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsBoolean() {
-        boolean value = random.nextBoolean();
-        LessEqual<Boolean> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsBoolean() {
+		boolean value = random.nextBoolean();
+		LessEqual<Boolean> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value);
-        verify(databaseReference, times(1))
-                .endAt(value);
-    }
+		verify(databaseReference, times(0))
+				.startAt(value);
+		verify(databaseReference, times(1))
+				.endAt(value);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameterToString_whenParameterIsUUID() {
-        UUID value = UUID.randomUUID();
-        LessEqual<UUID> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameterToString_whenParameterIsUUID() {
+		UUID value = UUID.randomUUID();
+		LessEqual<UUID> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value.toString());
-        verify(databaseReference, times(1))
-                .endAt(value.toString());
-    }
+		verify(databaseReference, times(0))
+				.startAt(value.toString());
+		verify(databaseReference, times(1))
+				.endAt(value.toString());
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsString() {
-        String value = UUID.randomUUID().toString();
-        LessEqual<String> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameter_whenParameterIsString() {
+		String value = UUID.randomUUID().toString();
+		LessEqual<String> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(value);
-        verify(databaseReference, times(1))
-                .endAt(value);
-    }
+		verify(databaseReference, times(0))
+				.startAt(value);
+		verify(databaseReference, times(1))
+				.endAt(value);
+	}
 
-    @Test
-    public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameterToString_whenParameterIsBigInteger() {
-        BigInteger value = new BigInteger(Integer.toString(random.nextInt()));
-        LessEqual<BigInteger> testingOperator = new LessEqual<>();
+	@Test
+	public void apply_shouldReturnAFunctionThatCallsStartAtAndEndAtOnQueryWithParameterToString_whenParameterIsBigInteger() {
+		BigInteger value = new BigInteger(Integer.toString(random.nextInt()));
+		LessEqual<BigInteger> testingOperator = new LessEqual<>();
 
-        testingOperator.apply(value).apply(databaseReference);
+		testingOperator.apply(value).apply(databaseReference);
 
-        verify(databaseReference, times(0))
-                .startAt(Utils.padWithZeroesToSize(value.toString()));
-        verify(databaseReference, times(1))
-                .endAt(Utils.padWithZeroesToSize(value.toString()));
-    }
+		verify(databaseReference, times(0))
+				.startAt(Utils.padWithZeroesToSize(value.toString()));
+		verify(databaseReference, times(1))
+				.endAt(Utils.padWithZeroesToSize(value.toString()));
+	}
 }
