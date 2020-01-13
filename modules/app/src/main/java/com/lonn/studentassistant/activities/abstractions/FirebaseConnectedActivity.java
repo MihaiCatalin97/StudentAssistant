@@ -1,9 +1,11 @@
 package com.lonn.studentassistant.activities.abstractions;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.logging.Logger;
+import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
@@ -39,29 +42,40 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		snackbar.show();
 	}
 
-	public void tapScrollViewEntityLayout(View v) {
+	public boolean tapScrollViewEntityLayout(View v) {
 		ViewGroup parent = (ViewGroup) v.getParent();
 
 		while (parent != null && !(parent instanceof EntityView)) {
 			parent = (ViewGroup) parent.getParent();
 		}
 
+		String entityKey = null;
 		Class entityActivityClass = null;
+		ScrollViewEntityViewModel model;
 
-		if (parent != null &&
-				((EntityView) parent).getModel() != null) {
-			entityActivityClass = ((EntityView) parent).getModel().getEntityActivityClass();
+		if (parent != null) {
+			model = ((EntityView) parent).getModel();
 
+			if (model != null) {
+				entityActivityClass = ((EntityView) parent).getModel().getEntityActivityClass();
+				entityKey = ((EntityView) parent).getEntityViewModel().getKey();
+			}
 		}
 
-		if (entityActivityClass != null) {
-			Intent intent = new Intent(getBaseContext(), entityActivityClass);
+		if (entityActivityClass != null &&
+				entityKey != null) {
+			Context context = v.getContext();
 
-			intent.putExtra("entityKey", ((EntityView) parent).getEntityViewModel()
-					.getKey());
+			if (hasSuperclass(entityActivityClass, EntityActivity.class)) {
+				startEntityActivity(context,
+						entityKey,
+						entityActivityClass);
 
-			v.getContext().startActivity(intent);
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	public void tapRemove(View v) {
@@ -107,5 +121,27 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	public void logAndShowError(String errorMessage, Exception exception, Logger logger) {
 		logger.error(errorMessage, exception);
 		showSnackBar(errorMessage, 1000);
+	}
+
+	private void startEntityActivity(Context context,
+									 String entityKey,
+									 Class activityClass) {
+		Intent intent = new Intent(getBaseContext(), activityClass);
+
+		intent.putExtra("entityKey", entityKey);
+
+		context.startActivity(intent);
+	}
+
+	private boolean hasSuperclass(Class classToTest, Class superclass) {
+		do {
+			if (classToTest.equals(superclass)) {
+				return true;
+			}
+
+			classToTest = classToTest.getSuperclass();
+		} while (classToTest != null);
+
+		return false;
 	}
 }

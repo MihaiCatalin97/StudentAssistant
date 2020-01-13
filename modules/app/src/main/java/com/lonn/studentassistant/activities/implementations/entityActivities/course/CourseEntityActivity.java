@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.course;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -40,7 +41,8 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 					course.getFilesMetadata().remove(fileMetadataKey);
 
 					getFirebaseApi().getCourseService()
-							.save(course);
+							.save(course)
+							.onCompleteDoNothing();
 				});
 	}
 

@@ -7,7 +7,7 @@ import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
 public abstract class FirebaseTask<T, V> {
 	protected FirebaseConnection firebaseConnection;
-	protected boolean subscribe;
+	protected boolean subscribe = true;
 
 	public FirebaseTask(FirebaseConnection firebaseConnection) {
 		this.firebaseConnection = firebaseConnection;

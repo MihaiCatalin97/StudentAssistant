@@ -14,7 +14,7 @@ public interface IDatabaseContext<T extends BaseEntity> {
 
 	void get(Consumer<List<T>> onSuccess, Consumer<Exception> onError, Boolean subscribe);
 
-	void get(Consumer<List<T>> onSuccess, Consumer<Exception> onError, Predicate<? super T> predicate, Boolean subscribe);
+	void get(Consumer<List<T>> onSuccess, Consumer<Exception> onError, Predicate<? super T, ?> predicate, Boolean subscribe);
 
 	void deleteAll(Consumer<Void> onSuccess, Consumer<Exception> onError);
 }

@@ -81,8 +81,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	public void setEntities(Collection<T> entities) {
-		for (T entity : entities) {
-			addOrUpdateEntity(entity);
+		if (entities != null) {
+			for (T entity : entities) {
+				addOrUpdateEntity(entity);
+			}
 		}
 
 		removeNonExistingEntities(entities);
@@ -165,8 +167,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	private void removeNonExistingEntities(Collection<T> entities) {
 		List<String> entitiesToRemove = new LinkedList<>(viewModel.getChildEntities().keySet());
 
-		for (T receivedEntity : entities) {
-			entitiesToRemove.remove(receivedEntity.getKey());
+		if (entities != null) {
+			for (T receivedEntity : entities) {
+				entitiesToRemove.remove(receivedEntity.getKey());
+			}
 		}
 
 		for (String entityToRemove : entitiesToRemove) {

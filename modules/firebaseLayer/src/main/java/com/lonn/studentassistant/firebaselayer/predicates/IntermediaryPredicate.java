@@ -17,15 +17,15 @@ public class IntermediaryPredicate<T extends BaseEntity, V> {
 		this.field = field;
 	}
 
-	public Predicate<T> equalTo(V value) {
-		return new Predicate<>(field, new Equal<>().apply(value));
+	public Predicate<T, V> equalTo(V value) {
+		return new Predicate<>(field, new Equal<>().apply(value), Equal.class, value);
 	}
 
-	public Predicate<T> lessEqual(V value) {
-		return new Predicate<>(field, new LessEqual<>().apply(value));
+	public Predicate<T, V> lessEqual(V value) {
+		return new Predicate<>(field, new LessEqual<>().apply(value), LessEqual.class, value);
 	}
 
-	public Predicate<T> greaterEqual(V value) {
-		return new Predicate<>(field, new GreaterEqual<>().apply(value));
+	public Predicate<T, V> greaterEqual(V value) {
+		return new Predicate<>(field, new GreaterEqual<>().apply(value), GreaterEqual.class, value);
 	}
 }

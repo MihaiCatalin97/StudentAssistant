@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -28,6 +29,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new OtherActivityFirebaseDispatcher(this);
+		loadAll(entityKey);
 	}
 
 	protected void removeFileMetadataFromEntity(String entityKey, String fileMetadataKey) {

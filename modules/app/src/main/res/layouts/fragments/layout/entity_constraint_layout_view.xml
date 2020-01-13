@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:onClick="tapScrollViewEntityLayout">
 
     <data>
 
@@ -10,7 +12,7 @@
             type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/CategoryEntityWrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -20,7 +22,6 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="Entity image"
-            android:onClick="tapScrollViewEntityLayout"
             android:scaleType="fitCenter"
             android:visibility="@{entityViewModel.image == null? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -33,7 +34,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:onClick="tapScrollViewEntityLayout"
             android:text="@{entityViewModel.field1}"
             android:textSize="18sp"
             android:textStyle="bold"

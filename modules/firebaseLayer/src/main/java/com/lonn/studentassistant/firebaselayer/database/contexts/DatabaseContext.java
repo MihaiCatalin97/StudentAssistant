@@ -12,14 +12,17 @@ import com.google.firebase.database.ValueEventListener;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
+import com.lonn.studentassistant.firebaselayer.predicates.operators.Equal;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+
+import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
+import static java.util.Collections.singletonList;
 
 @Slf4j
 public class DatabaseContext<T extends BaseEntity> implements IDatabaseContext<T> {
@@ -77,16 +80,26 @@ public class DatabaseContext<T extends BaseEntity> implements IDatabaseContext<T
 	@Override
 	public void get(Consumer<List<T>> onSuccess,
 					Consumer<Exception> onError,
-					Predicate<? super T> predicate,
+					Predicate<? super T, ?> predicate,
 					Boolean subscribe) {
 		Query queryReference = getDatabase();
+
 		if (queryReference != null) {
+			CustomValueEventListener listener = new CustomValueEventListener(onSuccess,
+					onError, subscribe);
 
 			if (predicate != null) {
-				queryReference = predicate.apply(getDatabase());
+				if (predicate.getField().equals(ID) &&
+						predicate.getOperatorClass().equals(Equal.class)) {
+					queryReference = database.child(predicate.getValue().toString());
+					listener = new IdValueEventListener(onSuccess, onError, subscribe);
+				}
+				else {
+					queryReference = predicate.apply(getDatabase());
+				}
 			}
 
-			queryReference.addValueEventListener(new CustomValueEventListener(onSuccess, onError, subscribe));
+			queryReference.addValueEventListener(listener);
 		}
 	}
 
@@ -111,11 +124,17 @@ public class DatabaseContext<T extends BaseEntity> implements IDatabaseContext<T
 		}
 	}
 
-	@AllArgsConstructor
 	class CustomValueEventListener implements ValueEventListener {
-		private Consumer<List<T>> onSuccess;
-		private Consumer<Exception> onError;
-		private Boolean subscribe;
+		protected Consumer<List<T>> onSuccess;
+		protected Consumer<Exception> onError;
+		protected Boolean subscribe;
+
+		CustomValueEventListener(Consumer<List<T>> onSuccess, Consumer<Exception> onError,
+								 Boolean subscribe) {
+			this.onSuccess = onSuccess;
+			this.onError = onError;
+			this.subscribe = subscribe != null ? subscribe : true;
+		}
 
 		@Override
 		public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,6 +155,36 @@ public class DatabaseContext<T extends BaseEntity> implements IDatabaseContext<T
 				}
 
 				onSuccess.consume(entities);
+			}
+		}
+
+		@Override
+		public void onCancelled(@NonNull DatabaseError databaseError) {
+			if (onError != null) {
+				onError.consume(new Exception(databaseError.getMessage()));
+			}
+		}
+	}
+
+	class IdValueEventListener extends CustomValueEventListener {
+		IdValueEventListener(Consumer<List<T>> onSuccess, Consumer<Exception> onError,
+							 Boolean subscribe) {
+			super(onSuccess, onError, subscribe);
+		}
+
+		@Override
+		public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+			if (!subscribe) {
+				dataSnapshot.getRef().removeEventListener(this);
+			}
+
+			if (onSuccess != null) {
+				T entity = dataSnapshot.getValue(getModelClass());
+
+				if (entity != null) {
+					entity.setKey(dataSnapshot.getKey());
+					onSuccess.consume(singletonList(entity));
+				}
 			}
 		}
 

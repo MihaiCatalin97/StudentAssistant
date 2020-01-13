@@ -13,7 +13,7 @@ public class ScrollViewEntityViewModel extends BaseObservable {
 	@Getter
 	public Class entityActivityClass;
 	@Bindable
-	public int permissionLevel = 0;
+	public int permissionLevel;
 	@Bindable
 	public String field1, field2, field3, field4, field5, image;
 

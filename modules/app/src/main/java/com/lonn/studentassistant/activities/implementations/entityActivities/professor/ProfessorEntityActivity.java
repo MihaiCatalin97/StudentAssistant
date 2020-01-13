@@ -37,6 +37,8 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 		findViewById(R.id.professorImageUploadButton).setOnClickListener((v) -> {
 			imageUploadDialog.show();
 		});
+
+		loadAll(entityKey);
 	}
 
 	@Override

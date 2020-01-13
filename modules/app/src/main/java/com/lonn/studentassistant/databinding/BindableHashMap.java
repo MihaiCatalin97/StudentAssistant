@@ -33,9 +33,16 @@ public class BindableHashMap<V extends EntityViewModel> extends HashMap<String, 
 		binding.setVariable(property, this);
 	}
 
-	public void remove(V entity){
-		remove(entity.getKey());
+	@Override
+	public V remove(Object entityKey) {
+		V result = super.remove(entityKey);
 
 		binding.setVariable(property, this);
+
+		return result;
+	}
+
+	public void remove(V entity) {
+		remove(entity.getKey());
 	}
 }

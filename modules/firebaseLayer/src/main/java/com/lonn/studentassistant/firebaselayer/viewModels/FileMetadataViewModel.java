@@ -2,6 +2,7 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 
 import androidx.databinding.Bindable;
 
+import com.lonn.studentassistant.firebaselayer.FileUtils;
 import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
@@ -32,7 +33,12 @@ public class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
 
 	@Bindable
 	public String getFileSize() {
-		return fileSize / 1024 / 1024 + " MB";
+		return FileUtils.sizeToString(fileSize);
+	}
+
+	public String getFileDescription() {
+		return fileDescription != null && fileDescription.length() != 0 ?
+				fileDescription : "(no description)";
 	}
 
 	@Override

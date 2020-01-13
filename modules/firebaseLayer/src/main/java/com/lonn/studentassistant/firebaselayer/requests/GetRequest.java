@@ -17,7 +17,7 @@ import lombok.experimental.Accessors;
 public class GetRequest<T extends BaseEntity, V extends Throwable> extends Request<List<T>, V> {
 	private DatabaseTable<T> databaseTable;
 	private Boolean subscribe = true;
-	private Predicate<? super T> predicate;
+	private Predicate<? super T, ?> predicate;
 
 	public GetRequest<T, V> onSuccess(Consumer<List<T>> onSuccess) {
 		this.onSuccess = onSuccess;

@@ -91,7 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:categoryTitle="@{`Files`}"
-                android:childEntities="@{files.values()}"
+                android:childEntities="@{files.values().size() > 0? files.values() : null}"
                 android:entityName="@{`file`}"
                 android:permissionLevel="@{1}" />
 

@@ -86,8 +86,8 @@ public class BindingAdapters {
 	@BindingAdapter("android:childEntities")
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntities(ScrollViewCategory<T> category,
 																						  Collection<T> entities) {
-		if (entities != null && category != null) {
-			if (category.getViewModel().getGeneratorFunction() != null) {
+		if (category != null) {
+			if (entities != null && category.getViewModel().getGeneratorFunction() != null) {
 				category.addChildCategories(category.getViewModel().getGeneratorFunction()
 						.apply(category.getViewModel()));
 			}

@@ -17,8 +17,6 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 	public void onStart() {
 		super.onStart();
 
-		loadAll(entityKey);
-
 		checkAuthenticationAndSignOut();
 	}
 

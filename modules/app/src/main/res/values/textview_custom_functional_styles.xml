@@ -33,6 +33,5 @@
     <style name="CategoryEntityText" parent="DarkBlueShadowedH4">
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:maxLines">2</item>
-        <item name="android:onClick">tapScrollViewEntityLayout</item>
     </style>
 </resources>

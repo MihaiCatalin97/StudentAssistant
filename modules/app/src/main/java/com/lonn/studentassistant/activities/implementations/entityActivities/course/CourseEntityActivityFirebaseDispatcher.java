@@ -3,6 +3,7 @@ package com.lonn.studentassistant.activities.implementations.entityActivities.co
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -33,43 +34,93 @@ class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
 	}
 
 	void loadAll(String courseKey) {
-		firebaseApi.getCourseService()
-				.getById(courseKey)
-				.onComplete(course -> {
-							binding.setCourse(course);
+		firebaseApi.getCourseService().getById(courseKey).onComplete(course -> {
+					if (shouldUpdateProfessors(course)) {
+						updateProfessors(course);
+					}
 
-							removeNonExistingEntities(professorMap, course.getProfessors());
-							removeNonExistingEntities(recurringClassesMap, course.getRecurringClasses());
-							removeNonExistingEntities(oneTimeClassesMap, course.getOneTimeClasses());
-							removeNonExistingEntities(filesMap, course.getFilesMetadata());
+					if (shouldUpdateRecurringClasses(course)) {
+						updateRecurringClasses(course);
+					}
 
-							for (String professorId : course.getProfessors()) {
-								firebaseApi.getProfessorService()
-										.getById(professorId)
-										.onComplete(professorMap::put);
-							}
+					if (shouldUpdateOneTimeClasses(course)) {
+						updateOneTimeClasses(course);
+					}
 
-							for (String recurringClassId : course.getRecurringClasses()) {
-								firebaseApi.getRecurringClassService()
-										.getById(recurringClassId)
-										.onComplete(recurringClassesMap::put);
-							}
+					if (shouldUpdateFiles(course)) {
+						updateFiles(course);
+					}
 
-							for (String oneTimeClassId : course.getOneTimeClasses()) {
-								firebaseApi.getOneTimeClassService()
-										.getById(oneTimeClassId)
-										.onComplete(oneTimeClassesMap::put);
-							}
+					binding.setCourse(course);
+				},
+				error -> activity.logAndShowError("An error occurred while loading the course.",
+						new
 
-							for (String fileId : course.getFilesMetadata()) {
-								firebaseApi.getFileMetadataService()
-										.getById(fileId)
-										.onComplete(filesMap::put);
-							}
+								Exception("Loading course: " + error.getMessage()),
+						LOGGER));
+	}
 
-						},
-						error -> activity.logAndShowError("An error occurred while loading the course.",
-								new Exception("Loading course: " + error.getMessage()),
-								LOGGER));
+	private boolean shouldUpdateProfessors(CourseViewModel course) {
+		return this.binding.getProfessors() == null ||
+				this.binding.getProfessors().size() != course.professors.size() ||
+				!this.binding.getProfessors().keySet()
+						.containsAll(course.professors);
+	}
+
+	private boolean shouldUpdateOneTimeClasses(CourseViewModel course) {
+		return this.binding.getOneTimeClasses() == null ||
+				this.binding.getOneTimeClasses().size() != course.oneTimeClasses.size() ||
+				!this.binding.getOneTimeClasses().keySet()
+						.containsAll(course.oneTimeClasses);
+	}
+
+	private boolean shouldUpdateRecurringClasses(CourseViewModel course) {
+		return this.binding.getRecurringClasses() == null ||
+				this.binding.getRecurringClasses().size() != course.recurringClasses.size() ||
+				!this.binding.getRecurringClasses().keySet()
+						.containsAll(course.recurringClasses);
+	}
+
+	private boolean shouldUpdateFiles(CourseViewModel course) {
+		return this.binding.getFiles() == null ||
+				this.binding.getFiles().size() != course.filesMetadata.size() ||
+				!this.binding.getFiles().keySet()
+						.containsAll(course.filesMetadata);
+	}
+
+	private void updateProfessors(CourseViewModel course) {
+		removeNonExistingEntities(professorMap, course.getProfessors());
+		for (String professorId : course.getProfessors()) {
+			firebaseApi.getProfessorService()
+					.getById(professorId)
+					.onComplete(professorMap::put);
+		}
+	}
+
+	private void updateOneTimeClasses(CourseViewModel course) {
+		removeNonExistingEntities(oneTimeClassesMap, course.getOneTimeClasses());
+		for (String oneTimeClassId : course.getOneTimeClasses()) {
+			firebaseApi.getOneTimeClassService()
+					.getById(oneTimeClassId)
+					.onComplete(oneTimeClassesMap::put);
+		}
+	}
+
+	private void updateRecurringClasses(CourseViewModel course) {
+		removeNonExistingEntities(recurringClassesMap, course.getRecurringClasses());
+		for (String recurringClassId : course.getRecurringClasses()) {
+			firebaseApi.getRecurringClassService()
+					.getById(recurringClassId)
+					.onComplete(recurringClassesMap::put);
+		}
+	}
+
+	private void updateFiles(CourseViewModel course) {
+		removeNonExistingEntities(filesMap, course.getFilesMetadata());
+		for (String fileId : course.getFilesMetadata()) {
+			firebaseApi.getFileMetadataService()
+					.getById(fileId)
+					.onComplete(filesMap::put);
+		}
 	}
 }

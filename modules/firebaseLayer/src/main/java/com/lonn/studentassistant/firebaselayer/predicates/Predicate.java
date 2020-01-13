@@ -13,11 +13,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
-public class Predicate<T extends BaseEntity> {
-	@Getter(AccessLevel.PROTECTED)
-	private EntityField<T, ?> field;
-	@Getter(AccessLevel.PROTECTED)
+public class Predicate<T extends BaseEntity, V> {
+	@Getter(AccessLevel.PUBLIC)
+	private EntityField<T, V> field;
+	@Getter(AccessLevel.PUBLIC)
 	private Operator.OperatorFilter operatorFilter;
+	@Getter(AccessLevel.PUBLIC)
+	private Class<? extends Operator> operatorClass;
+	@Getter(AccessLevel.PUBLIC)
+	private V value;
 
 	public static <T extends BaseEntity, V> IntermediaryPredicate<T, V> where(EntityField<T, V> field) {
 		return new IntermediaryPredicate<>(field);

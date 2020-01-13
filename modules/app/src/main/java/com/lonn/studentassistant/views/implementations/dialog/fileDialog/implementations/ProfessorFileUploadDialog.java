@@ -4,10 +4,12 @@ import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivi
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.GUIUploadDialog;
 
+import static com.lonn.studentassistant.activities.abstractions.FileManagingActivity.UPLOAD_FILE_REQUEST_CODE;
+
 public class ProfessorFileUploadDialog extends GUIUploadDialog {
 	public ProfessorFileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 									 String aggregatedEntityKey) {
-		super(firebaseConnectedActivity, aggregatedEntityKey, 100000,
+		super(firebaseConnectedActivity, aggregatedEntityKey, UPLOAD_FILE_REQUEST_CODE,
 				"*/*", "image");
 	}
 
