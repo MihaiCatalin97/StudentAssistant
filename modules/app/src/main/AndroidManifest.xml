@@ -83,6 +83,10 @@
             android:name=".activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.implementations.entityActivities.laboratory.LaboratoryInputActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>

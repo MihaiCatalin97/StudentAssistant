@@ -50,11 +50,13 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 	protected void removeFileMetadataFromEntity(String entityKey, String fileMetadataKey) {
 		getFirebaseApi().getProfessorService()
 				.getById(entityKey)
+				.subscribe(false)
 				.onComplete(professor -> {
 					professor.getFilesMetadata().remove(fileMetadataKey);
 
 					getFirebaseApi().getProfessorService()
-							.save(professor);
+							.save(professor)
+							.onCompleteDoNothing();
 				});
 	}
 

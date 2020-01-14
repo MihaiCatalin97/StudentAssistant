@@ -1,0 +1,65 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="size"
+            type="Integer" />
+
+        <variable
+            name="image"
+            type="String" />
+
+        <variable
+            name="defaultImage"
+            type="Integer" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="@{size, default=`200dp`}"
+        android:layout_height="@{size, default=`200dp`}">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCardView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardCornerRadius="@{size/2}"
+            app:cardElevation="8dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Image"
+                android:scaleType="centerCrop"
+                app:defaultSrcCompat="@{defaultImage}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@{image}" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@{size/5, default=`40dp`}"
+            android:layout_height="@{size/5, default=`40dp`}"
+            android:layout_marginStartPixels="@{size/4*3}"
+            android:layout_marginTopPixels="@{size/4*3}"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="@{size/10}"
+            app:cardElevation="9dp"
+            app:layout_constraintLeft_toLeftOf="@id/imageCardView"
+            app:layout_constraintTop_toTopOf="@id/imageCardView">
+
+            <ImageView
+                android:id="@+id/imageUploadButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Add image button"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_plus" />
+
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -5,7 +5,7 @@ public class FileUtils {
 		double result = size;
 		int sizeCounter = 0;
 
-		while (result > 1024) {
+		while (result > 512) {
 			result /= 1024;
 			sizeCounter++;
 		}
@@ -25,9 +25,5 @@ public class FileUtils {
 				return "B";
 			}
 		}
-	}
-
-	public static String getExtensionFromMime(String mime) {
-		return mime.split("/")[1];
 	}
 }

@@ -31,6 +31,10 @@
         <variable
             name="recurringClasses"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
+
+        <variable
+            name="laboratories"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel&gt;" />
     </data>
 
     <ScrollView
@@ -53,7 +57,7 @@
                 style="@style/EntityActivitySubtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{course.courseType}" />
+                android:text="@{course.courseType + `\n` + course.yearSemester}" />
 
             <TextView
                 style="@style/EntityActivitySubtitle"
@@ -85,6 +89,15 @@
                 android:layout_height="wrap_content"
                 android:text="@{course.website}"
                 android:visibility="@{course.websiteVisible}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:id="@+id/laboratoriesCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Laboratories`}"
+                android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
+                android:entityName="@{`laboratory`}"
+                android:permissionLevel="@{1}" />
 
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                 android:id="@+id/filesCategory"

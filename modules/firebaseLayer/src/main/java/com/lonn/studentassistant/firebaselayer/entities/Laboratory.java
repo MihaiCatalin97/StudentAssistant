@@ -2,7 +2,7 @@ package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 
-import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,8 +11,11 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Grade extends BaseEntity {
-	private int value;
-	private String studentId;
-	private String laboratoryId;
+public class Laboratory extends BaseEntity {
+	private String course;
+	private List<String> grades;
+	private List<String> filesMetadata;
+	private String description;
+	private String title;
+	private int weekNumber;
 }

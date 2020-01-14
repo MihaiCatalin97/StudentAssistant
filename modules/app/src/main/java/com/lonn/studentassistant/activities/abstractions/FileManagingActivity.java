@@ -81,7 +81,9 @@ public abstract class FileManagingActivity<T extends EntityViewModel<? extends B
 				break;
 			}
 			case SAVE_DIALOG_REQUEST_CODE: {
-				downloadFile(fileToDownload, data.getData());
+				if (resultCode == RESULT_OK) {
+					downloadFile(fileToDownload, data.getData());
+				}
 				break;
 			}
 		}

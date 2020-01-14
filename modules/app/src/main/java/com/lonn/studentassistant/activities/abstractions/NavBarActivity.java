@@ -124,8 +124,7 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 
 		FloatingActionButton fab = findViewById(R.id.fab);
 		fab.setOnClickListener((view) -> {
-			showSnackBar("Refreshing everything...");
-//          businessLayer.refreshAll();
+			showSnackBar("Refreshing everything...", 1000);
 		});
 
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);

@@ -1,10 +1,12 @@
 package com.lonn.studentassistant.databinding;
 
 import android.graphics.BitmapFactory;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
@@ -23,28 +25,68 @@ import java.util.List;
 
 import static android.util.Base64.DEFAULT;
 import static android.util.Base64.decode;
+import static android.util.TypedValue.COMPLEX_UNIT_DIP;
+import static android.util.TypedValue.applyDimension;
 import static com.lonn.studentassistant.BR._all;
 
 public class BindingAdapters {
 	@BindingAdapter(value = {"android:layout_marginEnd", "android:layout_marginStart",
 			"android:layout_marginLeft", "android:layout_marginRight",
 			"android:layout_marginTop",
-			"android:layout_marginBottom"}, requireAll = false)
-	public static void setMargins(View view, float marginEnd, float marginStart,
+			"android:layout_marginBottom",
+			"android:layout_height",
+			"android:layout_width"}, requireAll = false)
+	public static void setLayoutDip(View view, float marginEnd, float marginStart,
 								  float marginLeft, float marginRight,
 								  float marginTop,
-								  float marginBottom) {
+								  float marginBottom,
+								  int height,
+								  int width) {
 		int leftMargin = marginLeft == 0 ? (int) marginStart : (int) marginLeft;
 		int rightMargin = marginRight == 0 ? (int) marginEnd : (int) marginRight;
 
 		if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+			DisplayMetrics displayMetrics = view.getContext().getResources().getDisplayMetrics();
+
 			ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
 			layoutParams.rightMargin = rightMargin;
 			layoutParams.leftMargin = leftMargin;
 			layoutParams.topMargin = (int) marginTop;
 			layoutParams.bottomMargin = (int) marginBottom;
+
+			if (height > 0) {
+				layoutParams.height = (int) applyDimension(COMPLEX_UNIT_DIP, height, displayMetrics);
+			}
+			if (width > 0) {
+				layoutParams.width = (int) applyDimension(COMPLEX_UNIT_DIP, width, displayMetrics);
+			}
+
 			view.setLayoutParams(layoutParams);
 		}
+	}
+
+	@BindingAdapter(value = {"android:layout_marginStartPixels",
+			"android:layout_marginTopPixels"}, requireAll = false)
+	public static void setMarginsPixels(View view, float marginStartPixels,
+								  float marginTopPixels) {
+		if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+			DisplayMetrics displayMetrics = view.getContext().getResources().getDisplayMetrics();
+
+			ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+			layoutParams.leftMargin = (int) applyDimension(COMPLEX_UNIT_DIP, marginStartPixels, displayMetrics);
+			layoutParams.topMargin = (int) applyDimension(COMPLEX_UNIT_DIP, marginTopPixels, displayMetrics);
+
+			view.setLayoutParams(layoutParams);
+		}
+	}
+
+
+	@BindingAdapter("cardCornerRadius")
+	public static void setCardCornerRadius(CardView cardView, int radius) {
+		DisplayMetrics displayMetrics = cardView.getContext().getResources().getDisplayMetrics();
+		cardView.setRadius(applyDimension(COMPLEX_UNIT_DIP, radius, displayMetrics));
 	}
 
 	@BindingAdapter("srcCompat")

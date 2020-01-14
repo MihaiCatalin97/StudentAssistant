@@ -20,7 +20,23 @@ public class ProfessorImageUploadDialog extends NoGUIUploadDialog {
 				.getById(professorKey)
 				.subscribe(false)
 				.onComplete(professor -> {
-							professor.setProfessorImageMetadataKey(fileMetadata.getKey());
+							firebaseConnectedActivity.getFirebaseApi()
+									.getFileMetadataService()
+									.getById(professor.getImageMetadataKey())
+									.subscribe(false)
+									.onComplete(metadata -> {
+										firebaseConnectedActivity.getFirebaseApi()
+												.getFileContentService()
+												.deleteById(metadata.getFileContentKey())
+												.onCompleteDoNothing();
+
+										firebaseConnectedActivity.getFirebaseApi()
+												.getFileMetadataService()
+												.deleteById(metadata.getKey())
+												.onCompleteDoNothing();
+									});
+
+							professor.setImageMetadataKey(fileMetadata.getKey());
 
 							firebaseConnectedActivity.showSnackBar("Uploading...");
 							firebaseConnectedActivity.getFirebaseApi()

@@ -198,11 +198,11 @@ public class ScrollViewEntityViewModelFactory {
 
 		if (fileViewModel.getFileDescription() != null) {
 			field2 = fileViewModel.getFileDescription();
-			field3 = fileViewModel.getFileType().toUpperCase() +
+			field3 = fileViewModel.getFileExtension().toUpperCase() +
 					" file (" + fileViewModel.getFileSize() + ")";
 		}
 		else {
-			field2 = fileViewModel.getFileType().toUpperCase() +
+			field2 = fileViewModel.getFileExtension().toUpperCase() +
 					" file (" + fileViewModel.getFileSize() + ")";
 			field3 = null;
 		}
@@ -221,11 +221,11 @@ public class ScrollViewEntityViewModelFactory {
 
 		if (fileViewModel.getFileDescription() != null) {
 			field2 = fileViewModel.getFileDescription();
-			field3 = fileViewModel.getFileType().toUpperCase() +
+			field3 = fileViewModel.getFileExtension().toUpperCase() +
 					" file (" + fileViewModel.getFileSize() + ")";
 		}
 		else {
-			field2 = fileViewModel.getFileType().toUpperCase() +
+			field2 = fileViewModel.getFileExtension().toUpperCase() +
 					" file (" + fileViewModel.getFileSize() + ")";
 			field3 = null;
 		}

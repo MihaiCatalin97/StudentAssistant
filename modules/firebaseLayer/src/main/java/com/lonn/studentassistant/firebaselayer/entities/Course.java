@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Course extends Discipline {
 	private Integer pack;
+	private List<String> laboratories;
 
 	private List<CycleSpecializationYear> cycleSpecializationYears = new ArrayList<>();
 

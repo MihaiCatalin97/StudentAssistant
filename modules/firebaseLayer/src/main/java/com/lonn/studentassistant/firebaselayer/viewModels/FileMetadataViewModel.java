@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.viewModels;
 
+import android.webkit.MimeTypeMap;
+
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.FileUtils;
@@ -12,8 +14,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-
-import static com.lonn.studentassistant.firebaselayer.FileUtils.getExtensionFromMime;
 
 @Data
 @Builder
@@ -51,6 +51,11 @@ public class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
 
 	@Bindable
 	public String getFullFileName() {
-		return fileName + "." + getExtensionFromMime(fileType);
+		return fileName + "." + getFileExtension();
+	}
+
+	@Builder
+	public String getFileExtension() {
+		return MimeTypeMap.getSingleton().getExtensionFromMimeType(fileType);
 	}
 }

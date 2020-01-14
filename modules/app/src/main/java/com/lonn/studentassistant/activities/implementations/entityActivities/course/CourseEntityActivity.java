@@ -7,9 +7,11 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
+import com.lonn.studentassistant.activities.implementations.entityActivities.laboratory.LaboratoryInputActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.logging.Logger;
+import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.CourseFileUploadDialog;
 
@@ -31,12 +33,22 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
+		((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
+			Intent laboratoryInputActivityIntent = new Intent(this,
+					LaboratoryInputActivity.class);
+
+			laboratoryInputActivityIntent.putExtra("courseName", binding.getCourse().getName());
+
+			startActivity(laboratoryInputActivityIntent);
+		});
+
 		loadAll(entityKey);
 	}
 
 	protected void removeFileMetadataFromEntity(String courseKey, String fileMetadataKey) {
 		getFirebaseApi().getCourseService()
 				.getById(courseKey)
+				.subscribe(false)
 				.onComplete(course -> {
 					course.getFilesMetadata().remove(fileMetadataKey);
 

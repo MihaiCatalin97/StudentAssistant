@@ -55,7 +55,7 @@ class ProfessorEntityActivityFirebaseDispatcher extends Dispatcher {
 							loadRecurringClasses(professor.getRecurringClasses());
 							loadOneTimeClasses(professor.getOneTimeClasses());
 							loadFiles(professor.getFilesMetadata());
-							loadImage(professor.professorImageMetadataKey);
+							loadImage(professor.imageMetadataKey);
 						},
 						error -> activity.logAndShowError("An error occurred while loading the professor.",
 								new Exception("Loading professor: " + error.getMessage()),

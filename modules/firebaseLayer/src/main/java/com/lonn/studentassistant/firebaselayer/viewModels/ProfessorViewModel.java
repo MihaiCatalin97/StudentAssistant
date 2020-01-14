@@ -23,7 +23,7 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
 	public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
 	@Bindable
 	public String professorImage;
-	public String professorImageMetadataKey;
+	public String imageMetadataKey;
 	public List<String> courses;
 	public List<String> otherActivities;
 	public List<String> oneTimeClasses;
