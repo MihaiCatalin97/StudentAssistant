@@ -7,6 +7,7 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializatio
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Builder;
@@ -19,34 +20,36 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public class CourseViewModel extends DisciplineViewModel<Course> {
-	public int pack;
-	public List<CycleSpecializationYear> cycleSpecializationYears;
+    public int pack;
+    public List<CycleSpecializationYear> cycleSpecializationYears;
+    public List<String> laboratories = new LinkedList<>();
 
-	@Bindable
-	public String getCourseType() {
-		if (pack == 0) {
-			return "Mandatory discipline";
-		}
-		else {
-			return "Optional discipline (Pack " + pack + ")";
-		}
-	}
+    @Bindable
+    public String getCourseType() {
+        if (pack == 0) {
+            return "Mandatory discipline";
+        }
+        else {
+            return "Optional discipline (Pack " + pack + ")";
+        }
+    }
 
-	@Override
-	public CourseViewModel setKey(String key) {
-		super.setKey(key);
-		return this;
-	}
+    @Override
+    public CourseViewModel setKey(String key) {
+        super.setKey(key);
+        return this;
+    }
 
-	public boolean isForCycleAndYearAndSemester(CycleSpecialization cycleSpecialization, int year,
-												int semester) {
-		for (CycleSpecializationYear cycleSpecializationYear : cycleSpecializationYears) {
-			if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization) &&
-					cycleSpecializationYear.getYear() == year &&
-					this.semester == semester)
-				return true;
-		}
+    public boolean isForCycleAndYearAndSemester(CycleSpecialization cycleSpecialization, int year,
+                                                int semester) {
+        for (CycleSpecializationYear cycleSpecializationYear : cycleSpecializationYears) {
+            if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization) &&
+                    cycleSpecializationYear.getYear() == year &&
+                    this.semester == semester) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

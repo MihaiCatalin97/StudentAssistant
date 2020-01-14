@@ -6,6 +6,7 @@ import com.lonn.studentassistant.activities.implementations.entityActivities.pro
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
@@ -48,6 +49,12 @@ public class ScrollViewEntityViewModelFactory {
 				return full((FileMetadataViewModel) entity);
 			}
 			return partial((FileMetadataViewModel) entity);
+		}
+		if (entity instanceof LaboratoryViewModel) {
+			if (viewType.equals(FULL)) {
+				return full((LaboratoryViewModel) entity);
+			}
+			return partial((LaboratoryViewModel) entity);
 		}
 		return null;
 	}
@@ -234,6 +241,28 @@ public class ScrollViewEntityViewModelFactory {
 				.field1(field1)
 				.field2(field2)
 				.field3(field3)
+				.build();
+	}
+
+	private static ScrollViewEntityViewModel partial(LaboratoryViewModel laboratoryViewModel) {
+		String field1 = laboratoryViewModel.getTitle() != null?
+				laboratoryViewModel.getTitle() : "Laboratory " + laboratoryViewModel.getWeekNumber();
+		String field2 = "Week " + laboratoryViewModel.getWeekNumber();
+
+		return ScrollViewEntityViewModel.builder()
+				.field1(field1)
+				.field2(field2)
+				.build();
+	}
+
+	private static ScrollViewEntityViewModel full(LaboratoryViewModel laboratoryViewModel) {
+		String field1 = laboratoryViewModel.getTitle() != null?
+				laboratoryViewModel.getTitle() : "Laboratory " + laboratoryViewModel.getWeekNumber();
+		String field2 = "Week " + laboratoryViewModel.getWeekNumber();
+
+		return ScrollViewEntityViewModel.builder()
+				.field1(field1)
+				.field2(field2)
 				.build();
 	}
 }

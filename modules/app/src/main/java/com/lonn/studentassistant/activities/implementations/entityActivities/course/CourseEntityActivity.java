@@ -16,49 +16,50 @@ import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstrac
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.CourseFileUploadDialog;
 
 public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> {
-	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
-	CourseEntityActivityLayoutBinding binding;
-	private CourseEntityActivityFirebaseDispatcher dispatcher;
+    private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
+    CourseEntityActivityLayoutBinding binding;
+    private CourseEntityActivityFirebaseDispatcher dispatcher;
 
-	protected void loadAll(String entityKey) {
-		dispatcher.loadAll(entityKey);
-	}
+    protected void loadAll(String entityKey) {
+        dispatcher.loadAll(entityKey);
+    }
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.course_entity_activity_layout);
-	}
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.course_entity_activity_layout);
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
-		((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
-			Intent laboratoryInputActivityIntent = new Intent(this,
-					LaboratoryInputActivity.class);
+        dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
+        ((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
+            Intent laboratoryInputActivityIntent = new Intent(this,
+                    LaboratoryInputActivity.class);
 
-			laboratoryInputActivityIntent.putExtra("courseName", binding.getCourse().getName());
+            laboratoryInputActivityIntent.putExtra("courseName", binding.getCourse().getName());
+            laboratoryInputActivityIntent.putExtra("courseKey", binding.getCourse().getKey());
 
-			startActivity(laboratoryInputActivityIntent);
-		});
+            startActivity(laboratoryInputActivityIntent);
+        });
 
-		loadAll(entityKey);
-	}
+        loadAll(entityKey);
+    }
 
-	protected void removeFileMetadataFromEntity(String courseKey, String fileMetadataKey) {
-		getFirebaseApi().getCourseService()
-				.getById(courseKey)
-				.subscribe(false)
-				.onComplete(course -> {
-					course.getFilesMetadata().remove(fileMetadataKey);
+    protected void removeFileMetadataFromEntity(String courseKey, String fileMetadataKey) {
+        getFirebaseApi().getCourseService()
+                .getById(courseKey)
+                .subscribe(false)
+                .onComplete(course -> {
+                    course.getFilesMetadata().remove(fileMetadataKey);
 
-					getFirebaseApi().getCourseService()
-							.save(course)
-							.onCompleteDoNothing();
-				});
-	}
+                    getFirebaseApi().getCourseService()
+                            .save(course)
+                            .onCompleteDoNothing();
+                });
+    }
 
-	protected FileUploadDialog getFileUploadDialogInstance() {
-		return new CourseFileUploadDialog(this, entityKey);
-	}
+    protected FileUploadDialog getFileUploadDialogInstance() {
+        return new CourseFileUploadDialog(this, entityKey);
+    }
 }

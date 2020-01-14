@@ -50,31 +50,19 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dim_0dp"
-                        android:text="Week number: "
+                        android:text="Week number*: "
                         android:layout_weight="0.4"/>
 
-                    <TextView
-                        style="@style/EntityActivityContentTitle"
+                    <EditText
+                        android:id="@+id/laboratoryWeekEditText"
+                        style="@style/EntityActivityContentText"
                         android:layout_width="0dp"
-                        android:layout_weight="0.1"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dim_0dp"
-                        android:text="1" />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="0.25"
-                        android:layout_height="wrap_content"/>
-
-                    <Button
-                        style="@style/BlueRoundButton"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.25"
-                        android:layout_height="wrap_content"
-                        android:text="Choose"
-                        app:autoSizeTextType="uniform"/>
+                        android:layout_marginBottom="0dp"
+                        android:layout_weight="0.4"
+                        android:hint="Enter week"
+                        android:inputType="number" />
                 </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,6 +117,7 @@
                 android:layout_weight="0.3"
                 android:text="Cancel"
                 android:padding="@dimen/dim_10dp"
+                android:onClick="cancel"
                 app:autoSizeTextType="uniform"/>
 
             <RelativeLayout
@@ -143,6 +132,7 @@
                 android:layout_weight="0.3"
                 android:padding="@dimen/dim_10dp"
                 android:text="Save"
+                android:onClick="save"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>

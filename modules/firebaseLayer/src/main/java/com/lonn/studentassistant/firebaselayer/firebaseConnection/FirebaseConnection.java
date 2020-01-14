@@ -37,6 +37,7 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_METADATA;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.IDENTIFICATION_HASHES;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.LABORATORIES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ONE_TIME_CLASSES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.OTHER_ACTIVITIES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
@@ -65,6 +66,7 @@ public class FirebaseConnection {
 		databaseMap.put(IDENTIFICATION_HASHES, buildContextForTable(IDENTIFICATION_HASHES));
 		databaseMap.put(FILE_METADATA, buildContextForTable(FILE_METADATA));
 		databaseMap.put(FILE_CONTENT, buildContextForTable(FILE_CONTENT));
+		databaseMap.put(LABORATORIES, buildContextForTable(LABORATORIES));
 
 		databaseMap.put(ADMINISTRATORS, buildContextWithIdentificationForTable(ADMINISTRATORS));
 		databaseMap.put(PROFESSORS, buildContextWithIdentificationForTable(PROFESSORS));
