@@ -128,7 +128,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 									if (isPersonalScheduleClass(recurringClass, binding.getStudent())) {
 										recurringClassMap.put(recurringClass);
 									}
-									else{
+									else {
 										recurringClassMap.remove(recurringClass);
 									}
 								},
@@ -146,7 +146,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 									if (isPersonalScheduleClass(oneTimeClass, binding.getStudent())) {
 										oneTimeClassMap.put(oneTimeClass);
 									}
-									else{
+									else {
 										oneTimeClassMap.remove(oneTimeClass);
 									}
 								},
@@ -163,8 +163,29 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 				.onComplete(student -> {
 							binding.setStudent(student);
 							computeClasses();
+
+							if (student.getImageMetadataKey() != null) {
+								loadProfileImage(student.imageMetadataKey);
+							}
 						},
 						error -> activity.logAndShowError("Error loading your personal data", error, LOGGER));
+	}
+
+	private void loadProfileImage(String profileImageKey) {
+		firebaseApi.getFileMetadataService()
+				.getById(profileImageKey)
+				.onComplete(metadata -> firebaseApi.getFileContentService()
+									.getById(metadata.getFileContentKey())
+									.onComplete(binding::setProfileImageContent,
+											error -> activity.logAndShowError(
+													"Unable to load the profile image",
+													error,
+													LOGGER))
+						,
+						error -> activity.logAndShowError(
+								"Unable to load the profile image",
+								error,
+								LOGGER));
 	}
 
 	private boolean isPersonalScheduleClass(ScheduleClassViewModel scheduleClass,

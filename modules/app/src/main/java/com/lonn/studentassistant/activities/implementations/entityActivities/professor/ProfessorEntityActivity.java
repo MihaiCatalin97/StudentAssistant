@@ -34,7 +34,7 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 		dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
 		imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
 
-		findViewById(R.id.professorImageUploadButton).setOnClickListener((v) -> {
+		findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
 			imageUploadDialog.show();
 		});
 

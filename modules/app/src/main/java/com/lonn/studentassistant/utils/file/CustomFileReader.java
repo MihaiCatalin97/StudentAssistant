@@ -15,6 +15,9 @@ import java.io.InputStreamReader;
 
 import lombok.AllArgsConstructor;
 
+import static android.util.Base64.DEFAULT;
+import static android.util.Base64.encodeToString;
+
 @AllArgsConstructor
 public class CustomFileReader {
 	private ContentResolver contentResolver;
@@ -38,8 +41,8 @@ public class CustomFileReader {
 	public String readBase64(Uri fileUri) throws IOException {
 		byte[] fileContentByteArray = readBytes(fileUri);
 
-		return Base64.encodeToString(fileContentByteArray,
-				fileContentByteArray.length);
+		return encodeToString(fileContentByteArray,
+				DEFAULT);
 	}
 
 	public String readStringContent(Uri fileUri) throws IOException {
@@ -92,25 +95,6 @@ public class CustomFileReader {
 
 		if (name != null) {
 			return name.substring(0, name.lastIndexOf("."));
-		}
-
-		return null;
-	}
-
-	public String getFileType(Uri fileUri) {
-
-		Cursor cursor = contentResolver.query(fileUri,
-				null, null, null, null);
-		String type = null;
-
-		if (cursor != null) {
-			cursor.moveToFirst();
-			type = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-			cursor.close();
-		}
-
-		if (type != null) {
-			return type.substring(type.lastIndexOf(".") + 1);
 		}
 
 		return null;

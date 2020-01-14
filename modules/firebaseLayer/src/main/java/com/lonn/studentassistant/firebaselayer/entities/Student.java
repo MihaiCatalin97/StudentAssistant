@@ -23,6 +23,7 @@ public class Student extends HashableEntity implements Cloneable {
 	private String email;
 	private String phoneNumber;
 	private String group;
+	private String imageMetadataKey;
 	private int year;
 
 	private CycleSpecialization cycleAndSpecialization;

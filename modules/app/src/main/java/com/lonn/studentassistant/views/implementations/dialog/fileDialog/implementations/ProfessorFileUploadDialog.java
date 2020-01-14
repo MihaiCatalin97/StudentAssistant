@@ -10,7 +10,7 @@ public class ProfessorFileUploadDialog extends GUIUploadDialog {
 	public ProfessorFileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 									 String aggregatedEntityKey) {
 		super(firebaseConnectedActivity, aggregatedEntityKey, UPLOAD_FILE_REQUEST_CODE,
-				"*/*", "image");
+				"*/*");
 	}
 
 	protected void linkFileToEntity(String entityKey, FileMetadataViewModel fileMetadata) {

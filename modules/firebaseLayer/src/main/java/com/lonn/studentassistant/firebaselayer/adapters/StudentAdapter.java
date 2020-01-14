@@ -18,6 +18,7 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
 				.cycleSpecialization(student.getCycleAndSpecialization())
 				.optionalCourses(student.getOptionalCourses())
 				.otherActivities(student.getOtherActivities())
+				.imageMetadataKey(student.getImageMetadataKey())
 				.build()
 				.setKey(student.getKey());
 	}
@@ -33,7 +34,8 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
 				.setStudentId(studentViewModel.getStudentId())
 				.setOptionalCourses(studentViewModel.getOptionalCourses())
 				.setOtherActivities(studentViewModel.getOtherActivities())
-				.setCycleAndSpecialization(studentViewModel.getCycleSpecialization());
+				.setCycleAndSpecialization(studentViewModel.getCycleSpecialization())
+				.setImageMetadataKey(studentViewModel.getImageMetadataKey());
 
 		if (studentViewModel.getKey() != null) {
 			result.setKey(studentViewModel.getKey());

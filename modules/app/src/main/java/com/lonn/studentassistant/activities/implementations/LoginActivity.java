@@ -62,6 +62,9 @@ public class LoginActivity extends FirebaseConnectedActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//TODO: Investigate persistance
+//		FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 		emailEditText = findViewById(R.id.loginEditTextEmail);
 		passwordEditText = findViewById(R.id.loginEditTextPassword);
 		credentialsRememberCheckBox = findViewById(R.id.loginRememberCheckBox);

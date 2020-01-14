@@ -5,20 +5,20 @@ import android.content.Intent;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 
 import static android.content.Intent.createChooser;
+import static com.lonn.studentassistant.utils.file.FileUtils.getFileTypeFromMime;
 
 public abstract class NoGUIUploadDialog extends FileUploadDialog {
 	public NoGUIUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 							 String aggregatedEntityKey,
 							 int requestCode,
-							 String fileType,
-							 String fileTypeName) {
-		super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType, fileTypeName);
+							 String fileType) {
+		super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType);
 	}
 
 	public void setFile(int requestCode, int resultCode, Intent data) {
 		super.setFile(requestCode, resultCode, data);
 
-		if (shouldSetFile(requestCode, resultCode)) {
+		if (shouldSaveFile(requestCode, resultCode)) {
 			saveFile(fileContent, fileMetadata);
 		}
 	}
@@ -29,7 +29,7 @@ public abstract class NoGUIUploadDialog extends FileUploadDialog {
 				.setType(fileType)
 				.setAction(Intent.ACTION_GET_CONTENT);
 
-		firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + fileTypeName),
+		firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + getFileTypeFromMime(fileType)),
 				requestCode);
 	}
 }

@@ -6,31 +6,47 @@ import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstrac
 
 import static com.lonn.studentassistant.activities.abstractions.FileManagingActivity.UPLOAD_IMAGE_REQUEST_CODE;
 
-public class ProfessorImageUploadDialog extends NoGUIUploadDialog {
+public class ProfileImageUploadDialog extends NoGUIUploadDialog {
 
-	public ProfessorImageUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
-									  String aggregatedEntityKey) {
+	public ProfileImageUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
+									String aggregatedEntityKey) {
 		super(firebaseConnectedActivity, aggregatedEntityKey, UPLOAD_IMAGE_REQUEST_CODE,
 				"image/*");
 	}
 
-	protected void linkFileToEntity(String professorKey, FileMetadataViewModel fileMetadata) {
+	protected void linkFileToEntity(String studentKey, FileMetadataViewModel fileMetadata) {
 		firebaseConnectedActivity.getFirebaseApi()
-				.getProfessorService()
-				.getById(professorKey)
+				.getStudentService()
+				.getById(studentKey)
 				.subscribe(false)
-				.onComplete(professor -> {
-							professor.setProfessorImageMetadataKey(fileMetadata.getKey());
+				.onComplete(student -> {
+							firebaseConnectedActivity.getFirebaseApi()
+									.getFileMetadataService()
+									.getById(student.getImageMetadataKey())
+									.subscribe(false)
+									.onComplete(metadata -> {
+										firebaseConnectedActivity.getFirebaseApi()
+												.getFileContentService()
+												.deleteById(metadata.getFileContentKey())
+												.onCompleteDoNothing();
+
+										firebaseConnectedActivity.getFirebaseApi()
+												.getFileMetadataService()
+												.deleteById(metadata.getKey())
+												.onCompleteDoNothing();
+									});
+
+							student.setImageMetadataKey(fileMetadata.getKey());
 
 							firebaseConnectedActivity.showSnackBar("Uploading...");
 							firebaseConnectedActivity.getFirebaseApi()
-									.getProfessorService()
-									.save(professor)
+									.getStudentService()
+									.save(student)
 									.onComplete(none -> firebaseConnectedActivity.showSnackBar(
 											"Successfully uploaded " + fileMetadata.getFullFileName(),
 											1000),
 											exception -> {
-												logAndShowException("An error occurred while linking the image to the professor",
+												logAndShowException("An error occurred while linking the image to the student",
 														exception);
 
 												deleteFileContent(fileMetadata.getFileContentKey());

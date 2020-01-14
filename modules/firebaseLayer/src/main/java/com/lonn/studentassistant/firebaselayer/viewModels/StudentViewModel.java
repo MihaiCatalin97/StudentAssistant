@@ -25,7 +25,8 @@ public class StudentViewModel extends EntityViewModel<Student> {
 	@Bindable
 	public String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
 	@Bindable
-	public int studentImage, year;
+	public int year;
+	public String imageMetadataKey;
 	public List<String> optionalCourses;
 	public List<String> otherActivities;
 	public CycleSpecialization cycleSpecialization;

@@ -36,6 +36,10 @@
         <variable
             name="myOtherActivities"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+
+        <variable
+            name="profileImageContent"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -62,9 +66,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:student="@{student}"
+            app:myOtherActivities="@{myOtherActivities}"
             app:optionalCourses="@{optionalCourses}"
-            app:myOtherActivities="@{myOtherActivities}" />
+            app:profileImageContent="@{profileImageContent}"
+            app:student="@{student}" />
 
         <include
             android:id="@+id/layoutSchedule"

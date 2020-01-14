@@ -26,4 +26,8 @@ public class FileUtils {
 			}
 		}
 	}
+
+	public static String getExtensionFromMime(String mime) {
+		return mime.split("/")[1];
+	}
 }

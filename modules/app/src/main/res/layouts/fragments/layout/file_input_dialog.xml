@@ -111,6 +111,7 @@
             android:layout_marginStart="@dimen/dim_8dp"
             android:layout_marginEnd="@dimen/dim_8dp"
             android:layout_weight="1"
+            android:maxLines="2"
             android:text="(none)"
             android:textStyle="bold" />
 

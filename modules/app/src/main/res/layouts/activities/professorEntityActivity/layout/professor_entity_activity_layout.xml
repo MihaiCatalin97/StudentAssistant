@@ -39,6 +39,10 @@
         <variable
             name="files"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
+            name="professorImageContent"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -66,7 +70,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@{professor.professorImage}" />
+                app:srcCompat="@{professorImageContent.fileContentBase64}" />
 
         </androidx.cardview.widget.CardView>
 
@@ -82,7 +86,7 @@
             app:layout_constraintTop_toTopOf="@id/professorImageCardView">
 
             <ImageView
-                android:id="@+id/professorImageUploadButton"
+                android:id="@+id/imageUploadButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:contentDescription="Add image button"
@@ -165,6 +169,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
                     android:layout_width="match_parent"

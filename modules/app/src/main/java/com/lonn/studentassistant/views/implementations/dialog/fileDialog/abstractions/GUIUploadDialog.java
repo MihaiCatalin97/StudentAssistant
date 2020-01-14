@@ -12,6 +12,7 @@ import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivi
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.createChooser;
+import static com.lonn.studentassistant.utils.file.FileUtils.getFileTypeFromMime;
 
 public abstract class GUIUploadDialog extends FileUploadDialog {
 	private EditText fileTitleEditText;
@@ -21,9 +22,8 @@ public abstract class GUIUploadDialog extends FileUploadDialog {
 	public GUIUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 						   String aggregatedEntityKey,
 						   int requestCode,
-						   String fileType,
-						   String fileTypeName) {
-		super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType, fileTypeName);
+						   String fileType) {
+		super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public abstract class GUIUploadDialog extends FileUploadDialog {
 					.setType(fileType)
 					.setAction(Intent.ACTION_GET_CONTENT);
 
-			firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + fileTypeName),
+			firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + getFileTypeFromMime(fileType)),
 					requestCode);
 		});
 

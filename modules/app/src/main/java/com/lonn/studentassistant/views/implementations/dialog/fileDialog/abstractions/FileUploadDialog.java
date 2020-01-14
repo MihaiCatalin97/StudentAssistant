@@ -11,9 +11,9 @@ import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.file.CustomFileReader;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
+import static com.lonn.studentassistant.utils.file.FileUtils.getMimeFromUri;
 import static java.util.UUID.randomUUID;
 
 public abstract class FileUploadDialog extends Dialog {
@@ -25,21 +25,18 @@ public abstract class FileUploadDialog extends Dialog {
 	FileContentViewModel fileContent;
 	Uri selectedFileUri;
 	String fileType;
-	String fileTypeName;
 	private String aggregatedEntityKey;
 	private CustomFileReader customFileReader;
 
 	FileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
 					 String aggregatedEntityKey,
 					 int requestCode,
-					 String fileType,
-					 String fileTypeName) {
+					 String fileType) {
 		super(firebaseConnectedActivity);
 		this.firebaseConnectedActivity = firebaseConnectedActivity;
 		this.aggregatedEntityKey = aggregatedEntityKey;
 		this.requestCode = requestCode;
 		this.fileType = fileType;
-		this.fileTypeName = fileTypeName;
 
 		customFileReader = new CustomFileReader(firebaseConnectedActivity.getContentResolver());
 
@@ -54,17 +51,19 @@ public abstract class FileUploadDialog extends Dialog {
 	}
 
 	public void setFile(int requestCode, int resultCode, Intent data) {
-		if (shouldSetFile(requestCode, resultCode)) {
+		if (shouldSaveFile(requestCode, resultCode)) {
 			selectedFileUri = data.getData();
 
 			fileMetadata = fileMetadata
 					.setFileSize(customFileReader.getFileSize(selectedFileUri))
 					.setFileName(customFileReader.getFileName(selectedFileUri))
-					.setFileType(customFileReader.getFileType(selectedFileUri));
+					.setFileType(getMimeFromUri(getContext(), selectedFileUri));
 		}
 	}
 
 	void saveFile(FileContentViewModel fileContent, FileMetadataViewModel fileMetadata) {
+		firebaseConnectedActivity.showSnackBar("Uploading file");
+
 		try {
 			fileContent = fileContent
 					.setFileContentBase64(customFileReader.readBase64(selectedFileUri));
@@ -112,7 +111,7 @@ public abstract class FileUploadDialog extends Dialog {
 
 	protected abstract void linkFileToEntity(String aggregatedEntityKey, FileMetadataViewModel fileMetadata);
 
-	boolean shouldSetFile(int requestCode, int resultCode) {
+	boolean shouldSaveFile(int requestCode, int resultCode) {
 		return requestCode == this.requestCode && resultCode == RESULT_OK;
 	}
 }

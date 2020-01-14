@@ -10,6 +10,8 @@ import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
+import java.util.List;
+
 import static com.lonn.studentassistant.BR.courses;
 import static com.lonn.studentassistant.BR.files;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
@@ -48,40 +50,76 @@ class ProfessorEntityActivityFirebaseDispatcher extends Dispatcher {
 							removeNonExistingEntities(oneTimeClassesMap, professor.getOneTimeClasses());
 							removeNonExistingEntities(fileMap, professor.getFilesMetadata());
 
-							for (String activityId : professor.getOtherActivities()) {
-								firebaseApi.getOtherActivityService()
-										.getById(activityId)
-										.onComplete(otherActivityMap::put);
-							}
-
-							for (String courseId : professor.getCourses()) {
-								firebaseApi.getCourseService()
-										.getById(courseId)
-										.onComplete(courseMap::put);
-							}
-
-							for (String recurringClassId : professor.getRecurringClasses()) {
-								firebaseApi.getRecurringClassService()
-										.getById(recurringClassId)
-										.onComplete(recurringClassesMap::put);
-							}
-
-							for (String oneTimeClassId : professor.getOneTimeClasses()) {
-								firebaseApi.getOneTimeClassService()
-										.getById(oneTimeClassId)
-										.onComplete(oneTimeClassesMap::put);
-							}
-
-							for (String fileId : professor.getFilesMetadata()) {
-								firebaseApi.getFileMetadataService()
-										.getById(fileId)
-										.onComplete(fileMap::put);
-							}
-
+							loadOtherActivities(professor.getOtherActivities());
+							loadCourses(professor.getCourses());
+							loadRecurringClasses(professor.getRecurringClasses());
+							loadOneTimeClasses(professor.getOneTimeClasses());
+							loadFiles(professor.getFilesMetadata());
+							loadImage(professor.professorImageMetadataKey);
 						},
 						error -> activity.logAndShowError("An error occurred while loading the professor.",
 								new Exception("Loading professor: " + error.getMessage()),
 								LOGGER)
 				);
+	}
+
+	private void loadFiles(List<String> fileIds) {
+		for (String fileId : fileIds) {
+			firebaseApi.getFileMetadataService()
+					.getById(fileId)
+					.onComplete(fileMap::put);
+		}
+	}
+
+	private void loadCourses(List<String> courseIds) {
+		for (String courseId : courseIds) {
+			firebaseApi.getCourseService()
+					.getById(courseId)
+					.onComplete(courseMap::put);
+		}
+	}
+
+	private void loadOtherActivities(List<String> activityIds) {
+		for (String activityId : activityIds) {
+			firebaseApi.getOtherActivityService()
+					.getById(activityId)
+					.onComplete(otherActivityMap::put);
+		}
+	}
+
+	private void loadRecurringClasses(List<String> recurringClassIds) {
+		for (String recurringClassId : recurringClassIds) {
+			firebaseApi.getRecurringClassService()
+					.getById(recurringClassId)
+					.onComplete(recurringClassesMap::put);
+		}
+	}
+
+	private void loadOneTimeClasses(List<String> oneTimeClassIds) {
+		for (String oneTimeClassId : oneTimeClassIds) {
+			firebaseApi.getOneTimeClassService()
+					.getById(oneTimeClassId)
+					.onComplete(oneTimeClassesMap::put);
+		}
+	}
+
+	private void loadImage(String imageMetadataId) {
+		if (imageMetadataId != null) {
+			firebaseApi.getFileMetadataService()
+					.getById(imageMetadataId)
+					.onComplete(metadata ->
+									firebaseApi.getFileContentService()
+											.getById(metadata.getFileContentKey())
+											.onComplete(binding::setProfessorImageContent,
+													error -> activity.logAndShowError(
+															"Unable to load the professors image",
+															error,
+															LOGGER))
+							,
+							error -> activity.logAndShowError(
+									"Unable to load the professors image",
+									error,
+									LOGGER));
+		}
 	}
 }

@@ -1,12 +1,12 @@
 package com.lonn.studentassistant.databinding;
 
+import android.graphics.BitmapFactory;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
-import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
@@ -21,6 +21,8 @@ import com.lonn.studentassistant.views.implementations.category.ScrollViewCatego
 import java.util.Collection;
 import java.util.List;
 
+import static android.util.Base64.DEFAULT;
+import static android.util.Base64.decode;
 import static com.lonn.studentassistant.BR._all;
 
 public class BindingAdapters {
@@ -50,13 +52,6 @@ public class BindingAdapters {
 		imageView.setImageResource(resourceId);
 	}
 
-	@BindingAdapter("defaultSrcCompat")
-	public static void setDefaultSrcCompat(ImageView imageView, int resourceId) {
-		if (imageView.getDrawable() == null) {
-			imageView.setImageResource(resourceId);
-		}
-	}
-
 	@BindingAdapter("roundedSrc")
 	public static void setRoundedSrc(ImageView imageView, int resourceId) {
 		imageView.setImageResource(resourceId);
@@ -69,11 +64,16 @@ public class BindingAdapters {
 		}
 	}
 
-	@BindingAdapter("srcCompat")
-	public static void setSrcCompat(ImageView imageView, String base64Resource) {
-		if (imageView.getId() == R.id.professorImage) {
-			imageView.setImageResource(R.drawable.default_person_image_male);
+	@BindingAdapter(value = {"srcCompat", "defaultSrcCompat"}, requireAll = false)
+	public static void setSrcCompat(ImageView imageView, String base64Resource,
+									int resourceId) {
+		if (base64Resource == null) {
+			imageView.setImageResource(resourceId);
+			return;
 		}
+
+		byte[] decodedImage = decode(base64Resource, DEFAULT);
+		imageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedImage, 0, decodedImage.length));
 	}
 
 	@BindingAdapter("android:childEntityComparator")

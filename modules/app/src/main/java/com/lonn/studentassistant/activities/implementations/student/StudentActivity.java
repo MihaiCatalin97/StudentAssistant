@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.student;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
@@ -7,9 +8,9 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
+import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfileImageUploadDialog;
 
 import static android.view.View.VISIBLE;
 
@@ -18,6 +19,7 @@ public class StudentActivity extends NavBarActivity {
 	StudentActivityMainLayoutBinding binding;
 
 	private StudentActivityFirebaseDispatcher dispatcher;
+	private ProfileImageUploadDialog imageUploadDialog;
 
 	@Override
 	public void onStart() {
@@ -79,11 +81,23 @@ public class StudentActivity extends NavBarActivity {
 
 		String studentKey = null;
 
-		if(getIntent().getExtras() != null){
-			 studentKey = getIntent().getExtras().getString("personId");
+		if (getIntent().getExtras() != null) {
+			studentKey = getIntent().getExtras().getString("personId");
 		}
 
+		imageUploadDialog = new ProfileImageUploadDialog(this, studentKey);
+
+		findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
+			imageUploadDialog.show();
+		});
+
 		dispatcher.loadAll(studentKey);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		imageUploadDialog.setFile(requestCode, resultCode, data);
 	}
 
 	protected void inflateLayout() {
