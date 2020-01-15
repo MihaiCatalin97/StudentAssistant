@@ -62,7 +62,14 @@ public abstract class FileManagingActivity<T extends EntityViewModel<? extends B
 			}
 
 			if (parent != null) {
-				showDownloadDialog((FileMetadataViewModel) ((EntityView) parent).getEntityViewModel());
+				EntityViewModel model = ((EntityView) parent).getEntityViewModel();
+
+				if (model instanceof FileMetadataViewModel) {
+					showDownloadDialog((FileMetadataViewModel) model);
+					return true;
+				}
+
+				return false;
 			}
 
 			return true;

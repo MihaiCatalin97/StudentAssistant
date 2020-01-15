@@ -13,7 +13,8 @@ public class LaboratoryAdapter extends ViewModelAdapter<Laboratory, LaboratoryVi
 				.gradeKeys(laboratory.getGrades())
 				.title(laboratory.getTitle())
 				.weekNumber(laboratory.getWeekNumber())
-				.build();
+				.build()
+				.setKey(laboratory.getKey());
 	}
 
 	public Laboratory adapt(LaboratoryViewModel laboratoryViewModel) {

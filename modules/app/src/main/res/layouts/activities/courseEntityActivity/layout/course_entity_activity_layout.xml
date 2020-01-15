@@ -60,12 +60,6 @@
                 android:text="@{course.courseType + `\n` + course.yearSemester}" />
 
             <TextView
-                style="@style/EntityActivitySubtitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{course.yearSemester}" />
-
-            <TextView
                 style="@style/EntityActivityContentTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

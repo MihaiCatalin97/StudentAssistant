@@ -21,4 +21,10 @@ public class LaboratoryViewModel extends EntityViewModel<Laboratory> {
 	public String description;
 	public String title;
 	public int weekNumber;
+
+	@Override
+	public LaboratoryViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

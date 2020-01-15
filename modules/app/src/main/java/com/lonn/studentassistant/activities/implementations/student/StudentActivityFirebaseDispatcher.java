@@ -151,10 +151,8 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 									}
 								},
 								error -> activity.logAndShowError("An error occurred while loading special classes.", error, LOGGER));
-
 			}
 		}
-
 	}
 
 	private void loadStudent(String key) {

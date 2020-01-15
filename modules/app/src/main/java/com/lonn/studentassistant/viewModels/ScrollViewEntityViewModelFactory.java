@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.viewModels;
 
 import com.lonn.studentassistant.activities.implementations.entityActivities.course.CourseEntityActivity;
+import com.lonn.studentassistant.activities.implementations.entityActivities.laboratory.LaboratoryEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.professor.ProfessorEntityActivity;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
@@ -252,6 +253,7 @@ public class ScrollViewEntityViewModelFactory {
 		return ScrollViewEntityViewModel.builder()
 				.field1(field1)
 				.field2(field2)
+				.entityActivityClass(LaboratoryEntityActivity.class)
 				.build();
 	}
 
@@ -263,6 +265,7 @@ public class ScrollViewEntityViewModelFactory {
 		return ScrollViewEntityViewModel.builder()
 				.field1(field1)
 				.field2(field2)
+				.entityActivityClass(LaboratoryEntityActivity.class)
 				.build();
 	}
 }

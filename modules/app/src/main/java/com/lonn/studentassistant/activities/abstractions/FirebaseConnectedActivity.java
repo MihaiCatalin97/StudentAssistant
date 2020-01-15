@@ -5,14 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.logging.Logger;
@@ -21,6 +22,11 @@ import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import java.util.List;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	protected FirebaseApi firebaseApi;
@@ -91,6 +97,20 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		builder.showDialog();
 	}
 
+	protected void showDialog(String title, String[] dialogButtonTitles,
+							  Runnable[] dialogButtonOnClicks) {
+		Context context = getBaseContext();
+		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogTheme);
+		builder.setTitle("Title");
+		builder.setItems(dialogButtonTitles,
+				(dialog, which) -> {
+					if (dialogButtonOnClicks.length > which) {
+						dialogButtonOnClicks[which].run();
+					}
+				});
+		builder.create().show();
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -143,5 +163,16 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		} while (classToTest != null);
 
 		return false;
+	}
+
+	@NoArgsConstructor
+	@Accessors(chain = true)
+	protected class DialogButtonFunctionality {
+		@Getter
+		@Setter
+		private String title;
+		@Getter
+		@Setter
+		private Runnable onClick;
 	}
 }
