@@ -1,7 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.laboratory;
 
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 
@@ -11,8 +10,12 @@ import com.lonn.studentassistant.databinding.LaboratoryEntityActivityLayoutBindi
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
+import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.LaboratoryFileUploadDialog;
+
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(LaboratoryEntityActivity.class);
@@ -33,12 +36,13 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 		dispatcher = new LaboratoryEntityActivityFirebaseDispatcher(this);
 
-		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() -> {
-			showDialog("Add grades",
-					new String[]{"Add single grade", "Parse CSV"},
-					new Runnable[]{() -> Toast.makeText(getBaseContext(), "Add single grade", Toast.LENGTH_SHORT).show(),
-							() -> Toast.makeText(getBaseContext(), "Parse CSV", Toast.LENGTH_SHORT).show()});
-		});
+		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
+				new DialogBuilder<String>(this)
+						.withTitle("Add grades")
+						.withItems("Add single grade", "Parse CSV")
+						.withGlobalItemAction((item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show())
+						.show()
+		);
 
 		loadAll(entityKey);
 	}

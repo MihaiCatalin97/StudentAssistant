@@ -20,10 +20,6 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
 
         <variable
-            name="students"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
-
-        <variable
             name="files"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
 
@@ -70,15 +66,6 @@
                 android:categoryTitle="@{`Grades`}"
                 android:childEntities="@{grades.values().size() > 0? grades.values() : null}"
                 android:entityName="@{`grades`}"
-                android:permissionLevel="@{1}" />
-
-            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                android:id="@+id/studentCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:categoryTitle="@{`Students`}"
-                android:childEntities="@{students.values().size() > 0? students.values() : null}"
-                android:entityName="@{`students`}"
                 android:permissionLevel="@{1}" />
 
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory

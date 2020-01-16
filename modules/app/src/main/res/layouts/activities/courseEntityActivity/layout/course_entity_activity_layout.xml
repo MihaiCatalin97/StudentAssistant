@@ -35,6 +35,10 @@
         <variable
             name="laboratories"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel&gt;" />
+
+        <variable
+            name="students"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
     </data>
 
     <ScrollView
@@ -91,6 +95,15 @@
                 android:categoryTitle="@{`Laboratories`}"
                 android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
                 android:entityName="@{`laboratory`}"
+                android:permissionLevel="@{1}" />
+
+            <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                android:id="@+id/studentCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:categoryTitle="@{`Students`}"
+                android:childEntities="@{students.values().size() > 0? students.values() : null}"
+                android:entityName="@{`students`}"
                 android:permissionLevel="@{1}" />
 
             <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory

@@ -7,6 +7,7 @@ import androidx.databinding.Bindable;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Data;
@@ -25,6 +26,7 @@ public abstract class DisciplineViewModel<T extends Discipline> extends EntityVi
 	public String name, description, website;
 
 	public int semester;
+	public List<String> students = new LinkedList<>();
 	public List<String> professors = new ArrayList<>();
 	public List<String> recurringClasses = new ArrayList<>();
 	public List<String> oneTimeClasses = new ArrayList<>();

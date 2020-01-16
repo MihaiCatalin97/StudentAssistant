@@ -14,8 +14,12 @@ import com.lonn.studentassistant.activities.implementations.register.accountChoi
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
+import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import java.util.Map;
+
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public class LoginActivity extends FirebaseConnectedActivity {
 	private static final Logger LOGGER = Logger.ofClass(LoginActivity.class);
@@ -31,11 +35,11 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		boolean rememberCredentials = credentialsRememberCheckBox.isChecked();
 
 		if (email.length() == 0) {
-			Toast.makeText(getBaseContext(), "Invalid email!", Toast.LENGTH_SHORT).show();
+			makeText(getBaseContext(), "Invalid email!", LENGTH_SHORT).show();
 			return;
 		}
 		if (password.length() == 0) {
-			Toast.makeText(getBaseContext(), "Invalid password!", Toast.LENGTH_SHORT).show();
+			makeText(getBaseContext(), "Invalid password!", LENGTH_SHORT).show();
 			return;
 		}
 
@@ -84,6 +88,12 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		}
 
 		Utils.init(this);
+
+		new DialogBuilder<String>(this)
+				.withTitle("Login test dialog")
+				.withItems("Item1", "Item2")
+				.withGlobalItemAction((item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show())
+				.show();
 	}
 
 	protected void inflateLayout() {

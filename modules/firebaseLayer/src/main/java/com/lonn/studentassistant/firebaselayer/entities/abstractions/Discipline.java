@@ -17,6 +17,7 @@ public abstract class Discipline extends BaseEntity {
 	private String website;
 	private String scheduleLink;
 
+	private List<String> students = new LinkedList<>();
 	private List<String> filesMetadata = new LinkedList<>();
 	private List<String> professors = new LinkedList<>();
 	private List<String> recurringClasses = new LinkedList<>();

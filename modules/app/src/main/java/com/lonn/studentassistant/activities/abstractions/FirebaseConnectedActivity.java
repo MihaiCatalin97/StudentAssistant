@@ -9,19 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
-
-import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -90,25 +85,6 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		while (parent != null && !(parent instanceof EntityView)) {
 			parent = (ViewGroup) parent.getParent();
 		}
-	}
-
-	public void showDialog(List<BaseEntity> entities, String title, String positiveButtonText) {
-		DialogBuilder builder = new DialogBuilder(FirebaseConnectedActivity.this, entities, title, positiveButtonText);
-		builder.showDialog();
-	}
-
-	protected void showDialog(String title, String[] dialogButtonTitles,
-							  Runnable[] dialogButtonOnClicks) {
-		Context context = getBaseContext();
-		AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.DialogTheme);
-		builder.setTitle("Title");
-		builder.setItems(dialogButtonTitles,
-				(dialog, which) -> {
-					if (dialogButtonOnClicks.length > which) {
-						dialogButtonOnClicks[which].run();
-					}
-				});
-		builder.create().show();
 	}
 
 	@Override
