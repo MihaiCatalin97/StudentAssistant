@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="alertDialogTheme">@style/DialogTheme</item>
+        <item name="android:alertDialogTheme">@style/DialogTheme</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
@@ -16,22 +16,24 @@
         <item name="android:checkedTextViewStyle">@style/CheckedTextViewStyle</item>
         <item name="android:windowTitleStyle">@style/DarkTitleShadowed</item>
         <item name="android:textSize">22sp</item>
-        <item name="android:textStyle">normal</item>
+        <item name="android:textStyle">bold</item>
         <item name="buttonBarButtonStyle">@style/DialogButtons</item>
 
-        <!-- Colors -->
-        <item name="textColorAlertDialogListItem">@color/colorPrimary</item>
-        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <!-- Text shadows -->
+        <item name="android:shadowRadius">3</item>
+        <item name="android:shadowDx">5</item>
+        <item name="android:shadowDy">5</item>
 
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <!-- Colors -->
+        <item name="android:textColorAlertDialogListItem">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="DialogButtons">
         <item name="android:textSize">18sp</item>
         <item name="android:background" />
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>
 
     <style name="CheckedTextViewStyle">

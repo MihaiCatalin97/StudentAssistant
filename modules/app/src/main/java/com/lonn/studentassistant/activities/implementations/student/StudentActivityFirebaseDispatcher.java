@@ -94,7 +94,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 								courseMap = new BindableHashMap<>(binding, courses, receivedCourses);
 								computeClasses();
 							},
-							error -> activity.logAndShowError("An error occurred while loading activities.", error, LOGGER));
+							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
 		}
 	}
 
@@ -106,7 +106,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 								otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities);
 								computeClasses();
 							},
-							error -> activity.logAndShowError("An error occurred while loading activities.", error, LOGGER));
+							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
 		}
 	}
 
@@ -115,7 +115,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 			firebaseApi.getProfessorService()
 					.getAll()
 					.onComplete(binding::setProfessors,
-							error -> activity.logAndShowError("An error occurred while loading professors.", error, LOGGER));
+							error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
 		}
 	}
 
@@ -132,7 +132,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 										recurringClassMap.remove(recurringClass);
 									}
 								},
-								error -> activity.logAndShowError("An error occurred while loading regular classes.", error, LOGGER));
+								error -> activity.logAndShowErrorSnack("An error occurred while loading regular classes.", error, LOGGER));
 			}
 		}
 	}
@@ -150,7 +150,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 										oneTimeClassMap.remove(oneTimeClass);
 									}
 								},
-								error -> activity.logAndShowError("An error occurred while loading special classes.", error, LOGGER));
+								error -> activity.logAndShowErrorSnack("An error occurred while loading special classes.", error, LOGGER));
 			}
 		}
 	}
@@ -166,7 +166,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 								loadProfileImage(student.imageMetadataKey);
 							}
 						},
-						error -> activity.logAndShowError("Error loading your personal data", error, LOGGER));
+						error -> activity.logAndShowErrorSnack("Error loading your personal data", error, LOGGER));
 	}
 
 	private void loadProfileImage(String profileImageKey) {
@@ -175,12 +175,12 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 				.onComplete(metadata -> firebaseApi.getFileContentService()
 									.getById(metadata.getFileContentKey())
 									.onComplete(binding::setProfileImageContent,
-											error -> activity.logAndShowError(
+											error -> activity.logAndShowErrorSnack(
 													"Unable to load the profile image",
 													error,
 													LOGGER))
 						,
-						error -> activity.logAndShowError(
+						error -> activity.logAndShowErrorSnack(
 								"Unable to load the profile image",
 								error,
 								LOGGER));

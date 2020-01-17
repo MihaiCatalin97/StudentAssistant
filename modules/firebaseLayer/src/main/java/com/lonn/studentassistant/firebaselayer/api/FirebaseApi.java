@@ -8,6 +8,7 @@ import com.lonn.studentassistant.firebaselayer.services.AuthenticationService;
 import com.lonn.studentassistant.firebaselayer.services.CourseService;
 import com.lonn.studentassistant.firebaselayer.services.FileContentService;
 import com.lonn.studentassistant.firebaselayer.services.FileMetadataService;
+import com.lonn.studentassistant.firebaselayer.services.GradeService;
 import com.lonn.studentassistant.firebaselayer.services.LaboratoryService;
 import com.lonn.studentassistant.firebaselayer.services.OneTimeClassService;
 import com.lonn.studentassistant.firebaselayer.services.OtherActivityService;
@@ -45,6 +46,8 @@ public class FirebaseApi {
 	private UserService userService;
 	@Getter
 	private LaboratoryService laboratoryService;
+	@Getter
+	private GradeService gradeService;
 
 	private FirebaseApi(Context applicationContext) {
 		FirebaseConnection firebaseConnection = FirebaseConnection.getInstance(applicationContext);
@@ -61,6 +64,7 @@ public class FirebaseApi {
 		studentService = StudentService.getInstance(firebaseConnection);
 		userService = UserService.getInstance(firebaseConnection);
 		laboratoryService = LaboratoryService.getInstance(firebaseConnection);
+		gradeService = GradeService.getInstance(firebaseConnection);
 	}
 
 	public static FirebaseApi getApi(Context context) {

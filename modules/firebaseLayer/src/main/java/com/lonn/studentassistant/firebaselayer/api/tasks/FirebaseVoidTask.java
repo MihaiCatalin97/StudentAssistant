@@ -5,7 +5,7 @@ import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.requests.Request;
 
 public class FirebaseVoidTask<U extends Throwable> extends FirebaseTask<Void, U> {
-	private Request<Void, U> request;
+	protected Request<Void, U> request;
 
 	public FirebaseVoidTask(FirebaseConnection firebaseConnection,
 							Request<Void, U> request) {
@@ -18,9 +18,9 @@ public class FirebaseVoidTask<U extends Throwable> extends FirebaseTask<Void, U>
 				.onError(onError));
 	}
 
-	private Request<Void, U> createRequest(Request<Void, U> request,
-										   Consumer<Void> onSuccess,
-										   Consumer<U> onError) {
+	protected Request<Void, U> createRequest(Request<Void, U> request,
+											 Consumer<Void> onSuccess,
+											 Consumer<U> onError) {
 		return request.onSuccess(none -> {
 			if (onSuccess != null) {
 				onSuccess.consume(null);

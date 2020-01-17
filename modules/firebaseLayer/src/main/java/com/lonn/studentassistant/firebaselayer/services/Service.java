@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
 import com.lonn.studentassistant.firebaselayer.adapters.abstractions.ViewModelAdapter;
+import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseListTask;
 import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseSingleTask;
 import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseTask;
@@ -21,10 +22,12 @@ import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEnti
 
 public abstract class Service<T extends BaseEntity, V extends Throwable, U extends EntityViewModel<T>> {
 	protected FirebaseConnection firebaseConnection;
+	protected FirebaseApi firebaseApi;
 	protected ViewModelAdapter<T, U> adapter;
 
 	protected Service(FirebaseConnection firebaseConnection) {
 		this.firebaseConnection = firebaseConnection;
+		this.firebaseApi = FirebaseApi.getApi(null);
 	}
 
 	public FirebaseTask<List<U>, V> getAll() {

@@ -5,17 +5,17 @@ import androidx.annotation.Nullable;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
+import lombok.Setter;
+import lombok.experimental.Accessors;
+
+@Accessors(fluent = true)
 public abstract class FirebaseTask<T, V> {
 	protected FirebaseConnection firebaseConnection;
+	@Setter
 	protected boolean subscribe = true;
 
 	public FirebaseTask(FirebaseConnection firebaseConnection) {
 		this.firebaseConnection = firebaseConnection;
-	}
-
-	public FirebaseTask<T, V> subscribe(boolean subscribe) {
-		this.subscribe = subscribe;
-		return this;
 	}
 
 	public abstract void onComplete(Consumer<T> onSuccess, @Nullable Consumer<V> onError);

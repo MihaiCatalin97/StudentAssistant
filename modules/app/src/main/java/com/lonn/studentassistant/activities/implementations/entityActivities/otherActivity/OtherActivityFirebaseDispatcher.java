@@ -1,7 +1,5 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity;
 
-import android.util.Log;
-
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
@@ -70,7 +68,7 @@ class OtherActivityFirebaseDispatcher extends Dispatcher {
 							}
 
 						},
-						error -> activity.logAndShowError("An error occurred while loading the activity.",
+						error -> activity.logAndShowErrorSnack("An error occurred while loading the activity.",
 								new Exception("Loading activity: " + error.getMessage()),
 								LOGGER));
 	}

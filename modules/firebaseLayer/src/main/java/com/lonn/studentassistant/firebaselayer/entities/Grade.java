@@ -13,6 +13,6 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Grade extends BaseEntity {
 	private int value;
-	private String studentId;
-	private String laboratoryId;
+	private String studentKey;
+	private String laboratoryKey;
 }

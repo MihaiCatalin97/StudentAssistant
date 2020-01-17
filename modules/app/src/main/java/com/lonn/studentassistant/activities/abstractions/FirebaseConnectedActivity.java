@@ -16,12 +16,14 @@ import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
-import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	protected FirebaseApi firebaseApi;
@@ -114,7 +116,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		}
 	}
 
-	public void logAndShowError(String errorMessage, Exception exception, Logger logger) {
+	public void logAndShowErrorSnack(String errorMessage, Exception exception, Logger logger) {
 		logger.error(errorMessage, exception);
 		showSnackBar(errorMessage, 1000);
 	}
@@ -150,5 +152,10 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		@Getter
 		@Setter
 		private Runnable onClick;
+	}
+
+	public void logAndShowErrorToast(String errorMessage, Exception exception, Logger logger) {
+		logger.error(errorMessage, exception);
+		makeText(this, errorMessage, LENGTH_SHORT).show();
 	}
 }

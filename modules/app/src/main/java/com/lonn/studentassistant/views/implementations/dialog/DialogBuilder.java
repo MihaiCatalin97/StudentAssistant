@@ -2,16 +2,16 @@ package com.lonn.studentassistant.views.implementations.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 
-import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.functionalIntefaces.Function;
 
+import java.util.List;
+
 public class DialogBuilder<T> {
 	private AlertDialog.Builder builder;
-	private T[] items;
-	private Consumer<T>[] itemActions;
+	private List<T> items;
+	private List<Consumer<T>> itemActions;
 	private Consumer<T> globalItemAction;
 	private Function<T, String> toString;
 
@@ -19,12 +19,12 @@ public class DialogBuilder<T> {
 		builder = new AlertDialog.Builder(activity);
 	}
 
-	public DialogBuilder<T> withItems(T... items) {
+	public DialogBuilder<T> withItems(List<T> items) {
 		this.items = items;
 		return this;
 	}
 
-	public DialogBuilder<T> withItemActions(Consumer<T>... itemActions) {
+	public DialogBuilder<T> withItemActions(List<Consumer<T>> itemActions) {
 		this.itemActions = itemActions;
 		return this;
 	}
@@ -45,16 +45,16 @@ public class DialogBuilder<T> {
 	}
 
 	public void show() {
-		String[] itemStrings = new String[items.length];
+		String[] itemStrings = new String[items.size()];
 
-		for (int i = 0; i < items.length; i++) {
+		for (int i = 0; i < items.size(); i++) {
 			String itemString;
 
 			if (toString != null) {
-				itemString = toString.apply(items[i]);
+				itemString = toString.apply(items.get(i));
 			}
 			else {
-				itemString = items[i].toString();
+				itemString = items.get(i).toString();
 			}
 
 			itemStrings[i] = itemString;
@@ -62,18 +62,16 @@ public class DialogBuilder<T> {
 
 		builder.setItems(itemStrings, (dialog, which) -> {
 			if (itemActions != null &&
-					itemActions.length > which &&
-					itemActions[which] != null) {
-				itemActions[which].consume(items[which]);
+					itemActions.size() > which &&
+					itemActions.get(which) != null) {
+				itemActions.get(which).consume(items.get(which));
 			}
 			else if (globalItemAction != null) {
-				globalItemAction.consume(items[which]);
+				globalItemAction.consume(items.get(which));
 			}
 		});
 
-		builder.setNegativeButton("Cancel", (dialog, which) -> {
-			dialog.dismiss();
-		});
+		builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
 		AlertDialog dialog = builder.create();
 		dialog.show();

@@ -120,7 +120,7 @@ public abstract class FileManagingActivity<T extends EntityViewModel<? extends B
 							saveFile(decode(file.getFileContentBase64(), DEFAULT),
 									fileLocation);
 						},
-						error -> logAndShowError("An error occurred while downloading the file",
+						error -> logAndShowErrorSnack("An error occurred while downloading the file",
 								error,
 								LOGGER));
 	}
@@ -141,7 +141,7 @@ public abstract class FileManagingActivity<T extends EntityViewModel<? extends B
 			}
 		}
 		catch (IOException exception) {
-			logAndShowError("An error occurred while downloading the file",
+			logAndShowErrorSnack("An error occurred while downloading the file",
 					exception,
 					LOGGER);
 		}

@@ -85,7 +85,7 @@ public class DebugActivity extends FirebaseConnectedActivity {
 	private void testDatabase() {
 
 		DatabaseReference database = FirebaseDatabase.getInstance().getReference("dev/Students");
-		database.orderByChild("studentId").equalTo("1").addValueEventListener(new ValueEventListener() {
+		database.orderByChild("studentKey").equalTo("1").addValueEventListener(new ValueEventListener() {
 			@Override
 			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 				dataSnapshot.getRef().removeEventListener(this);

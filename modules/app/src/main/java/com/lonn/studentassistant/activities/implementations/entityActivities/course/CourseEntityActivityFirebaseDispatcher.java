@@ -61,7 +61,7 @@ class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
 
 					binding.setCourse(course);
 				},
-				error -> activity.logAndShowError("An error occurred while loading the course.",
+				error -> activity.logAndShowErrorSnack("An error occurred while loading the course.",
 						new
 
 								Exception("Loading course: " + error.getMessage()),

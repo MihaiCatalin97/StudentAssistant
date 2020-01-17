@@ -57,7 +57,7 @@ class ProfessorEntityActivityFirebaseDispatcher extends Dispatcher {
 							loadFiles(professor.getFilesMetadata());
 							loadImage(professor.imageMetadataKey);
 						},
-						error -> activity.logAndShowError("An error occurred while loading the professor.",
+						error -> activity.logAndShowErrorSnack("An error occurred while loading the professor.",
 								new Exception("Loading professor: " + error.getMessage()),
 								LOGGER)
 				);
@@ -111,12 +111,12 @@ class ProfessorEntityActivityFirebaseDispatcher extends Dispatcher {
 									firebaseApi.getFileContentService()
 											.getById(metadata.getFileContentKey())
 											.onComplete(binding::setProfessorImageContent,
-													error -> activity.logAndShowError(
+													error -> activity.logAndShowErrorSnack(
 															"Unable to load the professors image",
 															error,
 															LOGGER))
 							,
-							error -> activity.logAndShowError(
+							error -> activity.logAndShowErrorSnack(
 									"Unable to load the professors image",
 									error,
 									LOGGER));

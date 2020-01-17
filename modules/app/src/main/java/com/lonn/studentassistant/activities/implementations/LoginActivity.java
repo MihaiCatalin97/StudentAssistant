@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
@@ -14,7 +13,6 @@ import com.lonn.studentassistant.activities.implementations.register.accountChoi
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
-import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
 
 import java.util.Map;
 
@@ -88,12 +86,6 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		}
 
 		Utils.init(this);
-
-		new DialogBuilder<String>(this)
-				.withTitle("Login test dialog")
-				.withItems("Item1", "Item2")
-				.withGlobalItemAction((item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show())
-				.show();
 	}
 
 	protected void inflateLayout() {
@@ -182,14 +174,14 @@ public class LoginActivity extends FirebaseConnectedActivity {
 									break;
 								}
 								default: {
-									logAndShowError("Unknown account type",
+									logAndShowErrorSnack("Unknown account type",
 											new Exception("Unknown account type `" + user.accountType + "`"),
 											LOGGER);
 									break;
 								}
 							}
 						},
-						error -> logAndShowError("An error occurred while logging in!",
+						error -> logAndShowErrorSnack("An error occurred while logging in!",
 								new Exception("Unknown account"),
 								LOGGER));
 	}
