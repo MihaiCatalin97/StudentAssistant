@@ -19,10 +19,10 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class CourseViewModel extends DisciplineViewModel<Course> {
-    public int pack;
-    public List<CycleSpecializationYear> cycleSpecializationYears;
-    public List<String> laboratories = new LinkedList<>();
+public final class CourseViewModel extends DisciplineViewModel<Course> {
+    private int pack;
+    private List<CycleSpecializationYear> cycleSpecializationYears;
+    private List<String> laboratories;
 
     @Bindable
     public String getCourseType() {

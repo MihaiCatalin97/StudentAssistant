@@ -9,11 +9,11 @@ public class LaboratoryAdapter extends ViewModelAdapter<Laboratory, LaboratoryVi
 		return LaboratoryViewModel.builder()
 				.courseKey(laboratory.getCourse())
 				.description(laboratory.getDescription())
-				.fileMetadataKeys(laboratory.getFilesMetadata())
 				.gradeKeys(laboratory.getGrades())
 				.title(laboratory.getTitle())
 				.weekNumber(laboratory.getWeekNumber())
 				.build()
+				.setFileMetadataKeys(laboratory.getFileMetadataKeys())
 				.setKey(laboratory.getKey());
 	}
 
@@ -21,7 +21,7 @@ public class LaboratoryAdapter extends ViewModelAdapter<Laboratory, LaboratoryVi
 		Laboratory result = new Laboratory()
 				.setCourse(laboratoryViewModel.getCourseKey())
 				.setDescription(laboratoryViewModel.getDescription())
-				.setFilesMetadata(laboratoryViewModel.getFileMetadataKeys())
+				.setFileMetadataKeys(laboratoryViewModel.getFileMetadataKeys())
 				.setGrades(laboratoryViewModel.getGradeKeys())
 				.setTitle(laboratoryViewModel.getTitle())
 				.setWeekNumber(laboratoryViewModel.getWeekNumber());

@@ -12,7 +12,7 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
 				.setProfessors(discipline.getProfessors())
 				.setRecurringClasses(discipline.getRecurringClasses())
 				.setOneTimeClasses(discipline.getOneTimeClasses())
-				.setFilesMetadata(discipline.getFilesMetadata())
+				.setFileMetadataKeys(discipline.getFileMetadataKeys())
 				.setStudents(discipline.getStudents())
 				.setKey(discipline.getKey());
 
@@ -28,7 +28,7 @@ public abstract class DisciplineAdapter<T extends Discipline, U extends Discipli
 				.setRecurringClasses(disciplineViewModel.getRecurringClasses())
 				.setOneTimeClasses(disciplineViewModel.getOneTimeClasses())
 				.setStudents(disciplineViewModel.getStudents())
-				.setFilesMetadata(disciplineViewModel.getFilesMetadata());
+				.setFileMetadataKeys(disciplineViewModel.getFileMetadataKeys());
 
 		if (disciplineViewModel.getKey() != null) {
 			discipline.setKey(disciplineViewModel.getKey());

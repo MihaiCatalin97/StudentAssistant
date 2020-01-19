@@ -21,8 +21,8 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends Dispatcher {
 
 	void loadAll(String laboratoryKey) {
 		firebaseApi.getLaboratoryService()
-				.getById(laboratoryKey)
-				.onComplete(laboratory -> {
+				.getById(laboratoryKey, true)
+				.onSuccess(laboratory -> {
 					binding.setLaboratory(laboratory);
 
 					removeNonExistingEntities(fileMap, laboratory.getFileMetadataKeys());
@@ -33,8 +33,8 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends Dispatcher {
 	private void loadFiles(List<String> fileIds) {
 		for (String fileId : fileIds) {
 			firebaseApi.getFileMetadataService()
-					.getById(fileId)
-					.onComplete(fileMap::put);
+					.getById(fileId, true)
+					.onSuccess(fileMap::put);
 		}
 	}
 }

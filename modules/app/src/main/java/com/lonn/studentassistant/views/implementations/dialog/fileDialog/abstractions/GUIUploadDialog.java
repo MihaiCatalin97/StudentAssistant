@@ -92,7 +92,7 @@ public abstract class GUIUploadDialog extends FileUploadDialog {
 			Toast.makeText(getContext(), "Please select a file", Toast.LENGTH_SHORT).show();
 		}
 		else {
-			saveFile(fileContent, fileMetadata);
+			readAndSaveFile(fileContent, fileMetadata);
 			dismiss();
 		}
 	}

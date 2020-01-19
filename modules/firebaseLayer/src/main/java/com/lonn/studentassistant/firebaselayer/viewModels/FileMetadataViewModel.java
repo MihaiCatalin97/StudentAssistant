@@ -21,21 +21,25 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
-	public String fileContentKey;
+public final class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
+	private String fileContentKey;
 	@Bindable
-	public String fileName;
+	private String fileName;
 	@Bindable
-	public String fileTitle;
+	private String fileTitle;
 	@Bindable
-	public String fileDescription;
-	public long fileSize;
+	private String fileDescription;
+	private long fileSize;
 	@Bindable
-	public String fileType;
+	private String fileType;
 
 	@Bindable
 	public String getFileSize() {
 		return FileUtils.sizeToString(fileSize);
+	}
+
+	public long getFileSizeLong(){
+		return fileSize;
 	}
 
 	public String getFileDescription() {

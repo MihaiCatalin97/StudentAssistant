@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.FileAssociatedEntity;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 
 import java.util.LinkedList;
@@ -12,7 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Professor extends HashableEntity {
+public final class Professor extends FileAssociatedEntity implements HashableEntity {
 	private String scheduleLink;
 	private String firstName;
 	private String lastName;
@@ -57,5 +58,10 @@ public class Professor extends HashableEntity {
 		if (!oneTimeClasses.contains(scheduleClassKey)) {
 			oneTimeClasses.add(scheduleClassKey);
 		}
+	}
+
+	public Professor setFileMetadataKeys(List<String> fileMetadataKeys) {
+		this.fileMetadataKeys = fileMetadataKeys;
+		return this;
 	}
 }

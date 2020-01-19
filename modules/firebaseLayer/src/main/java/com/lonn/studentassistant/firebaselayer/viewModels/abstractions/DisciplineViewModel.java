@@ -21,30 +21,34 @@ import static com.lonn.studentassistant.firebaselayer.Utils.semesterToString;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @NoArgsConstructor
-public abstract class DisciplineViewModel<T extends Discipline> extends EntityViewModel<T> {
-	@Bindable
-	public String name, description, website;
+public abstract class DisciplineViewModel<T extends Discipline> extends FileAssociatedEntityViewModel<T> {
+    @Bindable
+    protected String name, description, website;
 
-	public int semester;
-	public List<String> students = new LinkedList<>();
-	public List<String> professors = new ArrayList<>();
-	public List<String> recurringClasses = new ArrayList<>();
-	public List<String> oneTimeClasses = new ArrayList<>();
-	public List<String> filesMetadata = new ArrayList<>();
+    protected int semester;
+    protected List<String> students = new LinkedList<>();
+    protected List<String> professors = new ArrayList<>();
+    protected List<String> recurringClasses = new ArrayList<>();
+    protected List<String> oneTimeClasses = new ArrayList<>();
 
-	@Bindable
-	public String getYearSemester() {
-		return semesterToString(semester);
-	}
+    @Bindable
+    public String getYearSemester() {
+        return semesterToString(semester);
+    }
 
-	@Bindable
-	public int getWebsiteVisible() {
-		return (website != null) ? View.VISIBLE : View.GONE;
-	}
+    @Bindable
+    public int getWebsiteVisible() {
+        return (website != null) ? View.VISIBLE : View.GONE;
+    }
 
-	@Override
-	public DisciplineViewModel<T> setKey(String key) {
-		super.setKey(key);
-		return this;
-	}
+    @Override
+    public DisciplineViewModel<T> setKey(String key) {
+        super.setKey(key);
+        return this;
+    }
+
+    public DisciplineViewModel<T> setFileMetadataKeys(List<String> filesMetadata) {
+        this.fileMetadataKeys = filesMetadata;
+        return this;
+    }
 }

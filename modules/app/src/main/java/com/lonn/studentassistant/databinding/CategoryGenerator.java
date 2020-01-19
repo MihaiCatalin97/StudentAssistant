@@ -89,7 +89,7 @@ public class CategoryGenerator {
 					.setPermissionLevel(parentCategory.getPermissionLevel())
 					.setShowEmpty(parentCategory.isShowEmpty())
 					.setShowHeader(true)
-					.setShouldContain((scheduleClass) -> scheduleClass.day == weekDay.getDayInt()));
+					.setShouldContain((scheduleClass) -> scheduleClass.getDayInt() == weekDay.getDayInt()));
 		}
 
 		return subcategories;
@@ -103,20 +103,20 @@ public class CategoryGenerator {
 
 		if (scheduleClasses != null) {
 			List<T> scheduleClassesList = new ArrayList<>(scheduleClasses);
-			sort(scheduleClassesList, (s1, s2) -> s1.date.compareTo(s2.date));
+			sort(scheduleClassesList, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
 
 			for (T scheduleClass : scheduleClassesList) {
-				if (!categoriesAdded.contains(scheduleClass.date)) {
+				if (!categoriesAdded.contains(scheduleClass.getDate())) {
 					subcategories.add(new CategoryViewModel<T>()
-							.setCategoryTitle(simpleDateFormat.format(scheduleClass.date))
+							.setCategoryTitle(simpleDateFormat.format(scheduleClass.getDate()))
 							.setEntityName(parentCategory.getEntityName())
 							.setViewType(parentCategory.getViewType())
 							.setPermissionLevel(parentCategory.getPermissionLevel())
 							.setShowEmpty(parentCategory.isShowEmpty())
 							.setShowHeader(true)
-							.setShouldContain((schClass) -> schClass.date.equals(scheduleClass.date)));
+							.setShouldContain((schClass) -> schClass.getDate().equals(scheduleClass.getDate())));
 
-					categoriesAdded.add(scheduleClass.date);
+					categoriesAdded.add(scheduleClass.getDate());
 				}
 			}
 		}

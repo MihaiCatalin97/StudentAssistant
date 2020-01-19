@@ -30,15 +30,15 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 		RecurringClassViewModel result = super.transform(recurringClass);
 
 		CourseService.getInstance(firebaseConnection)
-				.getById(recurringClass.getDiscipline())
-				.onComplete((discipline) -> {
+				.getById(recurringClass.getDiscipline(), true)
+				.onSuccess((discipline) -> {
 					result.setDisciplineName(discipline.getName());
 					result.notifyPropertyChanged(_all);
 				});
 
 		OtherActivityService.getInstance(firebaseConnection)
-				.getById(recurringClass.getDiscipline())
-				.onComplete((discipline) -> {
+				.getById(recurringClass.getDiscipline(), true)
+				.onSuccess((discipline) -> {
 					result.setDisciplineName(discipline.getName());
 					result.notifyPropertyChanged(_all);
 				});

@@ -20,7 +20,7 @@ public class RecurringClassAdapter extends ScheduleClassAdapter<RecurringClass, 
 
 	public RecurringClass adapt(RecurringClassViewModel recurringClassViewModel) {
 		return super.adapt(new RecurringClass()
-						.setDay(recurringClassViewModel.day),
+						.setDay(recurringClassViewModel.getDayInt()),
 				recurringClassViewModel);
 	}
 }

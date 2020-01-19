@@ -12,6 +12,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class OneTimeClass extends ScheduleClass {
+public final class OneTimeClass extends ScheduleClass {
 	private Date date;
 }

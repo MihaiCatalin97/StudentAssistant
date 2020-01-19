@@ -16,9 +16,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeClass> {
+public final class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeClass> {
 	@Bindable
-	public Date date;
+	private Date date;
 
 	@Override
 	public OneTimeClassViewModel setKey(String key) {

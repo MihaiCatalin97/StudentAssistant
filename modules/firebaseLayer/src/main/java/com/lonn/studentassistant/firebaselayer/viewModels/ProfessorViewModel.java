@@ -6,6 +6,7 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.FileAssociatedEntityViewModel;
 
 import java.util.List;
 
@@ -18,17 +19,16 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class ProfessorViewModel extends EntityViewModel<Professor> {
+public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor> {
 	@Bindable
-	public String firstName, lastName, rank, email, phoneNumber, website, cabinet;
+	private String firstName, lastName, rank, email, phoneNumber, website, cabinet;
 	@Bindable
-	public String professorImage;
-	public String imageMetadataKey;
-	public List<String> courses;
-	public List<String> otherActivities;
-	public List<String> oneTimeClasses;
-	public List<String> recurringClasses;
-	public List<String> filesMetadata;
+	private String professorImage;
+	private String imageMetadataKey;
+	private List<String> courses;
+	private List<String> otherActivities;
+	private List<String> oneTimeClasses;
+	private List<String> recurringClasses;
 
 	@Bindable
 	public String getFullName() {
@@ -75,6 +75,11 @@ public class ProfessorViewModel extends EntityViewModel<Professor> {
 	@Override
 	public ProfessorViewModel setKey(String key) {
 		super.setKey(key);
+		return this;
+	}
+
+	public ProfessorViewModel setFileMetadataKeys(List<String> fileMetadataKeys) {
+		this.fileMetadataKeys = fileMetadataKeys;
 		return this;
 	}
 }

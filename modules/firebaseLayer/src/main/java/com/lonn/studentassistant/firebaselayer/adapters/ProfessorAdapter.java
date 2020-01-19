@@ -20,8 +20,8 @@ public class ProfessorAdapter extends ViewModelAdapter<Professor, ProfessorViewM
 				.otherActivities(professor.getOtherActivities())
 				.recurringClasses(professor.getRecurringClasses())
 				.oneTimeClasses(professor.getOneTimeClasses())
-				.filesMetadata(professor.getFilesMetadata())
 				.build()
+				.setFileMetadataKeys(professor.getFilesMetadata())
 				.setKey(professor.getKey());
 	}
 
@@ -37,7 +37,7 @@ public class ProfessorAdapter extends ViewModelAdapter<Professor, ProfessorViewM
 				.setCourses(professorViewModel.getCourses())
 				.setOtherActivities(professorViewModel.getOtherActivities())
 				.setRecurringClasses(professorViewModel.getRecurringClasses())
-				.setFilesMetadata(professorViewModel.getFilesMetadata())
+				.setFilesMetadata(professorViewModel.getFileMetadataKeys())
 				.setOneTimeClasses(professorViewModel.getOneTimeClasses());
 
 		if (professorViewModel.getKey() != null) {

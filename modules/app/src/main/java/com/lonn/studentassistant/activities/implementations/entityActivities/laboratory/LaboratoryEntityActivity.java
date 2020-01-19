@@ -24,72 +24,70 @@ import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
 
 public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryViewModel> {
-	private static final Logger LOGGER = Logger.ofClass(LaboratoryEntityActivity.class);
-	LaboratoryEntityActivityLayoutBinding binding;
-	private LaboratoryEntityActivityFirebaseDispatcher dispatcher;
-	private GradeInputDialog gradeInputDialog;
+    private static final Logger LOGGER = Logger.ofClass(LaboratoryEntityActivity.class);
+    LaboratoryEntityActivityLayoutBinding binding;
+    private LaboratoryEntityActivityFirebaseDispatcher dispatcher;
+    private GradeInputDialog gradeInputDialog;
 
-	protected void loadAll(String entityKey) {
-		dispatcher.loadAll(entityKey);
-	}
+    protected void loadAll(String entityKey) {
+        dispatcher.loadAll(entityKey);
+    }
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.laboratory_entity_activity_layout);
-	}
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.laboratory_entity_activity_layout);
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		dispatcher = new LaboratoryEntityActivityFirebaseDispatcher(this);
+        dispatcher = new LaboratoryEntityActivityFirebaseDispatcher(this);
 
-		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
-				new DialogBuilder<String>(this)
-						.withTitle("Add grades")
-						.withItems(asList("Add single grade", "Parse CSV"))
-						.withItemActions(asList((item) -> gradeInputDialog.show(),
-								(item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show()))
-						.show()
-		);
+        ((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
+                new DialogBuilder<String>(this)
+                        .withTitle("Add grades")
+                        .withItems(asList("Add single grade", "Parse CSV"))
+                        .withItemActions(asList((item) -> gradeInputDialog.show(),
+                                (item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show()))
+                        .show()
+        );
 
-		loadAll(entityKey);
+        loadAll(entityKey);
 
 
-		gradeInputDialog = new GradeInputDialogBuilder(this)
-				.positiveButtonAction(() -> {
-					try {
-						int grade = parseInt(gradeInputDialog.getGradeEditText().getText()
-								.toString());
-						String studentId = gradeInputDialog.getStudentIdEditText().getText()
-								.toString();
+        gradeInputDialog = new GradeInputDialogBuilder(this)
+                .positiveButtonAction(() -> {
+                    try {
+                        int grade = parseInt(gradeInputDialog.getGradeEditText().getText()
+                                .toString());
+                        String studentId = gradeInputDialog.getStudentIdEditText().getText()
+                                .toString();
 
-						GradeViewModel gradeViewModel = new GradeViewModel()
-								.setKey(randomUUID().toString())
-								.setGrade(grade)
-								.setStudentKey(studentId)
-								.setLaboratoryKey(binding.getLaboratory().getKey());
-					}
-					catch (NumberFormatException exception) {
-						logAndShowErrorToast("Invalid grade", exception, LOGGER);
-					}
-				})
-				.create();
-	}
+                        GradeViewModel gradeViewModel = new GradeViewModel()
+                                .setKey(randomUUID().toString())
+                                .setGrade(grade)
+                                .setStudentId(studentId)
+                                .setLaboratoryKey(binding.getLaboratory().getKey());
 
-	protected void removeFileMetadataFromEntity(String laboratoryKey, String fileMetadataKey) {
-		getFirebaseApi().getLaboratoryService()
-				.getById(laboratoryKey)
-				.subscribe(false)
-				.onComplete(laboratory -> {
-					laboratory.getFileMetadataKeys().remove(fileMetadataKey);
+                        firebaseApi.getGradeService()
+                                .saveAndLink(gradeViewModel)
+                                .onSuccess(none -> {
+                                    showSnackBar("Successfully added grade!", 1000);
+                                    gradeInputDialog.dismiss();
+                                })
+                                .onError(error -> logAndShowErrorToast("An error occurred while saving the grade", error, LOGGER));
+                    } catch (NumberFormatException exception) {
+                        logAndShowErrorToast("Invalid grade", exception, LOGGER);
+                    }
+                })
+                .create();
+    }
 
-					getFirebaseApi().getLaboratoryService()
-							.save(laboratory)
-							.onCompleteDoNothing();
-				});
-	}
+    protected void deleteFile(String laboratoryKey, String fileMetadataKey) {
+        getFirebaseApi().getLaboratoryService().deleteAndUnlinkFile(laboratoryKey, fileMetadataKey);
+    }
 
-	protected FileUploadDialog getFileUploadDialogInstance() {
-		return new LaboratoryFileUploadDialog(this, entityKey);
-	}
+    protected FileUploadDialog getFileUploadDialogInstance() {
+        return new LaboratoryFileUploadDialog(this, entityKey);
+    }
 }

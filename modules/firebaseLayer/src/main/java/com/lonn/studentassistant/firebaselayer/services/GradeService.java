@@ -1,55 +1,84 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
 import com.lonn.studentassistant.firebaselayer.adapters.GradeAdapter;
-import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseTask;
-import com.lonn.studentassistant.firebaselayer.api.tasks.FirebaseVoidTask;
+import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.requests.Request;
-import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;
 
 public class GradeService extends Service<Grade, Exception, GradeViewModel> {
-	private static GradeService instance;
+    private static GradeService instance;
+    private LaboratoryService laboratoryService;
+    private StudentService studentService;
+    private CourseService courseService;
 
-	private GradeService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new GradeAdapter();
-	}
+    private GradeService(FirebaseConnection firebaseConnection) {
+        super(firebaseConnection);
+        adapter = new GradeAdapter();
+        studentService = StudentService.getInstance(firebaseConnection);
+        laboratoryService = LaboratoryService.getInstance(firebaseConnection);
+        courseService = CourseService.getInstance(firebaseConnection);
+    }
 
-	public static GradeService getInstance(FirebaseConnection firebaseConnection) {
-		if (instance == null) {
-			instance = new GradeService(firebaseConnection);
-		}
+    public static GradeService getInstance(FirebaseConnection firebaseConnection) {
+        if (instance == null) {
+            instance = new GradeService(firebaseConnection);
+        }
 
-		return instance;
-	}
+        return instance;
+    }
 
-	@Override
-	public DatabaseTable<Grade> getDatabaseTable() {
-		return GRADES;
-	}
+    @Override
+    public DatabaseTable<Grade> getDatabaseTable() {
+        return GRADES;
+    }
 
-	@Override
-	public FirebaseTask<Void, Exception> save(GradeViewModel entityViewModel) {
-		return new FirebaseVoidTask<Exception>(firebaseConnection,
-				new SaveRequest<Grade, Exception>()
-						.databaseTable(getDatabaseTable())
-						.entity(adapter.adapt(entityViewModel))) {
-			@Override
-			protected Request<Void, Exception> createRequest(Request<Void, Exception> request,
-															 Consumer<Void> onSuccess,
-															 Consumer<Exception> onError) {
-				return request.onSuccess(none -> {
-					if (onSuccess != null) {
-						onSuccess.consume(null);
-					}
-				}).onError(onError);
-			}
-		};
-	}
+    public Future<Void, Exception> saveAndLink(GradeViewModel grade) {
+        Future<Void, Exception> result = new Future<>();
+
+        studentService.addGradeToStudent(grade)
+                .onSuccess(none -> {
+                    save(grade)
+                            .onSuccess(none2 -> {
+                                linkToLaboratory(grade)
+                                        .onSuccess(none3 -> {
+                                                    laboratoryService.getById(grade.getLaboratoryKey(), false)
+                                                            .onSuccess(laboratory -> {
+                                                                courseService.addStudent(grade.getStudentKey(),
+                                                                        laboratory.getCourseKey());
+                                                                result.complete(null);
+                                                            });
+                                                }
+                                        )
+                                        .onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
+                                                result,
+                                                error));
+                            })
+                            .onError(result::completeExceptionally);
+                })
+                .onError(result::completeExceptionally);
+        return result;
+    }
+
+    private Future<Void, Exception> linkToLaboratory(GradeViewModel grade) {
+        Future<Void, Exception> result = new Future<>();
+
+        laboratoryService.addGradeToLaboratory(grade.getKey(), grade.getLaboratoryKey())
+                .onSuccess(result::complete)
+                .onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
+                        result,
+                        error));
+
+        return result;
+    }
+
+    private void deleteGradeAndCompleteExceptionally(String gradeKey,
+                                                     Future<Void, Exception> future,
+                                                     Exception exception) {
+        deleteById(gradeKey);
+        future.completeExceptionally(exception);
+    }
 }

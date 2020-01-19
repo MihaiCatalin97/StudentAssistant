@@ -46,17 +46,8 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
         loadAll(entityKey);
     }
 
-    protected void removeFileMetadataFromEntity(String courseKey, String fileMetadataKey) {
-        getFirebaseApi().getCourseService()
-                .getById(courseKey)
-                .subscribe(false)
-                .onComplete(course -> {
-                    course.getFilesMetadata().remove(fileMetadataKey);
-
-                    getFirebaseApi().getCourseService()
-                            .save(course)
-                            .onCompleteDoNothing();
-                });
+    protected void deleteFile(String courseKey, String fileMetadataKey) {
+        getFirebaseApi().getCourseService().deleteAndUnlinkFile(courseKey, fileMetadataKey);
     }
 
     protected FileUploadDialog getFileUploadDialogInstance() {

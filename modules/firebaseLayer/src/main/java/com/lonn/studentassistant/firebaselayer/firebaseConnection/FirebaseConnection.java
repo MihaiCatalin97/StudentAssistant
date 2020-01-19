@@ -11,7 +11,6 @@ import com.lonn.studentassistant.firebaselayer.database.contexts.DatabaseContext
 import com.lonn.studentassistant.firebaselayer.entities.IdentificationHash;
 import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.IdentificationHashField;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.UserField;
@@ -47,205 +46,205 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 
 @Slf4j
 public class FirebaseConnection {
-	private static FirebaseConnection instance;
-	@Getter(AccessLevel.PROTECTED)
-	private Map<DatabaseTable, DatabaseContext> databaseMap = new HashMap<>();
-	private FirebaseAuth mAuth;
-	private RequestLogger logger;
-	private FirebaseConfig firebaseConfig;
+    private static FirebaseConnection instance;
+    @Getter(AccessLevel.PROTECTED)
+    private Map<DatabaseTable, DatabaseContext> databaseMap = new HashMap<>();
+    private FirebaseAuth mAuth;
+    private RequestLogger logger;
+    private FirebaseConfig firebaseConfig;
 
-	private FirebaseConnection(Context applicationContext) {
-		firebaseConfig = new FirebaseConfig(applicationContext);
+    private FirebaseConnection(Context applicationContext) {
+        firebaseConfig = new FirebaseConfig(applicationContext);
 
-		databaseMap.put(COURSES, buildContextForTable(COURSES));
-		databaseMap.put(GRADES, buildContextForTable(GRADES));
-		databaseMap.put(OTHER_ACTIVITIES, buildContextForTable(OTHER_ACTIVITIES));
-		databaseMap.put(RECURRING_CLASSES, buildContextForTable(RECURRING_CLASSES));
-		databaseMap.put(ONE_TIME_CLASSES, buildContextForTable(ONE_TIME_CLASSES));
-		databaseMap.put(USERS, buildContextForTable(USERS));
-		databaseMap.put(IDENTIFICATION_HASHES, buildContextForTable(IDENTIFICATION_HASHES));
-		databaseMap.put(FILE_METADATA, buildContextForTable(FILE_METADATA));
-		databaseMap.put(FILE_CONTENT, buildContextForTable(FILE_CONTENT));
-		databaseMap.put(LABORATORIES, buildContextForTable(LABORATORIES));
+        databaseMap.put(COURSES, buildContextForTable(COURSES));
+        databaseMap.put(GRADES, buildContextForTable(GRADES));
+        databaseMap.put(OTHER_ACTIVITIES, buildContextForTable(OTHER_ACTIVITIES));
+        databaseMap.put(RECURRING_CLASSES, buildContextForTable(RECURRING_CLASSES));
+        databaseMap.put(ONE_TIME_CLASSES, buildContextForTable(ONE_TIME_CLASSES));
+        databaseMap.put(USERS, buildContextForTable(USERS));
+        databaseMap.put(IDENTIFICATION_HASHES, buildContextForTable(IDENTIFICATION_HASHES));
+        databaseMap.put(FILE_METADATA, buildContextForTable(FILE_METADATA));
+        databaseMap.put(FILE_CONTENT, buildContextForTable(FILE_CONTENT));
+        databaseMap.put(LABORATORIES, buildContextForTable(LABORATORIES));
 
-		databaseMap.put(ADMINISTRATORS, buildContextWithIdentificationForTable(ADMINISTRATORS));
-		databaseMap.put(PROFESSORS, buildContextWithIdentificationForTable(PROFESSORS));
-		databaseMap.put(STUDENTS, buildContextWithIdentificationForTable(STUDENTS));
+        databaseMap.put(ADMINISTRATORS, buildContextWithIdentificationForTable(ADMINISTRATORS));
+        databaseMap.put(PROFESSORS, buildContextWithIdentificationForTable(PROFESSORS));
+        databaseMap.put(STUDENTS, buildContextWithIdentificationForTable(STUDENTS));
 
-		mAuth = FirebaseAuth.getInstance();
-		logger = new RequestLogger();
-	}
+        mAuth = FirebaseAuth.getInstance();
+        logger = new RequestLogger();
+    }
 
-	public static FirebaseConnection getInstance(Context applicationContext) {
-		if (instance == null) {
-			instance = new FirebaseConnection(applicationContext);
-		}
+    public static FirebaseConnection getInstance(Context applicationContext) {
+        if (instance == null) {
+            instance = new FirebaseConnection(applicationContext);
+        }
 
-		return instance;
-	}
+        return instance;
+    }
 
-	@SuppressWarnings("unchecked")
-	public void execute(Request request) {
-		if (request instanceof GetRequest) {
-			execute((GetRequest) request);
-		}
-		else if (request instanceof SaveRequest) {
-			execute((SaveRequest) request);
-		}
-		else if (request instanceof DeleteByIdRequest) {
-			execute((DeleteByIdRequest) request);
-		}
-		else if (request instanceof DeleteAllRequest) {
-			execute((DeleteAllRequest) request);
-		}
-		else if (request instanceof LoginRequest) {
-			execute((LoginRequest) request);
-		}
-		else if (request instanceof CredentialsCheckRequest) {
-			execute((CredentialsCheckRequest) request);
-		}
-		else if (request instanceof RegisterRequest) {
-			execute((RegisterRequest) request);
-		}
-	}
+    @SuppressWarnings("unchecked")
+    public void execute(Request request) {
+        if (request instanceof GetRequest) {
+            execute((GetRequest) request);
+        }
+        else if (request instanceof SaveRequest) {
+            execute((SaveRequest) request);
+        }
+        else if (request instanceof DeleteByIdRequest) {
+            execute((DeleteByIdRequest) request);
+        }
+        else if (request instanceof DeleteAllRequest) {
+            execute((DeleteAllRequest) request);
+        }
+        else if (request instanceof LoginRequest) {
+            execute((LoginRequest) request);
+        }
+        else if (request instanceof CredentialsCheckRequest) {
+            execute((CredentialsCheckRequest) request);
+        }
+        else if (request instanceof RegisterRequest) {
+            execute((RegisterRequest) request);
+        }
+    }
 
-	public <T extends BaseEntity> void execute(GetRequest<T, Exception> request) {
-		@SuppressWarnings("unchecked")
-		DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
+    public <T extends BaseEntity> void execute(GetRequest<T, Exception> request) {
+        @SuppressWarnings("unchecked")
+        DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
 
-		if (context != null) {
-			context.get(request.onSuccess(), request.onError(),
-					request.predicate(), request.subscribe());
-		}
-	}
+        if (context != null) {
+            context.get(request.onSuccess(), request.onError(),
+                    request.predicate(), request.subscribe());
+        }
+    }
 
-	public <T extends BaseEntity> void execute(SaveRequest<T, Exception> request) {
-		@SuppressWarnings("unchecked")
-		DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
+    public <T extends BaseEntity> void execute(SaveRequest<T, Exception> request) {
+        @SuppressWarnings("unchecked")
+        DatabaseContext<T> context = getDatabaseMap().get(request.databaseTable());
 
-		if (context != null) {
-			for (T entity : request.entities()) {
-				context.saveOrUpdate(entity, request.onSuccess(), request.onError());
-			}
-		}
-	}
+        if (context != null) {
+            for (T entity : request.entities()) {
+                context.saveOrUpdate(entity, request.onSuccess(), request.onError());
+            }
+        }
+    }
 
-	public void execute(DeleteByIdRequest request) {
-		DatabaseContext context = getDatabaseMap().get(request.databaseTable());
+    public void execute(DeleteByIdRequest request) {
+        DatabaseContext context = getDatabaseMap().get(request.databaseTable());
 
-		if (context != null) {
-			context.delete(request.key(), request.onSuccess(), request.onError());
-		}
-	}
+        if (context != null) {
+            context.delete(request.key(), request.onSuccess(), request.onError());
+        }
+    }
 
-	public void execute(DeleteAllRequest request) {
-		DatabaseContext context = getDatabaseMap().get(request.databaseTable());
+    public void execute(DeleteAllRequest request) {
+        DatabaseContext context = getDatabaseMap().get(request.databaseTable());
 
-		if (context != null) {
-			context.deleteAll(request.onSuccess(), request.onError());
-		}
-	}
+        if (context != null) {
+            context.deleteAll(request.onSuccess(), request.onError());
+        }
+    }
 
-	public void execute(final LoginRequest request) {
-		mAuth.signInWithEmailAndPassword(request.username(), request.password())
-				.addOnSuccessListener((authResult) -> {
-					logger.logLoginSuccess(request.username());
-					request.onSuccess().consume(null);
-				})
-				.addOnFailureListener((exception) -> {
-					logger.logLoginFail(request.username(), exception.getMessage());
-					request.onError().consume(null);
-				});
-	}
+    public void execute(final LoginRequest request) {
+        mAuth.signInWithEmailAndPassword(request.username(), request.password())
+                .addOnSuccessListener((authResult) -> {
+                    logger.logLoginSuccess(request.username());
+                    request.onSuccess().consume(null);
+                })
+                .addOnFailureListener((exception) -> {
+                    logger.logLoginFail(request.username(), exception.getMessage());
+                    request.onError().consume(null);
+                });
+    }
 
-	public void execute(final CredentialsCheckRequest request) {
-		execute(new GetRequest<IdentificationHash, Exception>()
-				.databaseTable(IDENTIFICATION_HASHES)
-				.onSuccess((identifications) -> {
-					if (identifications.size() == 1) {
-						execute(new GetRequest<User, Exception>()
-								.databaseTable(USERS)
-								.predicate(Predicate.where(UserField.IDENTIFICATION_HASH)
-										.equalTo(request.identificationHash()))
-								.onSuccess((users) -> {
-									if (users.size() == 0) {
-										logger.logCredentialsCheckSuccess(request.identificationHash());
-										request.onSuccess().consume(identifications.get(0));
-									}
-									else {
-										String errorMessage = "This person already has an account";
-										logger.logCredentialsCheckFail(request.identificationHash(),
-												errorMessage);
-										request.onError().consume(new Exception(errorMessage));
-									}
-								})
-								.onError((error) -> {
-									logger.logCredentialsCheckFail(request.identificationHash(),
-											error.getMessage());
-									request.onError().consume(new Exception(error.getMessage()));
-								})
-								.subscribe(false));
+    public void execute(final CredentialsCheckRequest request) {
+        execute(new GetRequest<IdentificationHash, Exception>()
+                .databaseTable(IDENTIFICATION_HASHES)
+                .onSuccess((identifications) -> {
+                    if (identifications.size() == 1) {
+                        execute(new GetRequest<User, Exception>()
+                                .databaseTable(USERS)
+                                .predicate(Predicate.where(UserField.IDENTIFICATION_HASH)
+                                        .equalTo(request.identificationHash()))
+                                .onSuccess((users) -> {
+                                    if (users.size() == 0) {
+                                        logger.logCredentialsCheckSuccess(request.identificationHash());
+                                        request.onSuccess().consume(identifications.get(0));
+                                    }
+                                    else {
+                                        String errorMessage = "This person already has an account";
+                                        logger.logCredentialsCheckFail(request.identificationHash(),
+                                                errorMessage);
+                                        request.onError().consume(new Exception(errorMessage));
+                                    }
+                                })
+                                .onError((error) -> {
+                                    logger.logCredentialsCheckFail(request.identificationHash(),
+                                            error.getMessage());
+                                    request.onError().consume(new Exception(error.getMessage()));
+                                })
+                                .subscribe(false));
 
-					}
-					else {
-						String errorMessage = "Invalid credentials";
-						logger.logCredentialsCheckFail(request.identificationHash(), errorMessage);
-						request.onError().consume(new Exception(errorMessage));
-					}
-				})
-				.onError((error) -> {
-					logger.logCredentialsCheckFail(request.identificationHash(), error.getMessage());
-					request.onError().consume(new Exception(error.getMessage()));
-				})
-				.predicate(Predicate.where(IdentificationHashField.ID)
-						.equalTo(request.identificationHash()))
-				.subscribe(false));
-	}
+                    }
+                    else {
+                        String errorMessage = "Invalid credentials";
+                        logger.logCredentialsCheckFail(request.identificationHash(), errorMessage);
+                        request.onError().consume(new Exception(errorMessage));
+                    }
+                })
+                .onError((error) -> {
+                    logger.logCredentialsCheckFail(request.identificationHash(), error.getMessage());
+                    request.onError().consume(new Exception(error.getMessage()));
+                })
+                .predicate(Predicate.where(IdentificationHashField.ID)
+                        .equalTo(request.identificationHash()))
+                .subscribe(false));
+    }
 
-	public void execute(final RegisterRequest request) {
-		mAuth.createUserWithEmailAndPassword(request.email(), request.password())
-				.addOnSuccessListener((authResult) -> {
-					FirebaseUser newUser = authResult.getUser();
-					logger.logRegisterSuccess(newUser.getEmail(), newUser.getUid());
+    public void execute(final RegisterRequest request) {
+        mAuth.createUserWithEmailAndPassword(request.email(), request.password())
+                .addOnSuccessListener((authResult) -> {
+                    FirebaseUser newUser = authResult.getUser();
+                    logger.logRegisterSuccess(newUser.getEmail(), newUser.getUid());
 
-					User registeringUser = new User()
-							.setUserId(newUser.getUid())
-							.setPersonUUID(request.personUUID());
+                    User registeringUser = new User()
+                            .setUserId(newUser.getUid())
+                            .setPersonUUID(request.personUUID());
 
-					execute(new SaveRequest<User, Exception>()
-							.databaseTable(USERS)
-							.entity(registeringUser)
-							.onSuccess((u) -> {
-								logger.logRegistrationLinkingSuccess(newUser.getUid(),
-										request.personUUID());
+                    execute(new SaveRequest<User, Exception>()
+                            .databaseTable(USERS)
+                            .entity(registeringUser)
+                            .onSuccess((u) -> {
+                                logger.logRegistrationLinkingSuccess(newUser.getUid(),
+                                        request.personUUID());
 
-								request.onSuccess().consume(newUser);
-							})
-							.onError((Exception exception) -> {
-								if (exception.getMessage() != null) {
-									logger.logRegistrationLinkingFail(newUser.getUid(),
-											request.personUUID(),
-											exception.getMessage());
-									newUser.delete();
-									request.onError().consume(exception);
-								}
-							}));
+                                request.onSuccess().consume(newUser);
+                            })
+                            .onError((Exception exception) -> {
+                                if (exception.getMessage() != null) {
+                                    logger.logRegistrationLinkingFail(newUser.getUid(),
+                                            request.personUUID(),
+                                            exception.getMessage());
+                                    newUser.delete();
+                                    request.onError().consume(exception);
+                                }
+                            }));
 
-				})
-				.addOnFailureListener((exception) -> {
-					logger.logRegisterFail(request.email(), exception.getMessage());
-					request.onError().consume(exception);
-				});
-	}
+                })
+                .addOnFailureListener((exception) -> {
+                    logger.logRegisterFail(request.email(), exception.getMessage());
+                    request.onError().consume(exception);
+                });
+    }
 
-	private <T extends BaseEntity> DatabaseContext<T> buildContextForTable(DatabaseTable<T> table) {
-		return new DatabaseContext<>(firebaseConfig.getTableReference(table),
-				table.getTableClass());
-	}
+    private <T extends BaseEntity> DatabaseContext<T> buildContextForTable(DatabaseTable<T> table) {
+        return new DatabaseContext<>(firebaseConfig.getTableReference(table),
+                table.getTableClass());
+    }
 
-	private <T extends HashableEntity> DatabaseContextWithIdentification<T> buildContextWithIdentificationForTable(DatabaseTable<T> table) {
-		return new DatabaseContextWithIdentification<>(firebaseConfig,
-				firebaseConfig.getTableReference(table),
-				table.getTableClass());
-	}
+    private <T extends BaseEntity> DatabaseContextWithIdentification<T> buildContextWithIdentificationForTable(DatabaseTable<T> table) {
+        return new DatabaseContextWithIdentification<>(firebaseConfig,
+                firebaseConfig.getTableReference(table),
+                table.getTableClass());
+    }
 }

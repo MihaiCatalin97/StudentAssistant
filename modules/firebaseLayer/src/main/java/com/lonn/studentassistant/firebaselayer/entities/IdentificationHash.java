@@ -12,7 +12,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class IdentificationHash extends BaseEntity {
+public final class IdentificationHash extends BaseEntity {
 	@Exclude
 	private String hash;
 	private String entityKey;

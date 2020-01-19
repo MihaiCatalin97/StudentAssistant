@@ -21,19 +21,20 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class StudentViewModel extends EntityViewModel<Student> {
-	@Bindable
-	public String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
-	@Bindable
-	public int year;
-	public String imageMetadataKey;
-	public List<String> optionalCourses;
-	public List<String> otherActivities;
-	public CycleSpecialization cycleSpecialization;
+public final class StudentViewModel extends EntityViewModel<Student> {
+    @Bindable
+    private String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
+    @Bindable
+    private int year;
+    private String imageMetadataKey;
+    private List<String> optionalCourses;
+    private List<String> otherActivities;
+    private CycleSpecialization cycleSpecialization;
+    private List<String> grades;
 
-	@Override
-	public StudentViewModel setKey(String key) {
-		super.setKey(key);
-		return this;
-	}
+    @Override
+    public StudentViewModel setKey(String key) {
+        super.setKey(key);
+        return this;
+    }
 }

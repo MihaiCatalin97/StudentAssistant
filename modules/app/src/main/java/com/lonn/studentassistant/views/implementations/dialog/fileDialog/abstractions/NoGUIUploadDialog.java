@@ -8,28 +8,28 @@ import static android.content.Intent.createChooser;
 import static com.lonn.studentassistant.utils.file.FileUtils.getFileTypeFromMime;
 
 public abstract class NoGUIUploadDialog extends FileUploadDialog {
-	public NoGUIUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
-							 String aggregatedEntityKey,
-							 int requestCode,
-							 String fileType) {
-		super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType);
-	}
+    public NoGUIUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
+                             String aggregatedEntityKey,
+                             int requestCode,
+                             String fileType) {
+        super(firebaseConnectedActivity, aggregatedEntityKey, requestCode, fileType);
+    }
 
-	public void setFile(int requestCode, int resultCode, Intent data) {
-		super.setFile(requestCode, resultCode, data);
+    public void setFile(int requestCode, int resultCode, Intent data) {
+        super.setFile(requestCode, resultCode, data);
 
-		if (shouldSaveFile(requestCode, resultCode)) {
-			saveFile(fileContent, fileMetadata);
-		}
-	}
+        if (shouldSaveFile(requestCode, resultCode)) {
+            saveFile(aggregatedEntityKey, fileMetadata, fileContent);
+        }
+    }
 
-	@Override
-	public void show() {
-		Intent intent = new Intent()
-				.setType(fileType)
-				.setAction(Intent.ACTION_GET_CONTENT);
+    @Override
+    public void show() {
+        Intent intent = new Intent()
+                .setType(fileType)
+                .setAction(Intent.ACTION_GET_CONTENT);
 
-		firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + getFileTypeFromMime(fileType)),
-				requestCode);
-	}
+        firebaseConnectedActivity.startActivityForResult(createChooser(intent, "Select a " + getFileTypeFromMime(fileType)),
+                requestCode);
+    }
 }

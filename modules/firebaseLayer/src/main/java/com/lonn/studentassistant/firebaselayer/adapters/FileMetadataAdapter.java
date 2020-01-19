@@ -22,7 +22,7 @@ public class FileMetadataAdapter extends ViewModelAdapter<FileMetadata, FileMeta
 		FileMetadata result = new FileMetadata()
 				.setFileDescription(fileMetadataViewModel.getFileDescription())
 				.setFileName(fileMetadataViewModel.getFileName())
-				.setFileSize(fileMetadataViewModel.fileSize)
+				.setFileSize(fileMetadataViewModel.getFileSizeLong())
 				.setFileTitle(fileMetadataViewModel.getFileTitle())
 				.setFileType(fileMetadataViewModel.getFileType())
 				.setFileContentKey(fileMetadataViewModel.getFileContentKey());

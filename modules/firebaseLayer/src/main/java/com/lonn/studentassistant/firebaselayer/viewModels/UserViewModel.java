@@ -18,9 +18,9 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class UserViewModel extends EntityViewModel<User> {
+public final class UserViewModel extends EntityViewModel<User> {
 	@Bindable
-	public String email, name, personUUID, accountType;
+	private String email, name, personUUID, accountType;
 
 	@Override
 	public UserViewModel setKey(String key) {

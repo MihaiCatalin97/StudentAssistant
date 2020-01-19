@@ -16,14 +16,15 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class GradeViewModel extends EntityViewModel<Grade> {
-	private String studentKey;
-	private int grade;
-	private String laboratoryKey;
+public final class GradeViewModel extends EntityViewModel<Grade> {
+    private String studentId;
+    private String studentKey;
+    private int grade;
+    private String laboratoryKey;
 
-	@Override
-	public GradeViewModel setKey(String key) {
-		super.setKey(key);
-		return this;
-	}
+    @Override
+    public GradeViewModel setKey(String key) {
+        super.setKey(key);
+        return this;
+    }
 }

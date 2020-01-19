@@ -15,12 +15,16 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class RecurringClassViewModel extends ScheduleClassViewModel<RecurringClass> {
-	public int day;
+public final class RecurringClassViewModel extends ScheduleClassViewModel<RecurringClass> {
+	private int day;
 
 	@Bindable
 	public String getDay() {
 		return Utils.dayToString(day);
+	}
+
+	public int getDayInt(){
+		return day;
 	}
 
 	@Override

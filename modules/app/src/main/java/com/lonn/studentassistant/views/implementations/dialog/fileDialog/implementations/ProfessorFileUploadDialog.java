@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.GUIUploadDialog;
 
@@ -13,26 +14,12 @@ public class ProfessorFileUploadDialog extends GUIUploadDialog {
 				"*/*");
 	}
 
-	protected void linkFileToEntity(String entityKey, FileMetadataViewModel fileMetadata) {
+	protected void saveFile(String professorKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent) {
 		firebaseConnectedActivity.getFirebaseApi()
 				.getProfessorService()
-				.getById(entityKey)
-				.subscribe(false)
-				.onComplete(entity -> {
-					entity.getFilesMetadata().add(fileMetadata.getKey());
-					firebaseConnectedActivity.showSnackBar("Uploading ");
-					firebaseConnectedActivity.getFirebaseApi()
-							.getProfessorService()
-							.save(entity)
-							.onComplete(none -> firebaseConnectedActivity.showSnackBar("Successfully uploaded " + fileMetadata.getFullFileName(), 1000),
-									exception -> {
-										logAndShowException("An error occurred while linking the file to the professor",
-												exception);
-
-										deleteFileContent(fileMetadata.getFileContentKey());
-										deleteFileMetadata(fileMetadata.getKey());
-									}
-							);
-				});
+				.createAndLinkFile(professorKey, fileMetadata, fileContent)
+				.onSuccess(none -> firebaseConnectedActivity.showSnackBar("Successfully uploaded " + fileMetadata.getFullFileName(), 1000))
+				.onError(exception -> logAndShowException("An error occurred while uploading the file",
+						exception));
 	}
 }

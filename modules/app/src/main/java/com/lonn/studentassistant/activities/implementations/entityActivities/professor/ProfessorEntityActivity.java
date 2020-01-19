@@ -14,53 +14,44 @@ import com.lonn.studentassistant.views.implementations.dialog.fileDialog.impleme
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorImageUploadDialog;
 
 public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewModel> {
-	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
-	ProfessorEntityActivityLayoutBinding binding;
-	private ProfessorEntityActivityFirebaseDispatcher dispatcher;
-	private ProfessorImageUploadDialog imageUploadDialog;
+    private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
+    ProfessorEntityActivityLayoutBinding binding;
+    private ProfessorEntityActivityFirebaseDispatcher dispatcher;
+    private ProfessorImageUploadDialog imageUploadDialog;
 
-	protected void loadAll(String entityKey) {
-		dispatcher.loadAll(entityKey);
-	}
+    protected void loadAll(String entityKey) {
+        dispatcher.loadAll(entityKey);
+    }
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
-	}
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
+    }
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-		dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
-		imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
+        dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
+        imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
 
-		findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
-			imageUploadDialog.show();
-		});
+        findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
+            imageUploadDialog.show();
+        });
 
-		loadAll(entityKey);
-	}
+        loadAll(entityKey);
+    }
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		imageUploadDialog.setFile(requestCode, resultCode, data);
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageUploadDialog.setFile(requestCode, resultCode, data);
+    }
 
-	protected void removeFileMetadataFromEntity(String entityKey, String fileMetadataKey) {
-		getFirebaseApi().getProfessorService()
-				.getById(entityKey)
-				.subscribe(false)
-				.onComplete(professor -> {
-					professor.getFilesMetadata().remove(fileMetadataKey);
+    protected void deleteFile(String professorKey, String fileMetadataKey) {
+        getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadataKey);
+    }
 
-					getFirebaseApi().getProfessorService()
-							.save(professor)
-							.onCompleteDoNothing();
-				});
-	}
-
-	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
-		return new ProfessorFileUploadDialog(this, entityKey);
-	}
+    protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
+        return new ProfessorFileUploadDialog(this, entityKey);
+    }
 }

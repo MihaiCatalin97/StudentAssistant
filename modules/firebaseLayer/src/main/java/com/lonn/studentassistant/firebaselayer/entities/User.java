@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class User extends BaseEntity {
+public final class User extends BaseEntity {
 	@Exclude
 	private String userId;
 	private String personUUID;

@@ -16,9 +16,9 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class FileContentViewModel extends EntityViewModel<FileContent> {
-	public String fileMetadataKey;
-	public String fileContentBase64;
+public final class FileContentViewModel extends EntityViewModel<FileContent> {
+	private String fileMetadataKey;
+	private String fileContentBase64;
 
 	@Override
 	public FileContentViewModel setKey(String key) {

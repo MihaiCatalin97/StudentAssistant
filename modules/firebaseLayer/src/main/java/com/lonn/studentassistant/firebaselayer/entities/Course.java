@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Course extends Discipline {
+public final class Course extends Discipline {
     private Integer pack;
     private List<String> laboratories = new LinkedList<>();
 
@@ -26,6 +26,11 @@ public class Course extends Discipline {
 
     public Course addCycleSpecializationYear(CycleSpecializationYear cycleSpecializationYear) {
         this.cycleSpecializationYears.add(cycleSpecializationYear);
+        return this;
+    }
+
+    public Course setFileMetadataKeys(List<String> fileMetadataKeys) {
+        this.fileMetadataKeys = fileMetadataKeys;
         return this;
     }
 }

@@ -14,9 +14,9 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class OtherActivityViewModel extends DisciplineViewModel<OtherActivity> {
+public final class OtherActivityViewModel extends DisciplineViewModel<OtherActivity> {
 	@Bindable
-	public String type;
+	private String type;
 
 	@Override
 	public OtherActivityViewModel setKey(String key) {

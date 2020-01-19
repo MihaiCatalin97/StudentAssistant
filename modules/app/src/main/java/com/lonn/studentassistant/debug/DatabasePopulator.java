@@ -44,8 +44,7 @@ public class DatabasePopulator {
 							.setPhoneNumber("0742664239")
 							.setGroup("B5")
 							.setCycleSpecialization(LICENTA_INFORMATICA)
-							.setYear(3))
-					.onCompleteDoNothing();
+							.setYear(3));
 	}
 
 	public void deleteStudentsTable() {

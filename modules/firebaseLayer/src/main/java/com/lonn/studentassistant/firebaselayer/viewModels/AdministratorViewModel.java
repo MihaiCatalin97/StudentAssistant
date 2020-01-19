@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Builder
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class AdministratorViewModel extends EntityViewModel<Administrator> {
+public final class AdministratorViewModel extends EntityViewModel<Administrator> {
 	private String firstName;
 	private String lastName;
 	private String administratorKey;

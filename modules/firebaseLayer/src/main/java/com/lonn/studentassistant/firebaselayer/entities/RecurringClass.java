@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class RecurringClass extends ScheduleClass {
+public final class RecurringClass extends ScheduleClass {
 	private int day;
 
 	@Override

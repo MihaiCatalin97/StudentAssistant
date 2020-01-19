@@ -15,61 +15,61 @@ import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
 
 class OtherActivityFirebaseDispatcher extends Dispatcher {
-	private static final Logger LOGGER = Logger.ofClass(OtherActivityFirebaseDispatcher.class);
-	private OtherActivityEntityActivityLayoutBinding binding;
-	private BindableHashMap<ProfessorViewModel> professorMap;
-	private BindableHashMap<RecurringClassViewModel> recurringClassesMap;
-	private BindableHashMap<OneTimeClassViewModel> oneTimeClassesMap;
-	private BindableHashMap<FileMetadataViewModel> filesMap;
+    private static final Logger LOGGER = Logger.ofClass(OtherActivityFirebaseDispatcher.class);
+    private OtherActivityEntityActivityLayoutBinding binding;
+    private BindableHashMap<ProfessorViewModel> professorMap;
+    private BindableHashMap<RecurringClassViewModel> recurringClassesMap;
+    private BindableHashMap<OneTimeClassViewModel> oneTimeClassesMap;
+    private BindableHashMap<FileMetadataViewModel> filesMap;
 
-	OtherActivityFirebaseDispatcher(OtherActivityEntityActivity entityActivity) {
-		super(entityActivity);
-		this.binding = entityActivity.binding;
+    OtherActivityFirebaseDispatcher(OtherActivityEntityActivity entityActivity) {
+        super(entityActivity);
+        this.binding = entityActivity.binding;
 
-		professorMap = new BindableHashMap<>(binding, professors);
-		recurringClassesMap = new BindableHashMap<>(binding, recurringClasses);
-		oneTimeClassesMap = new BindableHashMap<>(binding, oneTimeClasses);
-		filesMap = new BindableHashMap<>(binding, files);
-	}
+        professorMap = new BindableHashMap<>(binding, professors);
+        recurringClassesMap = new BindableHashMap<>(binding, recurringClasses);
+        oneTimeClassesMap = new BindableHashMap<>(binding, oneTimeClasses);
+        filesMap = new BindableHashMap<>(binding, files);
+    }
 
-	void loadAll(String entityKey) {
-		firebaseApi.getOtherActivityService()
-				.getById(entityKey)
-				.onComplete(activity -> {
-							binding.setOtherActivity(activity);
+    void loadAll(String entityKey) {
+        firebaseApi.getOtherActivityService()
+                .getById(entityKey, true)
+                .onSuccess(activity -> {
+                    binding.setOtherActivity(activity);
 
-							removeNonExistingEntities(professorMap, activity.getProfessors());
-							removeNonExistingEntities(recurringClassesMap, activity.getRecurringClasses());
-							removeNonExistingEntities(oneTimeClassesMap, activity.getOneTimeClasses());
-							removeNonExistingEntities(filesMap, activity.getFilesMetadata());
+                    removeNonExistingEntities(professorMap, activity.getProfessors());
+                    removeNonExistingEntities(recurringClassesMap, activity.getRecurringClasses());
+                    removeNonExistingEntities(oneTimeClassesMap, activity.getOneTimeClasses());
+                    removeNonExistingEntities(filesMap, activity.getFileMetadataKeys());
 
-							for (String professorId : activity.getProfessors()) {
-								firebaseApi.getProfessorService()
-										.getById(professorId)
-										.onComplete(professorMap::put);
-							}
+                    for (String professorId : activity.getProfessors()) {
+                        firebaseApi.getProfessorService()
+                                .getById(professorId, true)
+                                .onSuccess(professorMap::put);
+                    }
 
-							for (String recurringClassId : activity.getRecurringClasses()) {
-								firebaseApi.getRecurringClassService()
-										.getById(recurringClassId)
-										.onComplete(recurringClassesMap::put);
-							}
+                    for (String recurringClassId : activity.getRecurringClasses()) {
+                        firebaseApi.getRecurringClassService()
+                                .getById(recurringClassId, true)
+                                .onSuccess(recurringClassesMap::put);
+                    }
 
-							for (String oneTimeClassId : activity.getOneTimeClasses()) {
-								firebaseApi.getOneTimeClassService()
-										.getById(oneTimeClassId)
-										.onComplete(oneTimeClassesMap::put);
-							}
+                    for (String oneTimeClassId : activity.getOneTimeClasses()) {
+                        firebaseApi.getOneTimeClassService()
+                                .getById(oneTimeClassId, true)
+                                .onSuccess(oneTimeClassesMap::put);
+                    }
 
-							for (String fileId : activity.getFilesMetadata()) {
-								firebaseApi.getFileMetadataService()
-										.getById(fileId)
-										.onComplete(filesMap::put);
-							}
+                    for (String fileId : activity.getFileMetadataKeys()) {
+                        firebaseApi.getFileMetadataService()
+                                .getById(fileId, true)
+                                .onSuccess(filesMap::put);
+                    }
 
-						},
-						error -> activity.logAndShowErrorSnack("An error occurred while loading the activity.",
-								new Exception("Loading activity: " + error.getMessage()),
-								LOGGER));
-	}
+                })
+                .onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the activity.",
+                        new Exception("Loading activity: " + error.getMessage()),
+                        LOGGER));
+    }
 }

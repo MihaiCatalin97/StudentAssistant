@@ -14,7 +14,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(fluent = true)
 @EqualsAndHashCode(callSuper = false)
-public class SaveRequest<T extends BaseEntity, V extends Throwable> extends Request<Void, V> {
+public class SaveRequest<T extends BaseEntity, V extends Exception> extends Request<Void, V> {
 	private DatabaseTable databaseTable;
 	private List<T> entities = new ArrayList<>();
 
