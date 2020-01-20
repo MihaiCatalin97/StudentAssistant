@@ -10,6 +10,7 @@ import androidx.databinding.ViewDataBinding;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
+import com.lonn.studentassistant.databinding.GradeLaboratoryTableRowBinding;
 import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
 import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
@@ -84,7 +85,7 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 			return R.layout.recurring_class_table_row;
 		}
 		if (entityViewModel instanceof GradeViewModel) {
-			return R.layout.entity_table_row_view;
+			return R.layout.grade_laboratory_table_row;
 		}
 
 		return R.layout.entity_constraint_layout_view;
@@ -98,7 +99,7 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 			((RecurringClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
-			((EntityTableRowViewBinding) binding).setEntityViewModel(model);
+			((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);
 		}
 		else {
 			((EntityConstraintLayoutViewBinding) binding).setEntityViewModel(model);

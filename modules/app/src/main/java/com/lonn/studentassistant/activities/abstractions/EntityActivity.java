@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.core.app.NavUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
@@ -24,6 +25,14 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		entityKey = getIntent().getStringExtra("entityKey");
+
+		findViewById(R.id.fab_edit).setOnClickListener(view -> {
+			onEditTapped();
+		});
+
+		findViewById(R.id.fab_delete).setOnClickListener(view -> {
+			onDeleteTapped();
+		});
 	}
 
 	protected void checkAuthenticationAndSignOut() {
@@ -32,4 +41,8 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 			NavUtils.navigateUpFromSameTask(this);
 		}
 	}
+
+	protected abstract void onEditTapped();
+
+	protected abstract void onDeleteTapped();
 }

@@ -54,4 +54,14 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
     protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
         return new ProfessorFileUploadDialog(this, entityKey);
     }
+
+    protected void onEditTapped(){
+        boolean editing = binding.getEditing() == null? false: binding.getEditing();
+
+        binding.setEditing(!editing);
+    }
+
+    protected void onDeleteTapped(){
+
+    }
 }

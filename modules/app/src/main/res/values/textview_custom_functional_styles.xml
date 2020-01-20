@@ -34,4 +34,19 @@
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:maxLines">2</item>
     </style>
+
+    <style name="EntityActivityContentHiddenEditText" parent="EntityActivityContentText">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/edit_text_color</item>
+    </style>
+
+    <style name="EntityActivityTitleHiddenEditText" parent="EntityActivityTitle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/edit_text_color</item>
+    </style>
+
+    <style name="EntityActivitySubtitleHiddenEditText" parent="EntityActivitySubtitle">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/edit_text_color</item>
+    </style>
 </resources>

@@ -30,7 +30,7 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	private Comparator<EntityView> entitiesComparator;
 	private Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> generatorFunction;
 
-	private List<CategoryViewModel<T>> childCategories = new ArrayList<>();
+	private Collection<CategoryViewModel<T>> childCategories = new ArrayList<>();
 	private Map<String, T> childEntities = new HashMap<>();
 	private Predicate<T> shouldContain = e -> true;
 
@@ -80,11 +80,11 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	}
 
 	@Bindable
-	public List<CategoryViewModel<T>> getChildCategories() {
+	public Collection<CategoryViewModel<T>> getChildCategories() {
 		return childCategories;
 	}
 
-	public CategoryViewModel<T> setChildCategories(List<CategoryViewModel<T>> childCategories) {
+	public CategoryViewModel<T> setChildCategories(Collection<CategoryViewModel<T>> childCategories) {
 		this.childCategories = childCategories;
 		this.notifyPropertyChanged(BR.categoryModel);
 		return this;

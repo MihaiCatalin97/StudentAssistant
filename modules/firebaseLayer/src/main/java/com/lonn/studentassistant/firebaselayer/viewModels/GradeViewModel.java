@@ -1,7 +1,10 @@
 package com.lonn.studentassistant.firebaselayer.viewModels;
 
+import com.google.firebase.database.Exclude;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+
+import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,14 +20,15 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public final class GradeViewModel extends EntityViewModel<Grade> {
-    private String studentId;
-    private String studentKey;
-    private int grade;
-    private String laboratoryKey;
+	private String studentId;
+	private String studentKey;
+	private int grade;
+	private String laboratoryKey;
+	private Date date;
 
-    @Override
-    public GradeViewModel setKey(String key) {
-        super.setKey(key);
-        return this;
-    }
+	@Override
+	public GradeViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 }

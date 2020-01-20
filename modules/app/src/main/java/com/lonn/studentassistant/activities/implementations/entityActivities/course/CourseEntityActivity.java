@@ -53,4 +53,14 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
     protected FileUploadDialog getFileUploadDialogInstance() {
         return new CourseFileUploadDialog(this, entityKey);
     }
+
+    protected void onEditTapped(){
+        boolean editing = binding.getEditing() == null? false: binding.getEditing();
+
+        binding.setEditing(!editing);
+    }
+
+    protected void onDeleteTapped(){
+
+    }
 }

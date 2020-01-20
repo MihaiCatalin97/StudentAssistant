@@ -8,6 +8,8 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 
@@ -120,6 +122,43 @@ public class CategoryGenerator {
 				}
 			}
 		}
+
+		return subcategories;
+	}
+
+	public static <T extends StudentViewModel> List<CategoryViewModel<T>> courseStudentCategories(CategoryViewModel<T> parentCategory,
+																								  DisciplineViewModel courseViewModel) {
+		List<CategoryViewModel<T>> subcategories = new ArrayList<>();
+
+		subcategories.add(new CategoryViewModel<T>()
+				.setCategoryTitle("Approved students")
+				.setEntityName(parentCategory.getEntityName())
+				.setViewType(parentCategory.getViewType())
+				.setPermissionLevel(1)
+				.setShowEmpty(parentCategory.isShowEmpty())
+				.setShowHeader(true)
+				.setShouldContain((student) -> {
+					if (courseViewModel == null) {
+						return true;
+					}
+
+					return courseViewModel.getStudents().contains(student.getKey());
+				}));
+
+		subcategories.add(new CategoryViewModel<T>()
+				.setCategoryTitle("Pending students")
+				.setEntityName(parentCategory.getEntityName())
+				.setViewType(parentCategory.getViewType())
+				.setPermissionLevel(0)
+				.setShowEmpty(parentCategory.isShowEmpty())
+				.setShowHeader(true)
+				.setShouldContain((student) -> {
+					if (courseViewModel == null) {
+						return true;
+					}
+
+					return courseViewModel.getPendingStudents().contains(student.getKey());
+				}));
 
 		return subcategories;
 	}

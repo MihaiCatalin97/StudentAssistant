@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.views.implementations;
 
+import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 
@@ -19,4 +20,11 @@ public class EntityViewComparatorHolder {
 
 	public static Comparator<EntityView> ASCENDING_FIELD1_COMPARATOR = (entityView1, entityView2) ->
 			entityView1.getModel().field1.compareTo(entityView2.getModel().field2);
+
+	public static Comparator<EntityView> ASCENDING_LABORATORY_WEEK_COMPARATOR = (entityView1, entityView2) -> {
+		LaboratoryViewModel laboratory1 = (LaboratoryViewModel) entityView1.getEntityViewModel();
+		LaboratoryViewModel laboratory2 = (LaboratoryViewModel) entityView2.getEntityViewModel();
+
+		return laboratory1.getWeekNumber() - laboratory2.getWeekNumber();
+	};
 }

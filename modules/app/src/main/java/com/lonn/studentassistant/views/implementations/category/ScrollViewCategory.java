@@ -3,10 +3,13 @@ package com.lonn.studentassistant.views.implementations.category;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.RotateAnimation;
 
 import androidx.databinding.DataBindingUtil;
 
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.animations.ExpandAnimation;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
@@ -69,6 +72,16 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		for (ScrollViewCategory category : content.subcategoryViews.values()) {
 			category.setIsTable(isTable);
 		}
+	}
+
+	public void setChildCategories(Collection<CategoryViewModel<T>> categories) {
+		getViewModel().setChildCategories(categories);
+
+		content.removeAllSubcategories();
+		addCategoriesToContent(categories);
+		setIsTable(binding.getIsTable());
+
+		hideIfEmpty();
 	}
 
 	public void addChildCategories(Collection<CategoryViewModel<T>> categories) {
@@ -210,6 +223,20 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 			expandAnimation.start(content);
 
 			getHandler().postDelayed(() -> animated = false, 500);
+		}
+	}
+
+	public void addTableHeader() {
+
+	}
+
+	@Override
+	public void addView(View child, int index, ViewGroup.LayoutParams params) {
+		if (child.getId() != R.id.tableHeader) {
+			super.addView(child, index, params);
+		}
+		else {
+			content.addView(child, index, params);
 		}
 	}
 

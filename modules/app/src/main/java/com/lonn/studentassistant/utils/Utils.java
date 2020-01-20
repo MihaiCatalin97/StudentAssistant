@@ -13,6 +13,8 @@ import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -20,6 +22,18 @@ import java.util.regex.Pattern;
 
 public class Utils {
 	public static int displayHeight, displayWidth;
+	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd.MM.YYYY");
+
+	public static String hideStudentId(String studentId) {
+		return padLeft(studentId.substring(studentId.length() - 4), '*', studentId.length());
+	}
+
+	public static String dateToStringDate(Date date) {
+		if (date != null) {
+			return DATE_FORMATTER.format(date);
+		}
+		return null;
+	}
 
 	public static String encrypt(String input) {
 		return Base64.encodeToString(input.getBytes(), Base64.DEFAULT);
@@ -175,20 +189,22 @@ public class Utils {
 		String minuteString = Integer.toString(hour % 100);
 		String hourString = Integer.toString(hour / 100);
 
-		minuteString = padLeftWithZeros(minuteString);
-		hourString = padLeftWithZeros(hourString);
+		minuteString = padLeft(minuteString, '0', 2);
+		hourString = padLeft(hourString, '0', 2);
 
 		return hourString + ":" + minuteString;
 	}
 
-	private static String padLeftWithZeros(String stringToPad) {
-		if (stringToPad.length() == 0) {
-			return "00";
+	private static String padLeft(String stringToPad, char paddingCharacter, int desiredSize) {
+		StringBuilder stringBuilder = new StringBuilder(desiredSize);
+
+		for (int i = 0; i < desiredSize - stringToPad.length(); i++) {
+			stringBuilder.append(paddingCharacter);
 		}
-		else if (stringToPad.length() == 1) {
-			return "0" + stringToPad;
-		}
-		return stringToPad;
+
+		stringBuilder.append(stringToPad);
+
+		return stringBuilder.toString();
 	}
 
 	public static int getDefaultPersonImageForName(String name) {

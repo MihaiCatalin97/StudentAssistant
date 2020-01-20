@@ -17,54 +17,70 @@ import static com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewM
 import static java.util.UUID.randomUUID;
 
 public class LaboratoryInputActivity extends FirebaseConnectedActivity {
-    private static final Logger LOGGER = Logger.ofClass(LaboratoryInputActivity.class);
-    LaboratoryInputActivityLayoutBinding binding;
-    private String courseKey;
-    private String courseName;
+	private static final Logger LOGGER = Logger.ofClass(LaboratoryInputActivity.class);
+	LaboratoryInputActivityLayoutBinding binding;
+	private String courseKey;
+	private String courseName;
 
-    public void save(View view) {
-        int weekNumber;
-        String title = ((EditText) findViewById(R.id.laboratoryTitleEditText)).getText().toString();
-        String description = ((EditText) findViewById(R.id.laboratoryDescriptionEditText)).getText().toString();
+	public void save(View view) {
+		int weekNumber;
+		String title = ((EditText) findViewById(R.id.laboratoryTitleEditText)).getText().toString();
+		String description = ((EditText) findViewById(R.id.laboratoryDescriptionEditText)).getText().toString();
 
-        try {
-            weekNumber = Integer.parseInt(((EditText) findViewById(R.id.laboratoryWeekEditText)).getText().toString());
-        } catch (NumberFormatException exception) {
-            showSnackBar("Invalid week number. It must be from 1 to 16");
-            return;
-        }
+		try {
+			weekNumber = Integer.parseInt(((EditText) findViewById(R.id.laboratoryWeekEditText)).getText().toString());
+		}
+		catch (NumberFormatException exception) {
+			showSnackBar("Invalid week number. It must be from 1 to 16");
+			return;
+		}
 
-        UUID laboratoryUUID = randomUUID();
+		UUID laboratoryUUID = randomUUID();
 
-        showSnackBar("Saving laboratory...");
-        firebaseApi.getLaboratoryService()
-                .saveAndLinkLaboratory(builder()
-                        .courseKey(courseKey)
-                        .description(description)
-                        .title(title)
-                        .weekNumber(weekNumber)
-                        .build()
-                        .setKey(laboratoryUUID.toString()))
-                .onSuccess(n -> {
-                    showSnackBar("Successfully added a laboratory to " + courseName, 1000);
-                    executeWithDelay(this::onBackPressed, 1250);
-                });
-    }
+		showSnackBar("Saving laboratory...");
 
-    public void cancel(View view) {
-        super.onBackPressed();
-    }
+		firebaseApi.getLaboratoryService()
+				.getByCourseKeyAndWeek(courseKey, weekNumber, false)
+				.onSuccess(laboratory -> {
+					if (laboratory != null) {
+						showSnackBar("A laboratory for this discipline for week " + weekNumber + " already exists!",
+								1000);
+						return;
+					}
 
-    protected void inflateLayout() {
-        binding = DataBindingUtil.setContentView(this, R.layout.laboratory_input_activity_layout);
-    }
+					firebaseApi.getLaboratoryService()
+							.saveAndLinkLaboratory(builder()
+									.courseKey(courseKey)
+									.description(description)
+									.title(title)
+									.weekNumber(weekNumber)
+									.build()
+									.setKey(laboratoryUUID.toString()))
+							.onSuccess(n -> {
+								showSnackBar("Successfully added a laboratory to " + courseName, 1000);
+								executeWithDelay(this::onBackPressed, 1250);
+							});
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        courseName = getIntent().getStringExtra("courseName");
-        courseKey = getIntent().getStringExtra("courseKey");
+				})
+				.onError(error -> logAndShowErrorSnack("An error occurred while creating the laboratory!",
+						error,
+						LOGGER));
+	}
 
-        binding.setCourseName(courseName);
-    }
+	public void cancel(View view) {
+		super.onBackPressed();
+	}
+
+	protected void inflateLayout() {
+		binding = DataBindingUtil.setContentView(this, R.layout.laboratory_input_activity_layout);
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		courseName = getIntent().getStringExtra("courseName");
+		courseKey = getIntent().getStringExtra("courseKey");
+
+		binding.setCourseName(courseName);
+	}
 }

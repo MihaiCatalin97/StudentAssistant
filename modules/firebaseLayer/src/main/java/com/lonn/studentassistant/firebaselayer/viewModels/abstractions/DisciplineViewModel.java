@@ -18,21 +18,22 @@ import lombok.experimental.Accessors;
 import static com.lonn.studentassistant.firebaselayer.Utils.semesterToString;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @NoArgsConstructor
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public abstract class DisciplineViewModel<T extends Discipline> extends FileAssociatedEntityViewModel<T> {
     @Bindable
     protected String name, description, website;
 
     protected int semester;
+    protected List<String> pendingStudents = new LinkedList<>();
     protected List<String> students = new LinkedList<>();
     protected List<String> professors = new ArrayList<>();
     protected List<String> recurringClasses = new ArrayList<>();
     protected List<String> oneTimeClasses = new ArrayList<>();
 
     @Bindable
-    public String getYearSemester() {
+    public String getSemesterString() {
         return semesterToString(semester);
     }
 

@@ -36,7 +36,7 @@ public class DatabasePopulator {
 		for (int i = 0; i < 10; i++)
 			firebaseApi.getStudentService()
 					.save(new StudentViewModel()
-							.setStudentId(Integer.toString(i))
+							.setStudentId("31090104SL16000" + i)
 							.setLastName("Mihai")
 							.setFirstName("Catalin")
 							.setFatherInitial("R")

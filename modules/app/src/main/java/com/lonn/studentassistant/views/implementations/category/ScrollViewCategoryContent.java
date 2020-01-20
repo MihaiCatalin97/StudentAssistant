@@ -30,6 +30,14 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		super(context, attrs);
 	}
 
+	public void removeAllSubcategories() {
+		for (ScrollViewCategory category : subcategoryViews.values()) {
+			removeView(category);
+		}
+
+		subcategoryViews.clear();
+	}
+
 	public void setOnAddTap(Runnable runnable) {
 		findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> runnable.run());
 	}

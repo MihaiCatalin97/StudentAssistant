@@ -37,11 +37,11 @@ public class BindingAdapters {
 			"android:layout_height",
 			"android:layout_width"}, requireAll = false)
 	public static void setLayoutDip(View view, float marginEnd, float marginStart,
-								  float marginLeft, float marginRight,
-								  float marginTop,
-								  float marginBottom,
-								  int height,
-								  int width) {
+									float marginLeft, float marginRight,
+									float marginTop,
+									float marginBottom,
+									int height,
+									int width) {
 		int leftMargin = marginLeft == 0 ? (int) marginStart : (int) marginLeft;
 		int rightMargin = marginRight == 0 ? (int) marginEnd : (int) marginRight;
 
@@ -69,7 +69,7 @@ public class BindingAdapters {
 	@BindingAdapter(value = {"android:layout_marginStartPixels",
 			"android:layout_marginTopPixels"}, requireAll = false)
 	public static void setMarginsPixels(View view, float marginStartPixels,
-								  float marginTopPixels) {
+										float marginTopPixels) {
 		if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
 			DisplayMetrics displayMetrics = view.getContext().getResources().getDisplayMetrics();
 
@@ -129,8 +129,9 @@ public class BindingAdapters {
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setChildEntities(ScrollViewCategory<T> category,
 																						  Collection<T> entities) {
 		if (category != null) {
-			if (entities != null && category.getViewModel().getGeneratorFunction() != null) {
-				category.addChildCategories(category.getViewModel().getGeneratorFunction()
+			if (entities != null &&
+					category.getViewModel().getGeneratorFunction() != null) {
+				category.setChildCategories(category.getViewModel().getGeneratorFunction()
 						.apply(category.getViewModel()));
 			}
 			category.setEntities(entities);
@@ -194,7 +195,7 @@ public class BindingAdapters {
 	@BindingAdapter("android:subcategoryGeneratorFunction")
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setSubcategoryGeneratorFunction(ScrollViewCategory<T> categoryView,
 																										 Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
-		categoryView.addChildCategories(subcategoryGeneratorFunction
+		categoryView.setChildCategories(subcategoryGeneratorFunction
 				.apply(categoryView.getViewModel()));
 	}
 
@@ -202,6 +203,13 @@ public class BindingAdapters {
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setSubcategoryDynamicGeneratorFunction(ScrollViewCategory<T> categoryView,
 																												Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {
 		categoryView.getViewModel().setGeneratorFunction(subcategoryGeneratorFunction);
+
+		List<CategoryViewModel<T>> subcategories =
+				subcategoryGeneratorFunction.apply(categoryView.getViewModel());
+
+		if (subcategories != null && subcategories.size() != 0) {
+			categoryView.setChildCategories(subcategories);
+		}
 	}
 
 	@BindingAdapter("android:permissionLevel")
