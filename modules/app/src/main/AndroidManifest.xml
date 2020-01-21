@@ -90,6 +90,14 @@
             android:name=".activities.implementations.entityActivities.laboratory.LaboratoryEntityActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <service
+            android:name=".notifications.CustomFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
