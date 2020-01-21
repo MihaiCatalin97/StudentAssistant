@@ -13,7 +13,7 @@
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
         <variable
-            name="otherActivity"
+            name="entity"
             type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
 
         <variable
@@ -53,17 +53,21 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <TextView
-                    style="@style/EntityActivityTitle"
+                <EditText
+                    style="@style/EntityActivityTitleHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{otherActivity.name}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="@{entity.name == null || entity.name.length() == 0? `Enter name` : ``}"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.name}" />
 
                 <TextView
                     style="@style/EntityActivitySubtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{otherActivity.type + `\n` + otherActivity.semesterString}" />
+                    android:text="@{entity.type + `\n` + entity.semesterString}" />
 
                 <TextView
                     style="@style/EntityActivityContentTitle"
@@ -71,11 +75,15 @@
                     android:layout_height="wrap_content"
                     android:text="Description" />
 
-                <TextView
-                    style="@style/EntityActivityContentText"
+                <EditText
+                    style="@style/EntityActivityContentHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{otherActivity.description}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="Enter description"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.description}" />
 
                 <TextView
                     style="@style/EntityActivityContentTitle"
@@ -83,12 +91,16 @@
                     android:layout_height="wrap_content"
                     android:text="Website" />
 
-                <TextView
-                    style="@style/EntityActivityContentText"
+                <EditText
+                    style="@style/EntityActivityContentHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{otherActivity.website}"
-                    android:visibility="@{otherActivity.websiteVisible}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="Enter website"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.website}"
+                    android:visibility="@{entity.websiteVisible}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -96,6 +108,7 @@
                     android:layout_marginTop="12dp"
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values()}"
+                    android:editing="@{editing}"
                     android:entityName="@{`file`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -103,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
                     android:childEntities="@{professors.values()}"
+                    android:editing="@{editing}"
                     android:entityName="@{`professor`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -111,6 +125,7 @@
                     android:categoryTitle="@{`Regular schedule`}"
                     android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:editing="@{editing}"
                     android:entityName="@{`regular class`}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
@@ -123,6 +138,7 @@
                     android:categoryTitle="@{`Special schedule`}"
                     android:childEntities="@{oneTimeClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:editing="@{editing}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
@@ -131,35 +147,8 @@
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            app:layout_dodgeInsetEdges="bottom">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="@dimen/fab_margin"
-                app:fabCustomSize="46dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                app:fabCustomSize="46dp"
-                app:layout_anchor="@id/fab"
-                app:layout_anchorGravity="top"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </LinearLayout>
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

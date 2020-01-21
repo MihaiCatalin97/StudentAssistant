@@ -25,6 +25,8 @@
         <item name="android:shadowDy">5</item>
 
         <!-- Colors -->
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
         <item name="android:textColorAlertDialogListItem">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>

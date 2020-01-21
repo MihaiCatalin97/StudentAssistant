@@ -6,8 +6,6 @@ import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 
-import java.util.concurrent.Future;
-
 import static androidx.databinding.library.baseAdapters.BR._all;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ONE_TIME_CLASSES;
 

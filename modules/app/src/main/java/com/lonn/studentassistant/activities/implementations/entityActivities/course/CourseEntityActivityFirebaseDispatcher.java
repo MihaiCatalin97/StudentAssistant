@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.course;
 
-import com.lonn.studentassistant.activities.abstractions.Dispatcher;
+import com.lonn.studentassistant.activities.abstractions.EntityActivityDispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
-import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.services.CourseService;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
@@ -19,26 +19,27 @@ import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
 import static com.lonn.studentassistant.BR.students;
 
-class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
+class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivityFirebaseDispatcher.class);
-	private CourseEntityActivityLayoutBinding binding;
 	private BindableHashMap<ProfessorViewModel> professorMap;
 	private BindableHashMap<RecurringClassViewModel> recurringClassesMap;
 	private BindableHashMap<OneTimeClassViewModel> oneTimeClassesMap;
 	private BindableHashMap<FileMetadataViewModel> filesMap;
 	private BindableHashMap<LaboratoryViewModel> laboratoryMap;
 	private BindableHashMap<StudentViewModel> studentMap;
+	private CourseEntityActivity entityActivity;
 
 	CourseEntityActivityFirebaseDispatcher(CourseEntityActivity entityActivity) {
 		super(entityActivity);
-		this.binding = entityActivity.binding;
 
-		professorMap = new BindableHashMap<>(binding, professors);
-		recurringClassesMap = new BindableHashMap<>(binding, recurringClasses);
-		oneTimeClassesMap = new BindableHashMap<>(binding, oneTimeClasses);
-		filesMap = new BindableHashMap<>(binding, files);
-		laboratoryMap = new BindableHashMap<>(binding, laboratories);
-		studentMap = new BindableHashMap<>(binding, students);
+		this.entityActivity = entityActivity;
+
+		professorMap = new BindableHashMap<>(entityActivity.getBinding(), professors);
+		recurringClassesMap = new BindableHashMap<>(entityActivity.getBinding(), recurringClasses);
+		oneTimeClassesMap = new BindableHashMap<>(entityActivity.getBinding(), oneTimeClasses);
+		filesMap = new BindableHashMap<>(entityActivity.getBinding(), files);
+		laboratoryMap = new BindableHashMap<>(entityActivity.getBinding(), laboratories);
+		studentMap = new BindableHashMap<>(entityActivity.getBinding(), students);
 	}
 
 	void loadAll(String courseKey) {
@@ -67,7 +68,7 @@ class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
 				updateStudents(course);
 			}
 
-			binding.setCourse(course);
+			activity.setActivityEntity(course);
 		})
 				.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the course.",
 						new
@@ -77,44 +78,44 @@ class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
 	}
 
 	private boolean shouldUpdateProfessors(CourseViewModel course) {
-		return this.binding.getProfessors() == null ||
-				this.binding.getProfessors().size() != course.getProfessors().size() ||
-				!this.binding.getProfessors().keySet()
+		return this.entityActivity.getBinding().getProfessors() == null ||
+				this.entityActivity.getBinding().getProfessors().size() != course.getProfessors().size() ||
+				!this.entityActivity.getBinding().getProfessors().keySet()
 						.containsAll(course.getProfessors());
 	}
 
 	private boolean shouldUpdateLaboratories(CourseViewModel course) {
-		return this.binding.getLaboratories() == null ||
-				this.binding.getLaboratories().size() != course.getLaboratories().size() ||
-				!this.binding.getLaboratories().keySet()
+		return this.entityActivity.getBinding().getLaboratories() == null ||
+				this.entityActivity.getBinding().getLaboratories().size() != course.getLaboratories().size() ||
+				!this.entityActivity.getBinding().getLaboratories().keySet()
 						.containsAll(course.getLaboratories());
 	}
 
 	private boolean shouldUpdateOneTimeClasses(CourseViewModel course) {
-		return this.binding.getOneTimeClasses() == null ||
-				this.binding.getOneTimeClasses().size() != course.getOneTimeClasses().size() ||
-				!this.binding.getOneTimeClasses().keySet()
+		return this.entityActivity.getBinding().getOneTimeClasses() == null ||
+				this.entityActivity.getBinding().getOneTimeClasses().size() != course.getOneTimeClasses().size() ||
+				!this.entityActivity.getBinding().getOneTimeClasses().keySet()
 						.containsAll(course.getOneTimeClasses());
 	}
 
 	private boolean shouldUpdateRecurringClasses(CourseViewModel course) {
-		return this.binding.getRecurringClasses() == null ||
-				this.binding.getRecurringClasses().size() != course.getRecurringClasses().size() ||
-				!this.binding.getRecurringClasses().keySet()
+		return this.entityActivity.getBinding().getRecurringClasses() == null ||
+				this.entityActivity.getBinding().getRecurringClasses().size() != course.getRecurringClasses().size() ||
+				!this.entityActivity.getBinding().getRecurringClasses().keySet()
 						.containsAll(course.getRecurringClasses());
 	}
 
 	private boolean shouldUpdateFiles(CourseViewModel course) {
-		return this.binding.getFiles() == null ||
-				this.binding.getFiles().size() != course.getFileMetadataKeys().size() ||
-				!this.binding.getFiles().keySet()
+		return this.entityActivity.getBinding().getFiles() == null ||
+				this.entityActivity.getBinding().getFiles().size() != course.getFileMetadataKeys().size() ||
+				!this.entityActivity.getBinding().getFiles().keySet()
 						.containsAll(course.getFileMetadataKeys());
 	}
 
 	private boolean shouldUpdateStudents(CourseViewModel course) {
-		return this.binding.getStudents() == null ||
-				this.binding.getStudents().size() != course.getStudents().size() ||
-				!this.binding.getStudents().keySet()
+		return this.entityActivity.getBinding().getStudents() == null ||
+				this.entityActivity.getBinding().getStudents().size() != course.getStudents().size() ||
+				!this.entityActivity.getBinding().getStudents().keySet()
 						.containsAll(course.getStudents());
 	}
 
@@ -170,5 +171,20 @@ class CourseEntityActivityFirebaseDispatcher extends Dispatcher {
 					.getById(fileId, true)
 					.onSuccess(filesMap::put);
 		}
+	}
+
+	@Override
+	public CourseService getService() {
+		return firebaseApi.getCourseService();
+	}
+
+	@Override
+	public String getEntityName() {
+		return "course";
+	}
+
+	@Override
+	public Logger getLogger() {
+		return LOGGER;
 	}
 }

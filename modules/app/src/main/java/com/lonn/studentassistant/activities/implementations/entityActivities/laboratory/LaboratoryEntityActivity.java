@@ -1,7 +1,9 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.laboratory;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
@@ -19,6 +21,8 @@ import com.lonn.studentassistant.views.implementations.dialog.fileDialog.impleme
 
 import java.util.Date;
 
+import lombok.Getter;
+
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static java.lang.Integer.parseInt;
@@ -27,6 +31,7 @@ import static java.util.UUID.randomUUID;
 
 public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(LaboratoryEntityActivity.class);
+	@Getter
 	LaboratoryEntityActivityLayoutBinding binding;
 	private LaboratoryEntityActivityFirebaseDispatcher dispatcher;
 	private GradeInputDialog gradeInputDialog;
@@ -70,7 +75,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 								.setGrade(grade)
 								.setStudentId(studentId)
 								.setDate(new Date())
-								.setLaboratoryKey(binding.getLaboratory().getKey());
+								.setLaboratoryKey(binding.getEntity().getKey());
 
 						firebaseApi.getGradeService()
 								.saveAndLink(gradeViewModel)
@@ -95,14 +100,26 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 		return new LaboratoryFileUploadDialog(this, entityKey);
 	}
 
-
-	protected void onEditTapped(){
-		boolean editing = binding.getEditing() == null? false: binding.getEditing();
+	@Override
+	protected void onEditTapped() {
+		boolean editing = binding.getEditing() == null ? false : binding.getEditing();
 
 		binding.setEditing(!editing);
 	}
 
-	protected void onDeleteTapped(){
+	@Override
+	protected void onDeleteTapped(Context context) {
+		new AlertDialog.Builder(context, R.style.DialogTheme)
+				.setTitle("Confirm deletion")
+				.setMessage("Are you sure you want to delete this laboratory?")
+				.setNegativeButton("Cancel", null)
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.create()
+				.show();
+	}
 
+	@Override
+	protected void onSaveTapped() {
+		dispatcher.update(binding.getEntity());
 	}
 }

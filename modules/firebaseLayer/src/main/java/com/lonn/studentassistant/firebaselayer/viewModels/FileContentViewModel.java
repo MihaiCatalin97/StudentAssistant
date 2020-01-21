@@ -25,4 +25,9 @@ public final class FileContentViewModel extends EntityViewModel<FileContent> {
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public FileContentViewModel clone() {
+		return (FileContentViewModel) super.clone();
+	}
 }

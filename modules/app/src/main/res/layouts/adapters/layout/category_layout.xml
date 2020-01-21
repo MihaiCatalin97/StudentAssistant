@@ -75,9 +75,9 @@
                 layout="@layout/category_add_entity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory)? View.VISIBLE  : View.GONE}"
+                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory) &amp;&amp; categoryModel.editing? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}"
-                app:isTable="@{isTable}"/>
+                app:isTable="@{isTable}" />
 
         </com.lonn.studentassistant.views.implementations.category.ScrollViewCategoryContent>
     </RelativeLayout>

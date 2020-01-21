@@ -13,7 +13,7 @@
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
         <variable
-            name="course"
+            name="entity"
             type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
 
         <variable
@@ -67,17 +67,22 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    style="@style/EntityActivityTitle"
+                <EditText
+                    android:id="@+id/courseEntityActivityName"
+                    style="@style/EntityActivityTitleHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{course.name}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="Enter name"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.name}" />
 
                 <TextView
                     style="@style/EntityActivitySubtitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{course.courseType + `\n\n` + course.cyclesAndSpecializations + `\n` +course.semesterString}" />
+                    android:text="@{entity.courseType + `\n\n` + entity.cyclesAndSpecializations + `\n` + entity.semesterString}" />
 
                 <TextView
                     style="@style/EntityActivityContentTitle"
@@ -85,11 +90,16 @@
                     android:layout_height="wrap_content"
                     android:text="Description" />
 
-                <TextView
-                    style="@style/EntityActivityContentText"
+                <EditText
+                    android:id="@+id/courseEntityActivityDescription"
+                    style="@style/EntityActivityContentHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{course.description}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="Enter description"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.description}" />
 
                 <TextView
                     style="@style/EntityActivityContentTitle"
@@ -97,12 +107,17 @@
                     android:layout_height="wrap_content"
                     android:text="Website" />
 
-                <TextView
-                    style="@style/EntityActivityContentText"
+                <EditText
+                    android:id="@+id/courseEntityActivityWebsite"
+                    style="@style/EntityActivityContentHiddenEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{course.website}"
-                    android:visibility="@{course.websiteVisible}" />
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
+                    android:hint="Enter website"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.website}"
+                    android:visibility="@{entity.websiteVisible}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/laboratoriesCategory"
@@ -112,6 +127,7 @@
                     android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_LABORATORY_WEEK_COMPARATOR}"
                     android:entityName="@{`laboratory`}"
+                    android:editing="@{editing}"
                     android:permissionLevel="@{1}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -124,7 +140,8 @@
                     android:entityName="@{`students`}"
                     android:permissionLevel="@{0}"
                     android:showEmpty="@{true}"
-                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, course)}" />
+                    android:editing="@{editing}"
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
@@ -133,6 +150,7 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
                     android:entityName="@{`file`}"
+                    android:editing="@{editing}"
                     android:permissionLevel="@{1}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -140,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
                     android:childEntities="@{professors.values()}"
+                    android:editing="@{editing}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -149,6 +168,7 @@
                     android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:showEmpty="@{false}"
+                    android:editing="@{editing}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
                     app:isTable="@{true}" />
 
@@ -159,40 +179,15 @@
                     android:childEntities="@{oneTimeClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:showEmpty="@{false}"
+                    android:editing="@{editing}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
                     app:isTable="@{true}" />
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            app:layout_dodgeInsetEdges="bottom">
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="@dimen/fab_margin"
-                app:fabCustomSize="46dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                app:fabCustomSize="46dp"
-                app:layout_anchor="@id/fab"
-                app:layout_anchorGravity="top"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </LinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

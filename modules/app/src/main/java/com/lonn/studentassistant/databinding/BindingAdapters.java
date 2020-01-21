@@ -192,6 +192,18 @@ public class BindingAdapters {
 				.setShowHeader(showHeader);
 	}
 
+	@BindingAdapter("android:editing")
+	public static void bindEditing(ScrollViewCategory category,
+								   Boolean editing) {
+		if (editing == null) {
+			editing = false;
+		}
+
+		category.getViewModel()
+				.setEditing(editing);
+
+	}
+
 	@BindingAdapter("android:subcategoryGeneratorFunction")
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setSubcategoryGeneratorFunction(ScrollViewCategory<T> categoryView,
 																										 Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> subcategoryGeneratorFunction) {

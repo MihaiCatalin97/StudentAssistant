@@ -2,10 +2,10 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.FileAssociatedEntityViewModel;
 
 import java.util.List;
@@ -63,11 +63,6 @@ public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor>
 	}
 
 	@Bindable
-	public int getCabinetVisible() {
-		return (cabinet != null && cabinet.length() >= 2) ? View.VISIBLE : View.GONE;
-	}
-
-	@Bindable
 	public int getCoursesVisible() {
 		return (courses != null && courses.size() > 0) ? View.VISIBLE : View.GONE;
 	}
@@ -81,5 +76,11 @@ public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor>
 	public ProfessorViewModel setFileMetadataKeys(List<String> fileMetadataKeys) {
 		this.fileMetadataKeys = fileMetadataKeys;
 		return this;
+	}
+
+	@NonNull
+	@Override
+	public ProfessorViewModel clone() {
+		return (ProfessorViewModel) super.clone();
 	}
 }

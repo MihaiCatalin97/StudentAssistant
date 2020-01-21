@@ -66,4 +66,9 @@ public final class CourseViewModel extends DisciplineViewModel<Course> {
 
 		return stringBuilder.toString();
 	}
+
+	@Override
+	public CourseViewModel clone() {
+		return (CourseViewModel) super.clone();
+	}
 }

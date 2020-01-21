@@ -62,4 +62,9 @@ public final class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
 	public String getFileExtension() {
 		return MimeTypeMap.getSingleton().getExtensionFromMimeType(fileType);
 	}
+
+	@Override
+	public FileMetadataViewModel clone() {
+		return (FileMetadataViewModel) super.clone();
+	}
 }

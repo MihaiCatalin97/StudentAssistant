@@ -31,4 +31,9 @@ public final class GradeViewModel extends EntityViewModel<Grade> {
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public GradeViewModel clone() {
+		return (GradeViewModel) super.clone();
+	}
 }

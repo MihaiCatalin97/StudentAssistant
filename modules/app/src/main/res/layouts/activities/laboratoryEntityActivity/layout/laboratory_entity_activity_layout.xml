@@ -17,7 +17,7 @@
             type="Boolean" />
 
         <variable
-            name="laboratory"
+            name="entity"
             type="com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel" />
 
         <variable
@@ -56,28 +56,34 @@
                         android:layout_height="wrap_content"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:enabled="@{editing}"
-                        android:text="@{laboratory.title}" />
+                        android:hint="@{editing &amp;&amp; (entity.title == null || entity.title.length() == 0)? `Enter title` : ` `}"
+                        android:importantForAutofill="no"
+                        android:text="@={entity.title}" />
 
                 </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <TextView
                         style="@style/EntityActivitySubtitle"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Week " />
 
                     <EditText
                         style="@style/EntityActivitySubtitleHiddenEditText"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:enabled="@{editing}"
-                        android:text="@{laboratory.weekNumber + ` `}" />
+                        android:hint="@{editing &amp;&amp; (entity.week == null || entity.week.trim().length() == 0)? `Enter week` : ` `}"
+                        android:importantForAutofill="no"
+                        android:inputType="number"
+                        android:text="@={entity.week}" />
 
                 </LinearLayout>
 
@@ -93,14 +99,18 @@
                     android:layout_height="wrap_content"
                     android:background="@{editing? @drawable/edit_text_background : null}"
                     android:enabled="@{editing}"
-                    android:text="@{laboratory.description, default = `(no description)`}" />
+                    android:hint="@{editing &amp;&amp; (entity.description == null || entity.description.length() == 0)? `Enter description` : ` `}"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.description}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/gradesCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dim_16dp"
                     android:categoryTitle="@{`Grades`}"
                     android:childEntities="@{grades.values().size() > 0? grades.values() : null}"
+                    android:editing="@{editing}"
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
                     android:permissionLevel="@{1}">
@@ -118,40 +128,14 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
+                    android:editing="@{editing}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            app:layout_dodgeInsetEdges="bottom">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="@dimen/fab_margin"
-                app:fabCustomSize="46dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                app:fabCustomSize="46dp"
-                app:layout_anchor="@id/fab"
-                app:layout_anchorGravity="top"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </LinearLayout>
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

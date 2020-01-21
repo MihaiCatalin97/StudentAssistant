@@ -16,4 +16,9 @@ public final class AdministratorViewModel extends EntityViewModel<Administrator>
 	private String firstName;
 	private String lastName;
 	private String administratorKey;
+
+	@Override
+	public AdministratorViewModel clone() {
+		return (AdministratorViewModel) super.clone();
+	}
 }

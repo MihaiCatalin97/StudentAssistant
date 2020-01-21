@@ -1,8 +1,10 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.professor;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
@@ -13,55 +15,69 @@ import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorImageUploadDialog;
 
+import lombok.Getter;
+
 public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewModel> {
-    private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
-    ProfessorEntityActivityLayoutBinding binding;
-    private ProfessorEntityActivityFirebaseDispatcher dispatcher;
-    private ProfessorImageUploadDialog imageUploadDialog;
+	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);
+	@Getter
+	ProfessorEntityActivityLayoutBinding binding;
+	private ProfessorEntityActivityFirebaseDispatcher dispatcher;
+	private ProfessorImageUploadDialog imageUploadDialog;
 
-    protected void loadAll(String entityKey) {
-        dispatcher.loadAll(entityKey);
-    }
+	protected void loadAll(String entityKey) {
+		dispatcher.loadAll(entityKey);
+	}
 
-    protected void inflateLayout() {
-        binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
-    }
+	protected void inflateLayout() {
+		binding = DataBindingUtil.setContentView(this, R.layout.professor_entity_activity_layout);
+	}
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
-        imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
+		dispatcher = new ProfessorEntityActivityFirebaseDispatcher(this);
+		imageUploadDialog = new ProfessorImageUploadDialog(this, entityKey);
 
-        findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
-            imageUploadDialog.show();
-        });
+		findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
+			imageUploadDialog.show();
+		});
 
-        loadAll(entityKey);
-    }
+		loadAll(entityKey);
+	}
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        imageUploadDialog.setFile(requestCode, resultCode, data);
-    }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		imageUploadDialog.setFile(requestCode, resultCode, data);
+	}
 
-    protected void deleteFile(String professorKey, String fileMetadataKey) {
-        getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadataKey);
-    }
+	protected void deleteFile(String professorKey, String fileMetadataKey) {
+		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadataKey);
+	}
 
-    protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
-        return new ProfessorFileUploadDialog(this, entityKey);
-    }
+	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
+		return new ProfessorFileUploadDialog(this, entityKey);
+	}
 
-    protected void onEditTapped(){
-        boolean editing = binding.getEditing() == null? false: binding.getEditing();
+	@Override
+	protected void onEditTapped() {
+		binding.setEditing(true);
+	}
 
-        binding.setEditing(!editing);
-    }
+	@Override
+	protected void onDeleteTapped(Context context) {
+		new AlertDialog.Builder(context, R.style.DialogTheme)
+				.setTitle("Confirm deletion")
+				.setMessage("Are you sure you want to delete this professor?")
+				.setNegativeButton("Cancel", null)
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.create()
+				.show();
+	}
 
-    protected void onDeleteTapped(){
-
-    }
+	@Override
+	protected void onSaveTapped() {
+		dispatcher.update(binding.getEntity());
+	}
 }

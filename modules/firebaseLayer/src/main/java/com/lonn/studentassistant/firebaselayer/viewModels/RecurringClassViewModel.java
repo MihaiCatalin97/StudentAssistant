@@ -32,4 +32,9 @@ public final class RecurringClassViewModel extends ScheduleClassViewModel<Recurr
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public RecurringClassViewModel clone() {
+		return (RecurringClassViewModel) super.clone();
+	}
 }

@@ -24,6 +24,7 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	private EntityViewType viewType = FULL;
 	private boolean showHeader = true;
 	private boolean showEmpty = true;
+	private boolean editing = false;
 	private int permissionLevel = 0;
 	private String categoryTitle = "Category Title";
 	private String entityName = "entityViewModel";
@@ -91,6 +92,11 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	}
 
 	@Bindable
+	public boolean getEditing() {
+		return editing;
+	}
+
+	@Bindable
 	public Map<String, T> getChildEntities() {
 		return childEntities;
 	}
@@ -140,6 +146,12 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 
 	public CategoryViewModel<T> setPermissionLevel(int permissionLevel) {
 		this.permissionLevel = permissionLevel;
+		this.notifyPropertyChanged(BR.categoryModel);
+		return this;
+	}
+
+	public CategoryViewModel<T> setEditing(boolean editing) {
+		this.editing = editing;
 		this.notifyPropertyChanged(BR.categoryModel);
 		return this;
 	}

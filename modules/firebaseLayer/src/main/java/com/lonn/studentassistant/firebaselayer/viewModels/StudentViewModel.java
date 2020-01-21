@@ -37,4 +37,9 @@ public final class StudentViewModel extends EntityViewModel<Student> {
         super.setKey(key);
         return this;
     }
+
+    @Override
+    public StudentViewModel clone() {
+        return (StudentViewModel) super.clone();
+    }
 }

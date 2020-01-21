@@ -27,4 +27,9 @@ public final class UserViewModel extends EntityViewModel<User> {
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public UserViewModel clone() {
+		return (UserViewModel) super.clone();
+	}
 }

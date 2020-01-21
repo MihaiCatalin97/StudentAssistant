@@ -17,7 +17,7 @@
         <import type="com.lonn.studentassistant.utils.Utils" />
 
         <variable
-            name="professor"
+            name="entity"
             type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
         <variable
@@ -70,57 +70,162 @@
                     layout="@layout/rounded_image"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
-                    app:defaultImage="@{Utils.getDefaultPersonImageForName(professor.firstName)}"
+                    app:defaultImage="@{Utils.getDefaultPersonImageForName(entity.firstName)}"
                     app:image="@{professorImageContent.fileContentBase64}"
                     app:size="@{200}" />
 
-                <TextView
-                    android:id="@+id/professorName"
-                    style="@style/DarkTitleShadowed"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:gravity="end"
+                        android:hint="@{editing &amp;&amp; (entity.firstName == null || entity.firstName.length() == 0)? `First name` : ``}"
+                        android:importantForAutofill="no"
+                        android:text="@={entity.firstName}"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text=" " />
+
+                    <EditText
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:gravity="start"
+                        android:hint="@{editing &amp;&amp; (entity.lastName == null || entity.lastName.length() == 0)? `Last name` : ``}"
+                        android:importantForAutofill="no"
+                        android:text="@={entity.lastName}"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <EditText
+                    style="@style/EntityActivityTitleHiddenEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:enabled="@{editing}"
                     android:gravity="center"
-                    android:text="@{professor.fullName}"
+                    android:hint="@{editing &amp;&amp; (entity.rank == null || entity.rank.length() == 0)? `Enter level` : ``}"
+                    android:importantForAutofill="no"
+                    android:text="@={entity.rank}"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/professorEmail"
-                    style="@style/DarkBlueShadowedH3"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="@{`Email: ` + professor.email}"
-                    android:textSize="18sp"
-                    android:visibility="@{professor.emailVisible}" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/professorPhoneNumber"
-                    style="@style/DarkBlueShadowedH3"
+                    <TextView
+                        style="@style/EntityActivityContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Email: " />
+
+                    <EditText
+                        style="@style/EntityActivityContentHiddenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:hint="@{editing &amp;&amp; (entity.email == null || entity.email.length() == 0)? `Enter email` : ``}"
+                        android:importantForAutofill="no"
+                        android:inputType="textEmailAddress"
+                        android:text="@={entity.email}"
+                        android:textSize="18sp"
+                        android:visibility="@{entity.emailVisible}" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`Phone number: ` + professor.phoneNumber}"
-                    android:textSize="18sp"
-                    android:visibility="@{professor.phoneNumberVisible}" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/professorWebsite"
-                    style="@style/DarkBlueShadowedH3"
+                    <TextView
+                        style="@style/EntityActivityContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Phone number: " />
+
+                    <EditText
+                        style="@style/EntityActivityContentHiddenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:hint="@{editing &amp;&amp; (entity.phoneNumber == null || entity.phoneNumber.length() == 0)? `Enter phone number` : ``}"
+                        android:importantForAutofill="no"
+                        android:inputType="phone"
+                        android:text="@={entity.phoneNumber}"
+                        android:textSize="18sp"
+                        android:visibility="@{entity.phoneNumberVisible}" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`Website: ` + professor.website}"
-                    android:textSize="18sp"
-                    android:visibility="@{professor.websiteVisible}" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/professorCabinet"
-                    style="@style/DarkBlueShadowedH3"
+                    <TextView
+                        style="@style/EntityActivityContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Website: " />
+
+                    <EditText
+                        style="@style/EntityActivityContentHiddenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:hint="@{editing &amp;&amp; (entity.website == null || entity.website.length() == 0)? `Enter website` : ``}"
+                        android:importantForAutofill="no"
+                        android:text="@={entity.website}"
+                        android:textSize="18sp"
+                        android:visibility="@{entity.websiteVisible}" />
+                </LinearLayout>
+
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{`Cabinet: ` + professor.cabinet}"
-                    android:textSize="18sp"
-                    android:visibility="@{professor.cabinetVisible}" />
+                    android:orientation="horizontal">
 
+                    <TextView
+                        style="@style/EntityActivityContentText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cabinet: " />
+
+                    <EditText
+                        style="@style/EntityActivityContentHiddenEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:enabled="@{editing}"
+                        android:hint="@{editing &amp;&amp; (entity.cabinet == null || entity.cabinet.trim().length() == 0)? `Enter cabinet` : ``}"
+                        android:importantForAutofill="no"
+                        android:text="@={entity.cabinet}"
+                        android:textSize="18sp" />
+                </LinearLayout>
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
@@ -129,6 +234,7 @@
                     android:layout_marginTop="12dp"
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values()}"
+                    android:editing="@{editing}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
 
@@ -137,14 +243,16 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Courses`}"
                     android:childEntities="@{courses.values()}"
-                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}" />
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:editing="@{editing}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Other activities`}"
                     android:childEntities="@{otherActivities.values()}"
-                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}" />
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:editing="@{editing}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -152,6 +260,7 @@
                     android:categoryTitle="@{`Regular schedule`}"
                     android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:editing="@{editing}"
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
@@ -163,6 +272,7 @@
                     android:categoryTitle="@{`Special schedule`}"
                     android:childEntities="@{oneTimeClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
+                    android:editing="@{editing}"
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
@@ -170,35 +280,8 @@
             </LinearLayout>
         </ScrollView>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:orientation="vertical"
-            app:layout_dodgeInsetEdges="bottom">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_edit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="@dimen/fab_margin"
-                app:fabCustomSize="46dp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top|end"
-                android:layout_marginEnd="4dp"
-                android:layout_marginBottom="8dp"
-                app:fabCustomSize="46dp"
-                app:layout_anchor="@id/fab"
-                app:layout_anchorGravity="top"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
-        </LinearLayout>
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

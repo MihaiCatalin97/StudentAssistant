@@ -25,4 +25,9 @@ public final class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeC
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public OneTimeClassViewModel clone() {
+		return (OneTimeClassViewModel) super.clone();
+	}
 }

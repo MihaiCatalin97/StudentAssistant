@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Setter
 @Getter
 @Accessors(chain = true)
-public abstract class EntityViewModel<T extends BaseEntity> extends BaseObservable implements Serializable {
+public abstract class EntityViewModel<T extends BaseEntity> extends BaseObservable implements Serializable, Cloneable {
 	private String key;
 
 	@Override
@@ -22,5 +22,15 @@ public abstract class EntityViewModel<T extends BaseEntity> extends BaseObservab
 			return false;
 		}
 		return this.key.equals(((EntityViewModel) obj).getKey());
+	}
+
+	@Override
+	public EntityViewModel<T> clone() {
+		try {
+			return (EntityViewModel<T>) super.clone();
+		}
+		catch (CloneNotSupportedException exception) {
+			return null;
+		}
 	}
 }

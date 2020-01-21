@@ -23,4 +23,9 @@ public final class OtherActivityViewModel extends DisciplineViewModel<OtherActiv
 		super.setKey(key);
 		return this;
 	}
+
+	@Override
+	public OtherActivityViewModel clone() {
+		return (OtherActivityViewModel) super.clone();
+	}
 }
