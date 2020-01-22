@@ -3,7 +3,6 @@ package com.lonn.studentassistant.activities.implementations.entityActivities.co
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -13,6 +12,8 @@ import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.activities.implementations.entityActivities.laboratory.LaboratoryInputActivity;
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
@@ -39,6 +40,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
+
 		((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
 			Intent laboratoryInputActivityIntent = new Intent(this,
 					LaboratoryInputActivity.class);
@@ -49,11 +51,71 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 			startActivity(laboratoryInputActivityIntent);
 		});
 
+		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory)).setOnRemoveAction((student) -> {
+			if (activityEntity.getStudents().contains(student.getKey())) {
+				new AlertDialog.Builder(getBaseContext(), R.style.DialogTheme)
+						.setTitle("Remove student from course?")
+						.setMessage("Are you sure you wish to remove this student from the course?")
+						.setPositiveButton("Remove", (dialog, which) -> {
+							activityEntity.getStudents().remove(student.getKey());
+
+							firebaseApi.getCourseService()
+									.save(activityEntity)
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							student.getCourses().remove(entityKey);
+
+							firebaseApi.getStudentService()
+									.save(student)
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							showSnackBar("Student removed from the course", 1000);
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show();
+			}
+		});
+
+		((ScrollViewCategory<FileMetadataViewModel>) findViewById(R.id.filesCategory)).setOnDeleteAction((file) -> {
+			if (activityEntity.getFileMetadataKeys().contains(file.getKey())) {
+				new AlertDialog.Builder(getBaseContext(), R.style.DialogTheme)
+						.setTitle("File deletion")
+						.setMessage("Are you sure you wish to delete this file?")
+						.setPositiveButton("Delete", (dialog, which) -> {
+							activityEntity.getFileMetadataKeys().remove(file.getKey());
+
+							firebaseApi.getCourseService()
+									.save(activityEntity)
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							firebaseApi.getFileMetadataService()
+									.deleteMetadataAndContent(file.getKey())
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							showSnackBar("File deleted", 1000);
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show();
+			}
+		});
+
 		loadAll(entityKey);
 	}
 
-	protected void deleteFile(String courseKey, String fileMetadataKey) {
-		getFirebaseApi().getCourseService().deleteAndUnlinkFile(courseKey, fileMetadataKey);
+	protected void deleteFile(String courseKey, FileMetadataViewModel fileMetadata) {
+		getFirebaseApi().getCourseService().deleteAndUnlinkFile(courseKey, fileMetadata.getKey())
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {
@@ -73,7 +135,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 				.setTitle("Confirm deletion")
 				.setMessage("Are you sure you want to delete this course?")
 				.setNegativeButton("Cancel", null)
-				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(binding.getEntity()))
 				.create()
 				.show();
 

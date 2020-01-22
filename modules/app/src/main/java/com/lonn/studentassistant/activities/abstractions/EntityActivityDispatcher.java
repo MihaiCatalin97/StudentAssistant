@@ -52,11 +52,11 @@ public abstract class EntityActivityDispatcher<T extends EntityViewModel<? exten
 		}
 	}
 
-	public void delete(String entityKey) {
+	public void delete(T entity) {
 		activity.showSnackBar("Deleting the " + getEntityName() + "...");
 
 		getService()
-				.deleteById(entityKey)
+				.deleteById(entity.getKey())
 				.onSuccess(none -> {
 					activity.showSnackBar("Successfully deleted the " + getEntityName(), 1000);
 					activity.onBackPressed();

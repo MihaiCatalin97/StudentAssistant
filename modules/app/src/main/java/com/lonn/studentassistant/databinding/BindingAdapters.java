@@ -199,9 +199,28 @@ public class BindingAdapters {
 			editing = false;
 		}
 
-		category.getViewModel()
-				.setEditing(editing);
+		category.setEditing(editing);
 
+	}
+
+	@BindingAdapter("android:unlinkable")
+	public static void bindUnlinkable(ScrollViewCategory category,
+								   Boolean unlinkable) {
+		if (unlinkable == null) {
+			unlinkable = false;
+		}
+
+		category.setUnlinkable(unlinkable);
+	}
+
+	@BindingAdapter("android:deletable")
+	public static void bindDeletable(ScrollViewCategory category,
+									  Boolean deletable) {
+		if (deletable == null) {
+			deletable = false;
+		}
+
+		category.setDeletable(deletable);
 	}
 
 	@BindingAdapter("android:subcategoryGeneratorFunction")

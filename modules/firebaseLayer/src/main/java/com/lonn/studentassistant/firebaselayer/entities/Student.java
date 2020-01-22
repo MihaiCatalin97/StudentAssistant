@@ -17,43 +17,25 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public final class Student extends BaseEntity implements Cloneable, HashableEntity {
-    private String studentId;
-    private String lastName;
-    private String firstName;
-    private String fatherInitial;
-    private String email;
-    private String phoneNumber;
-    private String group;
-    private String imageMetadataKey;
-    private int year;
+	private String studentId;
+	private String lastName;
+	private String firstName;
+	private String fatherInitial;
+	private String email;
+	private String phoneNumber;
+	private String group;
+	private String imageMetadataKey;
+	private int year;
 
-    private CycleSpecialization cycleAndSpecialization;
+	private CycleSpecialization cycleAndSpecialization;
 
-    private List<String> otherActivities = new LinkedList<>();
-    private List<String> optionalCourses = new LinkedList<>();
-    private List<String> grades = new LinkedList<>();
+	private List<String> otherActivities = new LinkedList<>();
+	private List<String> courses = new LinkedList<>();
+	private List<String> grades = new LinkedList<>();
 
-    @Override
-    public String computeHashingString() {
-        return getStudentId() + getFirstName()
-                + getLastName() + getFatherInitial() + getPhoneNumber();
-    }
-
-    public void addOtherActivity(String otherActivityKey) {
-        if (!otherActivities.contains(otherActivityKey)) {
-            otherActivities.add(otherActivityKey);
-        }
-    }
-
-    public void addOptionalCourse(String optionalCourseKey) {
-        if (!optionalCourses.contains(optionalCourseKey)) {
-            optionalCourses.add(optionalCourseKey);
-        }
-    }
-
-    public void addGrade(String gradeKey) {
-        if (!grades.contains(gradeKey)) {
-            grades.add(gradeKey);
-        }
-    }
+	@Override
+	public String computeHashingString() {
+		return getStudentId() + getFirstName()
+				+ getLastName() + getFatherInitial() + getPhoneNumber();
+	}
 }

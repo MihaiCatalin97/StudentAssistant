@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:onClick="tapScrollViewEntityLayout">
 
     <data>
@@ -10,6 +10,18 @@
         <variable
             name="entityViewModel"
             type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
+
+        <variable
+            name="editing"
+            type="Boolean" />
+
+        <variable
+            name="unlinkable"
+            type="Boolean" />
+
+        <variable
+            name="deletable"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,16 +77,29 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/entityRemoveButton"
-            android:layout_width="30dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginBottom="4dp"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{entityViewModel.permissionLevel > 0? View.VISIBLE:View.GONE}"
+            android:visibility="@{entityViewModel.permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; unlinkable!=null &amp;&amp; unlinkable? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@id/entityField2"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
             app:srcCompat="@drawable/ic_close" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entityDeleteButton"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{entityViewModel.permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/entityField3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

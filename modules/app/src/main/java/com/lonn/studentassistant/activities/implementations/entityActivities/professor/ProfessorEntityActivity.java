@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorFileUploadDialog;
@@ -52,8 +53,10 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 		imageUploadDialog.setFile(requestCode, resultCode, data);
 	}
 
-	protected void deleteFile(String professorKey, String fileMetadataKey) {
-		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadataKey);
+	protected void deleteFile(String professorKey, FileMetadataViewModel fileMetadata) {
+		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadata.getKey())
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 
 	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
@@ -71,7 +74,7 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 				.setTitle("Confirm deletion")
 				.setMessage("Are you sure you want to delete this professor?")
 				.setNegativeButton("Cancel", null)
-				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(binding.getEntity()))
 				.create()
 				.show();
 	}

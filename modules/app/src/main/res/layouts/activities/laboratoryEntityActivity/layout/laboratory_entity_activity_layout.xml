@@ -113,6 +113,7 @@
                     android:editing="@{editing}"
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
+                    android:deletable="@{true}"
                     android:permissionLevel="@{1}">
 
                     <include
@@ -129,6 +130,7 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
                     android:editing="@{editing}"
+                    android:deletable="@{true}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
             </LinearLayout>

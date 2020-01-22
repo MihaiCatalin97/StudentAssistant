@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
+import com.lonn.studentassistant.firebaselayer.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.OtherActivityAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
@@ -14,15 +15,19 @@ public class OtherActivityService extends FileAssociatedEntityService<OtherActiv
 
     private OtherActivityService(FirebaseConnection firebaseConnection) {
         super(firebaseConnection);
-        adapter = new OtherActivityAdapter();
     }
 
     public static OtherActivityService getInstance(FirebaseConnection firebaseConnection) {
         if (instance == null) {
             instance = new OtherActivityService(firebaseConnection);
+            instance.init();
         }
 
         return instance;
+    }
+
+    protected void init() {
+        adapter = new OtherActivityAdapter();
     }
 
     @Override

@@ -16,10 +16,10 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
                 .year(student.getYear())
                 .studentId(student.getStudentId())
                 .cycleSpecialization(student.getCycleAndSpecialization())
-                .optionalCourses(student.getOptionalCourses())
+                .courses(student.getCourses())
                 .otherActivities(student.getOtherActivities())
                 .imageMetadataKey(student.getImageMetadataKey())
-                .grades(student.getGrades())
+                .gradeKeys(student.getGrades())
                 .build()
                 .setKey(student.getKey());
     }
@@ -33,10 +33,10 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
                 .setGroup(studentViewModel.getGroup())
                 .setYear(studentViewModel.getYear())
                 .setStudentId(studentViewModel.getStudentId())
-                .setOptionalCourses(studentViewModel.getOptionalCourses())
+                .setCourses(studentViewModel.getCourses())
                 .setOtherActivities(studentViewModel.getOtherActivities())
                 .setCycleAndSpecialization(studentViewModel.getCycleSpecialization())
-                .setGrades(studentViewModel.getGrades())
+                .setGrades(studentViewModel.getGradeKeys())
                 .setImageMetadataKey(studentViewModel.getImageMetadataKey());
 
         if (studentViewModel.getKey() != null) {

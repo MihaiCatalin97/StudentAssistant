@@ -7,9 +7,9 @@ import android.view.LayoutInflater;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
+import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
-import com.lonn.studentassistant.databinding.EntityTableRowViewBinding;
 import com.lonn.studentassistant.databinding.GradeLaboratoryTableRowBinding;
 import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
 import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
@@ -24,8 +24,11 @@ import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.lonn.studentassistant.BR.editing;
+import static com.lonn.studentassistant.BR.unlinkable;
 import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
 
 public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
@@ -36,6 +39,10 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	protected ScrollViewEntityViewModel model;
 	protected ViewDataBinding binding;
 	protected int permissionLevel = 0;
+	@Setter
+	protected Consumer<T> onDeleteTap;
+	@Setter
+	protected Consumer<T> onRemoveTap;
 
 	public EntityView(Context context, EntityViewType viewType, int permissionLevel,
 					  T entityViewModel) {
@@ -54,18 +61,25 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		init(context);
 	}
 
-	public void setOnDeleteTap(Consumer<T> onDeleteTap) {
-		findViewById(R.id.entityRemoveButton).setOnClickListener((view) -> {
-			if (onDeleteTap != null)
-				onDeleteTap.consume(entityViewModel);
-		});
-	}
-
 	public void inflateLayout(final Context context) {
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
 		if (inflater != null) {
 			binding = DataBindingUtil.inflate(inflater, getLayoutId(), this, true);
+
+			if (findViewById(R.id.entityRemoveButton) != null) {
+				findViewById(R.id.entityRemoveButton).setOnClickListener((view) -> {
+					if (onRemoveTap != null)
+						onRemoveTap.consume(entityViewModel);
+				});
+			}
+
+			if (findViewById(R.id.entityDeleteButton) != null) {
+				findViewById(R.id.entityDeleteButton).setOnClickListener((view) -> {
+					if (onDeleteTap != null)
+						onDeleteTap.consume(entityViewModel);
+				});
+			}
 		}
 	}
 
@@ -89,6 +103,30 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 
 		return R.layout.entity_constraint_layout_view;
+	}
+
+	public void setEditing(Boolean edit) {
+		if (edit == null) {
+			edit = false;
+		}
+
+		binding.setVariable(editing, edit);
+	}
+
+	public void setUnlinkable(Boolean unlink) {
+		if (unlink == null) {
+			unlink = false;
+		}
+
+		binding.setVariable(unlinkable, unlink);
+	}
+
+	public void setDeletable(Boolean delete) {
+		if (delete == null) {
+			delete = false;
+		}
+
+		binding.setVariable(com.lonn.studentassistant.BR.deletable, delete);
 	}
 
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {

@@ -29,6 +29,8 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         this.firebaseConnection = firebaseConnection;
     }
 
+    protected abstract void init();
+
     public FirebaseTask<List<U>, V> getAll() {
         return new FirebaseListTask<T, U, V>(firebaseConnection,
                 new GetRequest<T, V>().databaseTable(getDatabaseTable()))

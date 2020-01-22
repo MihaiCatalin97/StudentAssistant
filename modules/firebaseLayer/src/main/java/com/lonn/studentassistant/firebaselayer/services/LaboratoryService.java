@@ -18,20 +18,26 @@ public class LaboratoryService extends FileAssociatedEntityService<Laboratory, E
 	private static LaboratoryService instance;
 	private StudentService studentService;
 	private CourseService courseService;
+	private GradeService gradeService;
 
 	private LaboratoryService(FirebaseConnection firebaseConnection) {
 		super(firebaseConnection);
-		adapter = new LaboratoryAdapter();
-		studentService = StudentService.getInstance(firebaseConnection);
-		courseService = CourseService.getInstance(firebaseConnection);
 	}
 
 	public static LaboratoryService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new LaboratoryService(firebaseConnection);
+			instance.init();
 		}
 
 		return instance;
+	}
+
+	protected void init() {
+		adapter = new LaboratoryAdapter();
+		studentService = StudentService.getInstance(firebaseConnection);
+		courseService = CourseService.getInstance(firebaseConnection);
+		gradeService = GradeService.getInstance(firebaseConnection);
 	}
 
 	public Future<Void, Exception> saveAndLinkLaboratory(LaboratoryViewModel laboratory) {
@@ -104,6 +110,41 @@ public class LaboratoryService extends FileAssociatedEntityService<Laboratory, E
 					}
 
 					result.complete(null);
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	@Override
+	public Future<Void, Exception> deleteById(String entityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(entityKey, false)
+				.onSuccess(laboratory -> {
+					if (laboratory != null) {
+						for (String fileKey : laboratory.getFileMetadataKeys()) {
+							fileMetadataService.deleteMetadataAndContent(fileKey);
+						}
+
+						for (String gradeKey : laboratory.getGradeKeys()) {
+							gradeService.deleteById(gradeKey);
+						}
+
+						courseService.getById(laboratory.getCourseKey(), false)
+								.onSuccess(course -> {
+									course.getLaboratories().remove(entityKey);
+									courseService.save(course);
+								});
+
+						super.deleteById(entityKey)
+								.onError(result::completeExceptionally);
+
+						result.complete(null);
+					}
+					else {
+						result.completeExceptionally(new Exception("Laboratory not found"));
+					}
 				})
 				.onError(result::completeExceptionally);
 

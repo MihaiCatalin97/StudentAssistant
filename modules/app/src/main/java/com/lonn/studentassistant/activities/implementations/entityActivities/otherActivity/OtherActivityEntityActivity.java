@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
@@ -38,9 +39,10 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 		loadAll(entityKey);
 	}
 
-	protected void deleteFile(String activityKey, String fileMetadataKey) {
-		getFirebaseApi().getOtherActivityService().deleteAndUnlinkFile(activityKey, fileMetadataKey)
-				.onError(error -> logAndShowErrorSnack("An error occurred while deleting the file", error, LOGGER));
+	protected void deleteFile(String activityKey, FileMetadataViewModel fileMetadata) {
+		getFirebaseApi().getOtherActivityService().deleteAndUnlinkFile(activityKey, fileMetadata.getKey())
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {
@@ -60,7 +62,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 				.setTitle("Confirm deletion")
 				.setMessage("Are you sure you want to delete this activity?")
 				.setNegativeButton("Cancel", null)
-				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(binding.getEntity()))
 				.create()
 				.show();
 	}

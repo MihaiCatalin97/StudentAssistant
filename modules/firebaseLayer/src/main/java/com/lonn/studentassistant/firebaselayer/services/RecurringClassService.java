@@ -14,15 +14,19 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 
 	private RecurringClassService(FirebaseConnection firebaseConnection) {
 		super(firebaseConnection);
-		adapter = new RecurringClassAdapter(firebaseConnection);
 	}
 
 	public static RecurringClassService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new RecurringClassService(firebaseConnection);
+			instance.init();
 		}
 
 		return instance;
+	}
+
+	protected void init() {
+		adapter = new RecurringClassAdapter(firebaseConnection);
 	}
 
 	@Override

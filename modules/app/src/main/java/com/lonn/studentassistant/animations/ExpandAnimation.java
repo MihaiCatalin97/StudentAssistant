@@ -9,11 +9,8 @@ import android.widget.RelativeLayout;
 
 public class ExpandAnimation extends Animation {
 	private boolean expanding;
-	private int initialMarginTop, viewHeight;
+	private Integer initialMarginTop, initialMarginBottom, viewHeight;
 	private ViewGroup view;
-
-	public ExpandAnimation() {
-	}
 
 	@Override
 	public void initialize(int width, int height, int parentWidth, int parentHeight) {
@@ -22,7 +19,7 @@ public class ExpandAnimation extends Animation {
 		view.setVisibility(View.VISIBLE);
 
 		((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = initialMarginTop;
-		viewHeight = height;
+		viewHeight = getChildHeightSum(view);
 	}
 
 	@Override
@@ -35,10 +32,10 @@ public class ExpandAnimation extends Animation {
 		int newMargin;
 
 		if (expanding) {
-			newMargin = (int) ((-2 * initialMarginTop - viewHeight) * (1 - interpolatedTime)) + initialMarginTop;
+			newMargin = (int) ((-initialMarginTop - initialMarginBottom - viewHeight) * (1 - interpolatedTime)) + initialMarginTop;
 		}
 		else {
-			newMargin = (int) ((-2 * initialMarginTop - viewHeight) * interpolatedTime) + initialMarginTop;
+			newMargin = (int) ((-initialMarginTop - initialMarginBottom - viewHeight) * interpolatedTime) + initialMarginTop;
 		}
 
 		((RelativeLayout.LayoutParams) view.getLayoutParams()).topMargin = newMargin;
@@ -57,9 +54,12 @@ public class ExpandAnimation extends Animation {
 		this.expanding = categoryContentLayout.getVisibility() != View.VISIBLE;
 
 		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) categoryContentLayout.getLayoutParams();
-		final int initialMargin = params.topMargin;
+		initialMarginTop = params.topMargin;
+		initialMarginBottom = params.bottomMargin;
 
-		if (categoryContentLayout.getMeasuredHeight() == 0 && categoryContentLayout.getChildCount() != 0) {
+		if (categoryContentLayout.getVisibility() != View.VISIBLE &&
+				getChildHeightSum(categoryContentLayout) == 0 &&
+				categoryContentLayout.getChildCount() != 0) {
 			params.topMargin = -1000 * categoryContentLayout.getChildCount();
 			categoryContentLayout.setLayoutParams(params);
 			categoryContentLayout.setVisibility(View.VISIBLE);
@@ -67,21 +67,25 @@ public class ExpandAnimation extends Animation {
 			categoryContentLayout.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
 				@Override
 				public boolean onPreDraw() {
-					int height = categoryContentLayout.getMeasuredHeight();
-
-					if (height != 0) {
-						categoryContentLayout.getViewTreeObserver().removeOnPreDrawListener(this);
-						initialMarginTop = initialMargin;
-						view.startAnimation(ExpandAnimation.this);
-					}
+					view.startAnimation(ExpandAnimation.this);
+					categoryContentLayout.getViewTreeObserver().removeOnPreDrawListener(this);
 
 					return true;
 				}
 			});
 		}
 		else {
-			initialMarginTop = initialMargin;
 			view.startAnimation(ExpandAnimation.this);
 		}
+	}
+
+	private int getChildHeightSum(ViewGroup parent) {
+		int heightSum = 0;
+
+		for (int i = 0; i < parent.getChildCount(); i++) {
+			heightSum += parent.getChildAt(i).getMeasuredHeight();
+		}
+
+		return heightSum;
 	}
 }

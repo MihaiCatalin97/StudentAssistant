@@ -17,15 +17,19 @@ public class FileContentService extends Service<FileContent, Exception, FileCont
 
     private FileContentService(FirebaseConnection firebaseConnection) {
         super(firebaseConnection);
-        adapter = new FileContentAdapter();
     }
 
     public static FileContentService getInstance(FirebaseConnection firebaseConnection) {
         if (instance == null) {
             instance = new FileContentService(firebaseConnection);
+            instance.init();
         }
 
         return instance;
+    }
+
+    protected void init(){
+        adapter = new FileContentAdapter();
     }
 
     public Future<Void, Exception> deleteByMetadataKey(String metadataKey) {

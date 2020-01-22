@@ -209,7 +209,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 					studentViewModel.getYear(), 1);
 		}
 
-		return studentViewModel.getOptionalCourses().contains(course.getKey());
+		return studentViewModel.getCourses().contains(course.getKey());
 	}
 
 	private boolean isPersonalActivity(OtherActivityViewModel activity,

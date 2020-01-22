@@ -15,6 +15,10 @@
         <variable
             name="categoryModel"
             type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <variable
+            name="editing"
+            type="Boolean"/>
     </data>
 
     <RelativeLayout
@@ -72,10 +76,10 @@
 
             <include
                 android:id="@+id/layoutCategoryAdd"
-                layout="@layout/category_add_entity"
+                layout="@layout/category_entity_operations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory) &amp;&amp; categoryModel.editing? View.VISIBLE  : View.GONE}"
+                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; categoryModel.endCategory) &amp;&amp; editing != null &amp;&amp; editing? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}"
                 app:isTable="@{isTable}" />
 

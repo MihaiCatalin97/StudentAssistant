@@ -22,24 +22,24 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 public final class StudentViewModel extends EntityViewModel<Student> {
-    @Bindable
-    private String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
-    @Bindable
-    private int year;
-    private String imageMetadataKey;
-    private List<String> optionalCourses;
-    private List<String> otherActivities;
-    private CycleSpecialization cycleSpecialization;
-    private List<String> grades;
+	@Bindable
+	private String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
+	@Bindable
+	private int year;
+	private String imageMetadataKey;
+	private List<String> courses;
+	private List<String> otherActivities;
+	private CycleSpecialization cycleSpecialization;
+	private List<String> gradeKeys;
 
-    @Override
-    public StudentViewModel setKey(String key) {
-        super.setKey(key);
-        return this;
-    }
+	@Override
+	public StudentViewModel setKey(String key) {
+		super.setKey(key);
+		return this;
+	}
 
-    @Override
-    public StudentViewModel clone() {
-        return (StudentViewModel) super.clone();
-    }
+	@Override
+	public StudentViewModel clone() {
+		return (StudentViewModel) super.clone();
+	}
 }

@@ -17,6 +17,7 @@ import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
+import com.lonn.studentassistant.views.implementations.EntityView;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -72,6 +73,34 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		for (ScrollViewCategory category : content.subcategoryViews.values()) {
 			category.setIsTable(isTable);
 		}
+	}
+
+	public void setEditing(Boolean editing) {
+		binding.setEditing(editing);
+
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.setEditing(editing);
+		}
+
+		for (EntityView<T> childEntityView : content.childEntityViews.values()) {
+			childEntityView.setEditing(editing);
+		}
+	}
+
+	public void setUnlinkable(Boolean unlinkable) {
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.setUnlinkable(unlinkable);
+		}
+
+		content.setUnlinkable(unlinkable);
+	}
+
+	public void setDeletable(Boolean deletable) {
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.setDeletable(deletable);
+		}
+
+		content.setDeletable(deletable);
 	}
 
 	public void setChildCategories(Collection<CategoryViewModel<T>> categories) {
@@ -226,10 +255,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 	}
 
-	public void addTableHeader() {
-
-	}
-
 	@Override
 	public void addView(View child, int index, ViewGroup.LayoutParams params) {
 		if (child.getId() != R.id.tableHeader) {
@@ -244,7 +269,19 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		this.getContent().setOnAddTap(runnable);
 	}
 
+	public void setOnRemoveAction(Consumer<T> onRemoveTap) {
+		for (ScrollViewCategory<T> subcategory : content.getSubcategories()) {
+			subcategory.setOnRemoveAction(onRemoveTap);
+		}
+
+		this.getContent().setOnRemoveTap(onRemoveTap);
+	}
+
 	public void setOnDeleteAction(Consumer<T> onDeleteTap) {
+		for (ScrollViewCategory<T> subcategory : content.getSubcategories()) {
+			subcategory.setOnDeleteAction(onDeleteTap);
+		}
+
 		this.getContent().setOnDeleteTap(onDeleteTap);
 	}
 }

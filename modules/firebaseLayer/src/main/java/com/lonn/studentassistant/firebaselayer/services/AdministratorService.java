@@ -13,15 +13,19 @@ public class AdministratorService extends Service<Administrator, Exception, Admi
 
 	private AdministratorService(FirebaseConnection firebaseConnection) {
 		super(firebaseConnection);
-		adapter = new AdministratorAdapter();
 	}
 
 	public static AdministratorService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new AdministratorService(firebaseConnection);
+			instance.init();
 		}
 
 		return instance;
+	}
+
+	protected void init(){
+		adapter = new AdministratorAdapter();
 	}
 
 	@Override

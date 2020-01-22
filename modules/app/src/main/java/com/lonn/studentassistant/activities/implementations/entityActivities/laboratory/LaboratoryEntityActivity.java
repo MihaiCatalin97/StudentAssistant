@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.LaboratoryEntityActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.logging.Logger;
@@ -52,7 +53,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
 				new DialogBuilder<String>(this)
-						.withTitle("Add grades")
+						.withTitle("Add gradeKeys")
 						.withItems(asList("Add single grade", "Parse CSV"))
 						.withItemActions(asList((item) -> gradeInputDialog.show(),
 								(item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show()))
@@ -92,8 +93,10 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 				.create();
 	}
 
-	protected void deleteFile(String laboratoryKey, String fileMetadataKey) {
-		getFirebaseApi().getLaboratoryService().deleteAndUnlinkFile(laboratoryKey, fileMetadataKey);
+	protected void deleteFile(String laboratoryKey, FileMetadataViewModel fileMetadata) {
+		getFirebaseApi().getLaboratoryService().deleteAndUnlinkFile(laboratoryKey, fileMetadata.getKey())
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {
@@ -111,9 +114,10 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 	protected void onDeleteTapped(Context context) {
 		new AlertDialog.Builder(context, R.style.DialogTheme)
 				.setTitle("Confirm deletion")
-				.setMessage("Are you sure you want to delete this laboratory?")
+				.setMessage("Are you sure you want to delete this laboratory?\n" +
+						"This action will delete the grades and files associated to the laboratory.")
 				.setNegativeButton("Cancel", null)
-				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(entityKey))
+				.setPositiveButton("Delete", (dialog, which) -> dispatcher.delete(binding.getEntity()))
 				.create()
 				.show();
 	}

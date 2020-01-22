@@ -10,65 +10,69 @@ import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.COURSES;
 
 public class CourseService extends FileAssociatedEntityService<Course, Exception, CourseViewModel> {
-    private static CourseService instance;
+	private static CourseService instance;
 
-    private CourseService(FirebaseConnection firebaseConnection) {
-        super(firebaseConnection);
-        adapter = new CourseAdapter();
-    }
+	private CourseService(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+	}
 
-    public static CourseService getInstance(FirebaseConnection firebaseConnection) {
-        if (instance == null) {
-            instance = new CourseService(firebaseConnection);
-        }
+	public static CourseService getInstance(FirebaseConnection firebaseConnection) {
+		if (instance == null) {
+			instance = new CourseService(firebaseConnection);
+			instance.init();
+		}
 
-        return instance;
-    }
+		return instance;
+	}
 
-    public Future<Void, Exception> linkLaboratoryToCourse(String courseKey, String laboratoryKey) {
-        Future<Void, Exception> result = new Future<>();
+	protected void init() {
+		adapter = new CourseAdapter();
+	}
 
-        getById(courseKey, false)
-                .onSuccess(course -> {
-                    if (!course.getLaboratories().contains(laboratoryKey)) {
-                        course.getLaboratories().add(laboratoryKey);
+	public Future<Void, Exception> linkLaboratoryToCourse(String courseKey, String laboratoryKey) {
+		Future<Void, Exception> result = new Future<>();
 
-                        save(course)
-                                .onSuccess(result::complete)
-                                .onError(result::completeExceptionally);
-                    }
-                    else {
-                        result.complete(null);
-                    }
-                })
-                .onError(result::completeExceptionally);
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (!course.getLaboratories().contains(laboratoryKey)) {
+						course.getLaboratories().add(laboratoryKey);
 
-        return result;
-    }
+						save(course)
+								.onSuccess(result::complete)
+								.onError(result::completeExceptionally);
+					}
+					else {
+						result.complete(null);
+					}
+				})
+				.onError(result::completeExceptionally);
 
-    public Future<Void, Exception> addStudent(String studentId, String courseKey) {
-        Future<Void, Exception> result = new Future<>();
+		return result;
+	}
 
-        getById(courseKey, false)
-                .onSuccess(course -> {
-                    if (!course.getStudents().contains(studentId)) {
-                        course.getStudents().add(studentId);
+	public Future<Void, Exception> addStudent(String studentId, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
 
-                        save(course)
-                                .onSuccess(result::complete)
-                                .onError(result::completeExceptionally);
-                    }
-                    else {
-                        result.complete(null);
-                    }
-                })
-                .onError(result::completeExceptionally);
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (!course.getStudents().contains(studentId)) {
+						course.getStudents().add(studentId);
 
-        return result;
-    }
+						save(course)
+								.onSuccess(result::complete)
+								.onError(result::completeExceptionally);
+					}
+					else {
+						result.complete(null);
+					}
+				})
+				.onError(result::completeExceptionally);
 
-    @Override
-    protected DatabaseTable<Course> getDatabaseTable() {
-        return COURSES;
-    }
+		return result;
+	}
+
+	@Override
+	protected DatabaseTable<Course> getDatabaseTable() {
+		return COURSES;
+	}
 }

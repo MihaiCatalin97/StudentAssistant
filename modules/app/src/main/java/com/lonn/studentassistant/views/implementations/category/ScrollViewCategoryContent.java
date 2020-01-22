@@ -25,6 +25,9 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 	protected Map<String, ScrollViewCategory<T>> subcategoryViews = new HashMap<>();
 	private Comparator<EntityView> entityViewComparator = ASCENDING_TITLE_COMPARATOR;
 	private Consumer<T> onDelete;
+	private Consumer<T> onRemove;
+	private Boolean unlinkable;
+	private Boolean deletable;
 
 	public ScrollViewCategoryContent(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -56,6 +59,12 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 			if (onDelete != null) {
 				entityView.setOnDeleteTap(onDelete);
 			}
+			if (onRemove != null) {
+				entityView.setOnRemoveTap(onDelete);
+			}
+
+			entityView.setUnlinkable(unlinkable);
+			entityView.setDeletable(deletable);
 		}
 		else {
 			entityView.updateEntity(entity);
@@ -65,11 +74,29 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 				entityView);
 	}
 
+	public void setUnlinkable(Boolean unlinkable) {
+		this.unlinkable = unlinkable;
+
+		for (EntityView childEntity : childEntityViews.values()) {
+			childEntity.setUnlinkable(unlinkable);
+		}
+	}
+
+	public void setDeletable(Boolean deletable) {
+		this.deletable = deletable;
+
+		for (EntityView childEntity : childEntityViews.values()) {
+			childEntity.setDeletable(deletable);
+		}
+	}
+
 	public void addSubcategory(ScrollViewCategory<T> subCategory) {
 		subcategoryViews.put(subCategory.getViewModel().getCategoryTitle(),
 				subCategory);
 
 		addView(subCategory);
+		subCategory.setUnlinkable(unlinkable);
+		subCategory.setDeletable(deletable);
 	}
 
 	public void setEntityViewComparator(Comparator<EntityView> entityViewComparator) {
@@ -125,6 +152,16 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 
 			for (EntityView<T> entityView : childEntityViews.values()) {
 				entityView.setOnDeleteTap(onDelete);
+			}
+		}
+	}
+
+	public void setOnRemoveTap(Consumer<T> onRemove) {
+		if (onDelete != null) {
+			this.onRemove = onRemove;
+
+			for (EntityView<T> entityView : childEntityViews.values()) {
+				entityView.setOnRemoveTap(onRemove);
 			}
 		}
 	}

@@ -109,6 +109,7 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values()}"
                     android:editing="@{editing}"
+                    android:deletable="@{true}"
                     android:entityName="@{`file`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -117,6 +118,7 @@
                     android:categoryTitle="@{`Professors`}"
                     android:childEntities="@{professors.values()}"
                     android:editing="@{editing}"
+                    android:unlinkable="@{true}"
                     android:entityName="@{`professor`}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -126,6 +128,7 @@
                     android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:editing="@{editing}"
+                    android:deletable="@{true}"
                     android:entityName="@{`regular class`}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
@@ -140,6 +143,7 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:editing="@{editing}"
                     android:showEmpty="@{false}"
+                    android:deletable="@{true}"
                     android:showHeader="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
                     app:isTable="@{true}" />

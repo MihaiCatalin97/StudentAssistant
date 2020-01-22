@@ -13,15 +13,19 @@ public class UserService extends Service<User, Exception, UserViewModel> {
 
 	private UserService(FirebaseConnection firebaseConnection) {
 		super(firebaseConnection);
-		adapter = new UserAdapter();
 	}
 
 	public static UserService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new UserService(firebaseConnection);
+			instance.init();
 		}
 
 		return instance;
+	}
+
+	protected void init() {
+		adapter = new UserAdapter();
 	}
 
 	@Override

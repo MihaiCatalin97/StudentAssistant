@@ -235,6 +235,7 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values()}"
                     android:editing="@{editing}"
+                    android:deletable="@{true}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
 
@@ -244,7 +245,8 @@
                     android:categoryTitle="@{`Courses`}"
                     android:childEntities="@{courses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
-                    android:editing="@{editing}" />
+                    android:editing="@{editing}"
+                    android:unlinkable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -252,7 +254,8 @@
                     android:categoryTitle="@{`Other activities`}"
                     android:childEntities="@{otherActivities.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
-                    android:editing="@{editing}" />
+                    android:editing="@{editing}"
+                    android:unlinkable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -262,6 +265,7 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:editing="@{editing}"
                     android:isTable="@{true}"
+                    android:deletable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
@@ -274,6 +278,7 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:editing="@{editing}"
                     android:isTable="@{true}"
+                    android:deletable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}" />

@@ -20,9 +20,14 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 	public static OneTimeClassService getInstance(FirebaseConnection firebaseConnection) {
 		if (instance == null) {
 			instance = new OneTimeClassService(firebaseConnection);
+			instance.init();
 		}
 
 		return instance;
+	}
+
+	protected void init() {
+		adapter = new OneTimeClassAdapter(firebaseConnection);
 	}
 
 	@Override
