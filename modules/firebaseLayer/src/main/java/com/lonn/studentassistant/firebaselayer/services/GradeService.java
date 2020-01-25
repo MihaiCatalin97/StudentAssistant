@@ -96,6 +96,10 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 								laboratory.getGradeKeys().remove(entityId);
 								laboratoryService.save(laboratory);
 							});
+
+					super.deleteById(entityId)
+							.onSuccess(result::complete)
+							.onError(result::completeExceptionally);
 				})
 				.onError();
 

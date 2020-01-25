@@ -9,13 +9,14 @@ import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization.LICENTA_INFORMATICA;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {
@@ -33,18 +34,28 @@ public class DatabasePopulator {
 	}
 
 	public void populateStudentsTable() {
-		for (int i = 0; i < 10; i++)
+		String[] firstNames = new String[]{"Ioana", "Irina", "Raluca", "Andreea", "Catalin", "Marius", "Florin", "Bogdan", "Vlad"};
+		String[] lastNames = new String[]{"Tanasuca", "Popescu", "Ionescu", "Mihailescu", "Maftei", "Hurbea", "Pester", "Gorgioaia", "Olariu"};
+		Random random = new Random();
+
+		for (int i = 0; i < 10; i++) {
+			StudentViewModel student = new StudentViewModel()
+					.setStudentId("31090104SL16" + random.nextInt(10) + random.nextInt(10) + random.nextInt(10) + random.nextInt(10))
+					.setLastName(lastNames[random.nextInt(lastNames.length)])
+					.setFirstName(firstNames[random.nextInt(firstNames.length)])
+					.setFatherInitial("R")
+					.setPhoneNumber("0742664" + random.nextInt(10) + random.nextInt(10) + random.nextInt(10))
+					.setGroup((random.nextBoolean() ? "A" : "B") + random.nextInt(7));
+
+			CycleSpecializationYear cycleSpecializationYear = CycleSpecializationYear.values()[random.nextInt(CycleSpecializationYear.values().length)];
+			student.setCycleSpecialization(cycleSpecializationYear.getCycleSpecialization())
+					.setYear(cycleSpecializationYear.getYear());
+
+			student.setEmail((student.getFirstName() + "." + student.getLastName() + "@email.com").toLowerCase());
+
 			firebaseApi.getStudentService()
-					.save(new StudentViewModel()
-							.setStudentId("31090104SL16000" + i)
-							.setLastName("Mihai")
-							.setFirstName("Catalin")
-							.setFatherInitial("R")
-							.setEmail("email@email.com")
-							.setPhoneNumber("0742664239")
-							.setGroup("B5")
-							.setCycleSpecialization(LICENTA_INFORMATICA)
-							.setYear(3));
+					.save(student);
+		}
 	}
 
 	public void deleteStudentsTable() {

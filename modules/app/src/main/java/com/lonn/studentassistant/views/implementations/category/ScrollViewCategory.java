@@ -87,6 +87,14 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 	}
 
+	public void setShowAddButton(Boolean showAddButton) {
+		if (showAddButton == null) {
+			showAddButton = false;
+		}
+
+		binding.setShowAddButton(showAddButton);
+	}
+
 	public void setUnlinkable(Boolean unlinkable) {
 		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
 			subcategory.setUnlinkable(unlinkable);
@@ -105,9 +113,44 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 	public void setChildCategories(Collection<CategoryViewModel<T>> categories) {
 		getViewModel().setChildCategories(categories);
+		List<ScrollViewCategory> categoriesToBeRemoved = new LinkedList<>();
+		Collection<CategoryViewModel<T>> categoriesToBeAdded = new LinkedList<>();
 
-		content.removeAllSubcategories();
-		addCategoriesToContent(categories);
+		for (ScrollViewCategory<T> category : content.getSubcategories()) {
+			boolean found = false;
+
+			for (CategoryViewModel<T> categoryViewModel : categories) {
+				if (category.getViewModel().getCategoryTitle().equals(categoryViewModel.getCategoryTitle())) {
+					found = true;
+					category.getViewModel().setShouldContain(categoryViewModel.getShouldContain());
+					break;
+				}
+			}
+
+			if (!found) {
+				categoriesToBeRemoved.add(category);
+			}
+		}
+
+		for (CategoryViewModel<T> categoryViewModel : categories) {
+			boolean found = false;
+
+			for (ScrollViewCategory category : content.getSubcategories()) {
+				if (category.getViewModel().getCategoryTitle().equals(categoryViewModel.getCategoryTitle())) {
+					found = true;
+					break;
+				}
+			}
+
+			if (!found) {
+				categoriesToBeAdded.add(categoryViewModel);
+			}
+		}
+
+		for (ScrollViewCategory category : categoriesToBeRemoved) {
+			content.removeSubcategory(category);
+		}
+		addCategoriesToContent(categoriesToBeAdded);
 		setIsTable(binding.getIsTable());
 
 		hideIfEmpty();
@@ -141,7 +184,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		header = findViewById(layoutCategoryMain).findViewById(layoutCategoryHeader);
 
 		header.setOnClickListener(v -> {
-			expanded = !expanded;
 			animateExpand();
 		});
 
@@ -166,6 +208,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	protected void init(Context context) {
 		super.init(context);
 		initContent();
+		this.getContent().setOnAddTap(viewModel.getOnAdd());
 	}
 
 	protected int getNumberOfChildren() {
@@ -186,6 +229,8 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 			scrollViewCategory.addCategoriesToContent(scrollViewCategory.getViewModel()
 					.getChildCategories());
 
+			scrollViewCategory.setEditing(binding.getEditing());
+
 			content.addSubcategory(scrollViewCategory);
 		}
 	}
@@ -196,7 +241,8 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 				viewModel.addEntity(entity);
 				content.addOrUpdateEntity(entity,
 						viewModel.getViewType(),
-						viewModel.getPermissionLevel());
+						viewModel.getPermissionLevel(),
+						binding.getEditing());
 			}
 			else {
 				for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
@@ -235,6 +281,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 	private void animateExpand() {
 		if (!animated) {
+			expanded = !expanded;
 			animated = true;
 
 			RotateAnimation animation =
@@ -266,6 +313,11 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	public void setOnAddAction(Runnable runnable) {
+		for (ScrollViewCategory subcategory : getContent().getSubcategories()) {
+			subcategory.setOnAddAction(runnable);
+		}
+
+		this.viewModel.setOnAdd(runnable);
 		this.getContent().setOnAddTap(runnable);
 	}
 

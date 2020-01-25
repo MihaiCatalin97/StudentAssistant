@@ -126,9 +126,9 @@
                     android:categoryTitle="@{`Laboratories`}"
                     android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_LABORATORY_WEEK_COMPARATOR}"
-                    android:entityName="@{`laboratory`}"
-                    android:editing="@{editing}"
                     android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`laboratory`}"
                     android:permissionLevel="@{1}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -138,12 +138,12 @@
                     android:categoryTitle="@{`Students`}"
                     android:childEntities="@{students.values().size() > 0? students.values() : null}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:editing="@{editing}"
                     android:entityName="@{`students`}"
                     android:permissionLevel="@{0}"
                     android:showEmpty="@{true}"
-                    android:editing="@{editing}"
-                    android:unlinkable="@{true}"
-                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}" />
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
+                    android:unlinkable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
@@ -151,43 +151,54 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
-                    android:entityName="@{`file`}"
-                    android:editing="@{editing}"
                     android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/professorsCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
                     android:childEntities="@{professors.values()}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}"
                     android:editing="@{editing}"
-                    android:unlinkable="@{true}"
-                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}" />
+                    android:entityName="@{`professor`}"
+                    android:permissionLevel="@{1}"
+                    android:unlinkable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/recurringClassesCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Regular schedule`}"
                     android:childEntities="@{recurringClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
-                    android:showEmpty="@{false}"
-                    android:editing="@{editing}"
                     android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`regular class`}"
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{false}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
-                    app:isTable="@{true}" />
+                    app:isTable="@{true}"
+                    app:showAddButton="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/oneTimeClassesCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Special schedule`}"
                     android:childEntities="@{oneTimeClasses.values()}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
-                    android:showEmpty="@{false}"
-                    android:editing="@{editing}"
                     android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`one time class`}"
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
-                    app:isTable="@{true}" />
+                    app:isTable="@{true}"
+                    app:showAddButton="@{true}" />
             </LinearLayout>
         </ScrollView>
 

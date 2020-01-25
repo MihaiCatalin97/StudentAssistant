@@ -124,16 +124,25 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		for (String studentKey : course.getStudents()) {
 			firebaseApi.getStudentService()
 					.getById(studentKey, true)
-					.onSuccess(studentMap::put);
+					.onSuccess(student -> {
+						if (course.getStudents().contains(student.getKey())) {
+							studentMap.put(student);
+						}
+					});
 		}
 	}
 
 	private void updateProfessors(CourseViewModel course) {
 		removeNonExistingEntities(professorMap, course.getProfessors());
+
 		for (String professorId : course.getProfessors()) {
 			firebaseApi.getProfessorService()
 					.getById(professorId, true)
-					.onSuccess(professorMap::put);
+					.onSuccess(professor -> {
+						if (course.getProfessors().contains(professor.getKey())) {
+							professorMap.put(professor);
+						}
+					});
 		}
 	}
 
@@ -142,7 +151,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		for (String laboratoryId : course.getLaboratories()) {
 			firebaseApi.getLaboratoryService()
 					.getById(laboratoryId, true)
-					.onSuccess(laboratoryMap::put);
+					.onSuccess(laboratory -> {
+						if (course.getLaboratories().contains(laboratory.getKey())) {
+							laboratoryMap.put(laboratory);
+						}
+					});
 		}
 	}
 
@@ -151,7 +164,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		for (String oneTimeClassId : course.getOneTimeClasses()) {
 			firebaseApi.getOneTimeClassService()
 					.getById(oneTimeClassId, true)
-					.onSuccess(oneTimeClassesMap::put);
+					.onSuccess(oneTimeClass -> {
+						if (course.getOneTimeClasses().contains(oneTimeClass.getKey())) {
+							oneTimeClassesMap.put(oneTimeClass);
+						}
+					});
 		}
 	}
 
@@ -160,7 +177,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		for (String recurringClassId : course.getRecurringClasses()) {
 			firebaseApi.getRecurringClassService()
 					.getById(recurringClassId, true)
-					.onSuccess(recurringClassesMap::put);
+					.onSuccess(recurringClass -> {
+						if (course.getRecurringClasses().contains(recurringClass.getKey())) {
+							recurringClassesMap.put(recurringClass);
+						}
+					});
 		}
 	}
 
@@ -169,7 +190,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		for (String fileId : course.getFileMetadataKeys()) {
 			firebaseApi.getFileMetadataService()
 					.getById(fileId, true)
-					.onSuccess(filesMap::put);
+					.onSuccess(file -> {
+						if (course.getFileMetadataKeys().contains(file.getKey())) {
+							filesMap.put(file);
+						}
+					});
 		}
 	}
 

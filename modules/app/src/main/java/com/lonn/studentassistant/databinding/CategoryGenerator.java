@@ -137,6 +137,7 @@ public class CategoryGenerator {
 				.setPermissionLevel(1)
 				.setShowEmpty(parentCategory.isShowEmpty())
 				.setShowHeader(true)
+				.setOnAdd(parentCategory.getOnAdd())
 				.setShouldContain((student) -> {
 					if (courseViewModel == null) {
 						return true;

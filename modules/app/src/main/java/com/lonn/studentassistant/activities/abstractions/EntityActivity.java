@@ -20,6 +20,7 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 	protected String entityKey;
 	@Getter
 	protected T activityEntity;
+	protected boolean isEditing = false;
 
 	protected abstract void loadAll(String entityKey);
 
@@ -67,5 +68,15 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 	protected void onDiscardTapped() {
 		getBinding().setVariable(entity, activityEntity);
 		getBinding().setVariable(editing, false);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (isEditing) {
+			onEditTapped();
+		}
+		else {
+			super.onBackPressed();
+		}
 	}
 }

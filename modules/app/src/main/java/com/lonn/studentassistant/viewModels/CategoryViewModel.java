@@ -28,6 +28,7 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	private String categoryTitle = "Category Title";
 	private String entityName = "entityViewModel";
 	private Comparator<EntityView> entitiesComparator;
+	private Runnable onAdd;
 	private Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> generatorFunction;
 
 	private Collection<CategoryViewModel<T>> childCategories = new ArrayList<>();
@@ -39,6 +40,15 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 
 	public Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> getGeneratorFunction() {
 		return generatorFunction;
+	}
+
+	public Runnable getOnAdd() {
+		return onAdd;
+	}
+
+	public CategoryViewModel<T> setOnAdd(Runnable onAdd) {
+		this.onAdd = onAdd;
+		return this;
 	}
 
 	public void setGeneratorFunction(Function<CategoryViewModel<T>, List<CategoryViewModel<T>>> generatorFunction) {

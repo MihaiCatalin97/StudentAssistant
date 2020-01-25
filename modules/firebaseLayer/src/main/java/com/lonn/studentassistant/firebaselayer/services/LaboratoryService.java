@@ -138,9 +138,8 @@ public class LaboratoryService extends FileAssociatedEntityService<Laboratory, E
 								});
 
 						super.deleteById(entityKey)
+								.onSuccess(result::complete)
 								.onError(result::completeExceptionally);
-
-						result.complete(null);
 					}
 					else {
 						result.completeExceptionally(new Exception("Laboratory not found"));

@@ -92,10 +92,10 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	}
 
 	protected int getLayoutId() {
-		if (entityViewModel instanceof RecurringClassViewModel) {
+		if (entityViewModel instanceof OneTimeClassViewModel) {
 			return R.layout.one_time_class_table_row;
 		}
-		if (entityViewModel instanceof OneTimeClassViewModel) {
+		if (entityViewModel instanceof RecurringClassViewModel) {
 			return R.layout.recurring_class_table_row;
 		}
 		if (entityViewModel instanceof GradeViewModel) {
@@ -130,11 +130,13 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	}
 
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {
-		if (entityViewModel instanceof RecurringClassViewModel) {
+		if (entityViewModel instanceof OneTimeClassViewModel) {
 			((OneTimeClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+			((OneTimeClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
-		else if (entityViewModel instanceof OneTimeClassViewModel) {
+		else if (entityViewModel instanceof RecurringClassViewModel) {
 			((RecurringClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+			((RecurringClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
 			((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);

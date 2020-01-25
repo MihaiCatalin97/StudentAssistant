@@ -54,4 +54,14 @@ public enum CycleSpecialization {
 			return "I";
 		}
 	}
+
+	public static String[] getStringValues() {
+		String[] result = new String[CycleSpecialization.values().length];
+
+		for (int i = 0; i < result.length; i++) {
+			result[i] = CycleSpecialization.values()[i].toString();
+		}
+
+		return result;
+	}
 }

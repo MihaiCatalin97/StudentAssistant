@@ -7,52 +7,39 @@
     android:paddingStart="18dp"
     android:paddingTop="36dp"
     android:paddingEnd="18dp"
-    android:paddingBottom="18dp">
+    android:paddingBottom="18dp"
+    android:weightSum="1">
 
+    <TextView
+        android:id="@+id/stringInputTitle"
+        style="@style/DarkTitleShadowed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:text="Title" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:gravity="center_vertical">
 
         <TextView
+            android:id="@+id/stringInputDialogInputTitle"
             style="@style/DarkSubtitleShadowed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="Student ID:" />
+            android:text="Input:" />
 
         <EditText
-            android:id="@+id/gradeInputDialogStudentId"
+            android:id="@+id/stringInputDialogInputEditText"
             style="@style/DarkNormalShadowed"
-            android:layout_marginStart="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Enter student id" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/DarkSubtitleShadowed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:text="Grade:" />
-
-        <EditText
-            android:id="@+id/gradeInputDialogGrade"
-            style="@style/DarkNormalShadowed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:hint="Enter grade"
-            android:inputType="number"
+            android:hint="Enter value"
+            android:inputType="text"
             android:singleLine="true" />
     </LinearLayout>
 

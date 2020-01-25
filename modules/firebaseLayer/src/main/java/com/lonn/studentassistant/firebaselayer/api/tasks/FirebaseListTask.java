@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.interfaces.Function;
+import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.requests.Request;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
@@ -20,13 +21,23 @@ public class FirebaseListTask<T extends BaseEntity, V extends EntityViewModel<T>
 	}
 
 	public void onComplete(Consumer<List<V>> onSuccess, Consumer<U> onError) {
-		firebaseConnection.execute(request
-				.onSuccess(entities -> {
-					if (onSuccess != null) {
-						onSuccess.consume(transformer.apply(entities));
-					}
-				})
+		firebaseConnection.execute(createRequest(request, onSuccess, onError)
 				.onError(onError));
+	}
+
+	private Request<List<T>, U> createRequest(Request<List<T>, U> request,
+											  Consumer<List<V>> onSuccess,
+											  Consumer<U> onError) {
+		if (request instanceof GetRequest) {
+			((GetRequest) request).subscribe(subscribe);
+		}
+
+		return request.onSuccess(entities -> {
+			if (onSuccess != null) {
+				onSuccess.consume(transformer.apply(entities));
+			}
+		})
+				.onError(onError);
 	}
 
 	public FirebaseListTask<T, V, U> setTransformer(Function<List<T>, List<V>> transformer) {

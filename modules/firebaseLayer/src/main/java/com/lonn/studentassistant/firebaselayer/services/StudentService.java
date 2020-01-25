@@ -85,6 +85,31 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 		return result;
 	}
 
+	public Future<Void, Exception> addCourse(String studentKey, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(studentKey, false)
+				.onSuccess(student -> {
+					if (student == null) {
+						result.completeExceptionally(new Exception("No student found"));
+					}
+					else {
+						if (!student.getCourses().contains(courseKey)) {
+							student.getCourses().add(courseKey);
+							save(student)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
 	protected Future<StudentViewModel, Exception> getByStudentId(String studentId, boolean subscribe) {
 		Future<StudentViewModel, Exception> result = new Future<>();
 

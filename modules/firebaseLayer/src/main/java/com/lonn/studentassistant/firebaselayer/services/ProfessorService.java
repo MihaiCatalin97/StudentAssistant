@@ -58,6 +58,32 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 		return result;
 	}
 
+
+	public Future<Void, Exception> addCourse(String professorKey, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (!professor.getCourses().contains(courseKey)) {
+							professor.getCourses().add(courseKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
 	@Override
 	protected DatabaseTable<Professor> getDatabaseTable() {
 		return PROFESSORS;

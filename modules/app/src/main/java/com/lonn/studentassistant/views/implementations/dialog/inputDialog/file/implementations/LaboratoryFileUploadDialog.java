@@ -1,23 +1,23 @@
-package com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations;
+package com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.GUIUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.GUIUploadDialog;
 
 import static com.lonn.studentassistant.activities.abstractions.FileManagingActivity.UPLOAD_FILE_REQUEST_CODE;
 
-public class CourseFileUploadDialog extends GUIUploadDialog {
-    public CourseFileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
-                                  String aggregatedEntityKey) {
+public class LaboratoryFileUploadDialog extends GUIUploadDialog {
+    public LaboratoryFileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
+                                      String aggregatedEntityKey) {
         super(firebaseConnectedActivity, aggregatedEntityKey, UPLOAD_FILE_REQUEST_CODE,
                 "*/*");
     }
 
-    protected void saveFile(String courseKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent) {
+    protected void saveFile(String laboratoryKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent) {
         firebaseConnectedActivity.getFirebaseApi()
-                .getCourseService()
-                .createAndLinkFile(courseKey, fileMetadata, fileContent)
+                .getLaboratoryService()
+                .createAndLinkFile(laboratoryKey, fileMetadata, fileContent)
                 .onSuccess(none -> firebaseConnectedActivity.showSnackBar("Successfully uploaded " + fileMetadata.getFullFileName(), 1000))
                 .onError(exception -> logAndShowException("An error occurred while uploading the file",
                         exception));

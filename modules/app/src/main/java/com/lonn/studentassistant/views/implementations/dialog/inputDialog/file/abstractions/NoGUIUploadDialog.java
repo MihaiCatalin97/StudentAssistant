@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions;
+package com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions;
 
 import android.content.Intent;
 

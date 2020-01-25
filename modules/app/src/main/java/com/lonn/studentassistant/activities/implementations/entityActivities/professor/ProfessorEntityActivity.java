@@ -13,8 +13,8 @@ import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBindin
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorFileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfessorImageUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorImageUploadDialog;
 
 import lombok.Getter;
 
@@ -65,7 +65,10 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 
 	@Override
 	protected void onEditTapped() {
-		binding.setEditing(true);
+		boolean editing = binding.getEditing() == null ? false : binding.getEditing();
+
+		binding.setEditing(!editing);
+		isEditing = !editing;
 	}
 
 	@Override

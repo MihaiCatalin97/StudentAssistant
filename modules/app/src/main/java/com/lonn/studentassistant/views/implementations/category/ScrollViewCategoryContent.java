@@ -41,11 +41,22 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		subcategoryViews.clear();
 	}
 
-	public void setOnAddTap(Runnable runnable) {
-		findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> runnable.run());
+	public void removeSubcategory(ScrollViewCategory category) {
+		removeView(category);
+
+		subcategoryViews.remove(category.getViewModel().getCategoryTitle());
 	}
 
-	public void addOrUpdateEntity(T entity, EntityViewType viewType, int permissionLevel) {
+	public void setOnAddTap(Runnable runnable) {
+		findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> {
+			if(runnable != null) {
+				runnable.run();
+			}
+		});
+	}
+
+	public void addOrUpdateEntity(T entity, EntityViewType viewType, int permissionLevel,
+								  Boolean editing) {
 		EntityView<T> entityView = childEntityViews.get(entity.getKey());
 
 		if (entityView == null) {
@@ -60,8 +71,10 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 				entityView.setOnDeleteTap(onDelete);
 			}
 			if (onRemove != null) {
-				entityView.setOnRemoveTap(onDelete);
+				entityView.setOnRemoveTap(onRemove);
 			}
+
+			entityView.setEditing(editing);
 
 			entityView.setUnlinkable(unlinkable);
 			entityView.setDeletable(deletable);
@@ -95,8 +108,11 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 				subCategory);
 
 		addView(subCategory);
+
 		subCategory.setUnlinkable(unlinkable);
 		subCategory.setDeletable(deletable);
+		subCategory.setOnDeleteAction(onDelete);
+		subCategory.setOnRemoveAction(onRemove);
 	}
 
 	public void setEntityViewComparator(Comparator<EntityView> entityViewComparator) {
@@ -157,7 +173,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 	}
 
 	public void setOnRemoveTap(Consumer<T> onRemove) {
-		if (onDelete != null) {
+		if (onRemove != null) {
 			this.onRemove = onRemove;
 
 			for (EntityView<T> entityView : childEntityViews.values()) {

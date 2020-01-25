@@ -1,0 +1,93 @@
+package com.lonn.studentassistant.views.implementations.dialog.selectionDialog;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
+
+import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.functionalIntefaces.Predicate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static com.lonn.studentassistant.utils.Utils.displayWidth;
+
+public class StudentSelectionDialog extends EntitySelectionDialog<StudentViewModel> {
+	private CycleSpecialization selectedCycleSpecialization;
+	private Integer selectedYear;
+
+	public StudentSelectionDialog(Context context) {
+		super(context);
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		if (getWindow() != null) {
+			getWindow().setLayout((int) (displayWidth * 0.95), WRAP_CONTENT);
+		}
+
+		createFilterLayouts();
+		setFilters();
+	}
+
+	public String entityToDisplayMainString(StudentViewModel student) {
+		return student.getFirstName() + " " + student.getLastName();
+	}
+
+	public String entityToDisplaySecondaryString(StudentViewModel student) {
+		return student.getStudentId() + "\n" + student.getCycleSpecialization().toString() + "\n" +
+				"Year " + student.getYear();
+	}
+
+	private void createFilterLayouts() {
+		((ViewGroup) findViewById(R.id.dialogFilterLayout)).addView(createSpecializationFilterLayout());
+		((ViewGroup) findViewById(R.id.dialogFilterLayout)).addView(createYearFilterLayout());
+	}
+
+	private View createSpecializationFilterLayout() {
+		DialogFilterView<CycleSpecialization> dialogFilter = new DialogFilterView<>(getContext());
+
+		dialogFilter.setTitle("Specialization")
+				.setValues(CycleSpecialization.values())
+				.setOnSelect(specialization -> {
+					selectedCycleSpecialization = specialization;
+					setFilters();
+				});
+
+		return dialogFilter;
+	}
+
+	private View createYearFilterLayout() {
+		DialogFilterView<Integer> dialogFilter = new DialogFilterView<>(getContext());
+
+		dialogFilter.setTitle("Year")
+				.setValues(new Integer[]{1, 2, 3})
+				.setOnSelect(year -> {
+					selectedYear = year;
+					setFilters();
+				});
+
+		return dialogFilter;
+	}
+
+	private void setFilters() {
+		List<Predicate<StudentViewModel>> predicates = new ArrayList<>();
+
+		if (selectedCycleSpecialization != null) {
+			predicates.add(student -> student.getCycleSpecialization().equals(selectedCycleSpecialization));
+		}
+
+		if (selectedYear != null) {
+			predicates.add(student -> student.getYear() == selectedYear);
+		}
+
+		setSelectedItems(false);
+		getListAdapter().setPredicates(predicates);
+	}
+}

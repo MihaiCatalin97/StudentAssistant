@@ -10,7 +10,7 @@ import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.ProfileImageUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfileImageUploadDialog;
 
 import static android.view.View.VISIBLE;
 

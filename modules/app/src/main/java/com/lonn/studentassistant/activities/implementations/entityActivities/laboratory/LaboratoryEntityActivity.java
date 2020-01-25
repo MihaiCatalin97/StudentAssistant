@@ -14,11 +14,11 @@ import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.DialogBuilder;
-import com.lonn.studentassistant.views.implementations.dialog.GradeInputDialog;
-import com.lonn.studentassistant.views.implementations.dialog.GradeInputDialogBuilder;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.LaboratoryFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.DialogBuilder;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.GradeInputDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.GradeInputDialogBuilder;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.LaboratoryFileUploadDialog;
 
 import java.util.Date;
 
@@ -108,6 +108,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 		boolean editing = binding.getEditing() == null ? false : binding.getEditing();
 
 		binding.setEditing(!editing);
+		isEditing = !editing;
 	}
 
 	@Override

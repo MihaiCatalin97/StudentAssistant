@@ -2,8 +2,12 @@ package com.lonn.studentassistant.firebaselayer.entities.enums;
 
 import androidx.annotation.NonNull;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import lombok.Getter;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.Cycle.LICENTA;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization.LICENTA_INFORMATICA;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization.MASTER_INGINERIA_SISTEMELOR_SOFT;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization.MASTER_LINGVISTICA_COMPUTATIONALA;
@@ -44,5 +48,72 @@ public enum CycleSpecializationYear {
 	@NonNull
 	public String toString() {
 		return cycleSpecialization.toString() + ", anul " + year;
+	}
+
+	public String toInitialsString() {
+		return cycleSpecialization.getInitials() + year;
+	}
+
+	public static String[] getYearGroups(CycleSpecialization cycleSpecialization) {
+		List<String> yearGroups = new LinkedList<>();
+
+		for (CycleSpecializationYear cycleSpecializationYear : CycleSpecializationYear.values()) {
+			if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization)) {
+				yearGroups.add(cycleSpecializationYear.toInitialsString());
+			}
+		}
+
+		String[] result = new String[yearGroups.size()];
+		result = yearGroups.toArray(result);
+
+		return result;
+	}
+
+	public static CycleSpecializationYear forYearGroup(String yearGroup) {
+		for (CycleSpecializationYear cycleSpecializationYear : CycleSpecializationYear.values()) {
+			if (cycleSpecializationYear.toInitialsString().equals(yearGroup)) {
+				return cycleSpecializationYear;
+			}
+		}
+
+		return null;
+	}
+
+	public String[] getGroups() {
+		List<String> groups = new LinkedList<>();
+
+		groups.add(toInitialsString());
+
+		if (cycleSpecialization.getCycle().equals(LICENTA)) {
+			String groupLetters = "AB";
+			String groupNumbers = "1234567";
+
+			for (int i = 0; i < groupLetters.length(); i++) {
+				String group = toInitialsString() + groupLetters.charAt(i) + "";
+
+				groups.add(group);
+
+				for (int j = 0; j < groupNumbers.length(); j++) {
+					groups.add(group + groupNumbers.charAt(j));
+				}
+			}
+		}
+
+		String[] result = new String[groups.size()];
+		result = groups.toArray(result);
+
+		return result;
+	}
+
+	public static List<CycleSpecializationYear> forCycleSpecialization(CycleSpecialization cycleSpecialization) {
+		List<CycleSpecializationYear> result = new LinkedList<>();
+
+		for (CycleSpecializationYear cycleSpecializationYear : CycleSpecializationYear.values()) {
+			if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization)) {
+				result.add(cycleSpecializationYear);
+			}
+		}
+
+		return result;
 	}
 }

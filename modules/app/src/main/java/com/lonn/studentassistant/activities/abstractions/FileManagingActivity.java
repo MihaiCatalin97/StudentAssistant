@@ -15,7 +15,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityVie
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
 
 import java.io.IOException;
 import java.io.OutputStream;

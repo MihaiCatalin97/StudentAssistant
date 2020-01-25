@@ -12,8 +12,8 @@ import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBi
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.CourseFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.CourseFileUploadDialog;
 
 import lombok.Getter;
 
@@ -54,6 +54,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 		boolean editing = binding.getEditing() == null ? false : binding.getEditing();
 
 		binding.setEditing(!editing);
+		isEditing = !editing;
 	}
 
 	@Override

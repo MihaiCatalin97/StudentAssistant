@@ -13,11 +13,21 @@ import com.lonn.studentassistant.activities.implementations.entityActivities.lab
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.FileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations.CourseFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.RecurringClassInputDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.CourseFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
+import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.StudentSelectionDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import lombok.Getter;
 
@@ -40,6 +50,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
+		final Context context = findViewById(R.id.laboratoriesCategory).getContext();
 
 		((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
 			Intent laboratoryInputActivityIntent = new Intent(this,
@@ -51,43 +62,154 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 			startActivity(laboratoryInputActivityIntent);
 		});
 
-		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory)).setOnRemoveAction((student) -> {
-			if (activityEntity.getStudents().contains(student.getKey())) {
-				new AlertDialog.Builder(getBaseContext(), R.style.DialogTheme)
+		((ScrollViewCategory) findViewById(R.id.studentCategory)).setOnAddAction(() -> {
+			showSnackBar("Loading students, please wait...", 1000);
+			firebaseApi.getStudentService()
+					.getAll()
+					.subscribe(false)
+					.onComplete(students -> {
+						List<StudentViewModel> unEnrolledStudents = new ArrayList<>();
+
+						for (StudentViewModel student : students) {
+							if (!activityEntity.getStudents().contains(student.getKey())) {
+								unEnrolledStudents.add(student);
+							}
+						}
+
+						StudentSelectionDialog dialog = new StudentSelectionDialog(context);
+
+						dialog.setTitle("Select students")
+								.setInputHint("Enter student name or ID")
+								.setItems(unEnrolledStudents)
+								.setPositiveButtonAction(selectedStudents -> {
+									getFirebaseApi().getCourseService()
+											.addStudents(selectedStudents, entityKey)
+											.onSuccess(none -> showSnackBar("Successfully added students to the course", 1500))
+											.onError(error -> logAndShowErrorSnack("An error occurred while adding students to the course",
+													error,
+													LOGGER));
+								})
+								.show();
+					}, error -> logAndShowErrorSnack("An error occurred!",
+							error,
+							LOGGER));
+		});
+
+		((ScrollViewCategory) findViewById(R.id.professorsCategory)).setOnAddAction(() -> {
+			showSnackBar("Loading professors, please wait...", 1000);
+			firebaseApi.getProfessorService()
+					.getAll()
+					.subscribe(false)
+					.onComplete(professors -> {
+						List<ProfessorViewModel> unEnrolledProfessors = new ArrayList<>();
+
+						for (ProfessorViewModel professor : professors) {
+							if (!activityEntity.getProfessors().contains(professor.getKey())) {
+								unEnrolledProfessors.add(professor);
+							}
+						}
+
+						ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(context);
+
+						dialog.setTitle("Select professors")
+								.setInputHint("Enter professor name")
+								.setItems(unEnrolledProfessors)
+								.setPositiveButtonAction(selectedProfessors -> {
+									getFirebaseApi().getCourseService()
+											.addProfessors(selectedProfessors, entityKey)
+											.onSuccess(none -> showSnackBar("Successfully added professors to the course", 1500))
+											.onError(error -> logAndShowErrorSnack("An error occurred while adding professors to the course",
+													error,
+													LOGGER));
+								})
+								.show();
+					}, error -> logAndShowErrorSnack("An error occurred!",
+							error,
+							LOGGER));
+		});
+
+		((ScrollViewCategory) findViewById(R.id.recurringClassesCategory)).setOnAddAction(() -> {
+			RecurringClassInputDialog dialog = new RecurringClassInputDialog(context);
+
+			dialog.show();
+		});
+
+		((ScrollViewCategory<LaboratoryViewModel>) findViewById(R.id.laboratoriesCategory)).setOnDeleteAction((laboratory) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
+						.setTitle("Delete laboratory?")
+						.setMessage("Are you sure you wish to delete this laboratory?\n" +
+								"This action will also delete the grades and files associated to this laboratory!")
+						.setPositiveButton("Delete", (dialog, which) -> {
+							firebaseApi.getLaboratoryService()
+									.deleteById(laboratory.getKey())
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+							showSnackBar("Laboratory deleted", 1000);
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show()
+		);
+
+		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory)).setOnRemoveAction((student) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
 						.setTitle("Remove student from course?")
 						.setMessage("Are you sure you wish to remove this student from the course?")
 						.setPositiveButton("Remove", (dialog, which) -> {
-							activityEntity.getStudents().remove(student.getKey());
-
 							firebaseApi.getCourseService()
-									.save(activityEntity)
+									.removeStudent(activityEntity, student)
+									.onSuccess(none -> showSnackBar("Student removed from the course", 1000))
 									.onError(error -> logAndShowErrorSnack("An error occurred!",
 											error,
 											LOGGER));
 
-							student.getCourses().remove(entityKey);
-
-							firebaseApi.getStudentService()
-									.save(student)
-									.onError(error -> logAndShowErrorSnack("An error occurred!",
-											error,
-											LOGGER));
-
-							showSnackBar("Student removed from the course", 1000);
 						})
 						.setNegativeButton("Cancel", null)
 						.create()
-						.show();
-			}
-		});
+						.show()
+		);
 
-		((ScrollViewCategory<FileMetadataViewModel>) findViewById(R.id.filesCategory)).setOnDeleteAction((file) -> {
-			if (activityEntity.getFileMetadataKeys().contains(file.getKey())) {
-				new AlertDialog.Builder(getBaseContext(), R.style.DialogTheme)
+		((ScrollViewCategory<FileMetadataViewModel>) findViewById(R.id.filesCategory)).setOnDeleteAction((file) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
 						.setTitle("File deletion")
 						.setMessage("Are you sure you wish to delete this file?")
 						.setPositiveButton("Delete", (dialog, which) -> {
-							activityEntity.getFileMetadataKeys().remove(file.getKey());
+							firebaseApi.getCourseService()
+									.deleteAndUnlinkFile(activityEntity, file.getKey())
+									.onSuccess(none -> showSnackBar("File deleted", 1000))
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show()
+		);
+
+		((ScrollViewCategory<ProfessorViewModel>) findViewById(R.id.professorsCategory)).setOnRemoveAction((professor) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
+						.setTitle("Remove professor from course?")
+						.setMessage("Are you sure you wish to remove this professor from the course?")
+						.setPositiveButton("Remove", (dialog, which) -> {
+							firebaseApi.getCourseService()
+									.removeProfessor(activityEntity, professor)
+									.onSuccess(none -> showSnackBar("Professor removed from the course", 1000))
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show()
+		);
+
+		((ScrollViewCategory<RecurringClassViewModel>) findViewById(R.id.recurringClassesCategory)).setOnDeleteAction((recurringClass) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
+						.setTitle("Delete class from course?")
+						.setMessage("Are you sure you wish to delete this class from the course?")
+						.setPositiveButton("Delete", (dialog, which) -> {
+							activityEntity.getRecurringClasses().remove(recurringClass.getKey());
 
 							firebaseApi.getCourseService()
 									.save(activityEntity)
@@ -95,19 +217,44 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 											error,
 											LOGGER));
 
-							firebaseApi.getFileMetadataService()
-									.deleteMetadataAndContent(file.getKey())
+							firebaseApi.getRecurringClassService()
+									.deleteById(recurringClass.getKey())
 									.onError(error -> logAndShowErrorSnack("An error occurred!",
 											error,
 											LOGGER));
 
-							showSnackBar("File deleted", 1000);
+							showSnackBar("Class deleted", 1000);
 						})
 						.setNegativeButton("Cancel", null)
 						.create()
-						.show();
-			}
-		});
+						.show()
+		);
+
+		((ScrollViewCategory<OneTimeClassViewModel>) findViewById(R.id.oneTimeClassesCategory)).setOnDeleteAction((oneTimeClass) ->
+				new AlertDialog.Builder(context, R.style.DialogTheme)
+						.setTitle("Delete class from course?")
+						.setMessage("Are you sure you wish to delete this class from the course?")
+						.setPositiveButton("Delete", (dialog, which) -> {
+							activityEntity.getOneTimeClasses().remove(oneTimeClass.getKey());
+
+							firebaseApi.getCourseService()
+									.save(activityEntity)
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							firebaseApi.getOneTimeClassService()
+									.deleteById(oneTimeClass.getKey())
+									.onError(error -> logAndShowErrorSnack("An error occurred!",
+											error,
+											LOGGER));
+
+							showSnackBar("Class deleted", 1000);
+						})
+						.setNegativeButton("Cancel", null)
+						.create()
+						.show()
+		);
 
 		loadAll(entityKey);
 	}
@@ -127,6 +274,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		boolean editing = binding.getEditing() == null ? false : binding.getEditing();
 
 		binding.setEditing(!editing);
+		isEditing = !editing;
 	}
 
 	@Override

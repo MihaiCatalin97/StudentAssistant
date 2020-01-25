@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.entities.enums;
 
+import androidx.annotation.NonNull;
+
 public enum WeekDay {
 	MONDAY("Monday", "Luni", 1),
 	TUESDAY("Tuesday", "Marti", 2),
@@ -29,6 +31,12 @@ public enum WeekDay {
 		}
 
 		return null;
+	}
+
+	@Override
+	@NonNull
+	public String toString() {
+		return dayStringEng;
 	}
 
 	public static WeekDay getByInt(int dayInt) {

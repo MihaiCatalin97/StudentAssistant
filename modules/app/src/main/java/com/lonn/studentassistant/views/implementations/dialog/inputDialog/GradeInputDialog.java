@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.views.implementations.dialog;
+package com.lonn.studentassistant.views.implementations.dialog.inputDialog;
 
 import android.app.Activity;
 import android.app.Dialog;

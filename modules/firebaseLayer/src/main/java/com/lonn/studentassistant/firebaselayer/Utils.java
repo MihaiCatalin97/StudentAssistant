@@ -8,8 +8,6 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Utils {
 
@@ -54,6 +52,29 @@ public class Utils {
 		catch (NoSuchAlgorithmException | NullPointerException e) {
 			Log.e("Error while hashing", e.toString());
 			return null;
+		}
+	}
+
+	public static String arabToRomanNumeral(int numeral) {
+		switch (numeral) {
+			case 1: {
+				return "I";
+			}
+			case 2: {
+				return "II";
+			}
+			case 3: {
+				return "III";
+			}
+			case 4: {
+				return "IV";
+			}
+			case 5: {
+				return "V";
+			}
+			default: {
+				return "";
+			}
 		}
 	}
 

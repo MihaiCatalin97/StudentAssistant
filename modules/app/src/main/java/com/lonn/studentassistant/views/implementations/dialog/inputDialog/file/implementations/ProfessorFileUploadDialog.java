@@ -1,9 +1,9 @@
-package com.lonn.studentassistant.views.implementations.dialog.fileDialog.implementations;
+package com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.views.implementations.dialog.fileDialog.abstractions.GUIUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.GUIUploadDialog;
 
 import static com.lonn.studentassistant.activities.abstractions.FileManagingActivity.UPLOAD_FILE_REQUEST_CODE;
 

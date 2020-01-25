@@ -5,6 +5,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
@@ -82,6 +83,13 @@ public class BindingAdapters {
 		}
 	}
 
+	@BindingAdapter("android:layout_weight")
+	public static void bindDeletable(View view,
+									 float weight) {
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+		params.weight = weight;
+		view.setLayoutParams(params);
+	}
 
 	@BindingAdapter("cardCornerRadius")
 	public static void setCardCornerRadius(CardView cardView, int radius) {
@@ -146,6 +154,14 @@ public class BindingAdapters {
 		}
 	}
 
+	@BindingAdapter("android:showAddButton")
+	public static void setShowAddButton(ScrollViewCategory category,
+								  Boolean showAddButton) {
+		if (showAddButton != null && showAddButton) {
+			category.setShowAddButton(showAddButton);
+		}
+	}
+
 	@BindingAdapter("android:shouldContain")
 	public static <T extends EntityViewModel<? extends BaseEntity>> void setShouldContain(ScrollViewCategory<T> category,
 																						  Predicate<T> shouldContain) {
@@ -200,12 +216,11 @@ public class BindingAdapters {
 		}
 
 		category.setEditing(editing);
-
 	}
 
 	@BindingAdapter("android:unlinkable")
 	public static void bindUnlinkable(ScrollViewCategory category,
-								   Boolean unlinkable) {
+									  Boolean unlinkable) {
 		if (unlinkable == null) {
 			unlinkable = false;
 		}
@@ -215,7 +230,7 @@ public class BindingAdapters {
 
 	@BindingAdapter("android:deletable")
 	public static void bindDeletable(ScrollViewCategory category,
-									  Boolean deletable) {
+									 Boolean deletable) {
 		if (deletable == null) {
 			deletable = false;
 		}
