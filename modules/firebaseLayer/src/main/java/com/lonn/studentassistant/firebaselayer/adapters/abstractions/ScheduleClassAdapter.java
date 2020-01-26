@@ -20,6 +20,7 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
 				.setRooms(scheduleClass.getRooms())
 				.setGroups(scheduleClass.getGroups())
 				.setProfessors(scheduleClass.getProfessors())
+				.setDiscipline(scheduleClass.getDiscipline())
 				.setKey(scheduleClass.getKey());
 
 		return scheduleClassViewModel;
@@ -33,6 +34,7 @@ public abstract class ScheduleClassAdapter<T extends ScheduleClass, U extends Sc
 				.setType(scheduleClassViewModel.getType())
 				.setRooms(scheduleClassViewModel.rooms)
 				.setGroups(scheduleClassViewModel.getGroups())
+				.setDiscipline(scheduleClassViewModel.getDiscipline())
 				.setProfessors(scheduleClassViewModel.getProfessors());
 
 		if (scheduleClassViewModel.getKey() != null) {

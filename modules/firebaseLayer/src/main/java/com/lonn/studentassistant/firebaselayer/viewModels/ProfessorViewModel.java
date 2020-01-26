@@ -83,4 +83,10 @@ public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor>
 	public ProfessorViewModel clone() {
 		return (ProfessorViewModel) super.clone();
 	}
+
+	@NonNull
+	@Override
+	public String toString(){
+		return getFullName();
+	}
 }

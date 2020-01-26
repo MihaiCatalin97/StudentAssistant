@@ -20,7 +20,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewMode
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.RecurringClassInputDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.CourseRecurringClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.CourseFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
@@ -129,9 +129,34 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		});
 
 		((ScrollViewCategory) findViewById(R.id.recurringClassesCategory)).setOnAddAction(() -> {
-			RecurringClassInputDialog dialog = new RecurringClassInputDialog(context);
+			firebaseApi.getProfessorService()
+					.getAll()
+					.subscribe(false)
+					.onComplete(professors -> {
+						List<ProfessorViewModel> disciplineProfessors = new ArrayList<>();
 
-			dialog.show();
+						for (ProfessorViewModel professor : professors) {
+							if (activityEntity.getProfessors().contains(professor.getKey())) {
+								disciplineProfessors.add(professor);
+							}
+						}
+
+						CourseRecurringClassInputDialog dialog = new CourseRecurringClassInputDialog(context,
+								activityEntity,
+								disciplineProfessors);
+
+						dialog.setPositiveButtonAction((RecurringClassViewModel recurringClass) -> {
+							firebaseApi.getRecurringClassService()
+									.save(recurringClass)
+									.onSuccess(none -> showSnackBar("Successfully created a new class!", 1000))
+									.onError(error -> logAndShowErrorSnack("An error occurred while creating the new class",
+											error,
+											LOGGER));
+						});
+						dialog.show();
+					}, error -> logAndShowErrorSnack("An error occurred!",
+							error,
+							LOGGER));
 		});
 
 		((ScrollViewCategory<LaboratoryViewModel>) findViewById(R.id.laboratoriesCategory)).setOnDeleteAction((laboratory) ->
@@ -209,16 +234,8 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						.setTitle("Delete class from course?")
 						.setMessage("Are you sure you wish to delete this class from the course?")
 						.setPositiveButton("Delete", (dialog, which) -> {
-							activityEntity.getRecurringClasses().remove(recurringClass.getKey());
-
-							firebaseApi.getCourseService()
-									.save(activityEntity)
-									.onError(error -> logAndShowErrorSnack("An error occurred!",
-											error,
-											LOGGER));
-
 							firebaseApi.getRecurringClassService()
-									.deleteById(recurringClass.getKey())
+									.delete(recurringClass)
 									.onError(error -> logAndShowErrorSnack("An error occurred!",
 											error,
 											LOGGER));

@@ -18,11 +18,11 @@
 
         <variable
             name="editing"
-            type="Boolean"/>
+            type="Boolean" />
 
         <variable
             name="showAddButton"
-            type="Boolean"/>
+            type="Boolean" />
     </data>
 
     <RelativeLayout
@@ -83,7 +83,7 @@
                 layout="@layout/category_entity_operations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{(categoryModel.permissionLevel &gt; 0 &amp;&amp; (categoryModel.endCategory || showAddButton)) &amp;&amp; editing != null &amp;&amp; editing? View.VISIBLE  : View.GONE}"
+                android:visibility="@{categoryModel.permissionLevel &gt; 0 &amp;&amp; (showAddButton? !categoryModel.endCategory : categoryModel.endCategory) &amp;&amp; editing != null &amp;&amp; editing? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}"
                 app:isTable="@{isTable}" />
 

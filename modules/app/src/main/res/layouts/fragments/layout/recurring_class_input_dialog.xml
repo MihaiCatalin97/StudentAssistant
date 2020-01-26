@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/recurringClassParentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/solid_background"
@@ -8,6 +9,8 @@
     android:paddingTop="36dp"
     android:paddingEnd="18dp"
     android:paddingBottom="18dp"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
     android:weightSum="1">
 
     <TextView

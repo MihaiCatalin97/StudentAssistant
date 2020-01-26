@@ -135,6 +135,105 @@ public class CourseService extends FileAssociatedEntityService<Course, Exception
 		return result;
 	}
 
+	public Future<Void, Exception> addRecurringClass(String courseKey, String recurringClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (course == null) {
+						result.completeExceptionally(new Exception("No course found"));
+					}
+					else {
+						if (!course.getRecurringClasses().contains(recurringClassKey)) {
+							course.getRecurringClasses().add(recurringClassKey);
+							save(course)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeRecurringClass(String courseKey, String recurringClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (course == null) {
+						result.completeExceptionally(new Exception("No course found"));
+					}
+					else {
+						if (course.getRecurringClasses().contains(recurringClassKey)) {
+							course.getRecurringClasses().remove(recurringClassKey);
+							save(course)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> addOneTimeClass(String courseKey, String oneTimeClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (course == null) {
+						result.completeExceptionally(new Exception("No course found"));
+					}
+					else {
+						if (!course.getOneTimeClasses().contains(oneTimeClassKey)) {
+							course.getOneTimeClasses().add(oneTimeClassKey);
+							save(course)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeOneTimeClass(String courseKey, String oneTimeClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (course == null) {
+						result.completeExceptionally(new Exception("No course found"));
+					}
+					else {
+						if (course.getOneTimeClasses().contains(oneTimeClassKey)) {
+							course.getOneTimeClasses().remove(oneTimeClassKey);
+							save(course)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
 
 	public Future<Void, Exception> addProfessors(List<ProfessorViewModel> professors, String courseKey) {
 		Future<Void, Exception> result = new Future<>();

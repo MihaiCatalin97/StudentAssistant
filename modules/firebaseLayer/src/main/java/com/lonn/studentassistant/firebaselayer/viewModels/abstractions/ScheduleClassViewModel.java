@@ -4,11 +4,12 @@ import android.view.View;
 
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,14 +18,15 @@ import lombok.experimental.Accessors;
 import static com.lonn.studentassistant.firebaselayer.Utils.hourToString;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends EntityViewModel<T> {
 	public int startHour, endHour;
 	public List<String> rooms;
 	public List<String> professors;
-	public Discipline discipline;
+	public String discipline;
 
 	@Bindable
 	public String disciplineName = "";
@@ -66,11 +68,6 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 		}
 
 		return result;
-	}
-
-	public void setDiscipline(Discipline discipline) {
-		this.discipline = discipline;
-		this.disciplineName = discipline.getDisciplineName();
 	}
 
 	@Bindable

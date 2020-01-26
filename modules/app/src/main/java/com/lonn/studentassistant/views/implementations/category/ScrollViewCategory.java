@@ -77,6 +77,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 	public void setEditing(Boolean editing) {
 		binding.setEditing(editing);
+		hideIfEmpty();
 
 		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
 			subcategory.setEditing(editing);
@@ -90,6 +91,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	public void setShowAddButton(Boolean showAddButton) {
 		if (showAddButton == null) {
 			showAddButton = false;
+		}
+
+		for (ScrollViewCategory subcategory : content.getSubcategories()) {
+			subcategory.setShowAddButton(showAddButton);
 		}
 
 		binding.setShowAddButton(showAddButton);
@@ -230,6 +235,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 					.getChildCategories());
 
 			scrollViewCategory.setEditing(binding.getEditing());
+			scrollViewCategory.setShowAddButton(binding.getShowAddButton());
 
 			content.addSubcategory(scrollViewCategory);
 		}
@@ -271,7 +277,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 	private void hideIfEmpty() {
 		if (getNumberOfChildren() == 0 &&
-				!viewModel.isShowEmpty()) {
+				!viewModel.isShowEmpty() && binding.getEditing() != null && !binding.getEditing()) {
 			setVisibility(GONE);
 		}
 		else if (getNumberOfChildren() != 0) {

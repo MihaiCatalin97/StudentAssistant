@@ -12,10 +12,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-@Builder
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public final class OneTimeClassViewModel extends ScheduleClassViewModel<OneTimeClass> {
 	@Bindable
 	private Date date;

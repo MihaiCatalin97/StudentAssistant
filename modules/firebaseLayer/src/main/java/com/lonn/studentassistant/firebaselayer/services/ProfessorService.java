@@ -58,7 +58,6 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 		return result;
 	}
 
-
 	public Future<Void, Exception> addCourse(String professorKey, String courseKey) {
 		Future<Void, Exception> result = new Future<>();
 
@@ -70,6 +69,106 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 					else {
 						if (!professor.getCourses().contains(courseKey)) {
 							professor.getCourses().add(courseKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> addRecurringClass(String professorKey, String recurringClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (!professor.getRecurringClasses().contains(recurringClassKey)) {
+							professor.getRecurringClasses().add(recurringClassKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> addOneTimeClass(String professorKey, String oneTimeClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (!professor.getOneTimeClasses().contains(oneTimeClassKey)) {
+							professor.getOneTimeClasses().add(oneTimeClassKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeRecurringClass(String professorKey, String recurringClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (professor.getRecurringClasses().contains(recurringClassKey)) {
+							professor.getRecurringClasses().remove(recurringClassKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeOneTimeClass(String professorKey, String oneTimeClassKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (professor.getOneTimeClasses().contains(oneTimeClassKey)) {
+							professor.getOneTimeClasses().remove(oneTimeClassKey);
 							save(professor)
 									.onSuccess(result::complete)
 									.onError(result::completeExceptionally);
