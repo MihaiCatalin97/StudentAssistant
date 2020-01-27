@@ -131,11 +131,11 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {
 		if (entityViewModel instanceof OneTimeClassViewModel) {
-			((OneTimeClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+			((OneTimeClassTableRowBinding) binding).setOneTimeClass((OneTimeClassViewModel) entityViewModel);
 			((OneTimeClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
 		else if (entityViewModel instanceof RecurringClassViewModel) {
-			((RecurringClassTableRowBinding) binding).setScheduleClass((ScheduleClassViewModel) entityViewModel);
+			((RecurringClassTableRowBinding) binding).setRecurringClass((RecurringClassViewModel) entityViewModel);
 			((RecurringClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {

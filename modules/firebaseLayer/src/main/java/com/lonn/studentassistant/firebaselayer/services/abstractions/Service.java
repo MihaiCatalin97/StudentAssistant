@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.firebaselayer.services;
+package com.lonn.studentassistant.firebaselayer.services.abstractions;
 
 import com.lonn.studentassistant.firebaselayer.adapters.abstractions.ViewModelAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;

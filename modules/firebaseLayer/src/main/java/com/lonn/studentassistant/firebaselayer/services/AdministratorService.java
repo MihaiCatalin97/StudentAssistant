@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.AdministratorAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Administrator;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ADMINISTRATORS;

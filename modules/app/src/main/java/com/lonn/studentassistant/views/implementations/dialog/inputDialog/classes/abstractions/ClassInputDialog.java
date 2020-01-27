@@ -1,21 +1,26 @@
 package com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.abstractions;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+
 import com.lonn.studentassistant.R;
+import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
+import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
+import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.StringInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
 
@@ -29,7 +34,10 @@ import lombok.Setter;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.Toast.LENGTH_LONG;
+import static com.lonn.studentassistant.firebaselayer.Utils.padWithZeroesToSize;
 import static com.lonn.studentassistant.utils.Utils.displayWidth;
+import static com.lonn.studentassistant.utils.Utils.hourToString;
+import static java.lang.Integer.parseInt;
 import static java.util.Collections.sort;
 import static java.util.UUID.randomUUID;
 
@@ -37,17 +45,15 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 	@Getter
 	private Button positiveButton, negativeButton;
 	@Getter
-	private TextView professorsTextView, roomsTextView, groupsTextView;
-	@Getter
-	private EditText startHourEditText, endHourEditText, classTypeEditText;
-	@Getter
-	private RadioButton allWeeksRadio, evenWeeksRadio, oddWeeksRadio;
+	private TextView professorsTextView, roomsTextView, groupsTextView, startHourText, endHourText, classTypeTextView;
 	@Setter
 	private Consumer<V> positiveButtonAction;
 
 	@Getter
 	private T discipline;
-	private String parity = "";
+	private int startHour = 0;
+	private int endHour = 0;
+	private ScheduleClassType type;
 	private List<ProfessorViewModel> professors;
 	private List<String> rooms;
 	private List<String> groups;
@@ -60,6 +66,7 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 		this.disciplineProfessors = disciplineProfessors;
 	}
 
+	@SuppressLint("SetTextI18n")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,60 +84,23 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 		positiveButton = findViewById(R.id.buttonPositive);
 		negativeButton = findViewById(R.id.buttonNegative);
 
-		professorsTextView = findViewById(R.id.recurringClassDialogProfessors);
-		roomsTextView = findViewById(R.id.recurringClassDialogRooms);
-		groupsTextView = findViewById(R.id.recurringClassDialogGroups);
-		startHourEditText = findViewById(R.id.recurringClassDialogStartHourInput);
-		endHourEditText = findViewById(R.id.recurringClassDialogEndHourInput);
-		classTypeEditText = findViewById(R.id.recurringClassDialogClassTypeInput);
+		professorsTextView = findViewById(R.id.classDialogProfessors);
+		roomsTextView = findViewById(R.id.classDialogRooms);
+		groupsTextView = findViewById(R.id.classDialogGroups);
+		startHourText = findViewById(R.id.classDialogStartHour);
+		endHourText = findViewById(R.id.classDialogEndHourInput);
+		classTypeTextView = findViewById(R.id.classDialogClassTypeInput);
 
-		allWeeksRadio = findViewById(R.id.recurringClassDialogAllWeeks);
-		evenWeeksRadio = findViewById(R.id.recurringClassDialogEvenWeeks);
-		oddWeeksRadio = findViewById(R.id.recurringClassDialogOddWeeks);
-
-		View.OnFocusChangeListener hourFocusListener = (view, hasFocus) -> {
-			if (!hasFocus) {
-				String hourText = ((EditText) view).getText().toString();
-
-				if (hourText.length() > 0) {
-					String[] columnSplit = hourText.split(":");
-
-					if (columnSplit.length > 0 && columnSplit.length < 3) {
-						String hourString = columnSplit[0];
-						String minuteString = null;
-
-						if (columnSplit.length == 2) {
-							minuteString = columnSplit[1];
-						}
-
-						if (hourString.length() == 0) {
-							hourString = "08";
-						}
-						else if (hourString.length() == 1) {
-							hourString = "0" + hourString;
-						}
-
-						if (minuteString == null || minuteString.length() == 0) {
-							minuteString = "00";
-						}
-						else if (minuteString.length() == 1) {
-							minuteString = minuteString + "0";
-						}
-
-						((EditText) view).setText(hourString + ":" + minuteString);
-					}
-				}
-			}
-		};
-
-		startHourEditText.setOnFocusChangeListener(hourFocusListener);
-		endHourEditText.setOnFocusChangeListener(hourFocusListener);
+		startHourText.setEnabled(false);
+		endHourText.setEnabled(false);
+		startHourText.setClickable(true);
+		endHourText.setClickable(true);
 
 		negativeButton.setOnClickListener((view) -> this.dismiss());
 		positiveButton.setOnClickListener((view) -> {
-			startHourEditText.clearFocus();
-			endHourEditText.clearFocus();
-			classTypeEditText.clearFocus();
+			startHourText.clearFocus();
+			endHourText.clearFocus();
+			classTypeTextView.clearFocus();
 
 			V classViewModel = parseEntity(null);
 
@@ -140,34 +110,39 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 			}
 		});
 
-		allWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
-			if (checked) {
-				parity = "";
-				evenWeeksRadio.setChecked(false);
-				oddWeeksRadio.setChecked(false);
-			}
+		findViewById(R.id.classDialogStartHourSelectButton).setOnClickListener(view -> {
+			new TimePickerDialog(getContext(),
+					(dialog, hour, minute) -> {
+						startHour = hour * 100 + minute;
+
+						startHourText.setText(hourToString(startHour));
+					},
+					startHour / 100,
+					startHour % 100,
+					true)
+					.show();
 		});
 
-		evenWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
-			if (checked) {
-				parity = "Par";
-				allWeeksRadio.setChecked(false);
-				oddWeeksRadio.setChecked(false);
-			}
+		findViewById(R.id.classDialogEndHourSelectButton).setOnClickListener(view -> {
+			new TimePickerDialog(getContext(),
+					(dialog, hour, minute) -> {
+						endHour = hour * 100 + minute;
+
+						endHourText.setText(hourToString(endHour));
+					},
+					endHour / 100,
+					endHour % 100,
+					true)
+					.show();
 		});
 
-		oddWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
-			if (checked) {
-				parity = "Impar";
-				evenWeeksRadio.setChecked(false);
-				allWeeksRadio.setChecked(false);
-			}
+		findViewById(R.id.classDialogTypeSelectButton).setOnClickListener(view -> {
+			showClassTypeSelectionDialog();
 		});
 
+		findViewById(R.id.classDialogGroupAddButton).setOnClickListener(view -> showGroupSelectionDialog());
 
-		findViewById(R.id.recurringClassDialogGroupAddButton).setOnClickListener(view -> showGroupSelectionDialog());
-
-		findViewById(R.id.recurringClassDialogRoomAddButton).setOnClickListener(view -> {
+		findViewById(R.id.classDialogRoomAddButton).setOnClickListener(view -> {
 			new StringInputDialog(getContext())
 					.setTitle("Room input")
 					.setInputHint("Enter room")
@@ -177,7 +152,7 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 					.show();
 		});
 
-		findViewById(R.id.recurringClassDialogProfessorsAddButton).setOnClickListener(view -> {
+		findViewById(R.id.classDialogProfessorsAddButton).setOnClickListener(view -> {
 			ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(getContext());
 			List<ProfessorViewModel> selectableProfessors = new ArrayList<>(disciplineProfessors);
 			selectableProfessors.removeAll(professors);
@@ -193,10 +168,10 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 					.show();
 		});
 
-		findViewById(R.id.recurringClassParentLayout).setOnClickListener(view -> {
-			startHourEditText.clearFocus();
-			endHourEditText.clearFocus();
-			classTypeEditText.clearFocus();
+		findViewById(R.id.classDialogParentLayout).setOnClickListener(view -> {
+			startHourText.clearFocus();
+			endHourText.clearFocus();
+			classTypeTextView.clearFocus();
 		});
 	}
 
@@ -242,24 +217,18 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 	}
 
 	protected V parseEntity(V entity) {
-		int startHour;
+		Integer startHour;
 		int endHour;
-		String classType = classTypeEditText.getText().toString();
+		String classType = classTypeTextView.getText().toString();
 
-		try {
-			startHour = Integer.parseInt(startHourEditText.getText().toString().replace(":", ""));
+		startHour = getStartHour();
 
-			if (startHour < 100 || startHour > 2359) {
-				throw new Exception();
-			}
-		}
-		catch (Exception e) {
-			Toast.makeText(getContext(), "Invalid start hour!", LENGTH_LONG).show();
+		if (startHour == null) {
 			return null;
 		}
 
 		try {
-			endHour = Integer.parseInt(endHourEditText.getText().toString().replace(":", ""));
+			endHour = parseInt(endHourText.getText().toString().replace(":", ""));
 
 			if (endHour < 100 || endHour > 2359) {
 				throw new Exception();
@@ -297,10 +266,63 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 				.setEndHour(endHour)
 				.setGroups(groups)
 				.setRooms(rooms)
-				.setParity(parity)
-				.setType(classType)
+				.setType(type)
 				.setProfessors(selectedProfessorKeys)
 				.setKey(randomUUID().toString());
+	}
+
+	protected Integer getStartHour() {
+		try {
+			Integer startHour = parseInt(startHourText.getText().toString().replace(":", ""));
+
+			if (startHour < 100 || startHour > 2359) {
+				throw new Exception();
+			}
+
+			return startHour;
+		}
+		catch (Exception e) {
+			Toast.makeText(getContext(), "Invalid start hour!", LENGTH_LONG).show();
+			return null;
+		}
+	}
+
+	protected Integer getEndHour() {
+		try {
+			Integer endHour = parseInt(endHourText.getText().toString().replace(":", ""));
+
+			if (endHour < 100 || endHour > 2359) {
+				throw new Exception();
+			}
+
+			return endHour;
+		}
+		catch (Exception e) {
+			Toast.makeText(getContext(), "Invalid start hour!", LENGTH_LONG).show();
+			return null;
+		}
+	}
+
+	private void showClassTypeSelectionDialog() {
+		SingleChoiceListAdapter<ScheduleClassType> scheduleTypeAdapter = new SingleChoiceListAdapter<>(getContext(),
+				ScheduleClassType.values());
+
+		new AlertDialog.Builder(getContext(), R.style.DialogTheme)
+				.setTitle("Select class type")
+				.setAdapter(scheduleTypeAdapter, (dialog, which) -> this.setClassType(scheduleTypeAdapter.getItem(which)))
+				.create()
+				.show();
+	}
+
+	private void setClassType(@Nullable ScheduleClassType type) {
+		this.type = type;
+
+		if (type == null) {
+			classTypeTextView.setText("(none)");
+		}
+		else {
+			classTypeTextView.setText(type.toString());
+		}
 	}
 
 	protected abstract int getLayoutId();

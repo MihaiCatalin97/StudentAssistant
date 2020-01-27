@@ -13,6 +13,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 public final class RecurringClass extends ScheduleClass {
 	private int day;
+	private String parity;
 
 	@Override
 	@NonNull

@@ -133,6 +133,31 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 		return result;
 	}
 
+	public Future<Void, Exception> addActivity(String professorKey, String activityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (!professor.getOtherActivities().contains(activityKey)) {
+							professor.getOtherActivities().add(activityKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
 	public Future<Void, Exception> removeRecurringClass(String professorKey, String recurringClassKey) {
 		Future<Void, Exception> result = new Future<>();
 

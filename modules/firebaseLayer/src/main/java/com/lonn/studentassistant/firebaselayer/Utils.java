@@ -137,4 +137,16 @@ public class Utils {
 		}
 		return stringToPad;
 	}
+
+	public static int weekDayToCalendarWeekDay(WeekDay day) {
+		return day.getDayInt() % 7 + 1;
+	}
+
+	public static int calendarDayToWeekDay(int calendarDay) {
+		if (calendarDay == 7) {
+			return 1;
+		}
+
+		return calendarDay - 1;
+	}
 }

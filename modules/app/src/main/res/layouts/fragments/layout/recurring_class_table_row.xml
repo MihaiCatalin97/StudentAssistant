@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="scheduleClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            name="recurringClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
 
         <variable
             name="deletable"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
-            android:text="@{scheduleClass.hours}"
+            android:text="@{recurringClass.hours}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -57,11 +57,11 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.5f:0.6f}"
+            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.55f}"
             android:gravity="center"
             android:maxLines="@{3}"
             android:padding="2dp"
-            android:text="@{scheduleClass.disciplineName}"
+            android:text="@{recurringClass.disciplineName}"
             app:autoSizeMaxTextSize="15sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform" />
@@ -75,11 +75,11 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
+            android:layout_weight="0.15"
             android:gravity="center"
-            android:lines="@{scheduleClass.typeNumberOfLines}"
+            android:lines="@{recurringClass.typeNumberOfLines}"
             android:padding="2dp"
-            android:text="@{scheduleClass.formattedType}"
+            android:text="@{recurringClass.formattedType}"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="10sp"
             app:autoSizeTextType="uniform" />
@@ -95,11 +95,29 @@
             android:layout_height="match_parent"
             android:layout_weight="0.10"
             android:gravity="center"
-            android:lines="@{scheduleClass.numberOfRooms}"
+            android:lines="@{recurringClass.numberOfRooms}"
             android:padding="2dp"
-            android:text="@{scheduleClass.rooms}"
+            android:text="@{recurringClass.rooms}"
             app:autoSizeMaxTextSize="12sp"
             app:autoSizeMinTextSize="8sp"
+            app:autoSizeTextType="uniform" />
+
+        <RelativeLayout
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimaryDark" />
+
+        <TextView
+            style="@style/DarkBlueShadowedH3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+            android:gravity="center"
+            android:lines="@{1}"
+            android:padding="2dp"
+            android:text="@{recurringClass.parity}"
+            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
 
         <RelativeLayout
@@ -125,6 +143,6 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
-            android:visibility="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}"/>
+            android:visibility="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}" />
     </TableRow>
 </layout>

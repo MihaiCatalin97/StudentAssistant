@@ -6,8 +6,8 @@
         <import type="android.view.View" />
 
         <variable
-            name="scheduleClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            name="oneTimeClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
 
         <variable
             name="deletable"
@@ -43,7 +43,7 @@
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
-            android:text="@{scheduleClass.hours}"
+            android:text="@{oneTimeClass.hours}"
             app:autoSizeMaxTextSize="18sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
@@ -57,11 +57,11 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.5f}"
+            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.5f:0.55f}"
             android:gravity="center"
             android:maxLines="@{3}"
             android:padding="2dp"
-            android:text="@{scheduleClass.disciplineName}"
+            android:text="@{oneTimeClass.disciplineName}"
             app:autoSizeMaxTextSize="15sp"
             app:autoSizeMinTextSize="12sp"
             app:autoSizeTextType="uniform" />
@@ -75,11 +75,11 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.15f:0.2f}"
+            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.2f:0.25f}"
             android:gravity="center"
-            android:lines="@{scheduleClass.typeNumberOfLines}"
+            android:lines="@{oneTimeClass.typeNumberOfLines}"
             android:padding="2dp"
-            android:text="@{scheduleClass.formattedType}"
+            android:text="@{oneTimeClass.formattedType}"
             app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="10sp"
             app:autoSizeTextType="uniform" />
@@ -95,29 +95,11 @@
             android:layout_height="match_parent"
             android:layout_weight="0.10"
             android:gravity="center"
-            android:lines="@{scheduleClass.numberOfRooms}"
+            android:lines="@{oneTimeClass.numberOfRooms}"
             android:padding="2dp"
-            android:text="@{scheduleClass.rooms}"
+            android:text="@{oneTimeClass.rooms}"
             app:autoSizeMaxTextSize="12sp"
             app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform" />
-
-        <RelativeLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark" />
-
-        <TextView
-            style="@style/DarkBlueShadowedH3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-            android:gravity="center"
-            android:lines="@{1}"
-            android:padding="2dp"
-            android:text="@{scheduleClass.parity}"
-            app:autoSizeMaxTextSize="18sp"
-            app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
 
         <RelativeLayout

@@ -1,15 +1,13 @@
 package com.lonn.studentassistant.firebaselayer.viewModels.abstractions;
 
-import android.view.View;
-
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
 
 import java.util.List;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -31,13 +29,16 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 	@Bindable
 	public String disciplineName = "";
 	@Bindable
-	public String type, parity;
+	public ScheduleClassType type;
 	@Bindable
 	public List<String> groups;
 
-	@Bindable
-	public int getParityVisible() {
-		return (parity != null && parity.length() > 0) ? View.VISIBLE : View.GONE;
+	public int getStartHourInt() {
+		return startHour;
+	}
+
+	public int getEndHourInt() {
+		return endHour;
 	}
 
 	@Bindable
@@ -72,12 +73,12 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 
 	@Bindable
 	public String getFormattedType() {
-		return type.replace(" ", "\n");
+		return type.toString().replace(" ", "\n");
 	}
 
 	@Bindable
 	public int getTypeNumberOfLines() {
-		return type.split(" ").length;
+		return type.toString().split(" ").length;
 	}
 
 	@Bindable

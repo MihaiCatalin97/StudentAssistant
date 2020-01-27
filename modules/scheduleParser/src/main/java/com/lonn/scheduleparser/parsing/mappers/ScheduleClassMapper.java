@@ -3,6 +3,7 @@ package com.lonn.scheduleparser.parsing.mappers;
 import com.lonn.scheduleparser.parsing.abstractions.Mapper;
 import com.lonn.scheduleparser.parsing.tableParseResults.DisciplineScheduleParseResult;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
 
 import org.jsoup.nodes.Element;
 
@@ -33,7 +34,7 @@ public abstract class ScheduleClassMapper<T extends ScheduleClass> extends Mappe
 		ScheduleClass result = newMappedEntity()
 				.setStartHour(hourStringToInteger(parseResult.getTextOfColumn(FROM_HOUR)))
 				.setEndHour(hourStringToInteger(parseResult.getTextOfColumn(TO_HOUR)))
-				.setType(parseResult.getTextOfColumn(TYPE))
+				.setType(ScheduleClassType.valueOfRoString(parseResult.getTextOfColumn(TYPE)))
 				.setGroups(splitByCommon(parseResult.getTextOfColumn(STUDENT_GROUPS)))
 				.setProfessors(splitByCommon(parseResult.getLinkOfColumn(PROFESSORS)))
 				.setRooms(splitByCommon(parseResult.getTextOfColumn(ROOMS)));

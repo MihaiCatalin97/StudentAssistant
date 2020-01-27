@@ -9,8 +9,10 @@ import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
@@ -42,11 +44,17 @@ public class ScrollViewEntityViewModelFactory {
 			}
 			return partial((OtherActivityViewModel) entity);
 		}
-		if (entity instanceof ScheduleClassViewModel) {
+		if (entity instanceof RecurringClassViewModel) {
 			if (viewType.equals(FULL)) {
-				return full((ScheduleClassViewModel) entity);
+				return full((RecurringClassViewModel) entity);
 			}
-			return partial((ScheduleClassViewModel) entity);
+			return partial((RecurringClassViewModel) entity);
+		}
+		if (entity instanceof OneTimeClassViewModel) {
+			if (viewType.equals(FULL)) {
+				return full((OneTimeClassViewModel) entity);
+			}
+			return partial((OneTimeClassViewModel) entity);
 		}
 		if (entity instanceof FileMetadataViewModel) {
 			if (viewType.equals(FULL)) {
@@ -212,33 +220,61 @@ public class ScrollViewEntityViewModelFactory {
 				.build();
 	}
 
-	private static ScrollViewEntityViewModel partial(ScheduleClassViewModel scheduleClass) {
-		String field1 = scheduleClass.getHours();
-		String field2 = scheduleClass.getDisciplineName();
-		String field3 = scheduleClass.getFormattedType();
-		String field4 = scheduleClass.getRooms();
+	private static ScrollViewEntityViewModel partial(OneTimeClassViewModel oneTimeClass) {
+		String field1 = oneTimeClass.getHours();
+		String field2 = oneTimeClass.getDisciplineName();
+		String field3 = oneTimeClass.getFormattedType();
+		String field4 = oneTimeClass.getRooms();
 
 		return ScrollViewEntityViewModel.builder()
 				.field1(field1)
 				.field2(field2)
 				.field3(field3)
 				.field4(field4)
-				.field5(scheduleClass.getParity())
 				.build();
 	}
 
-	private static ScrollViewEntityViewModel full(ScheduleClassViewModel scheduleClass) {
-		String field1 = scheduleClass.getHours();
-		String field2 = scheduleClass.getDisciplineName();
-		String field3 = scheduleClass.getFormattedType();
-		String field4 = scheduleClass.getRooms();
+	private static ScrollViewEntityViewModel full(OneTimeClassViewModel oneTimeClass) {
+		String field1 = oneTimeClass.getHours();
+		String field2 = oneTimeClass.getDisciplineName();
+		String field3 = oneTimeClass.getFormattedType();
+		String field4 = oneTimeClass.getRooms();
 
 		return ScrollViewEntityViewModel.builder()
 				.field1(field1)
 				.field2(field2)
 				.field3(field3)
 				.field4(field4)
-				.field5(scheduleClass.getParity())
+				.build();
+	}
+
+	private static ScrollViewEntityViewModel partial(RecurringClassViewModel recurringClass) {
+		String field1 = recurringClass.getHours();
+		String field2 = recurringClass.getDisciplineName();
+		String field3 = recurringClass.getFormattedType();
+		String field4 = recurringClass.getRooms();
+
+		return ScrollViewEntityViewModel.builder()
+				.field1(field1)
+				.field2(field2)
+				.field3(field3)
+				.field4(field4)
+				.field5(recurringClass.getParity())
+				.build();
+	}
+
+	private static ScrollViewEntityViewModel full(RecurringClassViewModel recurringClass) {
+		String field1 = recurringClass.getHours();
+		String field2 = recurringClass.getDisciplineName();
+		String field3 = recurringClass.getFormattedType();
+		String field4 = recurringClass.getRooms();
+
+		return ScrollViewEntityViewModel.builder()
+				.field1(field1)
+				.field2(field2)
+				.field3(field3)
+				.field4(field4)
+				.field5(recurringClass.getParity())
 				.build();
 	}
 

@@ -3,7 +3,7 @@ package com.lonn.studentassistant.activities.abstractions;
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.services.Service;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.logging.Logger;
 

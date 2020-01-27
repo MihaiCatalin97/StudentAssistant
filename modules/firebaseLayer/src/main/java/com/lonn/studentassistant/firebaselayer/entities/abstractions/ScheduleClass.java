@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.entities.abstractions;
 
+import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,8 +16,7 @@ public abstract class ScheduleClass extends BaseEntity {
 	private Integer startHour;
 	private Integer endHour;
 	private Integer pack;
-	private String type;
-	private String parity;
+	private ScheduleClassType type;
 
 	private String discipline;
 	private List<String> rooms = new LinkedList<>();

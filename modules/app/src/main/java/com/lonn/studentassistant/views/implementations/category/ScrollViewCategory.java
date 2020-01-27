@@ -236,6 +236,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 			scrollViewCategory.setEditing(binding.getEditing());
 			scrollViewCategory.setShowAddButton(binding.getShowAddButton());
+			scrollViewCategory.setIsTable(binding.getIsTable());
 
 			content.addSubcategory(scrollViewCategory);
 		}

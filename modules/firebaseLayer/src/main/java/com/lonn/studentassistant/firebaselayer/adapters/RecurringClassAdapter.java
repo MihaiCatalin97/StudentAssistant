@@ -15,12 +15,14 @@ public class RecurringClassAdapter extends ScheduleClassAdapter<RecurringClass, 
 	public RecurringClassViewModel adapt(RecurringClass recurringClass) {
 		return super.adapt(builder()
 				.day(recurringClass.getDay())
+				.parity(recurringClass.getParity())
 				.build(), recurringClass);
 	}
 
 	public RecurringClass adapt(RecurringClassViewModel recurringClassViewModel) {
 		return super.adapt(new RecurringClass()
-						.setDay(recurringClassViewModel.getDayInt()),
+						.setDay(recurringClassViewModel.getDayInt())
+						.setParity(recurringClassViewModel.getParity()),
 				recurringClassViewModel);
 	}
 }

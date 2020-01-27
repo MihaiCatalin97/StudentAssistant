@@ -1,5 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.viewModels;
 
+import android.view.View;
+
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.Utils;
@@ -17,6 +19,14 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public final class RecurringClassViewModel extends ScheduleClassViewModel<RecurringClass> {
 	private int day;
+	@Bindable
+	public String parity;
+
+
+	@Bindable
+	public int getParityVisible() {
+		return (parity != null && parity.length() > 0) ? View.VISIBLE : View.GONE;
+	}
 
 	@Bindable
 	public String getDay() {

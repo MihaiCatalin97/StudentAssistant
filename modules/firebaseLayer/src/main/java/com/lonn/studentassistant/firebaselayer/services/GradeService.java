@@ -5,6 +5,7 @@ import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;

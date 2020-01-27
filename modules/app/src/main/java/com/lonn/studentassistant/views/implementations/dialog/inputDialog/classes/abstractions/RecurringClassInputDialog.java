@@ -2,7 +2,7 @@ package com.lonn.studentassistant.views.implementations.dialog.inputDialog.class
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.Window;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +20,15 @@ import java.util.List;
 
 import lombok.Getter;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.Toast.LENGTH_LONG;
-import static com.lonn.studentassistant.utils.Utils.displayWidth;
 
 public abstract class RecurringClassInputDialog<T extends DisciplineViewModel> extends ClassInputDialog<T, RecurringClassViewModel> {
 	@Getter
 	private TextView dayTextView;
+	@Getter
+	private RadioButton allWeeksRadio, evenWeeksRadio, oddWeeksRadio;
 
+	private String parity = "";
 	private WeekDay day;
 
 	public RecurringClassInputDialog(Context context, T discipline,
@@ -39,9 +40,37 @@ public abstract class RecurringClassInputDialog<T extends DisciplineViewModel> e
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		dayTextView = findViewById(R.id.recurringClassDialogDay);
+		dayTextView = findViewById(R.id.classDialogDay);
 
-		findViewById(R.id.recurringClassDialogDaySelectButton).setOnClickListener(view -> {
+		allWeeksRadio = findViewById(R.id.recurringClassDialogAllWeeks);
+		evenWeeksRadio = findViewById(R.id.recurringClassDialogEvenWeeks);
+		oddWeeksRadio = findViewById(R.id.recurringClassDialogOddWeeks);
+
+		allWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
+			if (checked) {
+				parity = "";
+				evenWeeksRadio.setChecked(false);
+				oddWeeksRadio.setChecked(false);
+			}
+		});
+
+		evenWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
+			if (checked) {
+				parity = "Par";
+				allWeeksRadio.setChecked(false);
+				oddWeeksRadio.setChecked(false);
+			}
+		});
+
+		oddWeeksRadio.setOnCheckedChangeListener((button, checked) -> {
+			if (checked) {
+				parity = "Impar";
+				evenWeeksRadio.setChecked(false);
+				allWeeksRadio.setChecked(false);
+			}
+		});
+
+		findViewById(R.id.classDialogDaySelectButton).setOnClickListener(view -> {
 			SingleChoiceListAdapter<WeekDay> dayAdapter = new SingleChoiceListAdapter<>(getContext(),
 					WeekDay.values());
 
@@ -75,6 +104,7 @@ public abstract class RecurringClassInputDialog<T extends DisciplineViewModel> e
 
 		return super.parseEntity(RecurringClassViewModel.builder()
 				.day(day.getDayInt())
+				.parity(parity)
 				.build());
 	}
 

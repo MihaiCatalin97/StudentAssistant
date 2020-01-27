@@ -3,6 +3,7 @@ package com.lonn.studentassistant.firebaselayer.services;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.FileAssociatedEntity;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.FileAssociatedEntityViewModel;

@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.UserAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.User;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.USERS;

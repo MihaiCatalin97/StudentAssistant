@@ -6,6 +6,7 @@ import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.FILE_CONTENT;

@@ -9,6 +9,15 @@
         <item name="android:alertDialogTheme">@style/DialogTheme</item>
     </style>
 
+    <style name="DatePickerTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="buttonBarButtonStyle">@style/DialogButtons</item>
+    </style>
+
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:windowBackground">@color/colorBackground</item>
         <item name="android:windowIsFloating">true</item>

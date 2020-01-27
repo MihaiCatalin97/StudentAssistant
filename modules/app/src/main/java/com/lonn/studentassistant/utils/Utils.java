@@ -196,7 +196,7 @@ public class Utils {
 		return hourString + ":" + minuteString;
 	}
 
-	private static String padLeft(String stringToPad, char paddingCharacter, int desiredSize) {
+	public static String padLeft(String stringToPad, char paddingCharacter, int desiredSize) {
 		StringBuilder stringBuilder = new StringBuilder(desiredSize);
 
 		for (int i = 0; i < desiredSize - stringToPad.length(); i++) {

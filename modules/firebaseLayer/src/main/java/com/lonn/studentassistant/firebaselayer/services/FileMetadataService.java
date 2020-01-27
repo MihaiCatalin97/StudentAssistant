@@ -5,6 +5,7 @@ import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 

@@ -6,6 +6,7 @@ import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
@@ -96,6 +97,31 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 					else {
 						if (!student.getCourses().contains(courseKey)) {
 							student.getCourses().add(courseKey);
+							save(student)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> addActivity(String studentKey, String activityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(studentKey, false)
+				.onSuccess(student -> {
+					if (student == null) {
+						result.completeExceptionally(new Exception("No student found"));
+					}
+					else {
+						if (!student.getOtherActivities().contains(activityKey)) {
+							student.getOtherActivities().add(activityKey);
 							save(student)
 									.onSuccess(result::complete)
 									.onError(result::completeExceptionally);

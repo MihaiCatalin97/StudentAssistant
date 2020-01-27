@@ -4,11 +4,20 @@ import com.lonn.studentassistant.firebaselayer.adapters.RecurringClassAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import static androidx.databinding.library.baseAdapters.BR._all;
+import static com.lonn.studentassistant.firebaselayer.Utils.calendarDayToWeekDay;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
+import static java.util.Calendar.DAY_OF_WEEK;
 
 public class RecurringClassService extends Service<RecurringClass, Exception, RecurringClassViewModel> {
 	private static RecurringClassService instance;
@@ -119,6 +128,50 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 					}
 				})
 				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<List<RecurringClassViewModel>, Exception> getByRoomAndDay(String room,
+																			WeekDay weekDay) {
+		Future<List<RecurringClassViewModel>, Exception> result = new Future<>();
+
+		getAll().subscribe(false)
+				.onComplete(classes -> {
+					List<RecurringClassViewModel> returnedClasses = new LinkedList<>();
+
+					for (RecurringClassViewModel recurringClass : classes) {
+						if (recurringClass.getDayInt() == weekDay.getDayInt() &&
+								recurringClass.getRooms().contains(room)) {
+							returnedClasses.add(recurringClass);
+						}
+					}
+
+					result.complete(returnedClasses);
+				}, result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<List<RecurringClassViewModel>, Exception> getByRoomAndDate(String room,
+																			 Date date) {
+		Future<List<RecurringClassViewModel>, Exception> result = new Future<>();
+
+		getAll().subscribe(false)
+				.onComplete(classes -> {
+					List<RecurringClassViewModel> returnedClasses = new LinkedList<>();
+					Calendar classDate = Calendar.getInstance();
+					classDate.setTime(date);
+
+					for (RecurringClassViewModel recurringClass : classes) {
+						if (recurringClass.getDayInt() == calendarDayToWeekDay(calendarDayToWeekDay(classDate.get(DAY_OF_WEEK))) &&
+								recurringClass.getRooms().contains(room)) {
+							returnedClasses.add(recurringClass);
+						}
+					}
+
+					result.complete(returnedClasses);
+				}, result::completeExceptionally);
 
 		return result;
 	}
