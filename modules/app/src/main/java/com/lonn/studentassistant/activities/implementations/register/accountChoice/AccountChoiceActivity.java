@@ -1,42 +1,38 @@
 package com.lonn.studentassistant.activities.implementations.register.accountChoice;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
-
-import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.AdministratorCheckActivity;
-import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.ProfessorCheckActivity;
-import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.StudentCheckActivity;
+import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.TokenCheckActivity;
+import com.lonn.studentassistant.activities.implementations.register.profileCreation.StudentProfileCreationActivity;
+import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 
 public class AccountChoiceActivity extends FirebaseConnectedActivity {
 	public void tapRegistrationAccountTypeButton(View v) {
-		Intent credentialsCheckActivityIntent = null;
+		Intent nextActivityIntent = null;
 
 		switch (v.getId()) {
 			case R.id.buttonRegisterStudent: {
-				credentialsCheckActivityIntent = new Intent(this, StudentCheckActivity.class);
+				nextActivityIntent = new Intent(this, StudentProfileCreationActivity.class);
 				break;
 			}
+			case R.id.buttonRegisterAdministrator:
 			case R.id.buttonRegisterProfessor: {
-				credentialsCheckActivityIntent = new Intent(this, ProfessorCheckActivity.class);
-				break;
-			}
-			case R.id.buttonRegisterAdministrator: {
-				credentialsCheckActivityIntent = new Intent(this, AdministratorCheckActivity.class);
+				nextActivityIntent = new Intent(this, TokenCheckActivity.class);
 				break;
 			}
 		}
 
-		if (credentialsCheckActivityIntent != null) {
-			startActivity(credentialsCheckActivityIntent);
+		if (nextActivityIntent != null) {
+			startActivity(nextActivityIntent);
 		}
 	}
 
 	protected void inflateLayout() {
-		DataBindingUtil.setContentView(this, R.layout.accout_choice_activity_layout);
+		setContentView(R.layout.accout_choice_activity_layout);
 	}
 
 	public void backToLogin(View view) {

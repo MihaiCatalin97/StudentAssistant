@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.requests;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 
 import lombok.Data;
@@ -14,6 +15,7 @@ public class RegisterRequest extends Request<FirebaseUser, Exception> {
 	private String email;
 	private String password;
 	private String personUUID;
+	private AccountType accountType;
 
 	public RegisterRequest onSuccess(Consumer<FirebaseUser> onSuccess) {
 		this.onSuccess = onSuccess;

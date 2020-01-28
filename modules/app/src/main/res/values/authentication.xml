@@ -13,13 +13,13 @@
     <string name="email_hint">Enter email</string>
     <string name="repeat_password">Repeat password: </string>
     <string name="repeat_password_hint">Repeat password</string>
-    <string name="student_id">Student Id</string>
-    <string name="first_name">First Name</string>
-    <string name="last_name">Last Name</string>
+    <string name="student_id">Student Id*</string>
+    <string name="first_name">First Name*</string>
+    <string name="last_name">Last Name*</string>
     <string name="father_initial">Father\'s initial</string>
     <string name="phone_number">Phone number</string>
-    <string name="year">Year</string>
-    <string name="group">Group</string>
+    <string name="year">Year*</string>
+    <string name="group">Group*</string>
 
     <string name="remember">Remember me?</string>
     <string name="forgot_password">Forgot password</string>

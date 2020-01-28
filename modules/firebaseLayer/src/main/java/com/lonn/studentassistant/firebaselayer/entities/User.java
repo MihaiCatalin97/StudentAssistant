@@ -2,6 +2,7 @@ package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.google.firebase.database.Exclude;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,7 +15,8 @@ public final class User extends BaseEntity {
 	@Exclude
 	private String userId;
 	private String personUUID;
-	private String email, name, accountType;
+	private String email, name;
+	private AccountType accountType;
 
 	@Exclude
 	public String getUserId() {
@@ -23,7 +25,7 @@ public final class User extends BaseEntity {
 
 	public User setUserId(String userId) {
 		super.setKey(userId);
-		userId = userId;
+		this.userId = userId;
 
 		return this;
 	}

@@ -105,6 +105,28 @@ public enum CycleSpecializationYear {
 		return result;
 	}
 
+	public String[] getStudentEnrollableGroups() {
+		List<String> groups = new LinkedList<>();
+
+		if (cycleSpecialization.getCycle().equals(LICENTA)) {
+			String groupLetters = "AB";
+			String groupNumbers = "1234567";
+
+			for (int i = 0; i < groupLetters.length(); i++) {
+				String group = toInitialsString() + groupLetters.charAt(i) + "";
+
+				for (int j = 0; j < groupNumbers.length(); j++) {
+					groups.add(group + groupNumbers.charAt(j));
+				}
+			}
+		}
+
+		String[] result = new String[groups.size()];
+		result = groups.toArray(result);
+
+		return result;
+	}
+
 	public static List<CycleSpecializationYear> forCycleSpecialization(CycleSpecialization cycleSpecialization) {
 		List<CycleSpecializationYear> result = new LinkedList<>();
 
@@ -115,5 +137,17 @@ public enum CycleSpecializationYear {
 		}
 
 		return result;
+	}
+
+	public static CycleSpecializationYear forCycleAndYear(CycleSpecialization cycleSpecialization,
+														  int year) {
+		for (CycleSpecializationYear cycleSpecializationYear : CycleSpecializationYear.values()) {
+			if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization) &&
+					cycleSpecializationYear.getYear() == year) {
+				return cycleSpecializationYear;
+			}
+		}
+
+		return null;
 	}
 }

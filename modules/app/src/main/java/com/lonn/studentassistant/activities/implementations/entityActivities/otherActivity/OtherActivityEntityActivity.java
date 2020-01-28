@@ -1,7 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.entityActivities.otherActivity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -9,10 +8,8 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
-import com.lonn.studentassistant.activities.implementations.entityActivities.laboratory.LaboratoryInputActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -20,12 +17,10 @@ import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewMode
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.CourseOneTimeClassInputDialog;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.CourseRecurringClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.OtherActivityOneTimeClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.OtherActivityRecurringClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.CourseFileUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.OtherActivityFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.StudentSelectionDialog;
 
@@ -94,7 +89,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {
-		return new CourseFileUploadDialog(this, entityKey);
+		return new OtherActivityFileUploadDialog(this, entityKey);
 	}
 
 	@Override

@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="credentials"
-            type="com.lonn.studentassistant.viewModels.authentication.StudentCredentials" />
+            name="studentProfile"
+            type="com.lonn.studentassistant.viewModels.authentication.StudentProfileData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -67,7 +67,7 @@
                     android:hint="@string/student_id"
                     android:importantForAutofill="no"
                     android:inputType="text"
-                    android:text="@={credentials.studentId}" />
+                    android:text="@={studentProfile.studentId}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -83,7 +83,7 @@
                     android:hint="@string/first_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.firstName}" />
+                    android:text="@={studentProfile.firstName}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -99,7 +99,59 @@
                     android:hint="@string/last_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.lastName}" />
+                    android:text="@={studentProfile.lastName}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/year" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="selectYear"
+                        android:text="Select" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{studentProfile.year}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/group" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="selectGroup"
+                        android:text="Select" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{studentProfile.group}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -115,7 +167,7 @@
                     android:hint="@string/father_initial"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.fatherInitial}" />
+                    android:text="@={studentProfile.fatherInitial}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -131,7 +183,23 @@
                     android:hint="@string/phone_number"
                     android:importantForAutofill="no"
                     android:inputType="phone"
-                    android:text="@={credentials.phoneNumber}" />
+                    android:text="@={studentProfile.phoneNumber}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/email" />
+
+                <EditText
+                    android:id="@+id/studentRegisterEmailEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/phone_number"
+                    android:importantForAutofill="no"
+                    android:inputType="textEmailAddress"
+                    android:text="@={studentProfile.email}" />
             </LinearLayout>
         </ScrollView>
 
@@ -140,7 +208,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:onClick="tapCredentialsCheckButton"
+            android:onClick="tapContinue"
             android:text="@string/continue_step"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

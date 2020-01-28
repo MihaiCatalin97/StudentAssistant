@@ -3,6 +3,7 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.User;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +21,8 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 public final class UserViewModel extends EntityViewModel<User> {
 	@Bindable
-	private String email, name, personUUID, accountType;
+	private String email, name, personUUID;
+	private AccountType accountType;
 
 	@Override
 	public UserViewModel setKey(String key) {

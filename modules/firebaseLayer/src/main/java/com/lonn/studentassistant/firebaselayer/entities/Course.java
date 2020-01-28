@@ -12,8 +12,8 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public final class Course extends Discipline {
     private Integer pack;
     private List<String> laboratories = new LinkedList<>();

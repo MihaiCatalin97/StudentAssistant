@@ -1,7 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.FileAssociatedEntity;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.HashableEntity;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +12,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public final class Professor extends FileAssociatedEntity implements HashableEntity {
+public final class Professor extends FileAssociatedEntity {
 	private String scheduleLink;
 	private String firstName;
 	private String lastName;
@@ -30,11 +29,6 @@ public final class Professor extends FileAssociatedEntity implements HashableEnt
 	private List<String> otherActivities = new LinkedList<>();
 	private List<String> recurringClasses = new LinkedList<>();
 	private List<String> oneTimeClasses = new LinkedList<>();
-
-	@Override
-	public String computeHashingString() {
-		return getFirstName() + getLastName() + getPhoneNumber();
-	}
 
 	public void addCourse(String courseKey) {
 		if (!courses.contains(courseKey)) {

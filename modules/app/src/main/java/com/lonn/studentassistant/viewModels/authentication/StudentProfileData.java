@@ -4,11 +4,12 @@ import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 
 import lombok.ToString;
 
 @ToString
-public class StudentCredentials extends BaseObservable {
+public class StudentProfileData extends BaseObservable {
 	/*TODO: Investigate transport method for hashing inside the firebaseLayer
 	 * */
 	@Bindable
@@ -21,6 +22,30 @@ public class StudentCredentials extends BaseObservable {
 	public String fatherInitial;
 	@Bindable
 	public String phoneNumber;
+	@Bindable
+	public String email;
+	@Bindable
+	public String group;
+	@Bindable
+	public CycleSpecializationYear cycleSpecializationYear;
+
+	@Bindable
+	public String getGroup() {
+		if (group == null) {
+			return "(none)";
+		}
+
+		return group;
+	}
+
+	@Bindable
+	public String getYear() {
+		if (cycleSpecializationYear == null) {
+			return "(none)";
+		}
+
+		return cycleSpecializationYear.toString();
+	}
 
 	public Student toStudent() {
 		return new Student()
@@ -28,6 +53,9 @@ public class StudentCredentials extends BaseObservable {
 				.setFirstName(firstName)
 				.setLastName(lastName)
 				.setPhoneNumber(phoneNumber)
-				.setStudentId(studentId);
+				.setStudentId(studentId)
+				.setEmail(email)
+				.setYear(cycleSpecializationYear.getYear())
+				.setGroup(group);
 	}
 }

@@ -7,11 +7,14 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public final class Administrator extends BaseEntity {
-	private String firstName;
-	private String lastName;
-	private String administratorKey;
+@EqualsAndHashCode(callSuper = false)
+public final class RegistrationToken extends BaseEntity {
+	private String token;
+	private String accountType;
 
+	@Override
+	public String getKey() {
+		return token;
+	}
 }

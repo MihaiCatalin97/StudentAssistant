@@ -136,7 +136,7 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 		return result;
 	}
 
-	protected Future<StudentViewModel, Exception> getByStudentId(String studentId, boolean subscribe) {
+	public Future<StudentViewModel, Exception> getByStudentId(String studentId, boolean subscribe) {
 		Future<StudentViewModel, Exception> result = new Future<>();
 
 		firebaseConnection.execute(new GetRequest<Student, Exception>()
@@ -146,6 +146,26 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 					for (Student student : students) {
 						if (student.getStudentId().equals(studentId)) {
 							result.complete(adapter.adapt(student));
+							return;
+						}
+					}
+					result.complete(null);
+				})
+				.onError(result::completeExceptionally));
+
+		return result;
+	}
+
+	public Future<String, Exception> getKeyOfStudentId(String studentId) {
+		Future<String, Exception> result = new Future<>();
+
+		firebaseConnection.execute(new GetRequest<Student, Exception>()
+				.databaseTable(STUDENTS)
+				.subscribe(false)
+				.onSuccess(students -> {
+					for (Student student : students) {
+						if (student.getStudentId().equals(studentId)) {
+							result.complete(student.getKey());
 							return;
 						}
 					}

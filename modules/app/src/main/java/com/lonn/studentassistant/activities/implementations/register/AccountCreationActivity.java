@@ -11,14 +11,18 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.LoginActivity;
 import com.lonn.studentassistant.databinding.AccountCreationActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.RegisterRequest;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.RegistrationValidator;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+
 public class AccountCreationActivity extends FirebaseConnectedActivity {
 	RegistrationInformation newAccountCredentials = new RegistrationInformation();
 	private String personUUID;
+	private AccountType accountType;
 	private RegistrationValidator registrationValidator = new RegistrationValidator();
 
 	public void tapCreateAccountButton(View v) {
@@ -40,6 +44,7 @@ public class AccountCreationActivity extends FirebaseConnectedActivity {
 				.email(newAccountCredentials.getEmail())
 				.password(newAccountCredentials.getPassword())
 				.personUUID(personUUID)
+				.accountType(accountType)
 				.onSuccess((user) -> {
 					showSnackBar("Account created successfully!", 1000);
 					executeWithDelay(this::backToLogin, 1500);
@@ -50,7 +55,8 @@ public class AccountCreationActivity extends FirebaseConnectedActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		personUUID = getIntent().getStringExtra("personKey");
+		personUUID = getIntent().getStringExtra("personUUID");
+		accountType = AccountType.valueOf(getIntent().getStringExtra("accountType"));
 	}
 
 	protected void inflateLayout() {
