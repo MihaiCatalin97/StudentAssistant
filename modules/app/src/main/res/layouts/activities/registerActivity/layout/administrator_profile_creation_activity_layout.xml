@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="credentials"
-            type="com.lonn.studentassistant.viewModels.authentication.AdministratorCredentials" />
+            name="personProfile"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,14 +60,13 @@
                     android:text="@string/first_name" />
 
                 <EditText
-                    android:id="@+id/studentRegisterFirstNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/first_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.firstName}" />
+                    android:text="@={personProfile.firstName}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -76,31 +75,43 @@
                     android:text="@string/last_name" />
 
                 <EditText
-                    android:id="@+id/studentRegisterLastNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/last_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.lastName}" />
+                    android:text="@={personProfile.lastName}" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="Administrator key" />
+                    android:text="@string/email" />
 
                 <EditText
-                    android:id="@+id/studentRegisterFatherInitialEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Administrator key"
+                    android:hint="email@email.com"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.administratorKey}" />
+                    android:text="@={personProfile.email}" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/phone_number" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="+41234567890"
+                    android:importantForAutofill="no"
+                    android:inputType="textPersonName"
+                    android:text="@={personProfile.phoneNumber}" />
             </LinearLayout>
         </ScrollView>
 

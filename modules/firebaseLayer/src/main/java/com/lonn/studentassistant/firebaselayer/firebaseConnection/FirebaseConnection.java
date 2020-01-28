@@ -153,6 +153,7 @@ public class FirebaseConnection {
 					logger.logRegisterSuccess(newUser.getEmail(), newUser.getUid());
 
 					User registeringUser = new User()
+							.setEmail(request.email())
 							.setUserId(newUser.getUid())
 							.setPersonUUID(request.personUUID())
 							.setAccountType(request.accountType());

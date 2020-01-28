@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="credentials"
-            type="com.lonn.studentassistant.viewModels.authentication.ProfessorCredentials" />
+            name="professorProfile"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -60,14 +60,13 @@
                     android:text="@string/first_name" />
 
                 <EditText
-                    android:id="@+id/studentRegisterFirstNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/first_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.firstName}" />
+                    android:text="@={professorProfile.firstName}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -76,14 +75,28 @@
                     android:text="@string/last_name" />
 
                 <EditText
-                    android:id="@+id/studentRegisterLastNameEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/last_name"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
-                    android:text="@={credentials.lastName}" />
+                    android:text="@={professorProfile.lastName}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Rank" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/phone_number"
+                    android:importantForAutofill="no"
+                    android:inputType="textWebEditText"
+                    android:text="@={professorProfile.rank}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -92,14 +105,28 @@
                     android:text="@string/phone_number" />
 
                 <EditText
-                    android:id="@+id/studentRegisterPhoneEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/phone_number"
                     android:importantForAutofill="no"
                     android:inputType="phone"
-                    android:text="@={credentials.phoneNumber}" />
+                    android:text="@={professorProfile.phoneNumber}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/phone_number" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Website"
+                    android:importantForAutofill="no"
+                    android:inputType="textWebEditText"
+                    android:text="@={professorProfile.website}" />
             </LinearLayout>
         </ScrollView>
 

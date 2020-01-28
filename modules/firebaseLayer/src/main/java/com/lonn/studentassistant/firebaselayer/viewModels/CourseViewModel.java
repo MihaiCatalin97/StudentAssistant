@@ -3,7 +3,6 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 
@@ -39,12 +38,10 @@ public final class CourseViewModel extends DisciplineViewModel<Course> {
 		return this;
 	}
 
-	public boolean isForCycleAndYearAndSemester(CycleSpecialization cycleSpecialization, int year,
+	public boolean isForCycleAndYearAndSemester(CycleSpecializationYear cycleSpecializationYear,
 												int semester) {
-		for (CycleSpecializationYear cycleSpecializationYear : cycleSpecializationYears) {
-			if (cycleSpecializationYear.getCycleSpecialization().equals(cycleSpecialization) &&
-					cycleSpecializationYear.getYear() == year &&
-					this.semester == semester) {
+		for (CycleSpecializationYear cSY : cycleSpecializationYears) {
+			if (cSY.equals(cycleSpecializationYear) && this.semester == semester) {
 				return true;
 			}
 		}

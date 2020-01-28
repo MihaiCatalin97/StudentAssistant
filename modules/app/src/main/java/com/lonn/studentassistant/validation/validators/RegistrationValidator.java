@@ -5,9 +5,9 @@ import com.lonn.studentassistant.activities.implementations.register.Registratio
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.equalsMatchingCase;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidEmail;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidPassword;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.equalsMatchingCase;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPassword;
 
 public class RegistrationValidator extends Validator<RegistrationInformation> {
 	private static List<ValidationRule<RegistrationInformation>> validationRules;

@@ -9,7 +9,8 @@ public class AdministratorAdapter extends ViewModelAdapter<Administrator, Admini
 		return AdministratorViewModel.builder()
 				.firstName(administrator.getFirstName())
 				.lastName(administrator.getLastName())
-				.administratorKey(administrator.getAdministratorKey())
+				.email(administrator.getEmail())
+				.phoneNumber(administrator.getPhoneNumber())
 				.build();
 	}
 
@@ -17,6 +18,7 @@ public class AdministratorAdapter extends ViewModelAdapter<Administrator, Admini
 		return new Administrator()
 				.setFirstName(administratorViewModel.getFirstName())
 				.setLastName(administratorViewModel.getLastName())
-				.setAdministratorKey(administratorViewModel.getAdministratorKey());
+				.setEmail(administratorViewModel.getEmail())
+				.setPhoneNumber(administratorViewModel.getPhoneNumber());
 	}
 }

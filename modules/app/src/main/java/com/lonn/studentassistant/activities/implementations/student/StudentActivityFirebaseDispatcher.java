@@ -191,8 +191,8 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 			return false;
 		}
 
-		String year = studentViewModel.getCycleSpecialization()
-				.getInitials() + studentViewModel.getYear();
+		String year = studentViewModel.getCycleSpecializationYear().getCycleSpecialization()
+				.getInitials() + studentViewModel.getCycleSpecializationYear().getYear();
 
 		String semiYear = year + studentViewModel.getGroup().charAt(0);
 		String group = year + studentViewModel.getGroup();
@@ -205,8 +205,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 	private boolean isPersonalCourse(CourseViewModel course,
 									 StudentViewModel studentViewModel) {
 		if (course.getPack() == 0) {
-			return course.isForCycleAndYearAndSemester(studentViewModel.getCycleSpecialization(),
-					studentViewModel.getYear(), 1);
+			return course.isForCycleAndYearAndSemester(studentViewModel.getCycleSpecializationYear(), 1);
 		}
 
 		return studentViewModel.getCourses().contains(course.getKey());

@@ -41,8 +41,8 @@ public class StudentSelectionDialog extends EntitySelectionDialog<StudentViewMod
 	}
 
 	public String entityToDisplaySecondaryString(StudentViewModel student) {
-		return student.getStudentId() + "\n" + student.getCycleSpecialization().toString() + "\n" +
-				"Year " + student.getYear();
+		return student.getStudentId() + "\n" + student.getCycleSpecializationYear().toString() + "\n" +
+				"Year " + student.getCycleSpecializationYear().getYear();
 	}
 
 	private void createFilterLayouts() {
@@ -80,11 +80,13 @@ public class StudentSelectionDialog extends EntitySelectionDialog<StudentViewMod
 		List<Predicate<StudentViewModel>> predicates = new ArrayList<>();
 
 		if (selectedCycleSpecialization != null) {
-			predicates.add(student -> student.getCycleSpecialization().equals(selectedCycleSpecialization));
+			predicates.add(student -> student.getCycleSpecializationYear()
+					.getCycleSpecialization()
+					.equals(selectedCycleSpecialization));
 		}
 
 		if (selectedYear != null) {
-			predicates.add(student -> student.getYear() == selectedYear);
+			predicates.add(student -> student.getCycleSpecializationYear().getYear() == selectedYear);
 		}
 
 		setSelectedItems(false);

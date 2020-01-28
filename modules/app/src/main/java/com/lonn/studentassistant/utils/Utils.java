@@ -126,7 +126,7 @@ public class Utils {
 	public static List<String> getStudentGroupTags(Student student) {
 		List<String> result = new LinkedList<>();
 
-		result.add("I" + student.getYear());
+		result.add("I" + student.getCycleSpecializationYear().getYear());
 		result.add(result.get(0) + student.getGroup());
 
 		String semian = student.getGroup().substring(0, 1);

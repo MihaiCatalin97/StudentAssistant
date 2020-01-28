@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.implementations.student.StudentActivity">
+
+    <data>
+
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
+        <variable
+            name="professors"
+            type="java.util.Collection&lt;ProfessorViewModel&gt;" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/ScreenLayoutWrapped"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/titleProfessorsLayout"
+            style="@style/DarkTitleShadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Professors"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/titleProfessorsLayout"
+            app:layout_constraintTop_toBottomOf="@id/titleProfessorsLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/professorsBaseCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:childEntities="@{professors}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}"
+                    android:entityName="@{`professor`}"
+                    android:permissionLevel="@{1}"
+                    android:shouldContain="@{() -> true}"
+                    android:showEmpty="@{false}"
+                    android:showHeader="@{false}" />
+
+            </LinearLayout>
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

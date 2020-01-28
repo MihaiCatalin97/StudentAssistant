@@ -42,6 +42,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".activities.implementations.professor.ProfessorActivity"
+            android:parentActivityName=".activities.implementations.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.administrator.AdministratorActivity"
+            android:parentActivityName=".activities.implementations.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".activities.implementations.DebugActivity"
             android:parentActivityName=".activities.implementations.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -52,7 +62,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
-            android:name=".activities.implementations.register.AccountCreationActivity"
+            android:name=".activities.implementations.register.accountCreation.AccountCreationActivity"
             android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -73,6 +83,21 @@
 
         <activity
             android:name=".activities.implementations.register.profileCreation.AdministratorProfileCreationActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.accountCreation.StudentAccountCreationActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.accountCreation.ProfessorAccountCreationActivity"
+            android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.implementations.register.accountCreation.AdministratorAccountCreationActivity"
             android:parentActivityName=".activities.implementations.register.accountChoice.AccountChoiceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 

@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.activities.implementations.register;
+package com.lonn.studentassistant.activities.implementations.register.accountCreation;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,18 +10,22 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.LoginActivity;
+import com.lonn.studentassistant.activities.implementations.register.RegistrationInformation;
 import com.lonn.studentassistant.databinding.AccountCreationActivityLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
 import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.RegisterRequest;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.RegistrationValidator;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
-
-public class AccountCreationActivity extends FirebaseConnectedActivity {
+public abstract class AccountCreationActivity<T extends EntityViewModel<? extends Person>> extends FirebaseConnectedActivity {
+	private static final Logger LOGGER = Logger.ofClass(AccountCreationActivity.class);
 	RegistrationInformation newAccountCredentials = new RegistrationInformation();
-	private String personUUID;
+	private T personProfile;
 	private AccountType accountType;
 	private RegistrationValidator registrationValidator = new RegistrationValidator();
 
@@ -43,19 +47,17 @@ public class AccountCreationActivity extends FirebaseConnectedActivity {
 		FirebaseConnection.getInstance(getBaseContext()).execute(new RegisterRequest()
 				.email(newAccountCredentials.getEmail())
 				.password(newAccountCredentials.getPassword())
-				.personUUID(personUUID)
+				.personUUID(personProfile.getKey())
 				.accountType(accountType)
-				.onSuccess((user) -> {
-					showSnackBar("Account created successfully!", 1000);
-					executeWithDelay(this::backToLogin, 1500);
-				})
+				.onSuccess((user) -> createOrUpdateProfile(personProfile))
 				.onError((exception) -> showSnackBar(exception.getMessage(), 1000)));
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		personUUID = getIntent().getStringExtra("personUUID");
+
+		personProfile = (T) getIntent().getSerializableExtra("personProfile");
 		accountType = AccountType.valueOf(getIntent().getStringExtra("accountType"));
 	}
 
@@ -70,4 +72,18 @@ public class AccountCreationActivity extends FirebaseConnectedActivity {
 		Intent loginActivityIntent = new Intent(this, LoginActivity.class);
 		startActivity(loginActivityIntent);
 	}
+
+	private void createOrUpdateProfile(T profile) {
+		getPersonService()
+				.save(profile)
+				.onSuccess(none -> {
+					showSnackBar("Account created successfully!", 1000);
+					executeWithDelay(this::backToLogin, 1500);
+				})
+				.onError(error -> logAndShowErrorSnack("An error occurred while setting up your profile",
+						error,
+						LOGGER));
+	}
+
+	protected abstract Service<?, Exception, T> getPersonService();
 }

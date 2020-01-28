@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +12,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 public final class RegistrationToken extends BaseEntity {
 	private String token;
-	private String accountType;
+	private AccountType accountType;
 
 	@Override
 	public String getKey() {

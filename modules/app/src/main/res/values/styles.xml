@@ -74,7 +74,7 @@
     </style>
 
     <style name="ScrollViewFading" parent="@android:style/Widget.ScrollView">
-        <item name="android:fadingEdgeLength">150dp</item>
+        <item name="android:fadingEdgeLength">100dp</item>
         <item name="android:requiresFadingEdge">vertical</item>
     </style>
 

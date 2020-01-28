@@ -2,6 +2,7 @@ package com.lonn.studentassistant.firebaselayer.services;
 
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.entities.RegistrationToken;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
 import com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField;
@@ -29,8 +30,8 @@ public class RegistrationTokenService {
 	private void init() {
 	}
 
-	public Future<String, Exception> getTypeForToken(String token) {
-		Future<String, Exception> result = new Future<>();
+	public Future<AccountType, Exception> getTypeForToken(String token) {
+		Future<AccountType, Exception> result = new Future<>();
 
 		firebaseConnection.execute(new GetRequest<RegistrationToken, Exception>()
 				.databaseTable(REGISTRATION_TOKENS)

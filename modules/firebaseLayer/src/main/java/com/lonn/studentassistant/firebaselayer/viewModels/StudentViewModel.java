@@ -4,6 +4,7 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Student;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.List;
@@ -25,11 +26,10 @@ public final class StudentViewModel extends EntityViewModel<Student> {
 	@Bindable
 	private String firstName, lastName, email, phoneNumber, website, group, studentId, fatherInitial;
 	@Bindable
-	private int year;
 	private String imageMetadataKey;
 	private List<String> courses;
 	private List<String> otherActivities;
-	private CycleSpecialization cycleSpecialization;
+	private CycleSpecializationYear cycleSpecializationYear;
 	private List<String> gradeKeys;
 
 	@Override

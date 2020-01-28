@@ -13,9 +13,8 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
                 .email(student.getEmail())
                 .phoneNumber(student.getPhoneNumber())
                 .group(student.getGroup())
-                .year(student.getYear())
                 .studentId(student.getStudentId())
-                .cycleSpecialization(student.getCycleAndSpecialization())
+                .cycleSpecializationYear(student.getCycleSpecializationYear())
                 .courses(student.getCourses())
                 .otherActivities(student.getOtherActivities())
                 .imageMetadataKey(student.getImageMetadataKey())
@@ -31,11 +30,10 @@ public class StudentAdapter extends ViewModelAdapter<Student, StudentViewModel> 
                 .setEmail(studentViewModel.getEmail())
                 .setPhoneNumber(studentViewModel.getPhoneNumber())
                 .setGroup(studentViewModel.getGroup())
-                .setYear(studentViewModel.getYear())
                 .setStudentId(studentViewModel.getStudentId())
                 .setCourses(studentViewModel.getCourses())
                 .setOtherActivities(studentViewModel.getOtherActivities())
-                .setCycleAndSpecialization(studentViewModel.getCycleSpecialization())
+                .setCycleSpecializationYear(studentViewModel.getCycleSpecializationYear())
                 .setGrades(studentViewModel.getGradeKeys())
                 .setImageMetadataKey(studentViewModel.getImageMetadataKey());
 

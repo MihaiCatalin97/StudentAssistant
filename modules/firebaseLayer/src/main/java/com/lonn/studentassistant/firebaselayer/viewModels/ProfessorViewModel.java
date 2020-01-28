@@ -10,15 +10,19 @@ import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.FileAssoc
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-@Builder
 @Data
-@EqualsAndHashCode(callSuper = false)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Accessors(chain = true)
+@EqualsAndHashCode(callSuper = false)
 public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor> {
 	@Bindable
 	private String firstName, lastName, rank, email, phoneNumber, website, cabinet;
@@ -86,7 +90,7 @@ public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor>
 
 	@NonNull
 	@Override
-	public String toString(){
+	public String toString() {
 		return getFullName();
 	}
 }

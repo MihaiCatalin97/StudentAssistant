@@ -15,7 +15,6 @@ import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.views.EntityViewType;
 
@@ -86,8 +85,8 @@ public class ScrollViewEntityViewModelFactory {
 	private static ScrollViewEntityViewModel partial(StudentViewModel student) {
 		String title = student.getFirstName() + " " + student.getLastName();
 		String subtitle = Utils.hideStudentId(student.getStudentId());
-		String description = student.getCycleSpecialization().toString() + "\n" +
-				Utils.yearToString(student.getYear()) + "\n" +
+		String description = student.getCycleSpecializationYear().toString() + "\n" +
+				Utils.yearToString(student.getCycleSpecializationYear().getYear()) + "\n" +
 				"Group " + student.getGroup();
 
 		return ScrollViewEntityViewModel.builder()
@@ -100,8 +99,8 @@ public class ScrollViewEntityViewModelFactory {
 	private static ScrollViewEntityViewModel full(StudentViewModel student) {
 		String title = student.getFirstName() + " " + student.getLastName();
 		String subtitle = Utils.hideStudentId(student.getStudentId());
-		String description = student.getCycleSpecialization().toString() + "\n" +
-				Utils.yearToString(student.getYear()) + "\n" +
+		String description = student.getCycleSpecializationYear().toString() + "\n" +
+				Utils.yearToString(student.getCycleSpecializationYear().getYear()) + "\n" +
 				"Group " + student.getGroup();
 
 		return ScrollViewEntityViewModel.builder()

@@ -1,43 +1,44 @@
 package com.lonn.studentassistant.validation.validators;
 
-import com.lonn.studentassistant.firebaselayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lonn.studentassistant.validation.predicates.IntegerPredicates.isValidYear;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidEmail;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidGroup;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidInitial;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidName;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.isValidPhoneNumber;
-import static com.lonn.studentassistant.validation.predicates.StringPredicates.nonEmptyStringPredicate;
+import static com.lonn.studentassistant.validation.predicates.MiscValidationPredicates.isValidCycleSpecialization;
+import static com.lonn.studentassistant.validation.predicates.MiscValidationPredicates.isValidGroupForCycleSpecializationYear;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidInitial;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.nonEmptyStringPredicate;
 
-public class StudentValidator extends Validator<Student> {
-	private static List<ValidationRule<Student>> validationRules;
+public class StudentValidator extends Validator<StudentViewModel> {
+	private static List<ValidationRule<StudentViewModel>> validationRules;
 
 	static {
 		validationRules = new ArrayList<>();
 
-		validationRules.add(ValidationRule.test(nonEmptyStringPredicate(Student::getStudentId))
+		validationRules.add(ValidationRule.test(nonEmptyStringPredicate(StudentViewModel::getStudentId))
 				.orError("Invalid student id"));
-		validationRules.add(ValidationRule.test(isValidName(Student::getFirstName))
+		validationRules.add(ValidationRule.test(isValidName(StudentViewModel::getFirstName))
 				.orError("Invalid first name"));
-		validationRules.add(ValidationRule.test(isValidName(Student::getLastName))
+		validationRules.add(ValidationRule.test(isValidName(StudentViewModel::getLastName))
 				.orError("Invalid last name"));
-		validationRules.add(ValidationRule.test(isValidInitial(Student::getFatherInitial))
-				.orError("Invalid father's initial"));
-		validationRules.add(ValidationRule.test(isValidEmail(Student::getEmail))
-				.orError("Invalid email"));
-		validationRules.add(ValidationRule.test(isValidPhoneNumber(Student::getPhoneNumber))
-				.orError("Invalid phone number"));
-		validationRules.add(ValidationRule.test(isValidYear(Student::getYear))
+		validationRules.add(ValidationRule.test(isValidCycleSpecialization(StudentViewModel::getCycleSpecializationYear))
 				.orError("Invalid year"));
-		validationRules.add(ValidationRule.test(isValidGroup(Student::getGroup))
+		validationRules.add(ValidationRule.test(isValidGroupForCycleSpecializationYear(StudentViewModel::getCycleSpecializationYear,
+				StudentViewModel::getGroup))
 				.orError("Invalid group"));
+		validationRules.add(ValidationRule.test(isValidEmail(StudentViewModel::getEmail))
+				.orError("Invalid email"));
+		validationRules.add(ValidationRule.test(isValidInitial(StudentViewModel::getFatherInitial))
+				.orError("Invalid father's initial"));
+		validationRules.add(ValidationRule.test(isValidPhoneNumber(StudentViewModel::getPhoneNumber))
+				.orError("Invalid phone number"));
 	}
 
-	protected List<ValidationRule<Student>> getValidationRules() {
+	protected List<ValidationRule<StudentViewModel>> getValidationRules() {
 		return validationRules;
 	}
 }

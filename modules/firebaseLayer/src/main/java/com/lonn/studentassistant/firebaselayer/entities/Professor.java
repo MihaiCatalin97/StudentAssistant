@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.entities;
 
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.FileAssociatedEntity;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -12,12 +12,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public final class Professor extends FileAssociatedEntity {
+public final class Professor extends Person {
 	private String scheduleLink;
-	private String firstName;
-	private String lastName;
-	private String email;
-	private String phoneNumber;
 	private String level;
 	private String website;
 	private String cabinet;
@@ -56,6 +52,26 @@ public final class Professor extends FileAssociatedEntity {
 
 	public Professor setFileMetadataKeys(List<String> fileMetadataKeys) {
 		this.fileMetadataKeys = fileMetadataKeys;
+		return this;
+	}
+
+	public Professor setFirstName(String firstName) {
+		this.firstName = firstName;
+		return this;
+	}
+
+	public Professor setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
+	public Professor setEmail(String email) {
+		this.email = email;
+		return this;
+	}
+
+	public Professor setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 		return this;
 	}
 }

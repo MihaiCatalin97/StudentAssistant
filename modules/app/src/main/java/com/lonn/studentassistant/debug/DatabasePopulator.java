@@ -48,8 +48,7 @@ public class DatabasePopulator {
 					.setGroup((random.nextBoolean() ? "A" : "B") + random.nextInt(7));
 
 			CycleSpecializationYear cycleSpecializationYear = CycleSpecializationYear.values()[random.nextInt(CycleSpecializationYear.values().length)];
-			student.setCycleSpecialization(cycleSpecializationYear.getCycleSpecialization())
-					.setYear(cycleSpecializationYear.getYear());
+			student.setCycleSpecializationYear(cycleSpecializationYear);
 
 			student.setEmail((student.getFirstName() + "." + student.getLastName() + "@email.com").toLowerCase());
 

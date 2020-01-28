@@ -170,7 +170,7 @@
                     android:layout_weight="0.5"
                     android:enabled="false"
                     android:inputType="textEmailAddress"
-                    android:text="@{Integer.toString(student.year)}" />
+                    android:text="@{student.cycleSpecializationYear.toString()}" />
 
                 <ImageView
                     android:id="@+id/profileYearEditButton"

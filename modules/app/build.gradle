@@ -50,6 +50,8 @@ android {
                             'src/main/res/layouts/activities/studentActivity',
                             'src/main/res/layouts/activities/debugActivity',
                             'src/main/res/layouts/activities/laboratoryEntityActivity',
+                            'src/main/res/layouts/activities/professorActivity',
+                            'src/main/res/layouts/activities/administratorActivity',
                             'src/main/res/layouts/activities',
                             'src/main/res/layouts/inputs',
                             'src/main/res/layouts/others',
