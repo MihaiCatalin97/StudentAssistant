@@ -15,15 +15,18 @@ import com.lonn.studentassistant.viewModels.CategoryViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import static java.util.Calendar.DAY_OF_YEAR;
+import static java.util.Calendar.YEAR;
 import static java.util.Collections.sort;
 
 public class CategoryGenerator {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM YYYY (EEEE)");
+	private static long MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 	public static <T extends EntityViewModel<? extends Course>> List<CategoryViewModel<T>> studyCycleCategories(CategoryViewModel<T> parentCategory) {
 		List<CategoryViewModel<T>> subcategories = new ArrayList<>();
@@ -100,25 +103,33 @@ public class CategoryGenerator {
 	public static <T extends OneTimeClassViewModel> List<CategoryViewModel<T>> oneTimeScheduleCategories(CategoryViewModel<T> parentCategory,
 																										 Collection<T> scheduleClasses) {
 		List<CategoryViewModel<T>> subcategories = new ArrayList<>();
-		List<Date> categoriesAdded = new LinkedList<>();
-
+		List<String> categoriesAdded = new LinkedList<>();
 
 		if (scheduleClasses != null) {
 			List<T> scheduleClassesList = new ArrayList<>(scheduleClasses);
 			sort(scheduleClassesList, (s1, s2) -> s1.getDate().compareTo(s2.getDate()));
 
 			for (T scheduleClass : scheduleClassesList) {
-				if (!categoriesAdded.contains(scheduleClass.getDate())) {
+				String dateFormatted = simpleDateFormat.format(scheduleClass.getDate());
+				if (!categoriesAdded.contains(dateFormatted)) {
 					subcategories.add(new CategoryViewModel<T>()
-							.setCategoryTitle(simpleDateFormat.format(scheduleClass.getDate()))
+							.setCategoryTitle(dateFormatted)
 							.setEntityName(parentCategory.getEntityName())
 							.setViewType(parentCategory.getViewType())
 							.setPermissionLevel(parentCategory.getPermissionLevel())
 							.setShowEmpty(parentCategory.isShowEmpty())
 							.setShowHeader(true)
-							.setShouldContain((schClass) -> schClass.getDate().equals(scheduleClass.getDate())));
+							.setShouldContain((schClass) -> {
+								Calendar c1 = Calendar.getInstance();
+								Calendar c2 = Calendar.getInstance();
 
-					categoriesAdded.add(scheduleClass.getDate());
+								c1.setTime(schClass.getDate());
+								c2.setTime(scheduleClass.getDate());
+
+								return c1.get(YEAR) == c2.get(YEAR) && c1.get(DAY_OF_YEAR) == c2.get(DAY_OF_YEAR);
+							}));
+
+					categoriesAdded.add(dateFormatted);
 				}
 			}
 		}

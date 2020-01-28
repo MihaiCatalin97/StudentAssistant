@@ -22,6 +22,7 @@ import static java.util.Calendar.DAY_OF_WEEK;
 public class RecurringClassService extends Service<RecurringClass, Exception, RecurringClassViewModel> {
 	private static RecurringClassService instance;
 	private CourseService courseService;
+	private OtherActivityService otherActivityService;
 	private ProfessorService professorService;
 
 	private RecurringClassService(FirebaseConnection firebaseConnection) {
@@ -41,6 +42,7 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 		adapter = new RecurringClassAdapter(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);
 		professorService = ProfessorService.getInstance(firebaseConnection);
+		otherActivityService = OtherActivityService.getInstance(firebaseConnection);
 	}
 
 	@Override
@@ -84,6 +86,8 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 
 						courseService.removeRecurringClass(recurringClass.getDiscipline(),
 								recurringClassId);
+						otherActivityService.removeRecurringClass(recurringClass.getDiscipline(),
+								recurringClassId);
 					}
 				})
 				.onError(result::completeExceptionally);
@@ -108,6 +112,8 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 
 			courseService.removeRecurringClass(recurringClass.getDiscipline(),
 					recurringClass.getKey());
+			otherActivityService.removeRecurringClass(recurringClass.getDiscipline(),
+					recurringClass.getKey());
 		}
 
 		return result;
@@ -122,6 +128,7 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 					result.complete(null);
 
 					courseService.addRecurringClass(recurringClass.getDiscipline(), recurringClass.getKey());
+					otherActivityService.addRecurringClass(recurringClass.getDiscipline(), recurringClass.getKey());
 
 					for (String professorKey : recurringClass.getProfessors()) {
 						professorService.addRecurringClass(professorKey, recurringClass.getKey());

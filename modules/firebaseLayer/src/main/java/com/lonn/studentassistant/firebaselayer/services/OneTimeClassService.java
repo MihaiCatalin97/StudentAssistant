@@ -22,6 +22,7 @@ import static java.util.Calendar.DAY_OF_WEEK;
 public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTimeClassViewModel> {
 	private static OneTimeClassService instance;
 	private CourseService courseService;
+	private OtherActivityService otherActivityService;
 	private ProfessorService professorService;
 
 	private OneTimeClassService(FirebaseConnection firebaseConnection) {
@@ -42,6 +43,7 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 		adapter = new OneTimeClassAdapter(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);
 		professorService = ProfessorService.getInstance(firebaseConnection);
+		otherActivityService = OtherActivityService.getInstance(firebaseConnection);
 	}
 
 	@Override
@@ -85,6 +87,8 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 
 						courseService.removeOneTimeClass(oneTimeClass.getDiscipline(),
 								oneTimeClassId);
+						otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
+								oneTimeClassId);
 					}
 				})
 				.onError(result::completeExceptionally);
@@ -108,6 +112,8 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 			}
 
 			courseService.removeRecurringClass(oneTimeClass.getDiscipline(),
+					oneTimeClass.getKey());
+			otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
 					oneTimeClass.getKey());
 		}
 
@@ -168,6 +174,7 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 					result.complete(null);
 
 					courseService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
+					otherActivityService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
 
 					for (String professorKey : oneTimeClass.getProfessors()) {
 						professorService.addOneTimeClass(professorKey, oneTimeClass.getKey());

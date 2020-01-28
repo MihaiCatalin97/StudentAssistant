@@ -112,6 +112,7 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 
 		findViewById(R.id.classDialogStartHourSelectButton).setOnClickListener(view -> {
 			new TimePickerDialog(getContext(),
+					R.style.DatePickerTheme,
 					(dialog, hour, minute) -> {
 						startHour = hour * 100 + minute;
 
@@ -125,6 +126,7 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 
 		findViewById(R.id.classDialogEndHourSelectButton).setOnClickListener(view -> {
 			new TimePickerDialog(getContext(),
+					R.style.DatePickerTheme,
 					(dialog, hour, minute) -> {
 						endHour = hour * 100 + minute;
 

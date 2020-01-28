@@ -60,15 +60,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	public void setIsTable(Boolean isTable) {
-		if (this.viewModel.isEndCategory()) {
-			if (isTable == null) {
-				isTable = false;
-			}
-			binding.setIsTable(isTable);
+		if (isTable == null) {
+			isTable = false;
 		}
-		else {
-			binding.setIsTable(false);
-		}
+		binding.setIsTable(isTable);
 
 		for (ScrollViewCategory category : content.subcategoryViews.values()) {
 			category.setIsTable(isTable);
@@ -118,7 +113,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 	public void setChildCategories(Collection<CategoryViewModel<T>> categories) {
 		getViewModel().setChildCategories(categories);
-		List<ScrollViewCategory> categoriesToBeRemoved = new LinkedList<>();
+		List<ScrollViewCategory<T>> categoriesToBeRemoved = new LinkedList<>();
 		Collection<CategoryViewModel<T>> categoriesToBeAdded = new LinkedList<>();
 
 		for (ScrollViewCategory<T> category : content.getSubcategories()) {
@@ -152,11 +147,15 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 			}
 		}
 
-		for (ScrollViewCategory category : categoriesToBeRemoved) {
+		for (ScrollViewCategory<T> category : categoriesToBeRemoved) {
 			content.removeSubcategory(category);
+
+			for (String removedEntityKey : category.getViewModel().getChildEntities().keySet()) {
+				viewModel.getChildEntities().remove(removedEntityKey);
+			}
 		}
-		addCategoriesToContent(categoriesToBeAdded);
 		setIsTable(binding.getIsTable());
+		addCategoriesToContent(categoriesToBeAdded);
 
 		hideIfEmpty();
 	}

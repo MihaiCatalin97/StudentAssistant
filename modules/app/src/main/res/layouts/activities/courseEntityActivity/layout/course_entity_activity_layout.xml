@@ -127,6 +127,7 @@
                     android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_LABORATORY_WEEK_COMPARATOR}"
                     android:deletable="@{true}"
+                    android:showEmpty="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`laboratory`}"
                     android:permissionLevel="@{1}" />
@@ -152,6 +153,7 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
                     android:deletable="@{true}"
+                    android:showEmpty="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{1}" />
@@ -179,10 +181,10 @@
                     android:editing="@{editing}"
                     android:entityName="@{`regular class`}"
                     android:permissionLevel="@{1}"
-                    android:showEmpty="@{false}"
+                    android:showEmpty="@{true}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
-                    app:isTable="@{true}"
-                    app:showAddButton="@{true}" />
+                    android:isTable="@{true}"
+                    android:showAddButton="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/oneTimeClassesCategory"
@@ -195,10 +197,10 @@
                     android:editing="@{editing}"
                     android:entityName="@{`one time class`}"
                     android:permissionLevel="@{1}"
-                    android:showEmpty="@{false}"
+                    android:showEmpty="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
-                    app:isTable="@{true}"
-                    app:showAddButton="@{true}" />
+                    android:isTable="@{true}"
+                    android:showAddButton="@{true}" />
             </LinearLayout>
         </ScrollView>
 
