@@ -34,6 +34,7 @@ import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableCont
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.OTHER_ACTIVITIES;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.REGISTRATION_TOKENS;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.USERS;
 
@@ -58,6 +59,7 @@ public class FirebaseConnection {
 		databaseMap.put(FILE_METADATA, buildContextForTable(FILE_METADATA));
 		databaseMap.put(FILE_CONTENT, buildContextForTable(FILE_CONTENT));
 		databaseMap.put(LABORATORIES, buildContextForTable(LABORATORIES));
+		databaseMap.put(REGISTRATION_TOKENS, buildContextForTable(REGISTRATION_TOKENS));
 
 		databaseMap.put(ADMINISTRATORS, buildContextForTable(ADMINISTRATORS));
 		databaseMap.put(PROFESSORS, buildContextForTable(PROFESSORS));

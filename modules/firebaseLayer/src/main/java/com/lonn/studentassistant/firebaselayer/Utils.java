@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class Utils {
+	public static final long DAY_MILLISECONDS = 1000 * 60 * 60 * 24;
 
 	public static String stringToFirstCapital(@NonNull String stringToFormat) {
 		StringBuilder result = new StringBuilder();

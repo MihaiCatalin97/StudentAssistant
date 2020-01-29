@@ -28,6 +28,7 @@ public abstract class AccountCreationActivity<T extends EntityViewModel<? extend
 	private T personProfile;
 	private AccountType accountType;
 	private RegistrationValidator registrationValidator = new RegistrationValidator();
+	private String registrationToken;
 
 	public void tapCreateAccountButton(View v) {
 		ValidationResult registerValidationResult = registrationValidator.validate(newAccountCredentials);
@@ -59,6 +60,7 @@ public abstract class AccountCreationActivity<T extends EntityViewModel<? extend
 
 		personProfile = (T) getIntent().getSerializableExtra("personProfile");
 		accountType = AccountType.valueOf(getIntent().getStringExtra("accountType"));
+		registrationToken = getIntent().getStringExtra("registrationToken");
 	}
 
 	protected void inflateLayout() {
@@ -78,11 +80,15 @@ public abstract class AccountCreationActivity<T extends EntityViewModel<? extend
 				.save(profile)
 				.onSuccess(none -> {
 					showSnackBar("Account created successfully!", 1000);
-					executeWithDelay(this::backToLogin, 1500);
+					executeWithDelay(this::backToLogin, 2000);
 				})
 				.onError(error -> logAndShowErrorSnack("An error occurred while setting up your profile",
 						error,
 						LOGGER));
+
+		if (registrationToken != null) {
+			firebaseApi.getRegistrationTokenService().deleteByToken(registrationToken);
+		}
 	}
 
 	protected abstract Service<?, Exception, T> getPersonService();

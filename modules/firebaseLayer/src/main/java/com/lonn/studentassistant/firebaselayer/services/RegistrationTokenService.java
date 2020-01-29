@@ -1,21 +1,24 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
+import com.lonn.studentassistant.firebaselayer.adapters.RegistrationTokenAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
+import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.RegistrationToken;
 import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.predicates.Predicate;
-import com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.viewModels.RegistrationTokenViewModel;
+
+import java.util.Date;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.REGISTRATION_TOKENS;
 
-public class RegistrationTokenService {
+public class RegistrationTokenService extends Service<RegistrationToken, Exception, RegistrationTokenViewModel> {
 	private static RegistrationTokenService instance;
-	private final FirebaseConnection firebaseConnection;
 
 	private RegistrationTokenService(FirebaseConnection firebaseConnection) {
-		this.firebaseConnection = firebaseConnection;
+		super(firebaseConnection);
 	}
 
 	public static RegistrationTokenService getInstance(FirebaseConnection firebaseConnection) {
@@ -27,25 +30,81 @@ public class RegistrationTokenService {
 		return instance;
 	}
 
-	private void init() {
+	protected void init() {
+		adapter = new RegistrationTokenAdapter();
 	}
 
-	public Future<AccountType, Exception> getTypeForToken(String token) {
-		Future<AccountType, Exception> result = new Future<>();
+	private Future<RegistrationTokenViewModel, Exception> getByToken(String tokenToFind) {
+		Future<RegistrationTokenViewModel, Exception> result = new Future<>();
 
 		firebaseConnection.execute(new GetRequest<RegistrationToken, Exception>()
 				.databaseTable(REGISTRATION_TOKENS)
-				.predicate(Predicate.where(BaseEntityField.ID).equalTo(token))
+				.subscribe(false)
 				.onSuccess(tokens -> {
-					if (tokens != null && tokens.size() == 1) {
-						result.complete(tokens.get(0).getAccountType());
+					if (tokens != null) {
+						for (RegistrationToken token : tokens) {
+							if (token.getToken().equals(tokenToFind)) {
+								result.complete(adapter.adapt(token));
+								return;
+							}
+						}
 					}
-					else {
-						result.complete(null);
-					}
+
+					result.complete(null);
 				})
 				.onError(result::completeExceptionally));
 
 		return result;
+	}
+
+	public Future<AccountType, Exception> getTypeForToken(String tokenToCheck) {
+		Future<AccountType, Exception> result = new Future<>();
+
+		getByToken(tokenToCheck)
+				.onSuccess(token -> {
+					if (token.getExpiresAt().after(new Date())) {
+						result.complete(token.getAccountType());
+						return;
+					}
+					result.complete(null);
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> deleteByToken(String tokenToDelete) {
+		Future<Void, Exception> result = new Future<>();
+
+		getByToken(tokenToDelete)
+				.onSuccess(token -> deleteById(token.getKey())
+						.onSuccess(result::complete)
+						.onError(result::completeExceptionally))
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	@Override
+	public Future<RegistrationTokenViewModel, Exception> getById(String id, boolean subscribe) {
+		Future<RegistrationTokenViewModel, Exception> result = new Future<>();
+
+		super.getById(id, subscribe)
+				.onSuccess(token -> {
+					if (token.getExpiresAt().after(new Date())) {
+						result.complete(token);
+						return;
+					}
+
+					result.complete(null);
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	@Override
+	protected DatabaseTable<RegistrationToken> getDatabaseTable() {
+		return REGISTRATION_TOKENS;
 	}
 }

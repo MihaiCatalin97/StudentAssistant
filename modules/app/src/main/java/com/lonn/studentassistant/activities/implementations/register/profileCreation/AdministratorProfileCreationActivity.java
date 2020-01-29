@@ -32,8 +32,6 @@ public class AdministratorProfileCreationActivity extends ProfileCreationActivit
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		firebaseApi = FirebaseApi.getApi(this);
-		inflateLayout();
 		binding.setPersonProfile(getPersonProfile());
 	}
 
@@ -53,7 +51,7 @@ public class AdministratorProfileCreationActivity extends ProfileCreationActivit
 			return;
 		}
 
-		startAccountCreationActivity();
+		startAccountCreationActivity(getPersonProfile());
 	}
 
 	protected AdministratorViewModel mergeExistingProfile(AdministratorViewModel existingProfile,

@@ -6,8 +6,8 @@
         <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
-            name="student"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
+            name="professor"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
         <variable
             name="courses"
@@ -30,11 +30,11 @@
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
-            name="optionalCourses"
+            name="personalCourses"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
-            name="myOtherActivities"
+            name="personalOtherActivities"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -55,25 +55,25 @@
 
         <include
             android:id="@+id/layoutHome"
-            layout="@layout/student_activity_home_layout"
+            layout="@layout/professor_activity_home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible" />
 
         <include
             android:id="@+id/layoutProfile"
-            layout="@layout/student_activity_profile_layout"
+            layout="@layout/professor_activity_profile_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:myOtherActivities="@{myOtherActivities}"
-            app:optionalCourses="@{optionalCourses}"
+            app:personalOtherActivities="@{personalOtherActivities}"
+            app:personalCourses="@{personalCourses}"
             app:profileImageContent="@{profileImageContent}"
-            app:student="@{student}" />
+            app:professor="@{professor}" />
 
         <include
             android:id="@+id/layoutSchedule"
-            layout="@layout/student_activity_schedule_layout"
+            layout="@layout/professor_activity_schedule_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
@@ -82,21 +82,21 @@
 
         <include
             android:id="@+id/layoutGrades"
-            layout="@layout/student_activity_grades_layout"
+            layout="@layout/professor_activity_grades_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
         <include
             android:id="@+id/layoutMessages"
-            layout="@layout/student_activity_messages_layout"
+            layout="@layout/professor_activity_messages_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
         <include
             android:id="@+id/layoutProfessors"
-            layout="@layout/student_activity_professors_layout"
+            layout="@layout/professor_activity_professors_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
@@ -104,7 +104,7 @@
 
         <include
             android:id="@+id/layoutCourses"
-            layout="@layout/student_activity_courses_layout"
+            layout="@layout/professor_activity_courses_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
@@ -112,14 +112,14 @@
 
         <include
             android:id="@+id/layoutAdministrative"
-            layout="@layout/student_activity_administrative_layout"
+            layout="@layout/professor_activity_administrative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
         <include
             android:id="@+id/layoutOtherActivities"
-            layout="@layout/student_activity_other_activities_layout"
+            layout="@layout/professor_activity_other_activities_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"

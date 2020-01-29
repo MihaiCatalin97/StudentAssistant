@@ -25,7 +25,7 @@ public class TokenCheckActivity extends FirebaseConnectedActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		expectedAccountType = AccountType.valueOf(getIntent().getStringExtra("accountType"));
+		expectedAccountType = (AccountType) getIntent().getSerializableExtra("accountType");
 	}
 
 	protected void inflateLayout() {
@@ -42,7 +42,7 @@ public class TokenCheckActivity extends FirebaseConnectedActivity {
 						showSnackBar("Invalid registration token", 1000);
 					}
 					else {
-						startNextActivity();
+						startNextActivity(token);
 					}
 				})
 				.onError(error -> logAndShowErrorSnack("An error occurred",
@@ -51,7 +51,7 @@ public class TokenCheckActivity extends FirebaseConnectedActivity {
 
 	}
 
-	private void startNextActivity() {
+	private void startNextActivity(String registrationToken) {
 		Intent profileActivityIntent = null;
 
 		if (expectedAccountType.equals(PROFESSOR)) {
@@ -62,6 +62,8 @@ public class TokenCheckActivity extends FirebaseConnectedActivity {
 		}
 
 		if (profileActivityIntent != null) {
+			profileActivityIntent.putExtra("accountType", expectedAccountType);
+			profileActivityIntent.putExtra("registrationToken", registrationToken);
 			startActivity(profileActivityIntent);
 		}
 	}

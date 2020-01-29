@@ -208,6 +208,25 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 		return result;
 	}
 
+	public Future<ProfessorViewModel, Exception> getByName(String firstName, String lastName) {
+		Future<ProfessorViewModel, Exception> result = new Future<>();
+
+		getAll().onComplete(professors -> {
+					for (ProfessorViewModel professor : professors) {
+						if (professor.getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
+								professor.getLastName().toLowerCase().equals(lastName.toLowerCase())) {
+							result.complete(professor);
+							return;
+						}
+					}
+
+					result.complete(null);
+				},
+				result::completeExceptionally);
+
+		return result;
+	}
+
 	@Override
 	protected DatabaseTable<Professor> getDatabaseTable() {
 		return PROFESSORS;

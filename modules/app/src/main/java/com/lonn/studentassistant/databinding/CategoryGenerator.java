@@ -26,7 +26,6 @@ import static java.util.Collections.sort;
 
 public class CategoryGenerator {
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMM YYYY (EEEE)");
-	private static long MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
 	public static <T extends EntityViewModel<? extends Course>> List<CategoryViewModel<T>> studyCycleCategories(CategoryViewModel<T> parentCategory) {
 		List<CategoryViewModel<T>> subcategories = new ArrayList<>();

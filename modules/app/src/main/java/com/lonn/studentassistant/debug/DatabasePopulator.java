@@ -10,6 +10,7 @@ import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.viewModels.RegistrationTokenViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
@@ -17,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {
@@ -75,10 +78,16 @@ public class DatabasePopulator {
 				.onCompleteDoNothing();
 	}
 
-	public void populateAdministratorsTable() {
-		firebaseApi.getAdministratorService()
-				.deleteAll()
-				.onCompleteDoNothing();
+	public void populateTokens() {
+		for (int i = 0; i < 3; i++) {
+			firebaseApi.getRegistrationTokenService()
+					.save(new RegistrationTokenViewModel()
+							.setAccountType(PROFESSOR));
+
+			firebaseApi.getRegistrationTokenService()
+					.save(new RegistrationTokenViewModel()
+							.setAccountType(ADMINISTRATOR));
+		}
 	}
 
 	public void parseSchedule() {

@@ -57,8 +57,8 @@ public class DebugActivity extends FirebaseConnectedActivity {
 			case R.id.testDatabase: {
 				testDatabase();
 			}
-			case R.id.populateAdministrators: {
-				populator.populateAdministratorsTable();
+			case R.id.populateTokens: {
+				populator.populateTokens();
 				break;
 			}
 		}

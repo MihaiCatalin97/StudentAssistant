@@ -120,6 +120,9 @@ public enum CycleSpecializationYear {
 				}
 			}
 		}
+		else {
+			groups.add(toInitialsString());
+		}
 
 		String[] result = new String[groups.size()];
 		result = groups.toArray(result);

@@ -34,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:gravity="center"
             android:text="Please insert your token"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -44,6 +45,8 @@
             style="@style/DarkNormalShadowed"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:gravity="center"
             app:layout_constraintLeft_toLeftOf="@id/tokenCheckActivitySubTitle"
             app:layout_constraintRight_toRightOf="@id/tokenCheckActivitySubTitle"
             app:layout_constraintTop_toBottomOf="@id/tokenCheckActivitySubTitle" />
@@ -52,11 +55,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="64dp"
+            android:onClick="checkToken"
+            android:text="Continue"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tokenCheckActivityTokenEditText"
-            android:onClick="checkToken"
-            android:text="Continue"/>
+            app:layout_constraintTop_toBottomOf="@id/tokenCheckActivityTokenEditText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

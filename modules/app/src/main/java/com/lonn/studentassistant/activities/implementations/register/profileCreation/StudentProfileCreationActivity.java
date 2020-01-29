@@ -64,7 +64,7 @@ public class StudentProfileCreationActivity extends ProfileCreationActivity<Stud
 						checkIfPersonHasAccountAndStartActivity(student);
 					}
 					else {
-						startAccountCreationActivity();
+						startAccountCreationActivity(getPersonProfile());
 					}
 				})
 				.onError(error -> logAndShowErrorSnack("An error occurred, please try again later",

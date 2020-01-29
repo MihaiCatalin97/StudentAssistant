@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.NavBarActivity;
-import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
+import com.lonn.studentassistant.databinding.ProfessorActivityMainLayoutBinding;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfileImageUploadDialog;
@@ -16,7 +16,7 @@ import static android.view.View.VISIBLE;
 
 public class ProfessorActivity extends NavBarActivity {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorActivity.class);
-	StudentActivityMainLayoutBinding binding;
+	ProfessorActivityMainLayoutBinding binding;
 
 	private ProfessorActivityFirebaseDispatcher dispatcher;
 	private ProfileImageUploadDialog imageUploadDialog;
@@ -101,7 +101,7 @@ public class ProfessorActivity extends NavBarActivity {
 	}
 
 	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.student_activity_main_layout);
+		binding = DataBindingUtil.setContentView(this, R.layout.professor_activity_main_layout);
 		dispatcher = new ProfessorActivityFirebaseDispatcher(this);
 	}
 }

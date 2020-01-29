@@ -64,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/first_name"
+                    android:singleLine="true"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
                     android:text="@={professorProfile.firstName}" />
@@ -79,6 +80,7 @@
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:hint="@string/last_name"
+                    android:singleLine="true"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
                     android:text="@={professorProfile.lastName}" />
@@ -93,25 +95,43 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/phone_number"
+                    android:hint="Rank"
                     android:importantForAutofill="no"
-                    android:inputType="textWebEditText"
+                    android:inputType="text"
+                    android:singleLine="true"
                     android:text="@={professorProfile.rank}" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    android:text="@string/phone_number" />
+                    android:text="@string/email" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/phone_number"
+                    android:hint="email@email.com"
+                    android:singleLine="true"
                     android:importantForAutofill="no"
-                    android:inputType="phone"
-                    android:text="@={professorProfile.phoneNumber}" />
+                    android:inputType="textWebEditText"
+                    android:text="@={professorProfile.email}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Cabinet" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:singleLine="true"
+                    android:hint="Cabinet"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:text="@={professorProfile.cabinet}" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -123,6 +143,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
+                    android:hint="+41234567890"
+                    android:importantForAutofill="no"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:text="@={professorProfile.phoneNumber}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="Website" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:singleLine="true"
                     android:hint="Website"
                     android:importantForAutofill="no"
                     android:inputType="textWebEditText"
@@ -135,7 +172,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:onClick="tapCredentialsCheckButton"
+            android:onClick="tapContinue"
             android:text="@string/continue_step"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

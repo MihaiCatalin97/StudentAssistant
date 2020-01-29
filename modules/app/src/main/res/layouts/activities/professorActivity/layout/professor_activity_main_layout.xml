@@ -10,8 +10,8 @@
             type="com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel" />
 
         <variable
-            name="student"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
+            name="professor"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
 
         <variable
             name="courses"
@@ -34,11 +34,11 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
 
         <variable
-            name="optionalCourses"
+            name="personalCourses"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
-            name="myOtherActivities"
+            name="personalOtherActivities"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -78,16 +78,16 @@
 
             <include
                 android:id="@+id/layoutMain"
-                layout="@layout/student_activity_content_layout"
+                layout="@layout/professor_activity_content_layout"
                 app:courses="@{courses.values()}"
-                app:myOtherActivities="@{myOtherActivities.values()}"
+                app:personalOtherActivities="@{personalOtherActivities.values()}"
                 app:oneTimeClasses="@{oneTimeClasses.values()}"
-                app:optionalCourses="@{optionalCourses.values()}"
+                app:personalCourses="@{personalCourses.values()}"
                 app:otherActivities="@{otherActivities.values()}"
+                app:professor="@{professor}"
                 app:professors="@{professors}"
                 app:profileImageContent="@{profileImageContent}"
-                app:recurringClasses="@{recurringClasses.values()}"
-                app:student="@{student}" />
+                app:recurringClasses="@{recurringClasses.values()}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"

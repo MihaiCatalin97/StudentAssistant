@@ -4,30 +4,23 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.register.accountCreation.ProfessorAccountCreationActivity;
-import com.lonn.studentassistant.activities.implementations.register.accountCreation.StudentAccountCreationActivity;
 import com.lonn.studentassistant.databinding.ProfessorProfileCreationActivityLayoutBinding;
-import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.ProfessorValidator;
 
-import static com.lonn.studentassistant.BR._all;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
 import static java.util.UUID.randomUUID;
 
 public class ProfessorProfileCreationActivity extends ProfileCreationActivity<ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorProfileCreationActivity.class);
 	private ProfessorProfileCreationActivityLayoutBinding binding;
-	private ProfessorValidator professorValidatior = new ProfessorValidator();
+	private ProfessorValidator professorValidator = new ProfessorValidator();
 
 	public ProfessorProfileCreationActivity() {
 		super(PROFESSOR);
@@ -38,8 +31,6 @@ public class ProfessorProfileCreationActivity extends ProfileCreationActivity<Pr
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		firebaseApi = FirebaseApi.getApi(this);
-		inflateLayout();
 		binding.setProfessorProfile(getPersonProfile());
 	}
 
@@ -48,7 +39,7 @@ public class ProfessorProfileCreationActivity extends ProfileCreationActivity<Pr
 	}
 
 	public void tapContinue(View view) {
-		ValidationResult validationResult = professorValidatior.validate(getPersonProfile());
+		ValidationResult validationResult = professorValidator.validate(getPersonProfile());
 
 		if (!validationResult.isValid()) {
 			Toast.makeText(this.getBaseContext(),
@@ -59,15 +50,41 @@ public class ProfessorProfileCreationActivity extends ProfileCreationActivity<Pr
 			return;
 		}
 
-		startAccountCreationActivity();
+		firebaseApi.getProfessorService()
+				.getByName(getPersonProfile().getFirstName(), getPersonProfile().getLastName())
+				.onSuccess(professor -> {
+					if (professor != null) {
+						checkIfPersonHasAccountAndStartActivity(professor);
+					}
+					else {
+						startAccountCreationActivity(getPersonProfile());
+					}
+				})
+				.onError(error -> logAndShowErrorSnack("An error occurred, please try again later",
+						error,
+						LOGGER));
+		startAccountCreationActivity(getPersonProfile());
 	}
 
 	protected ProfessorViewModel mergeExistingProfile(ProfessorViewModel existingProfile,
-													ProfessorViewModel newProfile) {
+													  ProfessorViewModel newProfile) {
+		existingProfile.setFirstName(newProfile.getFirstName())
+				.setLastName(newProfile.getLastName());
+
+		if (newProfile.getEmail() != null && newProfile.getEmail().length() > 0) {
+			existingProfile.setEmail(newProfile.getEmail());
+		}
+		if (newProfile.getRank() != null && newProfile.getRank().length() > 0) {
+			existingProfile.setRank(newProfile.getRank());
+		}
+		if (newProfile.getPhoneNumber() != null && newProfile.getPhoneNumber().length() > 0) {
+			existingProfile.setPhoneNumber(newProfile.getPhoneNumber());
+		}
+
 		return existingProfile;
 	}
 
-	protected Class<ProfessorAccountCreationActivity> getNextActivityClass(){
+	protected Class<ProfessorAccountCreationActivity> getNextActivityClass() {
 		return ProfessorAccountCreationActivity.class;
 	}
 }

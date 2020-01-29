@@ -108,12 +108,12 @@
         app:layout_constraintTop_toBottomOf="@+id/deleteProfessors" />
 
     <Button
-        android:id="@+id/populateAdministrators"
+        android:id="@+id/populateTokens"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:onClick="debugButton"
-        android:text="Populate Administrators"
+        android:text="Populate Tokens"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/testDatabase" />

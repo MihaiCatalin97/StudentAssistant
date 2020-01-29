@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 
 import java.lang.reflect.Field;

@@ -1,14 +1,15 @@
 package com.lonn.studentassistant.activities.implementations.register.accountChoice;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.TokenCheckActivity;
 import com.lonn.studentassistant.activities.implementations.register.profileCreation.StudentProfileCreationActivity;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
+
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
 
 public class AccountChoiceActivity extends FirebaseConnectedActivity {
 	public void tapRegistrationAccountTypeButton(View v) {
@@ -19,9 +20,14 @@ public class AccountChoiceActivity extends FirebaseConnectedActivity {
 				nextActivityIntent = new Intent(this, StudentProfileCreationActivity.class);
 				break;
 			}
-			case R.id.buttonRegisterAdministrator:
+			case R.id.buttonRegisterAdministrator: {
+				nextActivityIntent = new Intent(this, TokenCheckActivity.class);
+				nextActivityIntent.putExtra("accountType", ADMINISTRATOR);
+				break;
+			}
 			case R.id.buttonRegisterProfessor: {
 				nextActivityIntent = new Intent(this, TokenCheckActivity.class);
+				nextActivityIntent.putExtra("accountType", PROFESSOR);
 				break;
 			}
 		}
