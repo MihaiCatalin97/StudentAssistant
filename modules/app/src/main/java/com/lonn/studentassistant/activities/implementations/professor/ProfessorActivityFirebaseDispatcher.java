@@ -15,15 +15,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.lonn.studentassistant.BR.courses;
-import static com.lonn.studentassistant.BR.myOtherActivities;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
-import static com.lonn.studentassistant.BR.optionalCourses;
 import static com.lonn.studentassistant.BR.otherActivities;
 import static com.lonn.studentassistant.BR.personalCourses;
 import static com.lonn.studentassistant.BR.personalOtherActivities;
 import static com.lonn.studentassistant.BR.recurringClasses;
 
-class ProfessorActivityFirebaseDispatcher extends Dispatcher {
+class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorActivityFirebaseDispatcher.class);
 	private ProfessorActivityMainLayoutBinding binding;
 
@@ -49,7 +47,7 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher {
 		personalActivitiesMap = new BindableHashMap<>(binding, personalOtherActivities);
 	}
 
-	void loadAll(String entityKey) {
+	public void loadAll(String entityKey) {
 		if (entityKey != null) {
 			loadProfessor(entityKey);
 		}

@@ -27,7 +27,8 @@ import static android.widget.Toast.makeText;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	protected FirebaseApi firebaseApi;
-	private Handler handler = new Handler();
+	protected Handler delayHandler = new Handler();
+	protected Handler viewTreeHandler = new Handler();
 
 	public FirebaseApi getFirebaseApi() {
 		return firebaseApi;
@@ -99,7 +100,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	protected abstract void inflateLayout();
 
 	protected void executeWithDelay(Runnable runnable, long delay) {
-		handler.postDelayed(runnable, delay);
+		delayHandler.postDelayed(runnable, delay);
 	}
 
 	protected void hideKeyboard() {

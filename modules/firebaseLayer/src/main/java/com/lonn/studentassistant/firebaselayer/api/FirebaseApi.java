@@ -6,6 +6,7 @@ import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnec
 import com.lonn.studentassistant.firebaselayer.services.AdministratorService;
 import com.lonn.studentassistant.firebaselayer.services.AuthenticationService;
 import com.lonn.studentassistant.firebaselayer.services.CourseService;
+import com.lonn.studentassistant.firebaselayer.services.EmailService;
 import com.lonn.studentassistant.firebaselayer.services.FileContentService;
 import com.lonn.studentassistant.firebaselayer.services.FileMetadataService;
 import com.lonn.studentassistant.firebaselayer.services.GradeService;
@@ -57,6 +58,8 @@ public class FirebaseApi {
 
 	private FirebaseApi(Context applicationContext) {
 		FirebaseConnection firebaseConnection = FirebaseConnection.getInstance(applicationContext);
+
+		EmailService.getInstance(applicationContext);
 
 		administratorService = AdministratorService.getInstance(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);

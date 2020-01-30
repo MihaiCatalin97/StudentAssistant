@@ -12,6 +12,10 @@
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
+        <import type="com.lonn.studentassistant.authorization.PermissionLevel" />
+
+        <import type="android.view.View" />
+
         <variable
             name="entity"
             type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
@@ -51,6 +55,14 @@
         <variable
             name="editing"
             type="Boolean" />
+
+        <variable
+            name="canEnroll"
+            type="Boolean" />
+
+        <variable
+            name="permissionLevel"
+            type="com.lonn.studentassistant.authorization.PermissionLevel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -127,10 +139,11 @@
                     android:childEntities="@{laboratories.values().size() > 0? laboratories.values() : null}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_LABORATORY_WEEK_COMPARATOR}"
                     android:deletable="@{true}"
-                    android:showEmpty="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`laboratory`}"
-                    android:permissionLevel="@{1}" />
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{true}"
+                    android:visibility="@{permissionLevel.isAtLeast(PermissionLevel.READ_PARTIAL)? View.VISIBLE : View.GONE}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/studentCategory"
@@ -144,7 +157,8 @@
                     android:permissionLevel="@{0}"
                     android:showEmpty="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
-                    android:unlinkable="@{true}" />
+                    android:unlinkable="@{true}"
+                    android:visibility="@{permissionLevel.isAtLeast(PermissionLevel.READ_FULL)? View.VISIBLE : View.GONE}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
@@ -153,10 +167,11 @@
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
                     android:deletable="@{true}"
-                    android:showEmpty="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`file`}"
-                    android:permissionLevel="@{1}" />
+                    android:permissionLevel="@{1}"
+                    android:showEmpty="@{true}"
+                    android:visibility="@{permissionLevel.isAtLeast(PermissionLevel.READ_PARTIAL)? View.VISIBLE : View.GONE}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/professorsCategory"
@@ -180,11 +195,11 @@
                     android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`regular class`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}"
-                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
                     android:isTable="@{true}"
-                    android:showAddButton="@{true}" />
+                    android:permissionLevel="@{1}"
+                    android:showAddButton="@{true}"
+                    android:showEmpty="@{true}"
+                    android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/oneTimeClassesCategory"
@@ -196,11 +211,11 @@
                     android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`one time class`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}"
-                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
                     android:isTable="@{true}"
-                    android:showAddButton="@{true}" />
+                    android:permissionLevel="@{1}"
+                    android:showAddButton="@{true}"
+                    android:showEmpty="@{true}"
+                    android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}" />
             </LinearLayout>
         </ScrollView>
 

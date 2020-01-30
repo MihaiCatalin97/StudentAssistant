@@ -13,14 +13,6 @@
             type="com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel" />
 
         <variable
-            name="optionalCourses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
-
-        <variable
-            name="myOtherActivities"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
-
-        <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
     </data>

@@ -8,6 +8,7 @@ import java.util.List;
 import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
 import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
 import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
+import static com.lonn.studentassistant.validation.validators.ValidationRule.test;
 
 public class AdministratorValidator extends Validator<AdministratorViewModel> {
 	private static List<ValidationRule<AdministratorViewModel>> validationRules;
@@ -15,13 +16,13 @@ public class AdministratorValidator extends Validator<AdministratorViewModel> {
 	static {
 		validationRules = new ArrayList<>();
 
-		validationRules.add(ValidationRule.test(isValidName(AdministratorViewModel::getFirstName))
+		validationRules.add(test(isValidName(AdministratorViewModel::getFirstName))
 				.orError("Invalid first name"));
-		validationRules.add(ValidationRule.test(isValidName(AdministratorViewModel::getLastName))
+		validationRules.add(test(isValidName(AdministratorViewModel::getLastName))
 				.orError("Invalid last name"));
-		validationRules.add(ValidationRule.test(isValidEmail(AdministratorViewModel::getEmail))
+		validationRules.add(test(isValidEmail(AdministratorViewModel::getEmail))
 				.orError("Invalid email"));
-		validationRules.add(ValidationRule.test(isValidPhoneNumber(AdministratorViewModel::getPhoneNumber))
+		validationRules.add(test(isValidPhoneNumber(AdministratorViewModel::getPhoneNumber))
 				.orError("Invalid phone number"));
 	}
 

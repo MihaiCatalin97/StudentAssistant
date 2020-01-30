@@ -4,13 +4,15 @@ import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 import com.lonn.studentassistant.validation.Regex;
 
+import static com.lonn.studentassistant.validation.Regex.EMAIL_REGEX;
+
 public class StringValidationPredicates {
 	public static <T> Predicate<T> nonEmptyStringPredicate(Function<T, String> getter) {
 		return (entity) -> !getter.apply(entity).isEmpty();
 	}
 
 	public static <T> Predicate<T> isValidEmail(Function<T, String> getter) {
-		return emptyOrMatchesRegex(getter, Regex.EMAIL_REGEX);
+		return emptyOrMatchesRegex(getter, EMAIL_REGEX);
 	}
 
 	public static <T> Predicate<T> isValidPhoneNumber(Function<T, String> getter) {
@@ -34,6 +36,10 @@ public class StringValidationPredicates {
 		return nonEmptyAndEqualsMatchingCase(getter, valueToMatch);
 	}
 
+	public static Boolean isValidEmail(String email) {
+		return emptyOrMatchesRegex(email, EMAIL_REGEX);
+	}
+
 	private static <T> Predicate<T> nonEmptyAndEqualsMatchingCase(Function<T, String> getter,
 																  Function<T, String> valueToMatch) {
 		return (entity) -> !getter.apply(entity).isEmpty() &&
@@ -51,5 +57,10 @@ public class StringValidationPredicates {
 														String regex) {
 		return (entity) -> getter.apply(entity) == null || getter.apply(entity).isEmpty()
 				|| getter.apply(entity).matches(regex);
+	}
+
+	private static Boolean emptyOrMatchesRegex(String value,
+											   String regex) {
+		return value == null || value.isEmpty() || value.matches(regex);
 	}
 }

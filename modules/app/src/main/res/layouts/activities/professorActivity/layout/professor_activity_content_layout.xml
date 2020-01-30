@@ -81,13 +81,6 @@
             app:recurringClasses="@{recurringClasses}" />
 
         <include
-            android:id="@+id/layoutGrades"
-            layout="@layout/professor_activity_grades_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
-
-        <include
             android:id="@+id/layoutMessages"
             layout="@layout/professor_activity_messages_layout"
             android:layout_width="match_parent"

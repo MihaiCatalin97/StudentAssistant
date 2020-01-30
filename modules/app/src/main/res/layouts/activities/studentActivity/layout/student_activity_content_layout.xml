@@ -30,11 +30,11 @@
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
-            name="optionalCourses"
+            name="personalCourses"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
-            name="myOtherActivities"
+            name="personalActivities"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -66,8 +66,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:myOtherActivities="@{myOtherActivities}"
-            app:optionalCourses="@{optionalCourses}"
+            app:personalActivities="@{personalActivities}"
+            app:personalCourses="@{personalCourses}"
             app:profileImageContent="@{profileImageContent}"
             app:student="@{student}" />
 

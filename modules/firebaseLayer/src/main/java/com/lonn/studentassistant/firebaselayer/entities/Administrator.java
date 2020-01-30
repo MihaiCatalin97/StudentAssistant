@@ -29,4 +29,9 @@ public final class Administrator extends Person {
 		this.phoneNumber = phoneNumber;
 		return this;
 	}
+
+	public Administrator setImageMetadataKey(String imageMetadataKey) {
+		this.imageMetadataKey = imageMetadataKey;
+		return this;
+	}
 }

@@ -2,9 +2,9 @@ package com.lonn.studentassistant.activities.abstractions;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,7 +26,6 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public abstract class NavBarActivity extends FirebaseConnectedActivity implements NavigationView.OnNavigationItemSelectedListener {
 	private int logoutCount = 0;
-	private Handler handler = new Handler();
 
 	public NavBarActivity() {
 		super();
@@ -96,7 +95,7 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 				Toast.makeText(getBaseContext(),
 						"Press twice to log out!",
 						LENGTH_SHORT).show();
-				handler.postDelayed(() -> logoutCount = 0,
+				delayHandler.postDelayed(() -> logoutCount = 0,
 						1000);
 			}
 			else {
@@ -140,5 +139,18 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 		NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
 		FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 		//TODO: Load user
+	}
+
+	protected void executeWhenLayoutSettles(Runnable runnable) {
+		findViewById(R.id.layoutMain).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				viewTreeHandler.removeCallbacksAndMessages(runnable);
+				viewTreeHandler.postDelayed(() -> {
+					runnable.run();
+					findViewById(R.id.layoutMain).getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				}, 500);
+			}
+		});
 	}
 }

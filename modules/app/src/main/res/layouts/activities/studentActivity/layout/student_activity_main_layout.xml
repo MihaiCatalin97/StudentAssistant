@@ -34,11 +34,11 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
 
         <variable
-            name="optionalCourses"
+            name="personalCourses"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
-            name="myOtherActivities"
+            name="personalActivities"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -80,9 +80,9 @@
                 android:id="@+id/layoutMain"
                 layout="@layout/student_activity_content_layout"
                 app:courses="@{courses.values()}"
-                app:myOtherActivities="@{myOtherActivities.values()}"
+                app:personalActivities="@{personalActivities.values()}"
                 app:oneTimeClasses="@{oneTimeClasses.values()}"
-                app:optionalCourses="@{optionalCourses.values()}"
+                app:personalCourses="@{personalCourses.values()}"
                 app:otherActivities="@{otherActivities.values()}"
                 app:professors="@{professors}"
                 app:profileImageContent="@{profileImageContent}"
@@ -99,6 +99,11 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <include
+            android:id="@+id/loadingScreen"
+            layout="@layout/loading_screen"
+            android:visibility="visible" />
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -106,7 +111,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/student_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

@@ -9,28 +9,28 @@ import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.lonn.studentassistant.BR.courses;
-import static com.lonn.studentassistant.BR.myOtherActivities;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
-import static com.lonn.studentassistant.BR.optionalCourses;
 import static com.lonn.studentassistant.BR.otherActivities;
+import static com.lonn.studentassistant.BR.personalActivities;
+import static com.lonn.studentassistant.BR.personalCourses;
 import static com.lonn.studentassistant.BR.recurringClasses;
 
-class StudentActivityFirebaseDispatcher extends Dispatcher {
+class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 	private static final Logger LOGGER = Logger.ofClass(StudentActivityFirebaseDispatcher.class);
 	private StudentActivityMainLayoutBinding binding;
 
+	private StudentViewModel student;
 	private BindableHashMap<CourseViewModel> courseMap;
 	private BindableHashMap<OtherActivityViewModel> otherActivityMap;
 	private BindableHashMap<RecurringClassViewModel> recurringClassMap;
 	private BindableHashMap<OneTimeClassViewModel> oneTimeClassMap;
-	private BindableHashMap<CourseViewModel> optionalCoursesMap;
+	private BindableHashMap<CourseViewModel> personalCoursesMap;
 	private BindableHashMap<OtherActivityViewModel> personalActivitiesMap;
 
 	private List<String> oneTimeClassKeys = new ArrayList<>();
@@ -44,11 +44,11 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 		otherActivityMap = new BindableHashMap<>(binding, otherActivities);
 		recurringClassMap = new BindableHashMap<>(binding, recurringClasses);
 		oneTimeClassMap = new BindableHashMap<>(binding, oneTimeClasses);
-		optionalCoursesMap = new BindableHashMap<>(binding, optionalCourses);
-		personalActivitiesMap = new BindableHashMap<>(binding, myOtherActivities);
+		personalCoursesMap = new BindableHashMap<>(binding, personalCourses);
+		personalActivitiesMap = new BindableHashMap<>(binding, personalActivities);
 	}
 
-	void loadAll(String entityKey) {
+	public void loadAll(String entityKey) {
 		if (entityKey != null) {
 			loadStudent(entityKey);
 		}
@@ -58,6 +58,36 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 		loadProfessors();
 	}
 
+	private void computePersonalCourses() {
+		if (student != null) {
+			for (CourseViewModel personalCourse : personalCoursesMap.values()) {
+				if (!student.getCourses().contains(personalCourse.getKey())) {
+					personalCoursesMap.remove(personalCourse);
+				}
+			}
+			for (String courseKey : student.getCourses()) {
+				personalCoursesMap.put(courseMap.get(courseKey));
+			}
+
+			computeClasses();
+		}
+	}
+
+	private void computePersonalActivities() {
+		if (student != null) {
+			for (OtherActivityViewModel personalActivity : personalActivitiesMap.values()) {
+				if (!student.getOtherActivities().contains(personalActivity.getKey())) {
+					personalActivitiesMap.remove(personalActivity);
+				}
+			}
+			for (String activityKey : student.getOtherActivities()) {
+				personalActivitiesMap.put(otherActivityMap.get(activityKey));
+			}
+
+			computeClasses();
+		}
+	}
+
 	private void computeClasses() {
 		StudentViewModel student = binding.getStudent();
 
@@ -65,15 +95,11 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 		recurringClassKeys.clear();
 
 		if (student != null) {
-			for (CourseViewModel course : courseMap.values()) {
-				if (isPersonalCourse(course, student)) {
-					computeClassesForDiscipline(course);
-				}
+			for (CourseViewModel course : personalCoursesMap.values()) {
+				computeClassesForDiscipline(course);
 			}
-			for (OtherActivityViewModel otherActivity : otherActivityMap.values()) {
-				if (isPersonalActivity(otherActivity, student)) {
-					computeClassesForDiscipline(otherActivity);
-				}
+			for (OtherActivityViewModel otherActivity : personalActivitiesMap.values()) {
+				computeClassesForDiscipline(otherActivity);
 			}
 		}
 
@@ -87,71 +113,63 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 	}
 
 	private void loadCourses() {
-		if (binding.getCourses() == null) {
-			firebaseApi.getCourseService()
-					.getAll()
-					.onComplete(receivedCourses -> {
-								courseMap = new BindableHashMap<>(binding, courses, receivedCourses);
-								computeClasses();
-							},
-							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
-		}
+		firebaseApi.getCourseService()
+				.getAll()
+				.onComplete(receivedCourses -> {
+							courseMap = new BindableHashMap<>(binding, courses, receivedCourses);
+							computePersonalCourses();
+						},
+						error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
 	}
 
 	private void loadOtherActivities() {
-		if (binding.getOtherActivities() == null) {
-			firebaseApi.getOtherActivityService()
-					.getAll()
-					.onComplete(receivedOtherActivities -> {
-								otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities);
-								computeClasses();
-							},
-							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
-		}
+		firebaseApi.getOtherActivityService()
+				.getAll()
+				.onComplete(receivedOtherActivities -> {
+							otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities);
+							computePersonalActivities();
+						},
+						error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
 	}
 
 	private void loadProfessors() {
-		if (binding.getProfessors() == null) {
-			firebaseApi.getProfessorService()
-					.getAll()
-					.onComplete(binding::setProfessors,
-							error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
-		}
+		firebaseApi.getProfessorService()
+				.getAll()
+				.onComplete(professors -> {
+							binding.setProfessors(professors);
+						},
+						error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
 	}
 
 	private void loadRecurringClasses() {
-		if (binding.getRecurringClasses() == null) {
-			for (String recurringClassKey : recurringClassKeys) {
-				firebaseApi.getRecurringClassService()
-						.getById(recurringClassKey, true)
-						.onSuccess(recurringClass -> {
-							if (isPersonalScheduleClass(recurringClass, binding.getStudent())) {
-								recurringClassMap.put(recurringClass);
-							}
-							else {
-								recurringClassMap.remove(recurringClass);
-							}
-						})
-						.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading regular classes.", error, LOGGER));
-			}
+		for (String recurringClassKey : recurringClassKeys) {
+			firebaseApi.getRecurringClassService()
+					.getById(recurringClassKey, true)
+					.onSuccess(recurringClass -> {
+						if (recurringClassKey.contains(recurringClass.getKey())) {
+							recurringClassMap.put(recurringClass);
+						}
+						else {
+							recurringClassMap.remove(recurringClass);
+						}
+					})
+					.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading regular classes.", error, LOGGER));
 		}
 	}
 
 	private void loadOneTimeClasses() {
-		if (binding.getOneTimeClasses() == null) {
-			for (String oneTimeClassKey : oneTimeClassKeys) {
-				firebaseApi.getOneTimeClassService()
-						.getById(oneTimeClassKey, true)
-						.onSuccess(oneTimeClass -> {
-							if (isPersonalScheduleClass(oneTimeClass, binding.getStudent())) {
-								oneTimeClassMap.put(oneTimeClass);
-							}
-							else {
-								oneTimeClassMap.remove(oneTimeClass);
-							}
-						})
-						.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading special classes.", error, LOGGER));
-			}
+		for (String oneTimeClassKey : oneTimeClassKeys) {
+			firebaseApi.getOneTimeClassService()
+					.getById(oneTimeClassKey, true)
+					.onSuccess(oneTimeClass -> {
+						if (oneTimeClassKeys.contains(oneTimeClass.getKey())) {
+							oneTimeClassMap.put(oneTimeClass);
+						}
+						else {
+							oneTimeClassMap.remove(oneTimeClass);
+						}
+					})
+					.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading special classes.", error, LOGGER));
 		}
 	}
 
@@ -159,8 +177,10 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 		firebaseApi.getStudentService()
 				.getById(key, true)
 				.onSuccess(student -> {
+					this.student = student;
 					binding.setStudent(student);
-					computeClasses();
+					computePersonalCourses();
+					computePersonalActivities();
 
 					if (student.getImageMetadataKey() != null) {
 						loadProfileImage(student.getImageMetadataKey());
@@ -183,36 +203,5 @@ class StudentActivityFirebaseDispatcher extends Dispatcher {
 						"Unable to load the profile image",
 						error,
 						LOGGER));
-	}
-
-	private boolean isPersonalScheduleClass(ScheduleClassViewModel scheduleClass,
-											StudentViewModel studentViewModel) {
-		if (scheduleClass == null) {
-			return false;
-		}
-
-		String year = studentViewModel.getCycleSpecializationYear().getCycleSpecialization()
-				.getInitials() + studentViewModel.getCycleSpecializationYear().getYear();
-
-		String semiYear = year + studentViewModel.getGroup().charAt(0);
-		String group = year + studentViewModel.getGroup();
-
-		return scheduleClass.getGroups().contains(year) ||
-				scheduleClass.getGroups().contains(semiYear) ||
-				scheduleClass.getGroups().contains(group);
-	}
-
-	private boolean isPersonalCourse(CourseViewModel course,
-									 StudentViewModel studentViewModel) {
-		if (course.getPack() == 0) {
-			return course.isForCycleAndYearAndSemester(studentViewModel.getCycleSpecializationYear(), 1);
-		}
-
-		return studentViewModel.getCourses().contains(course.getKey());
-	}
-
-	private boolean isPersonalActivity(OtherActivityViewModel activity,
-									   StudentViewModel studentViewModel) {
-		return studentViewModel.getOtherActivities().contains(activity.getKey());
 	}
 }

@@ -19,7 +19,6 @@ public final class Student extends Person implements Cloneable {
 	private String studentId;
 	private String fatherInitial;
 	private String group;
-	private String imageMetadataKey;
 
 	private CycleSpecializationYear cycleSpecializationYear;
 
@@ -44,6 +43,11 @@ public final class Student extends Person implements Cloneable {
 
 	public Student setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+		return this;
+	}
+
+	public Student setImageMetadataKey(String imageMetadataKey) {
+		this.imageMetadataKey = imageMetadataKey;
 		return this;
 	}
 }

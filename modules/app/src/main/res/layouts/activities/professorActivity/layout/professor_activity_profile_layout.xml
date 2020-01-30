@@ -156,9 +156,9 @@
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My optional courses`}"
+                    android:categoryTitle="@{`My courses`}"
                     android:childEntities="@{personalCourses}"
-                    android:entityName="@{`optional course`}"
+                    android:entityName="@{`course`}"
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />
 

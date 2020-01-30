@@ -28,21 +28,29 @@ public class BindableHashMap<V extends EntityViewModel> extends HashMap<String, 
 	}
 
 	public void put(V entity) {
-		put(entity.getKey(), entity);
+		if (entity != null) {
+			put(entity.getKey(), entity);
 
-		binding.setVariable(property, this);
+			binding.setVariable(property, this);
+		}
 	}
 
 	@Override
 	public V remove(Object entityKey) {
-		V result = super.remove(entityKey);
+		if (entityKey != null) {
+			V result = super.remove(entityKey);
 
-		binding.setVariable(property, this);
+			binding.setVariable(property, this);
 
-		return result;
+			return result;
+		}
+
+		return null;
 	}
 
 	public void remove(V entity) {
-		remove(entity.getKey());
+		if (entity != null) {
+			remove(entity.getKey());
+		}
 	}
 }

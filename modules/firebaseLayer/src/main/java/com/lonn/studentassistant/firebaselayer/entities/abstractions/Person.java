@@ -12,4 +12,5 @@ public abstract class Person extends FileAssociatedEntity{
 	protected String lastName;
 	protected String email;
 	protected String phoneNumber;
+	protected String imageMetadataKey;
 }

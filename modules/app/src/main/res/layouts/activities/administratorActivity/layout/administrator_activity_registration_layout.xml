@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.implementations.administrator.AdministratorActivity">
+
+    <data></data>
+
+    <LinearLayout
+        style="@style/ScreenLayoutWrapped"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            style="@style/DarkTitleShadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Registration Tokens" />
+
+        <TextView
+            style="@style/DarkNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_32dp"
+            android:text="   Create registration tokens for professors and administrators and send them to their email.\n\n   Each registration token is valid 24 hours and it is usable only once." />
+
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_32dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/registrationTokenProfessorRadioButton"
+                style="@style/DarkNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Professor" />
+
+            <RadioButton
+                android:id="@+id/registrationTokenAdministratorRadioButton"
+                style="@style/DarkNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Administrator" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_32dp"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/DarkSubtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:text="@string/email" />
+
+            <EditText
+                android:id="@+id/registrationTokenEmailEditText"
+                style="@style/DarkNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dim_16dp"
+                android:hint="email@email.com"
+                android:inputType="textEmailAddress"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <Button
+            style="@style/BlueRoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_32dp"
+            android:layout_marginBottom="@dimen/dim_32dp"
+            android:onClick="createRegistrationToken"
+            android:text="Create and send token" />
+
+
+    </LinearLayout>
+</layout>

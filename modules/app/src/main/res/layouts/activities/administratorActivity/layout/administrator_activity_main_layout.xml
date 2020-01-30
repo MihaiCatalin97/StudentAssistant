@@ -26,22 +26,6 @@
             type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
-            name="oneTimeClasses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
-
-        <variable
-            name="recurringClasses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
-
-        <variable
-            name="optionalCourses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
-
-        <variable
-            name="myOtherActivities"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
-
-        <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
     </data>
@@ -79,15 +63,11 @@
             <include
                 android:id="@+id/layoutMain"
                 layout="@layout/administrator_activity_content_layout"
+                app:administrator="@{administrator}"
                 app:courses="@{courses.values()}"
-                app:myOtherActivities="@{myOtherActivities.values()}"
-                app:oneTimeClasses="@{oneTimeClasses.values()}"
-                app:optionalCourses="@{optionalCourses.values()}"
                 app:otherActivities="@{otherActivities.values()}"
                 app:professors="@{professors}"
-                app:profileImageContent="@{profileImageContent}"
-                app:recurringClasses="@{recurringClasses.values()}"
-                app:administrator="@{administrator}" />
+                app:profileImageContent="@{profileImageContent}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
@@ -99,6 +79,11 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <include
+            android:id="@+id/loadingScreen"
+            layout="@layout/loading_screen"
+            android:visibility="visible" />
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -106,7 +91,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/administrator_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

@@ -116,7 +116,7 @@ public class LoginActivity extends FirebaseConnectedActivity {
 	}
 
 	private void onLoginSuccess(String email, String password, boolean rememberCredentials) {
-		showSnackBar("Login successful!", 650);
+		showSnackBar("Login successful!", 500);
 
 		executeWithDelay(() -> {
 			unlockInputs();
@@ -126,7 +126,7 @@ public class LoginActivity extends FirebaseConnectedActivity {
 			}
 
 			startNextActivity();
-		}, 750);
+		}, 1000);
 
 		if (rememberCredentials) {
 			authenticationSharedPrefs.saveCredentials(email, password);
@@ -158,7 +158,6 @@ public class LoginActivity extends FirebaseConnectedActivity {
 		}
 
 		String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-		showSnackBar("Loading your personal data...");
 
 		firebaseApi.getUserService()
 				.getById(uid, true)

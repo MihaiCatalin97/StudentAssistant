@@ -18,23 +18,7 @@
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
-            name="oneTimeClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
-
-        <variable
-            name="recurringClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
-
-        <variable
             name="otherActivities"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
-
-        <variable
-            name="optionalCourses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
-
-        <variable
-            name="myOtherActivities"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -66,26 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
-            app:myOtherActivities="@{myOtherActivities}"
-            app:optionalCourses="@{optionalCourses}"
-            app:profileImageContent="@{profileImageContent}"
-            app:administrator="@{administrator}" />
-
-        <include
-            android:id="@+id/layoutSchedule"
-            layout="@layout/administrator_activity_schedule_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
-            app:oneTimeClasses="@{oneTimeClasses}"
-            app:recurringClasses="@{recurringClasses}" />
-
-        <include
-            android:id="@+id/layoutGrades"
-            layout="@layout/administrator_activity_grades_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
+            app:administrator="@{administrator}"
+            app:profileImageContent="@{profileImageContent}" />
 
         <include
             android:id="@+id/layoutMessages"
@@ -96,7 +62,7 @@
 
         <include
             android:id="@+id/layoutProfessors"
-            layout="@layout/student_activity_professors_layout"
+            layout="@layout/administrator_activity_professors_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
@@ -104,7 +70,7 @@
 
         <include
             android:id="@+id/layoutCourses"
-            layout="@layout/student_activity_courses_layout"
+            layout="@layout/administrator_activity_courses_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
@@ -112,18 +78,25 @@
 
         <include
             android:id="@+id/layoutAdministrative"
-            layout="@layout/student_activity_administrative_layout"
+            layout="@layout/administrator_activity_administrative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
         <include
             android:id="@+id/layoutOtherActivities"
-            layout="@layout/student_activity_other_activities_layout"
+            layout="@layout/administrator_activity_other_activities_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
             app:otherActivities="@{otherActivities}" />
+
+        <include
+            android:id="@+id/layoutRegistrationTokens"
+            layout="@layout/administrator_activity_registration_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

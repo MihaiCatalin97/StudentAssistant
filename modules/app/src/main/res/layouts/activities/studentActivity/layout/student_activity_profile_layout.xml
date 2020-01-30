@@ -13,11 +13,11 @@
             type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
 
         <variable
-            name="optionalCourses"
+            name="personalCourses"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
 
         <variable
-            name="myOtherActivities"
+            name="personalActivities"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
@@ -244,8 +244,8 @@
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My optional courses`}"
-                    android:childEntities="@{optionalCourses}"
+                    android:categoryTitle="@{`My courses`}"
+                    android:childEntities="@{personalCourses}"
                     android:entityName="@{`optional course`}"
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />
@@ -254,7 +254,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`My activities`}"
-                    android:childEntities="@{myOtherActivities}"
+                    android:childEntities="@{personalActivities}"
                     android:entityName="@{`activity`}"
                     android:permissionLevel="@{1}"
                     android:showEmpty="@{true}" />

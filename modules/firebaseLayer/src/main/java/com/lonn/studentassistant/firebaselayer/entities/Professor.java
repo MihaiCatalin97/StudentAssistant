@@ -18,8 +18,6 @@ public final class Professor extends Person {
 	private String website;
 	private String cabinet;
 
-	private String professorImageMetadataKey;
-
 	private List<String> filesMetadata = new LinkedList<>();
 	private List<String> courses = new LinkedList<>();
 	private List<String> otherActivities = new LinkedList<>();
@@ -72,6 +70,11 @@ public final class Professor extends Person {
 
 	public Professor setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+		return this;
+	}
+
+	public Professor setImageMetadataKey(String imageMetadataKey) {
+		this.imageMetadataKey = imageMetadataKey;
 		return this;
 	}
 }

@@ -80,10 +80,10 @@
                 android:id="@+id/layoutMain"
                 layout="@layout/professor_activity_content_layout"
                 app:courses="@{courses.values()}"
-                app:personalOtherActivities="@{personalOtherActivities.values()}"
                 app:oneTimeClasses="@{oneTimeClasses.values()}"
-                app:personalCourses="@{personalCourses.values()}"
                 app:otherActivities="@{otherActivities.values()}"
+                app:personalCourses="@{personalCourses.values()}"
+                app:personalOtherActivities="@{personalOtherActivities.values()}"
                 app:professor="@{professor}"
                 app:professors="@{professors}"
                 app:profileImageContent="@{profileImageContent}"
@@ -99,6 +99,11 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+        <include
+            android:id="@+id/loadingScreen"
+            layout="@layout/loading_screen"
+            android:visibility="visible" />
+
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -106,7 +111,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
-            app:menu="@menu/activity_main_drawer" />
+            app:menu="@menu/professor_drawer" />
 
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
