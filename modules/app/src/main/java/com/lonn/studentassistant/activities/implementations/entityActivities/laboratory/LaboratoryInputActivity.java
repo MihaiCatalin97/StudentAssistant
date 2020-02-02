@@ -31,7 +31,7 @@ public class LaboratoryInputActivity extends FirebaseConnectedActivity {
 			weekNumber = Integer.parseInt(((EditText) findViewById(R.id.laboratoryWeekEditText)).getText().toString());
 		}
 		catch (NumberFormatException exception) {
-			showSnackBar("Invalid week number. It must be from 1 to 16");
+			showSnackBar("Invalid week number. It must be from 1 to 16", 2000);
 			return;
 		}
 

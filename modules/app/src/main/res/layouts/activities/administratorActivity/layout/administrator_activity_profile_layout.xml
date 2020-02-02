@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.student.StudentActivity">
+    tools:context=".activities.abstractions.FirebaseConnectedActivity">
 
     <data>
 
@@ -45,13 +45,14 @@
                 android:orientation="vertical">
 
                 <include
+                    android:id="@+id/profileImage"
                     layout="@layout/rounded_image"
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     app:defaultImage="@{Utils.getDefaultPersonImageForName(administrator.firstName)}"
                     app:image="@{profileImageContent.fileContentBase64}"
                     app:size="@{200}"
-                    app:editing="@{editing}" />
+                    app:editing="@{editing}"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -62,12 +63,12 @@
                         style="@style/EntityActivityTitleHiddenEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{editing}"
                         android:gravity="end"
                         android:hint="@{editing &amp;&amp; (administrator.firstName == null || administrator.firstName.length() == 0)? `First name` : ``}"
                         android:importantForAutofill="no"
+                        android:onClick="tapEditText"
                         android:text="@={administrator.firstName}"
                         android:textStyle="bold" />
 
@@ -87,14 +88,16 @@
                         android:gravity="start"
                         android:hint="@{editing &amp;&amp; (administrator.lastName == null || administrator.lastName.length() == 0)? `Last name` : ``}"
                         android:importantForAutofill="no"
+                        android:onClick="tapEditText"
                         android:text="@={administrator.lastName}"
                         android:textStyle="bold" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="12dp"
+                    android:id="@+id/profileEmailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
                     android:gravity="center"
                     android:weightSum="1">
 
@@ -107,20 +110,22 @@
                         android:text="Email: " />
 
                     <EditText
-                        android:id="@+id/profileEmailEditText"
-                        style="@style/EntityActivityContentHiddenEditText"
+                        style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:enabled="false"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (administrator.email == null || administrator.email.length() == 0)? `Enter level` : `(none)`}"
                         android:inputType="textEmailAddress"
-                        android:text="@{administrator.email}" />
-
+                        android:onClick="tapEditText"
+                        android:text="@={administrator.email}" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:weightSum="1">
 
@@ -133,14 +138,35 @@
                         android:text="Phone number: " />
 
                     <EditText
-                        android:id="@+id/profilePhoneEditText"
-                        style="@style/EntityActivityContentHiddenEditText"
+                        style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:enabled="false"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (administrator.phoneNumber == null || administrator.phoneNumber.length() == 0)? `Enter phone number` : `(none)`}"
                         android:inputType="phone"
+                        android:onClick="tapEditText"
                         android:text="@{administrator.phoneNumber}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:id="@+id/filesCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My files`}"
+                        android:childEntities="@{personalFiles}"
+                        android:deletable="@{true}"
+                        android:editing="@{editing}"
+                        android:entityName="@{`file`}"
+                        android:permissionLevel="@{PermissionLevel.WRITE}"
+                        android:showEmpty="@{true}" />
 
                 </LinearLayout>
 
@@ -152,6 +178,5 @@
             layout="@layout/entity_activity_floating_buttons"
             app:editing="@{editing}"
             app:permissionLevel="@{PermissionLevel.WRITE}" />
-
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

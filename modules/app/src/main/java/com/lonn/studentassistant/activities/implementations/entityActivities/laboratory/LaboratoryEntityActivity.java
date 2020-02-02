@@ -78,6 +78,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 								.setGrade(grade)
 								.setStudentId(studentId)
 								.setDate(new Date())
+								.setCourseKey(binding.getEntity().getCourseKey())
 								.setLaboratoryKey(binding.getEntity().getKey());
 
 						firebaseApi.getGradeService()
@@ -97,7 +98,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 	protected void deleteFile(String laboratoryKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getLaboratoryService().deleteAndUnlinkFile(laboratoryKey, fileMetadata.getKey())
-				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
 				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 

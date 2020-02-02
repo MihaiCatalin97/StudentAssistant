@@ -14,6 +14,7 @@ public class GradeAdapter extends ViewModelAdapter<Grade, GradeViewModel> {
 				.studentId(grade.getStudentId())
 				.studentKey(grade.getStudentKey())
 				.date(new Date(grade.getDate()))
+				.courseKey(grade.getCourseKey())
 				.build()
 				.setKey(grade.getKey());
 	}
@@ -24,7 +25,8 @@ public class GradeAdapter extends ViewModelAdapter<Grade, GradeViewModel> {
 				.setStudentKey(grade.getStudentKey())
 				.setStudentId(grade.getStudentId())
 				.setValue(grade.getGrade())
-				.setDate(grade.getDate().getTime());
+				.setDate(grade.getDate().getTime())
+				.setCourseKey(grade.getCourseKey());
 
 		if (grade.getKey() != null) {
 			result.setKey(grade.getKey());

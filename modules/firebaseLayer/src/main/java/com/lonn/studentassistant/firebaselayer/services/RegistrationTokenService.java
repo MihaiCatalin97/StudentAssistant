@@ -3,7 +3,6 @@ package com.lonn.studentassistant.firebaselayer.services;
 import com.lonn.studentassistant.firebaselayer.adapters.RegistrationTokenAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.RegistrationToken;
 import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
@@ -16,7 +15,6 @@ import java.util.Date;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.REGISTRATION_TOKENS;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
-import static com.lonn.studentassistant.firebaselayer.services.EmailService.parseAddress;
 
 public class RegistrationTokenService extends Service<RegistrationToken, Exception, RegistrationTokenViewModel> {
 	private static RegistrationTokenService instance;
@@ -114,34 +112,19 @@ public class RegistrationTokenService extends Service<RegistrationToken, Excepti
 				.setAccountType(accountType);
 
 		save(registrationTokenViewModel)
-				.onSuccess(none -> {
-					EmailService.getInstance(null).reset()
-							.setTo(parseAddress(email))
-							.setSubject("Student Assistant - Invitation")
-							.setTxtBody(constructEmailBody(registrationTokenViewModel))
-							.send(true, (error) -> {
-								if (error != null) {
-									deleteById(registrationTokenViewModel.getKey());
-									result.completeExceptionally(error);
-								}
-								else {
-									result.complete(null);
-								}
-							});
-				})
+				.onSuccess(none -> EmailService.getInstance()
+						.sendEmail(email,
+								accountType.toString().toLowerCase(),
+								registrationTokenViewModel.getToken(),
+								registrationTokenViewModel.getExpiresAt().toString())
+						.onSuccess(result::complete)
+						.onError(result::completeExceptionally)
+				)
 				.onError(result::completeExceptionally);
 
 		return result;
 	}
 
-	private String constructEmailBody(RegistrationTokenViewModel token) {
-		return "Hello, " + token.getAccountType().toString().toLowerCase() + "!\n\n" +
-				"You have been invited to create an " + token.getAccountType().toString().toLowerCase() + " account in the Student Assistant application.\n" +
-				"To register, please use this token: " + token.getToken() + ".\n" +
-				"Beware, this is a confidential, single-use token and it will expire at " + token.getExpiresAt().toString() + "\n\n" +
-				"Download the app from:\n" +
-				"(app store link)";
-	}
 
 	@Override
 	protected DatabaseTable<RegistrationToken> getDatabaseTable() {

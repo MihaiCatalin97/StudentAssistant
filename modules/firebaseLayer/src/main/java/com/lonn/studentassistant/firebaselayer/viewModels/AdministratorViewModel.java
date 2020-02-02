@@ -42,4 +42,11 @@ public final class AdministratorViewModel extends PersonViewModel<Administrator>
 
 		return this;
 	}
+
+	@Override
+	public AdministratorViewModel setKey(String key) {
+		super.setKey(key);
+
+		return this;
+	}
 }

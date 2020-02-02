@@ -59,7 +59,7 @@ public class FirebaseApi {
 	private FirebaseApi(Context applicationContext) {
 		FirebaseConnection firebaseConnection = FirebaseConnection.getInstance(applicationContext);
 
-		EmailService.getInstance(applicationContext);
+		EmailService.getInstance();
 
 		administratorService = AdministratorService.getInstance(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);

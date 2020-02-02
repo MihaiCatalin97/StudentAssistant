@@ -128,8 +128,13 @@ public abstract class MainActivity<T extends EntityViewModel<? extends Person>> 
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		imageUploadDialog.setFile(requestCode, resultCode, data);
+		if (requestCode == UPLOAD_FILE_REQUEST_CODE ||
+				requestCode == SAVE_DIALOG_REQUEST_CODE) {
+			super.onActivityResult(requestCode, resultCode, data);
+		}
+		else if (requestCode == UPLOAD_IMAGE_REQUEST_CODE) {
+			imageUploadDialog.setFile(requestCode, resultCode, data);
+		}
 	}
 
 	protected abstract ProfileImageUploadDialog getImageUploadDialog();

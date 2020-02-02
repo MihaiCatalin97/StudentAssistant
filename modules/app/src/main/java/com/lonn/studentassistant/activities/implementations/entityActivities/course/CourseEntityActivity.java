@@ -101,7 +101,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 
 	protected void deleteFile(String courseKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getCourseService().deleteAndUnlinkFile(courseKey, fileMetadata.getKey())
-				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
 				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
 	}
 

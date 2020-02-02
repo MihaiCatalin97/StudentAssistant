@@ -1,7 +1,6 @@
 package com.lonn.studentassistant.activities.implementations.administrator;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -17,9 +16,8 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.AdministratorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.AdministratorImageUploadDialog;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
 
 import lombok.Getter;
 
@@ -49,6 +47,17 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 		findViewById(R.id.fabDelete).setVisibility(GONE);
 
 		loadAll(personId);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (binding.getEditingProfile() != null &&
+				binding.getEditingProfile()) {
+			binding.setEditingProfile(false);
+		}
+		else {
+			super.onBackPressed();
+		}
 	}
 
 	protected void inflateLayout() {
@@ -92,6 +101,7 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 
 	public void onSaveTapped() {
 		dispatcher.update(binding.getAdministrator());
+		binding.setEditingProfile(false);
 	}
 
 	protected void onDiscardTapped() {
@@ -99,26 +109,20 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 		binding.setEditingProfile(false);
 	}
 
-	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
-		return new ProfessorFileUploadDialog(this, entityKey);
+	protected AdministratorFileUploadDialog getFileUploadDialogInstance() {
+		return new AdministratorFileUploadDialog(this, entityKey);
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		imageUploadDialog.setFile(requestCode, resultCode, data);
-	}
-
-	protected void deleteFile(String professorKey, FileMetadataViewModel fileMetadata) {
-		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadata.getKey())
-				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName()))
-				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
+	protected void deleteFile(String administratorKey, FileMetadataViewModel fileMetadata) {
+		getFirebaseApi().getAdministratorService().deleteAndUnlinkFile(administratorKey, fileMetadata.getKey())
+				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
+				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
 	}
 
 	protected void onDeleteTapped(Context context) {
 	}
 
-	protected ProfileImageUploadDialog getImageUploadDialog() {
+	protected AdministratorImageUploadDialog getImageUploadDialog() {
 		return new AdministratorImageUploadDialog(this, personId);
 	}
 

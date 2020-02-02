@@ -59,6 +59,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		init(context);
 	}
 
+	public void setCanAdd(Boolean canAdd){
+		binding.setCanAdd(canAdd);
+	}
+
 	public void setIsTable(Boolean isTable) {
 		if (isTable == null) {
 			isTable = false;

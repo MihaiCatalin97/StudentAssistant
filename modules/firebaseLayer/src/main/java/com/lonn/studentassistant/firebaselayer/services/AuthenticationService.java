@@ -8,6 +8,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.AdministratorAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.CourseAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.FileContentAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.FileMetadataAdapter;
+import com.lonn.studentassistant.firebaselayer.adapters.GradeAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.LaboratoryAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.OtherActivityAdapter;
 import com.lonn.studentassistant.firebaselayer.adapters.ProfessorAdapter;
@@ -18,6 +19,7 @@ import com.lonn.studentassistant.firebaselayer.entities.Administrator;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
+import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.entities.Laboratory;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
@@ -32,6 +34,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -76,6 +79,7 @@ public class AuthenticationService {
 	private AdministratorAdapter administratorAdapter = new AdministratorAdapter();
 	private ProfessorAdapter professorAdapter = new ProfessorAdapter();
 	private StudentAdapter studentAdapter = new StudentAdapter();
+	private GradeAdapter gradeAdapter = new GradeAdapter();
 
 	private Consumer<EntityViewModel> onLoggedPersonChange;
 
@@ -452,6 +456,29 @@ public class AuthenticationService {
 		return NONE;
 	}
 
+	public PermissionLevel getPermissionLevel(Grade grade) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (loggedPerson != null && loggedPerson.getKey().equals(grade.getStudentKey())) {
+				return READ_PUBLIC;
+			}
+			return NONE;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (loggedPerson != null && ((ProfessorViewModel) loggedPerson).getCourses().contains(grade.getCourseKey())) {
+				return WRITE;
+			}
+			return NONE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
+
+		return NONE;
+	}
+
 	public PermissionLevel getPermissionLevel(CourseViewModel course) {
 		return getPermissionLevel(courseAdapter.adapt(course));
 	}
@@ -482,6 +509,10 @@ public class AuthenticationService {
 
 	public PermissionLevel getPermissionLevel(StudentViewModel student) {
 		return getPermissionLevel(studentAdapter.adapt(student));
+	}
+
+	public PermissionLevel getPermissionLevel(GradeViewModel grade) {
+		return getPermissionLevel(gradeAdapter.adapt(grade));
 	}
 
 	public String getLoggedPersonUUID() {

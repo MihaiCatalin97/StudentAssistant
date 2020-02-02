@@ -10,7 +10,6 @@ import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 
 public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	private static GradeService instance;
@@ -118,7 +117,6 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	}
 
 	protected PermissionLevel getPermissionLevel(Grade grade) {
-		return WRITE;
-//		return authenticationService.getPermissionLevel(grade);
+		return authenticationService.getPermissionLevel(grade);
 	}
 }

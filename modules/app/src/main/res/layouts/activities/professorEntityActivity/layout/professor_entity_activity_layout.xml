@@ -265,7 +265,8 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:editing="@{editing}"
                     android:permissionLevel="@{permissionLevel}"
-                    android:unlinkable="@{true}" />
+                    android:unlinkable="@{true}"
+                    android:canAdd="@{false}"/>
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/activitiesCategory"
@@ -276,7 +277,8 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:editing="@{editing}"
                     android:permissionLevel="@{permissionLevel}"
-                    android:unlinkable="@{true}" />
+                    android:unlinkable="@{true}"
+                    android:canAdd="@{false}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:layout_width="match_parent"
@@ -288,6 +290,7 @@
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
+                    android:canAdd="@{false}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -300,6 +303,7 @@
                     android:isTable="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{true}"
+                    android:canAdd="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}" />
             </LinearLayout>
         </ScrollView>

@@ -155,9 +155,15 @@ public class BindingAdapters {
 		}
 	}
 
+	@BindingAdapter("android:canAdd")
+	public static void setCanAdd(ScrollViewCategory category,
+								 Boolean canAdd) {
+		category.setCanAdd(canAdd);
+	}
+
 	@BindingAdapter("android:showAddButtonFirstLayer")
 	public static void setshowAddButtonFirstLayer(ScrollViewCategory category,
-								  Boolean showAddButtonFirstLayer) {
+												  Boolean showAddButtonFirstLayer) {
 		if (showAddButtonFirstLayer != null && showAddButtonFirstLayer) {
 			category.setShowAddButtonFirstLayer(showAddButtonFirstLayer);
 		}

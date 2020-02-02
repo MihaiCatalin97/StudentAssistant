@@ -13,7 +13,8 @@ public class AdministratorAdapter extends ViewModelAdapter<Administrator, Admini
 				.phoneNumber(administrator.getPhoneNumber())
 				.fileMetadataKeys(administrator.getFileMetadataKeys())
 				.build()
-				.setImageMetadataKey(administrator.getImageMetadataKey());
+				.setImageMetadataKey(administrator.getImageMetadataKey())
+				.setKey(administrator.getKey());
 	}
 
 	public Administrator adapt(AdministratorViewModel administratorViewModel) {

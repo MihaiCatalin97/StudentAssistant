@@ -16,5 +16,6 @@ public final class Grade extends BaseEntity {
     private String studentId;
     private String studentKey;
     private String laboratoryKey;
+    private String courseKey;
     private long date;
 }

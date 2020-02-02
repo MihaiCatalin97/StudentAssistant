@@ -31,6 +31,7 @@
             android:id="@+id/imageCardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="8dp"
             app:cardCornerRadius="@{size/2}"
             app:cardElevation="8dp">
 
@@ -50,8 +51,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="@{size/5, default=`40dp`}"
             android:layout_height="@{size/5, default=`40dp`}"
-            android:layout_marginStartPixels="@{size/4*3}"
-            android:layout_marginTopPixels="@{size/4*3}"
+            android:layout_marginStartPixels="@{size*8/12}"
+            android:layout_marginTopPixels="@{size*8/12}"
             app:cardBackgroundColor="#00FFFFFF"
             app:cardCornerRadius="@{size/10}"
             app:cardElevation="9dp"
@@ -72,8 +73,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="@{size/5, default=`40dp`}"
             android:layout_height="@{size/5, default=`40dp`}"
-            android:layout_marginStartPixels="@{size/4*3}"
-            android:layout_marginTopPixels="@{size/4*3}"
+            android:layout_marginStartPixels="@{size*8/12}"
+            android:layout_marginTopPixels="@{size*8/12}"
             app:cardBackgroundColor="#00FFFFFF"
             app:cardCornerRadius="@{size/10}"
             app:cardElevation="9dp"

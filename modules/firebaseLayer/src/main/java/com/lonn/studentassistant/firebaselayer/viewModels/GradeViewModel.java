@@ -1,6 +1,5 @@
 package com.lonn.studentassistant.firebaselayer.viewModels;
 
-import com.google.firebase.database.Exclude;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
@@ -24,6 +23,7 @@ public final class GradeViewModel extends EntityViewModel<Grade> {
 	private String studentKey;
 	private int grade;
 	private String laboratoryKey;
+	private String courseKey;
 	private Date date;
 
 	@Override
