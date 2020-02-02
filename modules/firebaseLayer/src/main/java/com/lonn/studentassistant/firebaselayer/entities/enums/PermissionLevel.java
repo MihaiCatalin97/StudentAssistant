@@ -1,4 +1,4 @@
-package com.lonn.studentassistant.authorization;
+package com.lonn.studentassistant.firebaselayer.entities.enums;
 
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
@@ -8,10 +8,13 @@ import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 
 public enum PermissionLevel {
-	READ_PUBLIC(0),
-	READ_PARTIAL(0),
-	READ_FULL(2),
-	WRITE(3);
+	NONE(0),
+	READ_PUBLIC(1),
+	READ_PARTIAL(2),
+	READ_FULL(3),
+	WRITE_ADD_AGGREGATED(4),
+	WRITE_PARTIAL(5),
+	WRITE(6);
 
 	private int permission;
 

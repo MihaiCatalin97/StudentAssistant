@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.entityActivities.otherActivity.OtherActivityEntityActivity">
+    tools:context=".activities.abstractions.FirebaseConnectedActivity">
 
     <data>
 
@@ -11,6 +11,8 @@
         <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
+        <import type="android.view.View" />
 
         <variable
             name="entity"
@@ -47,6 +49,22 @@
         <variable
             name="editing"
             type="Boolean" />
+
+        <variable
+            name="enrolled"
+            type="Boolean" />
+
+        <variable
+            name="userIsStudent"
+            type="Boolean" />
+
+        <variable
+            name="enrollRequestSent"
+            type="Boolean" />
+
+        <variable
+            name="permissionLevel"
+            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
     </data>
 
 
@@ -70,9 +88,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@{editing? @drawable/edit_text_background : null}"
-                    android:enabled="@{editing}"
+                    android:focusable="@{editing}"
                     android:hint="@{entity.name == null || entity.name.length() == 0? `Enter name` : ``}"
                     android:importantForAutofill="no"
+                    android:onClick="tapEditText"
                     android:text="@={entity.name}" />
 
                 <TextView
@@ -92,9 +111,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@{editing? @drawable/edit_text_background : null}"
-                    android:enabled="@{editing}"
+                    android:focusable="@{editing}"
                     android:hint="Enter description"
                     android:importantForAutofill="no"
+                    android:onClick="tapEditText"
                     android:text="@={entity.description}" />
 
                 <TextView
@@ -108,11 +128,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@{editing? @drawable/edit_text_background : null}"
-                    android:enabled="@{editing}"
+                    android:focusable="@{editing}"
                     android:hint="Enter website"
                     android:importantForAutofill="no"
+                    android:onClick="tapLink"
                     android:text="@={entity.website}"
                     android:visibility="@{entity.websiteVisible}" />
+
+                <include
+                    layout="@layout/student_enroll_discipline_layout"
+                    android:visibility="@{userIsStudent &amp;&amp; !enrolled? View.VISIBLE : View.GONE}"
+                    app:enrollRequestSent="@{enrollRequestSent}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/filesCategory"
@@ -124,8 +150,8 @@
                     android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`file`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}" />
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showEmpty="@{false}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/studentCategory"
@@ -136,8 +162,8 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:editing="@{editing}"
                     android:entityName="@{`students`}"
-                    android:permissionLevel="@{0}"
-                    android:showEmpty="@{true}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showEmpty="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
                     android:unlinkable="@{true}" />
 
@@ -147,10 +173,10 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Professors`}"
                     android:childEntities="@{professors.values()}"
-                    android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`professor`}"
-                    android:permissionLevel="@{1}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showEmpty="@{true}"
                     android:unlinkable="@{true}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -163,8 +189,8 @@
                     android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`regular class`}"
-                    android:permissionLevel="@{1}"
-                    android:showAddButton="@{true}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showAddButtonFirstLayer="@{true}"
                     android:showEmpty="@{true}"
                     android:showHeader="@{true}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.scheduleCategories((CategoryViewModel) category)}"
@@ -179,8 +205,8 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:deletable="@{true}"
                     android:editing="@{editing}"
-                    android:permissionLevel="@{1}"
-                    android:showAddButton="@{oneTimeClasses.values().size() == 0?false:true}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showAddButtonFirstLayer="@{oneTimeClasses.values().size() == 0?false:true}"
                     android:showEmpty="@{true}"
                     android:showHeader="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}"
@@ -191,6 +217,7 @@
 
         <include
             layout="@layout/entity_activity_floating_buttons"
-            app:editing="@{editing}" />
+            app:editing="@{editing}"
+            app:permissionLevel="@{permissionLevel}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

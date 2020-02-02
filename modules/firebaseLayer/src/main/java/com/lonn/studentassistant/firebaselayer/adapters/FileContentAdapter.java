@@ -11,6 +11,7 @@ public class FileContentAdapter extends ViewModelAdapter<FileContent, FileConten
 		return builder()
 				.fileContentBase64(fileContent.getFileContentBase64())
 				.fileMetadataKey(fileContent.getFileMetadataKey())
+				.associatedEntityKey(fileContent.getAssociatedEntityKey())
 				.build()
 				.setKey(fileContent.getKey());
 	}
@@ -18,7 +19,8 @@ public class FileContentAdapter extends ViewModelAdapter<FileContent, FileConten
 	public FileContent adapt(FileContentViewModel fileContentViewModel) {
 		FileContent result = new FileContent()
 				.setFileContentBase64(fileContentViewModel.getFileContentBase64())
-				.setFileMetadataKey(fileContentViewModel.getFileMetadataKey());
+				.setFileMetadataKey(fileContentViewModel.getFileMetadataKey())
+				.setAssociatedEntityKey(fileContentViewModel.getAssociatedEntityKey());
 
 		if (fileContentViewModel.getKey() != null) {
 			result.setKey(fileContentViewModel.getKey());

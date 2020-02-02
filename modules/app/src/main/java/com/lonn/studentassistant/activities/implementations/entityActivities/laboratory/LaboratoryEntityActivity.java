@@ -26,6 +26,8 @@ import lombok.Getter;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
 import static java.util.UUID.randomUUID;
@@ -126,5 +128,24 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 	@Override
 	protected void onSaveTapped() {
 		dispatcher.update(binding.getEntity());
+	}
+
+	void updateBindingVariables() {
+		if (firebaseApi.getAuthenticationService().getAccountType().equals(STUDENT)) {
+			if (getBinding().getEntity() != null) {
+				binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+						.getPermissionLevel(binding.getEntity()));
+			}
+		}
+		else {
+			binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+					.getPermissionLevel(binding.getEntity()));
+
+			binding.setEditing(binding.getPermissionLevel().isAtLeast(WRITE) && binding.getEditing() != null && binding.getEditing() ?
+					binding.getEditing()
+					: false);
+
+			isEditing = binding.getEditing();
+		}
 	}
 }

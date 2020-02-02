@@ -8,6 +8,8 @@
 
         <import type="com.lonn.studentassistant.utils.Utils" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+
         <variable
             name="student"
             type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
@@ -23,245 +25,264 @@
         <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+
+        <variable
+            name="editing"
+            type="Boolean" />
     </data>
 
-    <ScrollView
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            style="@style/ScreenLayoutWrapped"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/profileImage"
-                layout="@layout/rounded_image"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:defaultImage="@{Utils.getDefaultPersonImageForName(student.firstName)}"
-                app:image="@{profileImageContent.fileContentBase64}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:size="@{200}" />
-
-            <TextView
-                android:id="@+id/titleProfileLayout"
-                style="@style/DarkSubtitleShadowed"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:text="@{student.lastName + ` ` + student.firstName}"
-                app:layout_constraintTop_toBottomOf="@id/profileImage" />
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:id="@+id/profileEmailLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleProfileLayout">
+                <include
+                    android:id="@+id/profileImage"
+                    layout="@layout/rounded_image"
+                    app:editing="@{editing}"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:defaultImage="@{Utils.getDefaultPersonImageForName(student.firstName)}"
+                    app:image="@{profileImageContent.fileContentBase64}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:size="@{200}" />
 
                 <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Email: " />
-
-                <EditText
-                    android:id="@+id/profileEmailEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="textEmailAddress"
-                    android:text="@{student.email}" />
-
-                <ImageView
-                    android:id="@+id/profileEmailEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profileEmailCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profilePhoneLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileEmailLayout">
-
-                <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Phone number: " />
-
-                <EditText
-                    android:id="@+id/profilePhoneEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="phone"
-                    android:text="@{student.phoneNumber}" />
-
-                <ImageView
-                    android:id="@+id/profilePhoneEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profilePhoneCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profileYearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profilePhoneLayout">
-
-                <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Year: " />
-
-                <EditText
-                    android:id="@+id/profileGroupEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="textEmailAddress"
-                    android:text="@{student.cycleSpecializationYear.toString()}" />
-
-                <ImageView
-                    android:id="@+id/profileYearEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profileYearCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profileGroupLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileYearLayout">
-
-                <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Group: " />
-
-                <EditText
-                    android:id="@+id/profileYearEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="textEmailAddress"
-                    android:text="@{student.group}" />
-
-                <ImageView
-                    android:id="@+id/profileGroupEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profileGroupCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                app:layout_constraintLeft_toLeftOf="@id/titleProfileLayout"
-                app:layout_constraintTop_toBottomOf="@id/profileGroupLayout">
-
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/titleProfileLayout"
+                    style="@style/DarkSubtitleShadowed"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My courses`}"
-                    android:childEntities="@{personalCourses}"
-                    android:entityName="@{`optional course`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}" />
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:gravity="center"
+                    android:text="@{student.lastName + ` ` + student.firstName}"
+                    app:layout_constraintTop_toBottomOf="@id/profileImage" />
 
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                <LinearLayout
+                    android:id="@+id/profileEmailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My activities`}"
-                    android:childEntities="@{personalActivities}"
-                    android:entityName="@{`activity`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}" />
+                    android:gravity="center"
+                    android:weightSum="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/titleProfileLayout">
 
-            </LinearLayout>
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Email: " />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <EditText
+                        android:id="@+id/profileEmailEditText"
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:text="@{student.email}" />
 
-    </ScrollView>
+                    <ImageView
+                        android:id="@+id/profileEmailEditButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/profileEmailCancelButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profilePhoneLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:weightSum="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profileEmailLayout">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Phone number: " />
+
+                    <EditText
+                        android:id="@+id/profilePhoneEditText"
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:enabled="false"
+                        android:inputType="phone"
+                        android:text="@{student.phoneNumber}" />
+
+                    <ImageView
+                        android:id="@+id/profilePhoneEditButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/profilePhoneCancelButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profileYearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:weightSum="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profilePhoneLayout">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Year: " />
+
+                    <EditText
+                        android:id="@+id/profileGroupEditText"
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:text="@{student.cycleSpecializationYear.toString()}" />
+
+                    <ImageView
+                        android:id="@+id/profileYearEditButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/profileYearCancelButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/profileGroupLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:weightSum="1"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/profileYearLayout">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Group: " />
+
+                    <EditText
+                        android:id="@+id/profileYearEditText"
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:text="@{student.group}" />
+
+                    <ImageView
+                        android:id="@+id/profileGroupEditButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        app:srcCompat="@drawable/ic_edit" />
+
+                    <ImageView
+                        android:id="@+id/profileGroupCancelButton"
+                        android:layout_width="@dimen/dim_0dp"
+                        android:layout_height="20dp"
+                        android:layout_weight="0.1"
+                        android:visibility="invisible"
+                        app:srcCompat="@drawable/ic_cancel" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical"
+                    app:layout_constraintLeft_toLeftOf="@id/titleProfileLayout"
+                    app:layout_constraintTop_toBottomOf="@id/profileGroupLayout">
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My courses`}"
+                        android:childEntities="@{personalCourses}"
+                        android:entityName="@{`optional course`}"
+                        android:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}"
+                        android:showEmpty="@{true}"
+                        android:unlinkable="@{true}" />
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My activities`}"
+                        android:childEntities="@{personalActivities}"
+                        android:entityName="@{`activity`}"
+                        android:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}"
+                        android:showEmpty="@{true}"
+                        android:unlinkable="@{true}" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}"
+            app:permissionLevel="@{PermissionLevel.WRITE}" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

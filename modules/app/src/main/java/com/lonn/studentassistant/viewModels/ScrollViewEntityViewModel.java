@@ -3,6 +3,8 @@ package com.lonn.studentassistant.viewModels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +15,7 @@ public class ScrollViewEntityViewModel extends BaseObservable {
 	@Getter
 	public Class entityActivityClass;
 	@Bindable
-	public int permissionLevel;
+	public PermissionLevel permissionLevel;
 	@Bindable
 	public String field1, field2, field3, field4, field5, image;
 

@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.LaboratoryAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Laboratory;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
@@ -34,6 +35,7 @@ public class LaboratoryService extends FileAssociatedEntityService<Laboratory, E
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new LaboratoryAdapter();
 		studentService = StudentService.getInstance(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);
@@ -153,5 +155,9 @@ public class LaboratoryService extends FileAssociatedEntityService<Laboratory, E
 	@Override
 	protected DatabaseTable<Laboratory> getDatabaseTable() {
 		return LABORATORIES;
+	}
+
+	protected PermissionLevel getPermissionLevel(Laboratory laboratory) {
+		return authenticationService.getPermissionLevel(laboratory);
 	}
 }

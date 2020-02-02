@@ -3,8 +3,10 @@ package com.lonn.studentassistant.firebaselayer.services;
 import com.lonn.studentassistant.firebaselayer.adapters.RegistrationTokenAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.RegistrationToken;
 import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
@@ -13,6 +15,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.RegistrationTokenViewM
 import java.util.Date;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.REGISTRATION_TOKENS;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static com.lonn.studentassistant.firebaselayer.services.EmailService.parseAddress;
 
 public class RegistrationTokenService extends Service<RegistrationToken, Exception, RegistrationTokenViewModel> {
@@ -32,6 +35,7 @@ public class RegistrationTokenService extends Service<RegistrationToken, Excepti
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new RegistrationTokenAdapter();
 	}
 
@@ -142,5 +146,10 @@ public class RegistrationTokenService extends Service<RegistrationToken, Excepti
 	@Override
 	protected DatabaseTable<RegistrationToken> getDatabaseTable() {
 		return REGISTRATION_TOKENS;
+	}
+
+	protected PermissionLevel getPermissionLevel(RegistrationToken registrationToken) {
+		return WRITE;
+//		return authenticationService.getPermissionLevel(registrationToken);
 	}
 }

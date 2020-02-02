@@ -13,7 +13,6 @@ public class ProfessorAdapter extends ViewModelAdapter<Professor, ProfessorViewM
 				.cabinet(professor.getCabinet())
 				.email(professor.getEmail())
 				.phoneNumber(professor.getPhoneNumber())
-				.imageMetadataKey(professor.getImageMetadataKey())
 				.rank(professor.getLevel())
 				.website(professor.getWebsite())
 				.courses(professor.getCourses())
@@ -21,6 +20,7 @@ public class ProfessorAdapter extends ViewModelAdapter<Professor, ProfessorViewM
 				.recurringClasses(professor.getRecurringClasses())
 				.oneTimeClasses(professor.getOneTimeClasses())
 				.build()
+				.setImageMetadataKey(professor.getImageMetadataKey())
 				.setFileMetadataKeys(professor.getFilesMetadata())
 				.setKey(professor.getKey());
 	}

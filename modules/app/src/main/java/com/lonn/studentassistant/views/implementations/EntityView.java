@@ -7,18 +7,17 @@ import android.view.LayoutInflater;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 
-import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.GradeLaboratoryTableRowBinding;
 import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
 import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
@@ -29,6 +28,7 @@ import lombok.Setter;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.lonn.studentassistant.BR.editing;
 import static com.lonn.studentassistant.BR.unlinkable;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
 
 public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
@@ -38,13 +38,13 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	@Getter
 	protected ScrollViewEntityViewModel model;
 	protected ViewDataBinding binding;
-	protected int permissionLevel = 0;
+	protected PermissionLevel permissionLevel = NONE;
 	@Setter
 	protected Consumer<T> onDeleteTap;
 	@Setter
 	protected Consumer<T> onRemoveTap;
 
-	public EntityView(Context context, EntityViewType viewType, int permissionLevel,
+	public EntityView(Context context, EntityViewType viewType, PermissionLevel permissionLevel,
 					  T entityViewModel) {
 		super(context);
 
@@ -132,11 +132,9 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {
 		if (entityViewModel instanceof OneTimeClassViewModel) {
 			((OneTimeClassTableRowBinding) binding).setOneTimeClass((OneTimeClassViewModel) entityViewModel);
-			((OneTimeClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
 		else if (entityViewModel instanceof RecurringClassViewModel) {
 			((RecurringClassTableRowBinding) binding).setRecurringClass((RecurringClassViewModel) entityViewModel);
-			((RecurringClassTableRowBinding) binding).setPermissionLevel(model.permissionLevel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
 			((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);

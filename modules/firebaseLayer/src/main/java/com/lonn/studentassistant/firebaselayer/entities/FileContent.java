@@ -12,4 +12,5 @@ import lombok.experimental.Accessors;
 public final class FileContent extends BaseEntity {
 	private String fileMetadataKey;
 	private String fileContentBase64;
+	private String associatedEntityKey;
 }

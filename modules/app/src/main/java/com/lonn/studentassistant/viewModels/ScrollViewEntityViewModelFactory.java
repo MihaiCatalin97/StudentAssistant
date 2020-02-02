@@ -83,11 +83,25 @@ public class ScrollViewEntityViewModelFactory {
 	}
 
 	private static ScrollViewEntityViewModel partial(StudentViewModel student) {
-		String title = student.getFirstName() + " " + student.getLastName();
+		String title;
 		String subtitle = Utils.hideStudentId(student.getStudentId());
-		String description = student.getCycleSpecializationYear().toString() + "\n" +
-				Utils.yearToString(student.getCycleSpecializationYear().getYear()) + "\n" +
-				"Group " + student.getGroup();
+		String description = "";
+
+		if(student.getFirstName() == null && student.getLastName() == null){
+			title = "(unregistered student)";
+		}
+		else{
+			title = student.getFirstName() + " " + student.getLastName();
+		}
+
+		if (student.getCycleSpecializationYear() != null) {
+			description += student.getCycleSpecializationYear().toString() + "\n" +
+					Utils.yearToString(student.getCycleSpecializationYear().getYear());
+
+			if (student.getGroup() != null) {
+				description += "\nGroup " + student.getGroup();
+			}
+		}
 
 		return ScrollViewEntityViewModel.builder()
 				.field1(title)
@@ -97,11 +111,26 @@ public class ScrollViewEntityViewModelFactory {
 	}
 
 	private static ScrollViewEntityViewModel full(StudentViewModel student) {
-		String title = student.getFirstName() + " " + student.getLastName();
+		String title;
 		String subtitle = Utils.hideStudentId(student.getStudentId());
-		String description = student.getCycleSpecializationYear().toString() + "\n" +
-				Utils.yearToString(student.getCycleSpecializationYear().getYear()) + "\n" +
-				"Group " + student.getGroup();
+		String description = "";
+
+		if(student.getFirstName() == null && student.getLastName() == null){
+			title = "(unregistered student)";
+		}
+		else{
+			title = student.getFirstName() + " " + student.getLastName();
+		}
+
+
+		if (student.getCycleSpecializationYear() != null) {
+			description += student.getCycleSpecializationYear().toString() + "\n" +
+					Utils.yearToString(student.getCycleSpecializationYear().getYear());
+
+			if (student.getGroup() != null) {
+				description += "\nGroup " + student.getGroup();
+			}
+		}
 
 		return ScrollViewEntityViewModel.builder()
 				.field1(title)

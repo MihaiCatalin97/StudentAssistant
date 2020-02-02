@@ -3,7 +3,9 @@ package com.lonn.studentassistant.firebaselayer.services;
 import com.lonn.studentassistant.firebaselayer.adapters.RecurringClassAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 import static androidx.databinding.library.baseAdapters.BR._all;
 import static com.lonn.studentassistant.firebaselayer.Utils.calendarDayToWeekDay;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.RECURRING_CLASSES;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static java.util.Calendar.DAY_OF_WEEK;
 
 public class RecurringClassService extends Service<RecurringClass, Exception, RecurringClassViewModel> {
@@ -39,6 +42,7 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new RecurringClassAdapter(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);
 		professorService = ProfessorService.getInstance(firebaseConnection);
@@ -186,5 +190,10 @@ public class RecurringClassService extends Service<RecurringClass, Exception, Re
 	@Override
 	protected DatabaseTable<RecurringClass> getDatabaseTable() {
 		return RECURRING_CLASSES;
+	}
+
+	protected PermissionLevel getPermissionLevel(RecurringClass recurringClass) {
+		return WRITE;
+//		return authenticationService.getPermissionLevel(recurringClass);
 	}
 }

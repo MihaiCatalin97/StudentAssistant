@@ -85,7 +85,7 @@ public abstract class EntitySelectionDialog<T extends EntityViewModel<? extends 
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				listAdapter.setStringToMatch(s.toString());
+				listAdapter.setStringToMatch(s.toString().toLowerCase());
 				setSelectedItems(false);
 			}
 		});

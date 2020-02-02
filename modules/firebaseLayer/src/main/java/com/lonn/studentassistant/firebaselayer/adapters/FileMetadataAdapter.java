@@ -14,6 +14,7 @@ public class FileMetadataAdapter extends ViewModelAdapter<FileMetadata, FileMeta
 				.fileTitle(fileMetadata.getFileTitle())
 				.fileType(fileMetadata.getFileType())
 				.fileContentKey(fileMetadata.getFileContentKey())
+				.associatedEntityKey(fileMetadata.getAssociatedEntityKey())
 				.build()
 				.setKey(fileMetadata.getKey());
 	}
@@ -25,6 +26,7 @@ public class FileMetadataAdapter extends ViewModelAdapter<FileMetadata, FileMeta
 				.setFileSize(fileMetadataViewModel.getFileSizeLong())
 				.setFileTitle(fileMetadataViewModel.getFileTitle())
 				.setFileType(fileMetadataViewModel.getFileType())
+				.setAssociatedEntityKey(fileMetadataViewModel.getAssociatedEntityKey())
 				.setFileContentKey(fileMetadataViewModel.getFileContentKey());
 
 		if (fileMetadataViewModel.getKey() != null) {

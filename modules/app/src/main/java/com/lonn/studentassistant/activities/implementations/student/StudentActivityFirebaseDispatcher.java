@@ -6,6 +6,7 @@ import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
@@ -19,15 +20,17 @@ import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.otherActivities;
 import static com.lonn.studentassistant.BR.personalActivities;
 import static com.lonn.studentassistant.BR.personalCourses;
+import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
 
-class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
+class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, StudentViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(StudentActivityFirebaseDispatcher.class);
 	private StudentActivityMainLayoutBinding binding;
 
-	private StudentViewModel student;
 	private BindableHashMap<CourseViewModel> courseMap;
 	private BindableHashMap<OtherActivityViewModel> otherActivityMap;
+	private BindableHashMap<ProfessorViewModel> professorsMap;
+
 	private BindableHashMap<RecurringClassViewModel> recurringClassMap;
 	private BindableHashMap<OneTimeClassViewModel> oneTimeClassMap;
 	private BindableHashMap<CourseViewModel> personalCoursesMap;
@@ -42,6 +45,8 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 
 		courseMap = new BindableHashMap<>(binding, courses);
 		otherActivityMap = new BindableHashMap<>(binding, otherActivities);
+		professorsMap = new BindableHashMap<>(binding, com.lonn.studentassistant.BR.professors);
+
 		recurringClassMap = new BindableHashMap<>(binding, recurringClasses);
 		oneTimeClassMap = new BindableHashMap<>(binding, oneTimeClasses);
 		personalCoursesMap = new BindableHashMap<>(binding, personalCourses);
@@ -59,13 +64,13 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 	}
 
 	private void computePersonalCourses() {
-		if (student != null) {
+		if (currentProfile != null) {
 			for (CourseViewModel personalCourse : personalCoursesMap.values()) {
-				if (!student.getCourses().contains(personalCourse.getKey())) {
+				if (!currentProfile.getCourses().contains(personalCourse.getKey())) {
 					personalCoursesMap.remove(personalCourse);
 				}
 			}
-			for (String courseKey : student.getCourses()) {
+			for (String courseKey : currentProfile.getCourses()) {
 				personalCoursesMap.put(courseMap.get(courseKey));
 			}
 
@@ -74,13 +79,13 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 	}
 
 	private void computePersonalActivities() {
-		if (student != null) {
+		if (currentProfile != null) {
 			for (OtherActivityViewModel personalActivity : personalActivitiesMap.values()) {
-				if (!student.getOtherActivities().contains(personalActivity.getKey())) {
+				if (!currentProfile.getOtherActivities().contains(personalActivity.getKey())) {
 					personalActivitiesMap.remove(personalActivity);
 				}
 			}
-			for (String activityKey : student.getOtherActivities()) {
+			for (String activityKey : currentProfile.getOtherActivities()) {
 				personalActivitiesMap.put(otherActivityMap.get(activityKey));
 			}
 
@@ -135,9 +140,7 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 	private void loadProfessors() {
 		firebaseApi.getProfessorService()
 				.getAll()
-				.onComplete(professors -> {
-							binding.setProfessors(professors);
-						},
+				.onComplete(receivedProfessors -> professorsMap = new BindableHashMap<>(binding, professors, receivedProfessors),
 						error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
 	}
 
@@ -177,19 +180,28 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 		firebaseApi.getStudentService()
 				.getById(key, true)
 				.onSuccess(student -> {
-					this.student = student;
+					currentProfile = student.clone();
 					binding.setStudent(student);
 					computePersonalCourses();
 					computePersonalActivities();
 
-					if (student.getImageMetadataKey() != null) {
-						loadProfileImage(student.getImageMetadataKey());
+					if (student.getImageMetadataKey() == null ||
+							student.getImageMetadataKey().length() == 0) {
+						binding.setProfileImageContent(null);
+					}
+					else if (binding.getStudent() == null ||
+							binding.getStudent()
+									.getImageMetadataKey() == null ||
+							!binding.getStudent()
+									.getImageMetadataKey()
+									.equals(student.getImageMetadataKey())) {
+						loadImage(student.getImageMetadataKey());
 					}
 				})
 				.onError(error -> activity.logAndShowErrorSnack("Error loading your personal data", error, LOGGER));
 	}
 
-	private void loadProfileImage(String profileImageKey) {
+	private void loadImage(String profileImageKey) {
 		firebaseApi.getFileMetadataService()
 				.getById(profileImageKey, true)
 				.onSuccess(metadata -> firebaseApi.getFileContentService()
@@ -203,5 +215,11 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity> {
 						"Unable to load the profile image",
 						error,
 						LOGGER));
+	}
+
+	public void update(StudentViewModel studentViewModel) {
+		firebaseApi.getStudentService()
+				.save(studentViewModel)
+				.onSuccess(none -> activity.showSnackBar("Successfully updated your profile!", 1000));
 	}
 }

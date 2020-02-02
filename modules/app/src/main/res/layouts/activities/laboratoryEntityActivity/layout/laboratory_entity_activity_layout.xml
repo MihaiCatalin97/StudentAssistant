@@ -12,6 +12,8 @@
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+
         <variable
             name="editing"
             type="Boolean" />
@@ -27,6 +29,10 @@
         <variable
             name="files"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
+            name="permissionLevel"
+            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
 
     </data>
 
@@ -55,7 +61,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@{editing? @drawable/edit_text_background : null}"
-                        android:enabled="@{editing}"
+                        android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (entity.title == null || entity.title.length() == 0)? `Enter title` : ` `}"
                         android:importantForAutofill="no"
                         android:text="@={entity.title}" />
@@ -79,7 +85,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@{editing? @drawable/edit_text_background : null}"
-                        android:enabled="@{editing}"
+                        android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (entity.week == null || entity.week.trim().length() == 0)? `Enter week` : ` `}"
                         android:importantForAutofill="no"
                         android:inputType="number"
@@ -98,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@{editing? @drawable/edit_text_background : null}"
-                    android:enabled="@{editing}"
+                    android:focusable="@{editing}"
                     android:hint="@{editing &amp;&amp; (entity.description == null || entity.description.length() == 0)? `Enter description` : ` `}"
                     android:importantForAutofill="no"
                     android:text="@={entity.description}" />
@@ -114,7 +120,7 @@
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
                     android:deletable="@{true}"
-                    android:permissionLevel="@{1}">
+                    android:permissionLevel="@{permissionLevel}">
 
                     <include
                         layout="@layout/grade_laboratory_table_header"
@@ -132,12 +138,13 @@
                     android:editing="@{editing}"
                     android:deletable="@{true}"
                     android:entityName="@{`file`}"
-                    android:permissionLevel="@{1}" />
+                    android:permissionLevel="@{permissionLevel}" />
             </LinearLayout>
         </ScrollView>
 
         <include
             layout="@layout/entity_activity_floating_buttons"
-            app:editing="@{editing}" />
+            app:editing="@{editing}"
+            app:permissionLevel="@{permissionLevel}" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

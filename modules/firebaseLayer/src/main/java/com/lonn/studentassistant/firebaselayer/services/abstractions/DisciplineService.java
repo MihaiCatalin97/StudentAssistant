@@ -21,6 +21,7 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 	}
 
 	protected void init() {
+		super.init();
 		studentService = StudentService.getInstance(firebaseConnection);
 		professorService = ProfessorService.getInstance(firebaseConnection);
 	}
@@ -251,6 +252,42 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 				.onSuccess(result::complete);
 
 		unlinkToProfessor(professor, discipline.getKey());
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeStudent(String disciplineKey, StudentViewModel student) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(disciplineKey, false)
+				.onSuccess(discipline -> {
+					discipline.getStudents().remove(student.getKey());
+
+					save(discipline).onError(result::completeExceptionally)
+							.onSuccess(result::complete);
+
+					unlinkToStudent(student, discipline.getKey());
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeProfessor(String disciplineKey, ProfessorViewModel professor) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(disciplineKey, false)
+				.onSuccess(discipline -> {
+					if (discipline.getProfessors().contains(professor.getKey())) {
+						discipline.getProfessors().remove(professor.getKey());
+
+						save(discipline).onError(result::completeExceptionally)
+								.onSuccess(result::complete);
+
+						unlinkToProfessor(professor, discipline.getKey());
+					}
+				})
+				.onError(result::completeExceptionally);
 
 		return result;
 	}

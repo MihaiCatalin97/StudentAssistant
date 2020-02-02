@@ -22,8 +22,16 @@
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
+            name="personalFiles"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+
+        <variable
+            name="editingProfile"
+            type="Boolean" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,6 +59,8 @@
             android:layout_height="match_parent"
             android:visibility="invisible"
             app:administrator="@{administrator}"
+            app:editing="@{editingProfile}"
+            app:personalFiles="@{personalFiles}"
             app:profileImageContent="@{profileImageContent}" />
 
         <include

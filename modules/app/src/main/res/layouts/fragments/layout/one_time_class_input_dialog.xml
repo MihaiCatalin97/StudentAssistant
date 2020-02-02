@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/classDialogParentLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/solid_background"
     android:focusable="true"
     android:focusableInTouchMode="true"
@@ -10,8 +12,7 @@
     android:paddingStart="18dp"
     android:paddingTop="36dp"
     android:paddingEnd="18dp"
-    android:paddingBottom="18dp"
-    android:weightSum="1">
+    android:paddingBottom="18dp">
 
     <TextView
         android:id="@+id/dialogTitle"
@@ -19,11 +20,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="Class input" />
+        android:text="Class input"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/classInputDialogScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/classInputDialogButtonBar"
+        app:layout_constraintTop_toBottomOf="@+id/dialogTitle"
+        tools:layout_editor_absoluteX="18dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -265,11 +271,13 @@
     </ScrollView>
 
     <LinearLayout
+        android:id="@+id/classInputDialogButtonBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:gravity="end"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <Button
             android:id="@+id/buttonNegative"
@@ -285,4 +293,4 @@
             android:text="Create" />
 
     </LinearLayout>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

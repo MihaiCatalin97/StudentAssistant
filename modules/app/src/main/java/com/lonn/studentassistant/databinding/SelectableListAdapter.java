@@ -142,7 +142,7 @@ public abstract class SelectableListAdapter<T extends EntityViewModel<? extends 
 	protected abstract String entityToDisplaySecondaryString(T entity);
 
 	private String entityToFilterString(T entity) {
-		return entityToDisplayMainString(entity) + entityToDisplaySecondaryString(entity);
+		return (entityToDisplayMainString(entity) + entityToDisplaySecondaryString(entity)).toLowerCase();
 	}
 
 	public void selectAll(boolean selectAll) {

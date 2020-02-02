@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.FileAssociatedEntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.PersonViewModel;
 
 import java.util.List;
 
@@ -23,12 +23,11 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor> {
+public class ProfessorViewModel extends PersonViewModel<Professor> {
 	@Bindable
 	private String firstName, lastName, rank, email, phoneNumber, website, cabinet;
 	@Bindable
 	private String professorImage;
-	private String imageMetadataKey;
 	private List<String> courses;
 	private List<String> otherActivities;
 	private List<String> oneTimeClasses;
@@ -93,4 +92,11 @@ public class ProfessorViewModel extends FileAssociatedEntityViewModel<Professor>
 	public String toString() {
 		return getFullName();
 	}
+
+	public ProfessorViewModel setImageMetadataKey(String imageMetadataKey) {
+		this.imageMetadataKey = imageMetadataKey;
+
+		return this;
+	}
+
 }

@@ -16,10 +16,6 @@
         <variable
             name="editing"
             type="Boolean" />
-
-        <variable
-            name="permissionLevel"
-            type="Integer" />
     </data>
 
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
@@ -56,8 +52,8 @@
         <TextView
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.55f}"
+            android:layout_height="match_parent"
+            android:layout_weight="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.55f}"
             android:gravity="center"
             android:maxLines="@{3}"
             android:padding="2dp"
@@ -133,7 +129,7 @@
             android:layout_weight="0.1"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}"
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/entityField1"
@@ -143,6 +139,6 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark"
-            android:visibility="@{permissionLevel != null &amp;&amp; permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}" />
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}" />
     </TableRow>
 </layout>

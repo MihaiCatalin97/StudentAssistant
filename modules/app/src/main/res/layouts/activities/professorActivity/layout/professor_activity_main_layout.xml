@@ -23,7 +23,7 @@
 
         <variable
             name="professors"
-            type="java.util.List&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
@@ -42,8 +42,16 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
+            name="personalFiles"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+
+        <variable
+            name="editingProfile"
+            type="Boolean" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -80,22 +88,16 @@
                 android:id="@+id/layoutMain"
                 layout="@layout/professor_activity_content_layout"
                 app:courses="@{courses.values()}"
+                app:editingProfile="@{editingProfile}"
                 app:oneTimeClasses="@{oneTimeClasses.values()}"
                 app:otherActivities="@{otherActivities.values()}"
                 app:personalCourses="@{personalCourses.values()}"
+                app:personalFiles="@{personalFiles.values()}"
                 app:personalOtherActivities="@{personalOtherActivities.values()}"
                 app:professor="@{professor}"
-                app:professors="@{professors}"
+                app:professors="@{professors.values()}"
                 app:profileImageContent="@{profileImageContent}"
                 app:recurringClasses="@{recurringClasses.values()}" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="@dimen/fab_margin"
-                app:srcCompat="@drawable/ic_refresh_light" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public final class FileMetadata extends BaseEntity {
+	private String associatedEntityKey;
 	private String fileName;
 	private long fileSize;
 	private String fileType;

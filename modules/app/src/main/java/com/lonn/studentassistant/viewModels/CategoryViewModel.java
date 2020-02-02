@@ -5,6 +5,7 @@ import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.BR;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 import com.lonn.studentassistant.functionalIntefaces.Function;
@@ -18,13 +19,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
 
 public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> extends BaseObservable {
 	private EntityViewType viewType = FULL;
 	private boolean showHeader = true;
 	private boolean showEmpty = true;
-	private int permissionLevel = 0;
+	private PermissionLevel permissionLevel = NONE;
 	private String categoryTitle = "Category Title";
 	private String entityName = "entityViewModel";
 	private Comparator<EntityView> entitiesComparator;
@@ -144,11 +146,11 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	}
 
 	@Bindable
-	public int getPermissionLevel() {
+	public PermissionLevel getPermissionLevel() {
 		return permissionLevel;
 	}
 
-	public CategoryViewModel<T> setPermissionLevel(int permissionLevel) {
+	public CategoryViewModel<T> setPermissionLevel(PermissionLevel permissionLevel) {
 		this.permissionLevel = permissionLevel;
 		this.notifyPropertyChanged(BR.categoryModel);
 		return this;

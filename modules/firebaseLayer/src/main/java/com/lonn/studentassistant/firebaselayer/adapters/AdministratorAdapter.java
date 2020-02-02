@@ -11,16 +11,24 @@ public class AdministratorAdapter extends ViewModelAdapter<Administrator, Admini
 				.lastName(administrator.getLastName())
 				.email(administrator.getEmail())
 				.phoneNumber(administrator.getPhoneNumber())
-				.imageMetadataKey(administrator.getImageMetadataKey())
-				.build();
+				.fileMetadataKeys(administrator.getFileMetadataKeys())
+				.build()
+				.setImageMetadataKey(administrator.getImageMetadataKey());
 	}
 
 	public Administrator adapt(AdministratorViewModel administratorViewModel) {
-		return new Administrator()
+		Administrator administrator = new Administrator()
 				.setFirstName(administratorViewModel.getFirstName())
 				.setLastName(administratorViewModel.getLastName())
 				.setEmail(administratorViewModel.getEmail())
 				.setPhoneNumber(administratorViewModel.getPhoneNumber())
-				.setImageMetadataKey(administratorViewModel.getImageMetadataKey());
+				.setImageMetadataKey(administratorViewModel.getImageMetadataKey())
+				.setFileMetadataKeys(administratorViewModel.getFileMetadataKeys());
+
+		if (administratorViewModel.getKey() != null) {
+			administrator.setKey(administratorViewModel.getKey());
+		}
+
+		return administrator;
 	}
 }

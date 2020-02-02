@@ -144,7 +144,7 @@ public class CategoryGenerator {
 				.setCategoryTitle("Approved students")
 				.setEntityName(parentCategory.getEntityName())
 				.setViewType(parentCategory.getViewType())
-				.setPermissionLevel(1)
+				.setPermissionLevel(parentCategory.getPermissionLevel())
 				.setShowEmpty(parentCategory.isShowEmpty())
 				.setShowHeader(true)
 				.setOnAdd(parentCategory.getOnAdd())
@@ -160,7 +160,7 @@ public class CategoryGenerator {
 				.setCategoryTitle("Pending students")
 				.setEntityName(parentCategory.getEntityName())
 				.setViewType(parentCategory.getViewType())
-				.setPermissionLevel(0)
+				.setPermissionLevel(parentCategory.getPermissionLevel())
 				.setShowEmpty(parentCategory.isShowEmpty())
 				.setShowHeader(true)
 				.setShouldContain((student) -> {

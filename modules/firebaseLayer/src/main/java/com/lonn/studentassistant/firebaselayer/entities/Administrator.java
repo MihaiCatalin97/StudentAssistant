@@ -2,6 +2,8 @@ package com.lonn.studentassistant.firebaselayer.entities;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
 
+import java.util.List;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -32,6 +34,11 @@ public final class Administrator extends Person {
 
 	public Administrator setImageMetadataKey(String imageMetadataKey) {
 		this.imageMetadataKey = imageMetadataKey;
+		return this;
+	}
+
+	public Administrator setFileMetadataKeys(List<String> fileMetadataKeys) {
+		this.fileMetadataKeys = fileMetadataKeys;
 		return this;
 	}
 }

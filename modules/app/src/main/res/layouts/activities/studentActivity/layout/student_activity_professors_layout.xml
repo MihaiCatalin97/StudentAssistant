@@ -23,6 +23,10 @@
         <variable
             name="professors"
             type="java.util.Collection&lt;ProfessorViewModel&gt;" />
+
+        <variable
+            name="permissionLevel"
+            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,7 +62,7 @@
                     android:childEntities="@{professors}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_PROFESSOR_NAME_COMPARATOR}"
                     android:entityName="@{`professor`}"
-                    android:permissionLevel="@{1}"
+                    android:permissionLevel="@{permissionLevel}"
                     android:shouldContain="@{() -> true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{false}" />

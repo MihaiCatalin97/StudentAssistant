@@ -6,6 +6,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="editing"
+            type="Boolean" />
+
+        <variable
             name="entityViewModel"
             type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
     </data>
@@ -81,7 +85,7 @@
             android:layout_marginBottom="4dp"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{entityViewModel.permissionLevel > 2? View.VISIBLE:View.GONE}"
+            android:visibility="@{editing != null &amp;&amp;editing? View.VISIBLE:View.GONE}"
             app:srcCompat="@drawable/ic_close" />
     </TableRow>
 </layout>

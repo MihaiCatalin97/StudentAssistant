@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.activities.abstractions;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -7,29 +8,45 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfileImageUploadDialog;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.lonn.studentassistant.utils.Utils.getVisibleChildren;
 import static com.lonn.studentassistant.utils.Utils.hideViews;
 
-public abstract class MainActivity extends NavBarActivity {
+public abstract class MainActivity<T extends EntityViewModel<? extends Person>> extends NavBarActivity<T> {
 	protected ProfileImageUploadDialog imageUploadDialog;
-	protected Dispatcher dispatcher;
 	protected String personId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		if (getIntent().getExtras() != null) {
 			personId = getIntent().getExtras().getString("personId");
+			entityKey = personId;
 		}
 
-		imageUploadDialog = new ProfileImageUploadDialog(this, personId);
+		imageUploadDialog = getImageUploadDialog();
 
 		findViewById(R.id.imageUploadButton).setOnClickListener((v) -> {
 			imageUploadDialog.show();
+		});
+
+		findViewById(R.id.imageDeleteButton).setOnClickListener((v) -> {
+			new AlertDialog.Builder(this, R.style.DialogTheme)
+					.setTitle("Delete image")
+					.setMessage("Are you sure you want to delete this image?\nThis action cannot be undone.")
+					.setPositiveButton("Delete", (dialog, which) -> {
+						deleteProfileImage();
+						dialog.dismiss();
+					})
+					.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+					.create()
+					.show();
 		});
 
 		executeWithDelay(this::hideLoadingScreen, 1000);
@@ -102,11 +119,6 @@ public abstract class MainActivity extends NavBarActivity {
 				loadingScreen.startAnimation(fadeOut);
 				executeWithDelay(() -> {
 					loadingScreen.setVisibility(GONE);
-
-					loadingScreen.setOnClickListener((view) -> {
-						showSnackBar("Tapped loading", 1000);
-					});
-
 					loadingScreen.setClickable(false);
 					loadingScreen.setFocusable(false);
 				}, 800);
@@ -119,4 +131,8 @@ public abstract class MainActivity extends NavBarActivity {
 		super.onActivityResult(requestCode, resultCode, data);
 		imageUploadDialog.setFile(requestCode, resultCode, data);
 	}
+
+	protected abstract ProfileImageUploadDialog getImageUploadDialog();
+
+	protected abstract void deleteProfileImage();
 }

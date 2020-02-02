@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.CourseAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.DisciplineService;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
@@ -68,14 +69,22 @@ public class CourseService extends DisciplineService<Course, CourseViewModel> {
 	}
 
 	protected void unlinkToStudent(StudentViewModel student, String disciplineKey) {
-		student.getCourses().remove(disciplineKey);
+		if (student.getCourses().contains(disciplineKey)) {
+			student.getCourses().remove(disciplineKey);
 
-		studentService.save(student);
+			studentService.save(student);
+		}
 	}
 
 	protected void unlinkToProfessor(ProfessorViewModel professor, String disciplineKey) {
-		professor.getCourses().remove(disciplineKey);
+		if (professor.getCourses().contains(disciplineKey)) {
+			professor.getCourses().remove(disciplineKey);
 
-		professorService.save(professor);
+			professorService.save(professor);
+		}
+	}
+
+	protected PermissionLevel getPermissionLevel(Course course) {
+		return authenticationService.getPermissionLevel(course);
 	}
 }

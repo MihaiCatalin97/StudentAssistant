@@ -4,15 +4,17 @@ import com.lonn.studentassistant.firebaselayer.adapters.ProfessorAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.PersonService;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.PROFESSORS;
 
-public class ProfessorService extends FileAssociatedEntityService<Professor, Exception, ProfessorViewModel> {
+public class ProfessorService extends PersonService<Professor, ProfessorViewModel> {
 	private static ProfessorService instance;
+	private static CourseService courseService;
+	private static OtherActivityService otherActivityService;
 
 	private ProfessorService(FirebaseConnection firebaseConnection) {
 		super(firebaseConnection);
@@ -28,34 +30,10 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new ProfessorAdapter();
-	}
-
-	public Future<Void, Exception> addOrReplaceImage(String professorId,
-													 FileMetadataViewModel fileMetadata,
-													 FileContentViewModel fileContent) {
-		Future<Void, Exception> result = new Future<>();
-
-		fileMetadataService.saveMetadataAndContent(fileMetadata, fileContent)
-				.onSuccess(none -> getById(professorId, false)
-						.onSuccess(professor -> {
-							String previousImage = professor.getImageMetadataKey();
-							professor.setImageMetadataKey(fileMetadata.getKey());
-
-							save(professor)
-									.onSuccess(none2 -> {
-										result.complete(none2);
-
-										if (previousImage != null) {
-											fileMetadataService.deleteMetadataAndContent(previousImage);
-										}
-									})
-									.onError(result::completeExceptionally);
-						})
-						.onError(result::completeExceptionally))
-				.onError(result::completeExceptionally);
-
-		return result;
+		courseService = CourseService.getInstance(firebaseConnection);
+		otherActivityService = OtherActivityService.getInstance(firebaseConnection);
 	}
 
 	public Future<Void, Exception> addCourse(String professorKey, String courseKey) {
@@ -208,6 +186,108 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 		return result;
 	}
 
+	public Future<Void, Exception> removeCourse(String professorKey, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (professor.getCourses().contains(courseKey)) {
+							professor.getCourses().remove(courseKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+
+							courseService.removeProfessor(courseKey, professor);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeActivity(String professorKey, String activityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(professorKey, false)
+				.onSuccess(professor -> {
+					if (professor == null) {
+						result.completeExceptionally(new Exception("No professor found"));
+					}
+					else {
+						if (professor.getOtherActivities().contains(activityKey)) {
+							professor.getOtherActivities().remove(activityKey);
+							save(professor)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+
+							otherActivityService.removeProfessor(activityKey, professor);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeCourse(ProfessorViewModel professor, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (professor == null) {
+			result.completeExceptionally(new Exception("No professor found"));
+		}
+		else {
+			if (professor.getCourses().contains(courseKey)) {
+				professor.getCourses().remove(courseKey);
+
+				courseService.removeProfessor(courseKey, professor)
+						.onSuccess(none -> save(professor)
+								.onSuccess(result::complete)
+								.onError(result::completeExceptionally))
+						.onError(result::completeExceptionally);
+			}
+			else {
+				result.complete(null);
+			}
+		}
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeActivity(ProfessorViewModel professor, String activityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (professor == null) {
+			result.completeExceptionally(new Exception("No professor found"));
+		}
+		else {
+			if (professor.getOtherActivities().contains(activityKey)) {
+				professor.getOtherActivities().remove(activityKey);
+
+				otherActivityService.removeProfessor(activityKey, professor)
+						.onSuccess(none -> save(professor)
+								.onSuccess(result::complete)
+								.onError(result::completeExceptionally))
+						.onError(result::completeExceptionally);
+			}
+			else {
+				result.complete(null);
+			}
+		}
+
+		return result;
+	}
+
 	public Future<ProfessorViewModel, Exception> getByName(String firstName, String lastName) {
 		Future<ProfessorViewModel, Exception> result = new Future<>();
 
@@ -230,5 +310,9 @@ public class ProfessorService extends FileAssociatedEntityService<Professor, Exc
 	@Override
 	protected DatabaseTable<Professor> getDatabaseTable() {
 		return PROFESSORS;
+	}
+
+	protected PermissionLevel getPermissionLevel(Professor professor) {
+		return authenticationService.getPermissionLevel(professor);
 	}
 }

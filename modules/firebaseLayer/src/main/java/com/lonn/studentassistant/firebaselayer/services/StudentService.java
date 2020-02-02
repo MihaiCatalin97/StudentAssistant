@@ -4,17 +4,19 @@ import com.lonn.studentassistant.firebaselayer.adapters.StudentAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
-import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.PersonService;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 
-import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
+import java.util.ArrayList;
 
-public class StudentService extends Service<Student, Exception, StudentViewModel> {
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
+import static java.util.UUID.randomUUID;
+
+public class StudentService extends PersonService<Student, StudentViewModel> {
 	private static StudentService instance;
 	protected FileMetadataService fileMetadataService;
 
@@ -32,35 +34,9 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new StudentAdapter();
 		fileMetadataService = FileMetadataService.getInstance(firebaseConnection);
-	}
-
-	public Future<Void, Exception> addOrReplaceImage(String studentId,
-													 FileMetadataViewModel fileMetadata,
-													 FileContentViewModel fileContent) {
-		Future<Void, Exception> result = new Future<>();
-
-		fileMetadataService.saveMetadataAndContent(fileMetadata, fileContent)
-				.onSuccess(none -> getById(studentId, false)
-						.onSuccess(student -> {
-							String previousImage = student.getImageMetadataKey();
-							student.setImageMetadataKey(fileMetadata.getKey());
-
-							save(student)
-									.onSuccess(none2 -> {
-										result.complete(none2);
-
-										if (previousImage != null) {
-											fileMetadataService.deleteMetadataAndContent(previousImage);
-										}
-									})
-									.onError(result::completeExceptionally);
-						})
-						.onError(result::completeExceptionally))
-				.onError(result::completeExceptionally);
-
-		return result;
 	}
 
 	public Future<Void, Exception> addGradeToStudent(GradeViewModel grade) {
@@ -71,7 +47,10 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 					if (student == null) {
 						student = StudentViewModel.builder()
 								.studentId(grade.getStudentId())
+								.gradeKeys(new ArrayList<>())
 								.build();
+
+						student.setKey(randomUUID().toString());
 					}
 
 					student.getGradeKeys().add(grade.getKey());
@@ -156,28 +135,12 @@ public class StudentService extends Service<Student, Exception, StudentViewModel
 		return result;
 	}
 
-	public Future<String, Exception> getKeyOfStudentId(String studentId) {
-		Future<String, Exception> result = new Future<>();
-
-		firebaseConnection.execute(new GetRequest<Student, Exception>()
-				.databaseTable(STUDENTS)
-				.subscribe(false)
-				.onSuccess(students -> {
-					for (Student student : students) {
-						if (student.getStudentId().equals(studentId)) {
-							result.complete(student.getKey());
-							return;
-						}
-					}
-					result.complete(null);
-				})
-				.onError(result::completeExceptionally));
-
-		return result;
-	}
-
 	@Override
 	protected DatabaseTable<Student> getDatabaseTable() {
 		return STUDENTS;
+	}
+
+	protected PermissionLevel getPermissionLevel(Student student) {
+		return authenticationService.getPermissionLevel(student);
 	}
 }

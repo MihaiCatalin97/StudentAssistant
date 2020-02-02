@@ -3,7 +3,9 @@ package com.lonn.studentassistant.firebaselayer.services;
 import com.lonn.studentassistant.firebaselayer.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 import static androidx.databinding.library.baseAdapters.BR._all;
 import static com.lonn.studentassistant.firebaselayer.Utils.weekDayToCalendarWeekDay;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.ONE_TIME_CLASSES;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static java.util.Calendar.DAY_OF_WEEK;
 
 public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTimeClassViewModel> {
@@ -40,6 +43,7 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new OneTimeClassAdapter(firebaseConnection);
 		courseService = CourseService.getInstance(firebaseConnection);
 		professorService = ProfessorService.getInstance(firebaseConnection);
@@ -188,5 +192,9 @@ public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTim
 	@Override
 	protected DatabaseTable<OneTimeClass> getDatabaseTable() {
 		return ONE_TIME_CLASSES;
+	}
+
+	protected PermissionLevel getPermissionLevel(OneTimeClass fileMetadata) {
+		return WRITE;
 	}
 }

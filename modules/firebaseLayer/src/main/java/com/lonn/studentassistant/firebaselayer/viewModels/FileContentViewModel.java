@@ -19,6 +19,7 @@ import lombok.experimental.Accessors;
 public final class FileContentViewModel extends EntityViewModel<FileContent> {
 	private String fileMetadataKey;
 	private String fileContentBase64;
+	private String associatedEntityKey;
 
 	@Override
 	public FileContentViewModel setKey(String key) {

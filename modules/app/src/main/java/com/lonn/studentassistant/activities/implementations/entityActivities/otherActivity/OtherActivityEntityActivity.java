@@ -29,12 +29,14 @@ import java.util.List;
 
 import lombok.Getter;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
+
 public class OtherActivityEntityActivity extends FileManagingActivity<OtherActivityViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(OtherActivityEntityActivity.class);
 	@Getter
 	OtherActivityEntityActivityLayoutBinding binding;
 	private OtherActivityFirebaseDispatcher dispatcher;
-	private Context context;
 
 	protected void loadAll(String entityKey) {
 		dispatcher.loadAll(entityKey);
@@ -49,8 +51,6 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new OtherActivityFirebaseDispatcher(this);
-
-		context = findViewById(R.id.studentCategory).getContext();
 
 		((ScrollViewCategory) findViewById(R.id.studentCategory))
 				.setOnAddAction(this::showStudentSelectionDialog);
@@ -130,16 +130,16 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 						}
 					}
 
-					StudentSelectionDialog dialog = new StudentSelectionDialog(context);
+					StudentSelectionDialog dialog = new StudentSelectionDialog(this);
 
 					dialog.setTitle("Select students")
 							.setInputHint("Enter student name or ID")
 							.setItems(unEnrolledStudents)
 							.setPositiveButtonAction(selectedStudents -> {
-								getFirebaseApi().getCourseService()
+								getFirebaseApi().getOtherActivityService()
 										.addStudents(selectedStudents, entityKey)
-										.onSuccess(none -> showSnackBar("Successfully added students to the course", 1500))
-										.onError(error -> logAndShowErrorSnack("An error occurred while adding students to the course",
+										.onSuccess(none -> showSnackBar("Successfully added students to the activity", 1500))
+										.onError(error -> logAndShowErrorSnack("An error occurred while adding students to the activity",
 												error,
 												LOGGER));
 							})
@@ -163,16 +163,16 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 						}
 					}
 
-					ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(context);
+					ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(this);
 
 					dialog.setTitle("Select professors")
 							.setInputHint("Enter professor name")
 							.setItems(unEnrolledProfessors)
 							.setPositiveButtonAction(selectedProfessors -> {
-								getFirebaseApi().getCourseService()
+								getFirebaseApi().getOtherActivityService()
 										.addProfessors(selectedProfessors, entityKey)
-										.onSuccess(none -> showSnackBar("Successfully added professors to the course", 1500))
-										.onError(error -> logAndShowErrorSnack("An error occurred while adding professors to the course",
+										.onSuccess(none -> showSnackBar("Successfully added professors to the activity", 1500))
+										.onError(error -> logAndShowErrorSnack("An error occurred while adding professors to the activity",
 												error,
 												LOGGER));
 							})
@@ -195,7 +195,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 						}
 					}
 
-					OtherActivityRecurringClassInputDialog dialog = new OtherActivityRecurringClassInputDialog(context,
+					OtherActivityRecurringClassInputDialog dialog = new OtherActivityRecurringClassInputDialog(this,
 							activityEntity,
 							disciplineProfessors);
 
@@ -226,7 +226,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 						}
 					}
 
-					OtherActivityOneTimeClassInputDialog dialog = new OtherActivityOneTimeClassInputDialog(context,
+					OtherActivityOneTimeClassInputDialog dialog = new OtherActivityOneTimeClassInputDialog(this,
 							activityEntity,
 							disciplineProfessors);
 
@@ -245,13 +245,13 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	private void showStudentRemoveDialog(StudentViewModel student) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
-				.setTitle("Remove student from course?")
-				.setMessage("Are you sure you wish to remove this student from the course?")
+		new AlertDialog.Builder(this, R.style.DialogTheme)
+				.setTitle("Remove student from activity?")
+				.setMessage("Are you sure you wish to remove this student from the activity?")
 				.setPositiveButton("Remove", (dialog, which) -> {
 					firebaseApi.getOtherActivityService()
 							.removeStudent(activityEntity, student)
-							.onSuccess(none -> showSnackBar("Student removed from the course", 1000))
+							.onSuccess(none -> showSnackBar("Student removed from the activity", 1000))
 							.onError(error -> logAndShowErrorSnack("An error occurred!",
 									error,
 									LOGGER));
@@ -263,13 +263,13 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	private void showProfessorRemoveDialog(ProfessorViewModel professor) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
-				.setTitle("Remove professor from course?")
-				.setMessage("Are you sure you wish to remove this professor from the course?")
+		new AlertDialog.Builder(this, R.style.DialogTheme)
+				.setTitle("Remove professor from activity?")
+				.setMessage("Are you sure you wish to remove this professor from the activity?")
 				.setPositiveButton("Remove", (dialog, which) -> {
 					firebaseApi.getOtherActivityService()
 							.removeProfessor(activityEntity, professor)
-							.onSuccess(none -> showSnackBar("Professor removed from the course", 1000))
+							.onSuccess(none -> showSnackBar("Professor removed from the activity", 1000))
 							.onError(error -> logAndShowErrorSnack("An error occurred!",
 									error,
 									LOGGER));
@@ -280,7 +280,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	private void showFileDeletionDialog(FileMetadataViewModel file) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("File deletion")
 				.setMessage("Are you sure you wish to delete this file?")
 				.setPositiveButton("Delete", (dialog, which) -> {
@@ -297,9 +297,9 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	private void showRecurringClassDeletionDialog(RecurringClassViewModel recurringClass) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
-				.setTitle("Delete class from course?")
-				.setMessage("Are you sure you wish to delete this class from the course?")
+		new AlertDialog.Builder(this, R.style.DialogTheme)
+				.setTitle("Delete class from activity?")
+				.setMessage("Are you sure you wish to delete this class from the activity?")
 				.setPositiveButton("Delete", (dialog, which) -> {
 					firebaseApi.getRecurringClassService()
 							.delete(recurringClass)
@@ -315,9 +315,9 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	}
 
 	private void showOneTimeClassDeletionDialog(OneTimeClassViewModel oneTimeClass) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
-				.setTitle("Delete class from course?")
-				.setMessage("Are you sure you wish to delete this class from the course?")
+		new AlertDialog.Builder(this, R.style.DialogTheme)
+				.setTitle("Delete class from activity?")
+				.setMessage("Are you sure you wish to delete this class from the activity?")
 				.setPositiveButton("Delete", (dialog, which) -> {
 					activityEntity.getOneTimeClasses().remove(oneTimeClass.getKey());
 
@@ -338,5 +338,42 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 				.setNegativeButton("Cancel", null)
 				.create()
 				.show();
+	}
+
+	void updateBindingVariables() {
+		if (firebaseApi.getAuthenticationService().getAccountType().equals(STUDENT)) {
+			binding.setUserIsStudent(true);
+
+			if (getBinding().getEntity() != null) {
+				String loggedPersonUUID = firebaseApi.getAuthenticationService()
+						.getLoggedPersonUUID();
+
+				binding.setEnrollRequestSent(getBinding()
+						.getEntity()
+						.getPendingStudents()
+						.contains(loggedPersonUUID));
+
+				binding.setEnrolled(getBinding()
+						.getEntity()
+						.getStudents()
+						.contains(loggedPersonUUID));
+
+				binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+						.getPermissionLevel(binding.getEntity()));
+			}
+		}
+		else {
+			binding.setUserIsStudent(false);
+			binding.setEnrolled(false);
+			binding.setEnrollRequestSent(false);
+			binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+					.getPermissionLevel(binding.getEntity()));
+
+			binding.setEditing(binding.getPermissionLevel().isAtLeast(WRITE) && binding.getEditing() != null && binding.getEditing() ?
+					binding.getEditing()
+					: false);
+
+			isEditing = binding.getEditing();
+		}
 	}
 }

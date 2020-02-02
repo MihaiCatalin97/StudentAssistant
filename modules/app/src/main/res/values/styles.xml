@@ -66,8 +66,8 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:paddingTop">6dp</item>
         <item name="android:paddingBottom">6dp</item>
-        <item name="android:paddingLeft">12dp</item>
-        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingLeft">@dimen/dim_16dp</item>
+        <item name="android:paddingRight">@dimen/dim_16dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:singleLine">true</item>
         <item name="android:textSize">18sp</item>
@@ -76,6 +76,7 @@
     <style name="ScrollViewFading" parent="@android:style/Widget.ScrollView">
         <item name="android:fadingEdgeLength">100dp</item>
         <item name="android:requiresFadingEdge">vertical</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 
 </resources>

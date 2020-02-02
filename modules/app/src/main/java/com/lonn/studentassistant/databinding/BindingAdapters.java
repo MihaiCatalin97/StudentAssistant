@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.databinding.BindingAdapter;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
@@ -154,11 +155,11 @@ public class BindingAdapters {
 		}
 	}
 
-	@BindingAdapter("android:showAddButton")
-	public static void setShowAddButton(ScrollViewCategory category,
-								  Boolean showAddButton) {
-		if (showAddButton != null && showAddButton) {
-			category.setShowAddButton(showAddButton);
+	@BindingAdapter("android:showAddButtonFirstLayer")
+	public static void setshowAddButtonFirstLayer(ScrollViewCategory category,
+								  Boolean showAddButtonFirstLayer) {
+		if (showAddButtonFirstLayer != null && showAddButtonFirstLayer) {
+			category.setShowAddButtonFirstLayer(showAddButtonFirstLayer);
 		}
 	}
 
@@ -260,7 +261,7 @@ public class BindingAdapters {
 
 	@BindingAdapter("android:permissionLevel")
 	public static void setPermissionLevel(ScrollViewCategory category,
-										  Integer permissionLevel) {
+										  PermissionLevel permissionLevel) {
 		category.getViewModel()
 				.setPermissionLevel(permissionLevel);
 	}

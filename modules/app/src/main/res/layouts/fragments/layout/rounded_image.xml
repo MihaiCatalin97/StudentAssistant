@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View"/>
+
         <variable
             name="size"
             type="Integer" />
@@ -14,6 +16,10 @@
         <variable
             name="defaultImage"
             type="Integer" />
+
+        <variable
+            name="editing"
+            type="Boolean" />
 
     </data>
 
@@ -50,7 +56,8 @@
             app:cardCornerRadius="@{size/10}"
             app:cardElevation="9dp"
             app:layout_constraintLeft_toLeftOf="@id/imageCardView"
-            app:layout_constraintTop_toTopOf="@id/imageCardView">
+            app:layout_constraintTop_toTopOf="@id/imageCardView"
+            android:visibility="@{editing &amp;&amp; (image == null || image.length() == 0)? View.VISIBLE : View.GONE}">
 
             <ImageView
                 android:id="@+id/imageUploadButton"
@@ -59,6 +66,28 @@
                 android:contentDescription="Add image button"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_plus" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="@{size/5, default=`40dp`}"
+            android:layout_height="@{size/5, default=`40dp`}"
+            android:layout_marginStartPixels="@{size/4*3}"
+            android:layout_marginTopPixels="@{size/4*3}"
+            app:cardBackgroundColor="#00FFFFFF"
+            app:cardCornerRadius="@{size/10}"
+            app:cardElevation="9dp"
+            app:layout_constraintLeft_toLeftOf="@id/imageCardView"
+            app:layout_constraintTop_toTopOf="@id/imageCardView"
+            android:visibility="@{editing &amp;&amp; (image != null &amp;&amp; image.length() != 0)? View.VISIBLE : View.GONE}">
+
+            <ImageView
+                android:id="@+id/imageDeleteButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="Delete image button"
+                android:scaleType="fitCenter"
+                app:srcCompat="@android:drawable/ic_menu_delete" />
 
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>

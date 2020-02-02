@@ -17,71 +17,86 @@ import static com.lonn.studentassistant.utils.file.FileUtils.getMimeFromUri;
 import static java.util.UUID.randomUUID;
 
 public abstract class FileUploadDialog extends Dialog {
-    private static final int SNACK_BAR_ERROR_DURATION = 1000;
-    private static final Logger LOGGER = Logger.ofClass(FileUploadDialog.class);
-    final int requestCode;
-    protected FirebaseConnectedActivity firebaseConnectedActivity;
-    protected String aggregatedEntityKey;
-    FileMetadataViewModel fileMetadata;
-    FileContentViewModel fileContent;
-    Uri selectedFileUri;
-    String fileType;
-    private CustomFileReader customFileReader;
+	private static final int SNACK_BAR_ERROR_DURATION = 2000;
+	private static final Logger LOGGER = Logger.ofClass(FileUploadDialog.class);
+	final int requestCode;
+	protected FirebaseConnectedActivity firebaseConnectedActivity;
+	protected String aggregatedEntityKey;
+	FileMetadataViewModel fileMetadata;
+	FileContentViewModel fileContent;
+	Uri selectedFileUri;
+	String fileType;
+	private CustomFileReader customFileReader;
 
-    FileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
-                     String aggregatedEntityKey,
-                     int requestCode,
-                     String fileType) {
-        super(firebaseConnectedActivity);
-        this.firebaseConnectedActivity = firebaseConnectedActivity;
-        this.aggregatedEntityKey = aggregatedEntityKey;
-        this.requestCode = requestCode;
-        this.fileType = fileType;
+	FileUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
+					 String aggregatedEntityKey,
+					 int requestCode,
+					 String fileType) {
+		super(firebaseConnectedActivity);
+		this.firebaseConnectedActivity = firebaseConnectedActivity;
+		this.aggregatedEntityKey = aggregatedEntityKey;
+		this.requestCode = requestCode;
+		this.fileType = fileType;
 
-        customFileReader = new CustomFileReader(firebaseConnectedActivity.getContentResolver());
+		customFileReader = new CustomFileReader(firebaseConnectedActivity.getContentResolver());
 
-        fileMetadata = new FileMetadataViewModel()
-                .setKey(randomUUID().toString());
+		fileMetadata = new FileMetadataViewModel()
+				.setAssociatedEntityKey(aggregatedEntityKey);
 
-        fileContent = new FileContentViewModel()
-                .setFileMetadataKey(fileMetadata.getKey())
-                .setKey(randomUUID().toString());
+		fileContent = new FileContentViewModel()
+				.setAssociatedEntityKey(aggregatedEntityKey);
+	}
 
-        fileMetadata.setFileContentKey(fileContent.getKey());
-    }
+	public void setFile(int requestCode, int resultCode, Intent data) {
+		if (shouldSaveFile(requestCode, resultCode)) {
+			selectedFileUri = data.getData();
 
-    public void setFile(int requestCode, int resultCode, Intent data) {
-        if (shouldSaveFile(requestCode, resultCode)) {
-            selectedFileUri = data.getData();
+			fileMetadata = fileMetadata
+					.setKey(randomUUID().toString())
+					.setFileSize(customFileReader.getFileSize(selectedFileUri))
+					.setFileName(customFileReader.getFileName(selectedFileUri))
+					.setFileType(getMimeFromUri(getContext(), selectedFileUri));
 
-            fileMetadata = fileMetadata
-                    .setFileSize(customFileReader.getFileSize(selectedFileUri))
-                    .setFileName(customFileReader.getFileName(selectedFileUri))
-                    .setFileType(getMimeFromUri(getContext(), selectedFileUri));
-        }
-    }
+			fileContent = fileContent
+					.setFileMetadataKey(fileMetadata.getKey())
+					.setKey(randomUUID().toString());
 
-    protected void logAndShowException(String errorMessage, Exception exception) {
-        firebaseConnectedActivity.showSnackBar(errorMessage, SNACK_BAR_ERROR_DURATION);
-        LOGGER.error(errorMessage, exception);
-    }
+			fileMetadata = fileMetadata
+					.setFileContentKey(fileContent.getKey());
+		}
+	}
 
-    protected abstract void saveFile(String laboratoryKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent);
+	protected void logAndShowException(String errorMessage, Exception exception) {
+		String completeErrorMessage = errorMessage;
 
-    void readAndSaveFile(FileContentViewModel fileContent, FileMetadataViewModel fileMetadata) {
-        firebaseConnectedActivity.showSnackBar("Uploading file");
+		if (exception != null) {
+			if (exception.getMessage() != null) {
+				completeErrorMessage += ":\n" + exception.getMessage();
+			}
 
-        try {
-            fileContent = fileContent
-                    .setFileContentBase64(customFileReader.readBase64(selectedFileUri));
+			LOGGER.error(errorMessage, exception);
+		}
 
-            saveFile(aggregatedEntityKey, fileMetadata, fileContent);
-        } catch (IOException exception) {
-            logAndShowException("An error occurred while reading the file", exception);
-        }
-    }
+		firebaseConnectedActivity.showSnackBar(completeErrorMessage, SNACK_BAR_ERROR_DURATION);
+	}
 
-    boolean shouldSaveFile(int requestCode, int resultCode) {
-        return requestCode == this.requestCode && resultCode == RESULT_OK;
-    }
+	protected abstract void saveFile(String entityKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent);
+
+	void readAndSaveFile(FileContentViewModel fileContent, FileMetadataViewModel fileMetadata) {
+		firebaseConnectedActivity.showSnackBar("Uploading file");
+
+		try {
+			fileContent = fileContent
+					.setFileContentBase64(customFileReader.readBase64(selectedFileUri));
+
+			saveFile(aggregatedEntityKey, fileMetadata, fileContent);
+		}
+		catch (IOException exception) {
+			logAndShowException("An error occurred while reading the file", exception);
+		}
+	}
+
+	boolean shouldSaveFile(int requestCode, int resultCode) {
+		return requestCode == this.requestCode && resultCode == RESULT_OK;
+	}
 }

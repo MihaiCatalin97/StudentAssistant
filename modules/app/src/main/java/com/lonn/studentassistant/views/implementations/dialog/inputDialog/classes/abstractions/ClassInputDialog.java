@@ -20,7 +20,6 @@ import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
-import com.lonn.studentassistant.utils.Utils;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.StringInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
 
@@ -32,9 +31,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.Toast.LENGTH_LONG;
-import static com.lonn.studentassistant.firebaselayer.Utils.padWithZeroesToSize;
+import static com.lonn.studentassistant.utils.Utils.displayHeight;
 import static com.lonn.studentassistant.utils.Utils.displayWidth;
 import static com.lonn.studentassistant.utils.Utils.hourToString;
 import static java.lang.Integer.parseInt;
@@ -74,7 +72,7 @@ public abstract class ClassInputDialog<T extends DisciplineViewModel, V extends 
 		setContentView(getLayoutId());
 
 		if (getWindow() != null) {
-			getWindow().setLayout((int) (displayWidth * 0.9), WRAP_CONTENT);
+			getWindow().setLayout((int) (displayWidth * 0.9), (int) (displayHeight * 0.75));
 		}
 
 		groups = new LinkedList<>();

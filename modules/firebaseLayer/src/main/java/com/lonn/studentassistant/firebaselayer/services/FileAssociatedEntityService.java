@@ -68,15 +68,13 @@ public abstract class FileAssociatedEntityService<T extends FileAssociatedEntity
 
 		fileContentService.save(fileContent)
 				.onSuccess(none -> fileMetadataService.save(fileMetadata)
-						.onSuccess(none2 -> {
-							getById(entityKey, false)
-									.onSuccess(entity -> {
-										linkFile(entity, fileMetadata.getKey())
-												.onSuccess(result::complete)
-												.onError(result::completeExceptionally);
-									})
-									.onError(error -> revertFileCreation(error, fileMetadata.getKey(), result));
-						})
+						.onSuccess(none2 ->
+								getById(entityKey, false)
+										.onSuccess(entity ->
+												linkFile(entity, fileMetadata.getKey())
+														.onSuccess(result::complete)
+														.onError(result::completeExceptionally))
+										.onError(error -> revertFileCreation(error, fileMetadata.getKey(), result)))
 						.onError(error -> revertFileCreation(error, fileMetadata.getKey(), result)))
 				.onError(result::completeExceptionally);
 

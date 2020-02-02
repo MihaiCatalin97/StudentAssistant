@@ -4,11 +4,13 @@ import com.lonn.studentassistant.firebaselayer.adapters.GradeAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 
 public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	private static GradeService instance;
@@ -30,6 +32,7 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new GradeAdapter();
 		studentService = StudentService.getInstance(firebaseConnection);
 		laboratoryService = LaboratoryService.getInstance(firebaseConnection);
@@ -112,5 +115,10 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 													 Exception exception) {
 		deleteById(gradeKey);
 		future.completeExceptionally(exception);
+	}
+
+	protected PermissionLevel getPermissionLevel(Grade grade) {
+		return WRITE;
+//		return authenticationService.getPermissionLevel(grade);
 	}
 }

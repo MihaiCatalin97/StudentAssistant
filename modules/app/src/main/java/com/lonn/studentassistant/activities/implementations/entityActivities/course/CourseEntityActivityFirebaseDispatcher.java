@@ -2,7 +2,9 @@ package com.lonn.studentassistant.activities.implementations.entityActivities.co
 
 import com.lonn.studentassistant.activities.abstractions.EntityActivityDispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.services.CourseService;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
@@ -10,7 +12,11 @@ import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.logging.Logger;
+
+import java.util.List;
 
 import static com.lonn.studentassistant.BR.files;
 import static com.lonn.studentassistant.BR.laboratories;
@@ -43,33 +49,23 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 	}
 
 	void loadAll(String courseKey) {
-		firebaseApi.getCourseService().getById(courseKey, true).onSuccess(course -> {
-			if (shouldUpdateProfessors(course)) {
-				updateProfessors(course);
-			}
+		firebaseApi.getAuthenticationService()
+				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
 
-			if (shouldUpdateRecurringClasses(course)) {
-				updateRecurringClasses(course);
-			}
+		firebaseApi.getCourseService().getById(courseKey, true)
+				.onSuccess(course -> {
+					activity.setActivityEntity(course);
+					entityActivity.updateBindingVariables();
 
-			if (shouldUpdateOneTimeClasses(course)) {
-				updateOneTimeClasses(course);
-			}
+					updateProfessors(course);
+					updateRecurringClasses(course);
+					updateOneTimeClasses(course);
+					updateFiles(course);
+					updateStudents(course);
+					updateLaboratories(course);
 
-			if (shouldUpdateFiles(course)) {
-				updateFiles(course);
-			}
-
-			if (shouldUpdateLaboratories(course)) {
-				updateLaboratories(course);
-			}
-
-			if (shouldUpdateStudents(course)) {
-				updateStudents(course);
-			}
-
-			activity.setActivityEntity(course);
-		})
+					entityActivity.updateBindingVariables();
+				})
 				.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the course.",
 						new
 
@@ -77,124 +73,65 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 						LOGGER));
 	}
 
-	private boolean shouldUpdateProfessors(CourseViewModel course) {
-		return this.entityActivity.getBinding().getProfessors() == null ||
-				this.entityActivity.getBinding().getProfessors().size() != course.getProfessors().size() ||
-				!this.entityActivity.getBinding().getProfessors().keySet()
-						.containsAll(course.getProfessors());
-	}
-
-	private boolean shouldUpdateLaboratories(CourseViewModel course) {
-		return this.entityActivity.getBinding().getLaboratories() == null ||
-				this.entityActivity.getBinding().getLaboratories().size() != course.getLaboratories().size() ||
-				!this.entityActivity.getBinding().getLaboratories().keySet()
-						.containsAll(course.getLaboratories());
-	}
-
-	private boolean shouldUpdateOneTimeClasses(CourseViewModel course) {
-		return this.entityActivity.getBinding().getOneTimeClasses() == null ||
-				this.entityActivity.getBinding().getOneTimeClasses().size() != course.getOneTimeClasses().size() ||
-				!this.entityActivity.getBinding().getOneTimeClasses().keySet()
-						.containsAll(course.getOneTimeClasses());
-	}
-
-	private boolean shouldUpdateRecurringClasses(CourseViewModel course) {
-		return this.entityActivity.getBinding().getRecurringClasses() == null ||
-				this.entityActivity.getBinding().getRecurringClasses().size() != course.getRecurringClasses().size() ||
-				!this.entityActivity.getBinding().getRecurringClasses().keySet()
-						.containsAll(course.getRecurringClasses());
-	}
-
-	private boolean shouldUpdateFiles(CourseViewModel course) {
-		return this.entityActivity.getBinding().getFiles() == null ||
-				this.entityActivity.getBinding().getFiles().size() != course.getFileMetadataKeys().size() ||
-				!this.entityActivity.getBinding().getFiles().keySet()
-						.containsAll(course.getFileMetadataKeys());
-	}
-
-	private boolean shouldUpdateStudents(CourseViewModel course) {
-		return this.entityActivity.getBinding().getStudents() == null ||
-				this.entityActivity.getBinding().getStudents().size() != course.getStudents().size() ||
-				!this.entityActivity.getBinding().getStudents().keySet()
-						.containsAll(course.getStudents());
-	}
-
 	private void updateStudents(CourseViewModel course) {
-		removeNonExistingEntities(studentMap, course.getStudents());
-		for (String studentKey : course.getStudents()) {
-			firebaseApi.getStudentService()
-					.getById(studentKey, true)
-					.onSuccess(student -> {
-						if (course.getStudents().contains(student.getKey())) {
-							studentMap.put(student);
-						}
-					});
-		}
+		updateCourseRelatedEntities(studentMap,
+				CourseViewModel::getStudents,
+				firebaseApi.getStudentService(),
+				course);
 	}
 
 	private void updateProfessors(CourseViewModel course) {
-		removeNonExistingEntities(professorMap, course.getProfessors());
-
-		for (String professorId : course.getProfessors()) {
-			firebaseApi.getProfessorService()
-					.getById(professorId, true)
-					.onSuccess(professor -> {
-						if (course.getProfessors().contains(professor.getKey())) {
-							professorMap.put(professor);
-						}
-					});
-		}
+		updateCourseRelatedEntities(professorMap,
+				CourseViewModel::getProfessors,
+				firebaseApi.getProfessorService(),
+				course);
 	}
 
 	private void updateLaboratories(CourseViewModel course) {
-		removeNonExistingEntities(laboratoryMap, course.getLaboratories());
-		for (String laboratoryId : course.getLaboratories()) {
-			firebaseApi.getLaboratoryService()
-					.getById(laboratoryId, true)
-					.onSuccess(laboratory -> {
-						if (course.getLaboratories().contains(laboratory.getKey())) {
-							laboratoryMap.put(laboratory);
-						}
-					});
-		}
+		updateCourseRelatedEntities(laboratoryMap,
+				CourseViewModel::getLaboratories,
+				firebaseApi.getLaboratoryService(),
+				course);
 	}
 
 	private void updateOneTimeClasses(CourseViewModel course) {
-		removeNonExistingEntities(oneTimeClassesMap, course.getOneTimeClasses());
-		for (String oneTimeClassId : course.getOneTimeClasses()) {
-			firebaseApi.getOneTimeClassService()
-					.getById(oneTimeClassId, true)
-					.onSuccess(oneTimeClass -> {
-						if (course.getOneTimeClasses().contains(oneTimeClass.getKey())) {
-							oneTimeClassesMap.put(oneTimeClass);
-						}
-					});
-		}
+		updateCourseRelatedEntities(oneTimeClassesMap,
+				CourseViewModel::getOneTimeClasses,
+				firebaseApi.getOneTimeClassService(),
+				course);
 	}
 
 	private void updateRecurringClasses(CourseViewModel course) {
-		removeNonExistingEntities(recurringClassesMap, course.getRecurringClasses());
-		for (String recurringClassId : course.getRecurringClasses()) {
-			firebaseApi.getRecurringClassService()
-					.getById(recurringClassId, true)
-					.onSuccess(recurringClass -> {
-						if (course.getRecurringClasses().contains(recurringClass.getKey())) {
-							recurringClassesMap.put(recurringClass);
-						}
-					});
-		}
+		updateCourseRelatedEntities(recurringClassesMap,
+				CourseViewModel::getRecurringClasses,
+				firebaseApi.getRecurringClassService(),
+				course);
 	}
 
 	private void updateFiles(CourseViewModel course) {
-		removeNonExistingEntities(filesMap, course.getFileMetadataKeys());
-		for (String fileId : course.getFileMetadataKeys()) {
-			firebaseApi.getFileMetadataService()
-					.getById(fileId, true)
-					.onSuccess(file -> {
-						if (course.getFileMetadataKeys().contains(file.getKey())) {
-							filesMap.put(file);
-						}
-					});
+		updateCourseRelatedEntities(filesMap,
+				CourseViewModel::getFileMetadataKeys,
+				firebaseApi.getFileMetadataService(),
+				course);
+	}
+
+	private <T extends BaseEntity, V extends EntityViewModel<T>> void updateCourseRelatedEntities(BindableHashMap<V> entityMap,
+																								  Function<CourseViewModel,
+																										  List<String>> entityKeyGetter,
+																								  Service<T, Exception, V> entityService,
+																								  CourseViewModel newCourse) {
+		removeNonExistingEntities(entityMap, entityKeyGetter.apply(newCourse));
+
+		for (String entityKey : entityKeyGetter.apply(newCourse)) {
+			if (!entityMap.keySet().contains(entityKey)) {
+				entityService.getById(entityKey, true)
+						.onSuccess(entity -> {
+							if (entityKeyGetter.apply(entityActivity.getBinding().getEntity())
+									.contains(entity.getKey())) {
+								entityMap.put(entity);
+							}
+						});
+			}
 		}
 	}
 

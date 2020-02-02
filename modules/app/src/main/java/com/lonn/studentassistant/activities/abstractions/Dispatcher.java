@@ -2,13 +2,19 @@ package com.lonn.studentassistant.activities.abstractions;
 
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Dispatcher<T extends FirebaseConnectedActivity> {
+import lombok.Getter;
+
+public abstract class Dispatcher<T extends FirebaseConnectedActivity, V extends EntityViewModel<? extends Person>> {
 	protected FirebaseApi firebaseApi;
 	protected T activity;
+	@Getter
+	protected V currentProfile;
 
 	protected Dispatcher(T activity) {
 		this.activity = activity;
@@ -26,4 +32,6 @@ public abstract class Dispatcher<T extends FirebaseConnectedActivity> {
 			hashMap.remove(entityToBeRemoved);
 		}
 	}
+
+	public abstract void update(V profile);
 }

@@ -40,6 +40,9 @@ class ProfessorEntityActivityFirebaseDispatcher extends EntityActivityDispatcher
 	}
 
 	void loadAll(String entityKey) {
+		firebaseApi.getAuthenticationService()
+				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
+
 		firebaseApi.getProfessorService()
 				.getById(entityKey, true)
 				.onSuccess(professor -> {
@@ -57,6 +60,8 @@ class ProfessorEntityActivityFirebaseDispatcher extends EntityActivityDispatcher
 					loadOneTimeClasses(professor.getOneTimeClasses());
 					loadFiles(professor.getFileMetadataKeys());
 					loadImage(professor.getImageMetadataKey());
+
+					entityActivity.updateBindingVariables();
 				})
 				.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the professor.",
 						new Exception("Loading professor: " + error.getMessage()),

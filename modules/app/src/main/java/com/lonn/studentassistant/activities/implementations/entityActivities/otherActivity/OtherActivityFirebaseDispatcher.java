@@ -38,10 +38,14 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 	}
 
 	void loadAll(String entityKey) {
+		firebaseApi.getAuthenticationService()
+				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
+
 		firebaseApi.getOtherActivityService()
 				.getById(entityKey, true)
 				.onSuccess(activity -> {
 					entityActivity.setActivityEntity(activity);
+					entityActivity.updateBindingVariables();
 
 					removeNonExistingEntities(professorMap, activity.getProfessors());
 					removeNonExistingEntities(recurringClassesMap, activity.getRecurringClasses());
@@ -76,6 +80,7 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 						updateStudents(activity);
 					}
 
+					entityActivity.updateBindingVariables();
 				})
 				.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the activity.",
 						new Exception("Loading activity: " + error.getMessage()),

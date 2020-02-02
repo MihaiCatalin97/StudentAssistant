@@ -83,16 +83,16 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 	}
 
-	public void setShowAddButton(Boolean showAddButton) {
-		if (showAddButton == null) {
-			showAddButton = false;
+	public void setShowAddButtonFirstLayer(Boolean showAddButtonFirstLayer) {
+		if (showAddButtonFirstLayer == null) {
+			showAddButtonFirstLayer = false;
 		}
 
 		for (ScrollViewCategory subcategory : content.getSubcategories()) {
-			subcategory.setShowAddButton(showAddButton);
+			subcategory.setShowAddButtonFirstLayer(showAddButtonFirstLayer);
 		}
 
-		binding.setShowAddButton(showAddButton);
+		binding.setShowAddButtonFirstLayer(showAddButtonFirstLayer);
 	}
 
 	public void setUnlinkable(Boolean unlinkable) {
@@ -160,15 +160,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		hideIfEmpty();
 	}
 
-	public void addChildCategories(Collection<CategoryViewModel<T>> categories) {
-		getViewModel().addSubcategories(categories);
-
-		addCategoriesToContent(categories);
-		setIsTable(binding.getIsTable());
-
-		hideIfEmpty();
-	}
-
 	public void setEntities(Collection<T> entities) {
 		if (entities != null) {
 			for (T entity : entities) {
@@ -187,9 +178,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		content = findViewById(layoutCategoryMain).findViewById(layoutCategoryContent);
 		header = findViewById(layoutCategoryMain).findViewById(layoutCategoryHeader);
 
-		header.setOnClickListener(v -> {
-			animateExpand();
-		});
+		header.setOnClickListener(v -> animateExpand());
 
 		header.bringToFront();
 	}
@@ -234,7 +223,7 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 					.getChildCategories());
 
 			scrollViewCategory.setEditing(binding.getEditing());
-			scrollViewCategory.setShowAddButton(binding.getShowAddButton());
+			scrollViewCategory.setShowAddButtonFirstLayer(binding.getShowAddButtonFirstLayer());
 			scrollViewCategory.setIsTable(binding.getIsTable());
 
 			content.addSubcategory(scrollViewCategory);
@@ -276,7 +265,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	private void hideIfEmpty() {
-		if (getNumberOfChildren() == 0 &&
+		if (getBinding().getEditing() != null && getBinding().getEditing()) {
+			setVisibility(VISIBLE);
+		}
+		else if (getNumberOfChildren() == 0 &&
 				!viewModel.isShowEmpty() && binding.getEditing() != null && !binding.getEditing()) {
 			setVisibility(GONE);
 		}

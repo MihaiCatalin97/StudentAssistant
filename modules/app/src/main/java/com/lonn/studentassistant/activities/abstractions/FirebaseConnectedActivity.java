@@ -1,17 +1,22 @@
 package com.lonn.studentassistant.activities.abstractions;
 
-import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
@@ -26,6 +31,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
+	private static final Logger LOGGER = Logger.ofClass(FirebaseConnectedActivity.class);
 	protected FirebaseApi firebaseApi;
 	protected Handler delayHandler = new Handler();
 	protected Handler viewTreeHandler = new Handler();
@@ -104,7 +110,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	}
 
 	protected void hideKeyboard() {
-		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+		InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
 		View view = getCurrentFocus();
 
@@ -118,8 +124,17 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	}
 
 	public void logAndShowErrorSnack(String errorMessage, Exception exception, Logger logger) {
-		logger.error(errorMessage, exception);
-		showSnackBar(errorMessage, 1000);
+		String completeErrorMessage = errorMessage;
+
+		if (exception != null) {
+			if (exception.getMessage() != null) {
+				completeErrorMessage += ":\n" + exception.getMessage();
+			}
+
+			logger.error(errorMessage, exception);
+		}
+
+		showSnackBar(completeErrorMessage, 2000);
 	}
 
 	private void startEntityActivity(Context context,
@@ -156,7 +171,69 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 	}
 
 	public void logAndShowErrorToast(String errorMessage, Exception exception, Logger logger) {
-		logger.error(errorMessage, exception);
-		makeText(this, errorMessage, LENGTH_SHORT).show();
+		String completeErrorMessage = errorMessage;
+
+		if (exception != null) {
+			if (exception.getMessage() != null) {
+				completeErrorMessage += ":\n" + exception.getMessage();
+			}
+
+			LOGGER.error(errorMessage, exception);
+		}
+
+		showSnackBar(completeErrorMessage, 2000);
+	}
+
+	public void tapLink(View view) {
+		final String link = ((EditText) view).getText().toString();
+
+		if (!view.isFocusable()) {
+			new AlertDialog.Builder(this, R.style.DialogTheme)
+					.setTitle("Confirm navigation to link")
+					.setMessage("Leave the application and visit " + link + "?")
+					.setPositiveButton("Visit link", (dialog, which) -> {
+						dialog.dismiss();
+						openBrowser(link);
+					})
+					.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+					.create()
+					.show();
+		}
+		else {
+			tapEditText(view);
+		}
+	}
+
+	private void openBrowser(String link) {
+		Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+		browserIntent.setData(Uri.parse(link));
+		startActivity(browserIntent);
+	}
+
+	public void copyToClipboard(View view) {
+		final String text = ((EditText) view).getText().toString();
+
+		if (!view.isFocusable()) {
+			ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
+			if (clipboard != null) {
+				ClipData clip = ClipData.newPlainText(text, text);
+				clipboard.setPrimaryClip(clip);
+				showSnackBar("Copied to clipboard", 1000);
+			}
+		}
+		else {
+			tapEditText(view);
+		}
+	}
+
+	public void tapEditText(View view) {
+		view.requestFocusFromTouch();
+
+		InputMethodManager lManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+		if (lManager != null) {
+			lManager.showSoftInput(view, 0);
+		}
 	}
 }

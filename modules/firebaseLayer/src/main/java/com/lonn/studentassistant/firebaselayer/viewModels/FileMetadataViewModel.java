@@ -23,6 +23,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 public final class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
 	private String fileContentKey;
+	private String associatedEntityKey;
 	@Bindable
 	private String fileName;
 	@Bindable

@@ -4,6 +4,7 @@ import com.lonn.studentassistant.firebaselayer.adapters.FileContentAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.entities.FileContent;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
@@ -30,6 +31,7 @@ public class FileContentService extends Service<FileContent, Exception, FileCont
     }
 
     protected void init(){
+        super.init();
         adapter = new FileContentAdapter();
     }
 
@@ -69,5 +71,9 @@ public class FileContentService extends Service<FileContent, Exception, FileCont
     @Override
     public DatabaseTable<FileContent> getDatabaseTable() {
         return FILE_CONTENT;
+    }
+
+    protected PermissionLevel getPermissionLevel(FileContent fileContent) {
+        return authenticationService.getPermissionLevel(fileContent);
     }
 }

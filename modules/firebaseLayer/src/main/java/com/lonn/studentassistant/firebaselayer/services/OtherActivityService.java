@@ -2,7 +2,9 @@ package com.lonn.studentassistant.firebaselayer.services;
 
 import com.lonn.studentassistant.firebaselayer.adapters.OtherActivityAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.DisciplineService;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
@@ -28,6 +30,7 @@ public class OtherActivityService extends DisciplineService<OtherActivity, Other
 	}
 
 	protected void init() {
+		super.init();
 		adapter = new OtherActivityAdapter();
 	}
 
@@ -54,5 +57,9 @@ public class OtherActivityService extends DisciplineService<OtherActivity, Other
 		professor.getOtherActivities().remove(disciplineKey);
 
 		professorService.save(professor);
+	}
+
+	protected PermissionLevel getPermissionLevel(OtherActivity activity) {
+		return authenticationService.getPermissionLevel(activity);
 	}
 }

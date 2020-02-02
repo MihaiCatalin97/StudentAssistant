@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
@@ -55,7 +56,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		});
 	}
 
-	public void addOrUpdateEntity(T entity, EntityViewType viewType, int permissionLevel,
+	public void addOrUpdateEntity(T entity, EntityViewType viewType, PermissionLevel permissionLevel,
 								  Boolean editing) {
 		EntityView<T> entityView = childEntityViews.get(entity.getKey());
 

@@ -19,7 +19,7 @@ public abstract class NoGUIUploadDialog extends FileUploadDialog {
         super.setFile(requestCode, resultCode, data);
 
         if (shouldSaveFile(requestCode, resultCode)) {
-            saveFile(aggregatedEntityKey, fileMetadata, fileContent);
+            readAndSaveFile(fileContent, fileMetadata);
         }
     }
 

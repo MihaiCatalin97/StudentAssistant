@@ -2,15 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.student.StudentActivity">
+    tools:context=".activities.abstractions.FirebaseConnectedActivity">
 
     <data>
 
         <import type="com.lonn.studentassistant.utils.Utils" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+
         <variable
             name="professor"
             type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+
+        <variable
+            name="personalFiles"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="personalCourses"
@@ -23,157 +29,256 @@
         <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+
+        <variable
+            name="editing"
+            type="Boolean" />
     </data>
 
-    <ScrollView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
+            style="@style/ScreenLayoutWrapped"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include
-                android:id="@+id/profileImage"
-                layout="@layout/rounded_image"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                app:defaultImage="@{Utils.getDefaultPersonImageForName(professor.firstName)}"
-                app:image="@{profileImageContent.fileContentBase64}"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:size="@{200}" />
-
-            <TextView
-                android:id="@+id/titleProfileLayout"
-                style="@style/DarkSubtitleShadowed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:gravity="center"
-                android:text="@{professor.lastName + ` ` + professor.firstName}"
-                app:layout_constraintTop_toBottomOf="@id/profileImage" />
-
             <LinearLayout
-                android:id="@+id/profileEmailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/titleProfileLayout">
+                android:orientation="vertical">
 
-                <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
+                <include
+                    android:id="@+id/profileImage"
+                    layout="@layout/rounded_image"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    app:defaultImage="@{Utils.getDefaultPersonImageForName(professor.firstName)}"
+                    app:image="@{profileImageContent.fileContentBase64}"
+                    app:size="@{200}"
+                    app:editing="@{editing}"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Email: " />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:gravity="end"
+                        android:hint="@{editing &amp;&amp; (professor.firstName == null || professor.firstName.length() == 0)? `First name` : ``}"
+                        android:importantForAutofill="no"
+                        android:onClick="tapEditText"
+                        android:text="@={professor.firstName}"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:text=" " />
+
+                    <EditText
+                        style="@style/EntityActivityTitleHiddenEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:gravity="start"
+                        android:hint="@{editing &amp;&amp; (professor.lastName == null || professor.lastName.length() == 0)? `Last name` : ``}"
+                        android:importantForAutofill="no"
+                        android:onClick="tapEditText"
+                        android:text="@={professor.lastName}"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <EditText
-                    android:id="@+id/profileEmailEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
+                    style="@style/EntityActivityTitleHiddenEditText"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="textEmailAddress"
-                    android:text="@{professor.email}" />
+                    android:layout_marginTop="0dp"
+                    android:background="@{editing? @drawable/edit_text_background : null}"
+                    android:focusable="@{editing}"
+                    android:gravity="center"
+                    android:hint="@{editing &amp;&amp; (professor.rank == null || professor.rank.length() == 0)? `Enter level` : ``}"
+                    android:importantForAutofill="no"
+                    android:onClick="tapEditText"
+                    android:text="@={professor.rank}"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-                <ImageView
-                    android:id="@+id/profileEmailEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profileEmailCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/profilePhoneLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:weightSum="1"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/profileEmailLayout">
-
-                <TextView
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="end|center"
-                    android:text="Phone number: " />
-
-                <EditText
-                    android:id="@+id/profilePhoneEditText"
-                    style="@style/DarkBlueShadowedH3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:enabled="false"
-                    android:inputType="phone"
-                    android:text="@{professor.phoneNumber}" />
-
-                <ImageView
-                    android:id="@+id/profilePhoneEditButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    app:srcCompat="@drawable/ic_edit" />
-
-                <ImageView
-                    android:id="@+id/profilePhoneCancelButton"
-                    android:layout_width="@dimen/dim_0dp"
-                    android:layout_height="20dp"
-                    android:layout_weight="0.1"
-                    android:visibility="invisible"
-                    app:srcCompat="@drawable/ic_cancel" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                app:layout_constraintLeft_toLeftOf="@id/titleProfileLayout"
-                app:layout_constraintTop_toBottomOf="@id/profilePhoneLayout">
-
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                <LinearLayout
+                    android:id="@+id/profileEmailLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My courses`}"
-                    android:childEntities="@{personalCourses}"
-                    android:entityName="@{`course`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}" />
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:weightSum="1">
 
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Email: " />
+
+                    <EditText
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (professor.email == null || professor.email.length() == 0)? `Enter level` : `(none)`}"
+                        android:inputType="textEmailAddress"
+                        android:onClick="tapEditText"
+                        android:text="@={professor.email}" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:categoryTitle="@{`My activities`}"
-                    android:childEntities="@{personalOtherActivities}"
-                    android:entityName="@{`activity`}"
-                    android:permissionLevel="@{1}"
-                    android:showEmpty="@{true}" />
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Website: " />
+
+                    <EditText
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (professor.website == null || professor.website.length() == 0)? `Enter website` : `(none)`}"
+                        android:inputType="textUri"
+                        android:onClick="tapEditText"
+                        android:text="@={professor.website}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Cabinet: " />
+
+                    <EditText
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (professor.cabinet == null || professor.cabinet.length() == 0)? `Enter cabinet` : `(none)`}"
+                        android:inputType="text"
+                        android:onClick="tapEditText"
+                        android:text="@={professor.cabinet}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="end|center"
+                        android:text="Phone number: " />
+
+                    <EditText
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{editing}"
+                        android:hint="@{editing &amp;&amp; (professor.phoneNumber == null || professor.phoneNumber.length() == 0)? `Enter phone number` : `(none)`}"
+                        android:inputType="phone"
+                        android:onClick="tapEditText"
+                        android:text="@{professor.phoneNumber}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:id="@+id/filesCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My files`}"
+                        android:childEntities="@{personalFiles}"
+                        android:deletable="@{true}"
+                        android:editing="@{editing}"
+                        android:entityName="@{`file`}"
+                        android:permissionLevel="@{PermissionLevel.WRITE}"
+                        android:showEmpty="@{true}" />
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:id="@+id/personalCoursesCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My courses`}"
+                        android:childEntities="@{personalCourses}"
+                        android:editing="@{editing}"
+                        android:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}"
+                        android:showEmpty="@{true}"
+                        android:unlinkable="@{true}" />
+
+                    <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                        android:id="@+id/personalActivitiesCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:categoryTitle="@{`My activities`}"
+                        android:childEntities="@{personalOtherActivities}"
+                        android:editing="@{editing}"
+                        android:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}"
+                        android:unlinkable="@{true}"
+                        android:showEmpty="@{true}" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
-    </ScrollView>
+        <include
+            layout="@layout/entity_activity_floating_buttons"
+            app:editing="@{editing}"
+            app:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

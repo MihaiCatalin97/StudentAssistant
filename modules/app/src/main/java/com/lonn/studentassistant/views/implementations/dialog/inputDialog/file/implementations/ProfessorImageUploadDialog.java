@@ -4,15 +4,15 @@ import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivi
 import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.NoGUIUploadDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 
 import static com.lonn.studentassistant.activities.abstractions.FileManagingActivity.UPLOAD_IMAGE_REQUEST_CODE;
 
-public class ProfessorImageUploadDialog extends NoGUIUploadDialog {
+public class ProfessorImageUploadDialog extends ProfileImageUploadDialog {
 
     public ProfessorImageUploadDialog(FirebaseConnectedActivity firebaseConnectedActivity,
                                       String aggregatedEntityKey) {
-        super(firebaseConnectedActivity, aggregatedEntityKey, UPLOAD_IMAGE_REQUEST_CODE,
-                "image/*");
+        super(firebaseConnectedActivity, aggregatedEntityKey);
     }
 
     protected void saveFile(String professorKey, FileMetadataViewModel fileMetadata, FileContentViewModel fileContent) {

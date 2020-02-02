@@ -3,6 +3,7 @@ package com.lonn.studentassistant.firebaselayer.viewModels.abstractions;
 import androidx.databinding.BaseObservable;
 
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 
 import java.io.Serializable;
 

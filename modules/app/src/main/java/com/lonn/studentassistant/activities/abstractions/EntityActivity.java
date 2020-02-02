@@ -36,9 +36,9 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 		super.onCreate(savedInstanceState);
 		entityKey = getIntent().getStringExtra("entityKey");
 
-		findViewById(R.id.fab_edit).setOnClickListener(view -> onEditTapped());
+		findViewById(R.id.fabEdit).setOnClickListener(view -> onEditTapped());
 
-		findViewById(R.id.fab_delete).setOnClickListener(view -> onDeleteTapped(view.getContext()));
+		findViewById(R.id.fabDelete).setOnClickListener(view -> onDeleteTapped(view.getContext()));
 
 		findViewById(R.id.fabDiscardChanges).setOnClickListener(view -> onDiscardTapped());
 
@@ -68,6 +68,7 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 	protected void onDiscardTapped() {
 		getBinding().setVariable(entity, activityEntity);
 		getBinding().setVariable(editing, false);
+		isEditing = false;
 	}
 
 	@Override

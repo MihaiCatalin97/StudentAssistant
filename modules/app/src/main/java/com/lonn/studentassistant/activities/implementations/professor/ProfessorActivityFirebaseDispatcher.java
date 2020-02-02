@@ -4,36 +4,40 @@ import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.databinding.ProfessorActivityMainLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
 import static com.lonn.studentassistant.BR.courses;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.otherActivities;
 import static com.lonn.studentassistant.BR.personalCourses;
+import static com.lonn.studentassistant.BR.personalFiles;
 import static com.lonn.studentassistant.BR.personalOtherActivities;
+import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
 
-class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity> {
+class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorActivityFirebaseDispatcher.class);
 	private ProfessorActivityMainLayoutBinding binding;
 
 	private BindableHashMap<CourseViewModel> courseMap;
 	private BindableHashMap<OtherActivityViewModel> otherActivityMap;
-	private BindableHashMap<RecurringClassViewModel> recurringClassMap;
-	private BindableHashMap<OneTimeClassViewModel> oneTimeClassMap;
+	private BindableHashMap<ProfessorViewModel> professorsMap;
+
+	private BindableHashMap<RecurringClassViewModel> recurringClassesMap;
+	private BindableHashMap<OneTimeClassViewModel> oneTimeClassesMap;
 	private BindableHashMap<CourseViewModel> personalCoursesMap;
 	private BindableHashMap<OtherActivityViewModel> personalActivitiesMap;
-
-	private List<String> oneTimeClassKeys = new ArrayList<>();
-	private List<String> recurringClassKeys = new ArrayList<>();
+	private BindableHashMap<FileMetadataViewModel> personalFilesMap;
 
 	ProfessorActivityFirebaseDispatcher(ProfessorActivity professorActivity) {
 		super(professorActivity);
@@ -41,146 +45,155 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity> 
 
 		courseMap = new BindableHashMap<>(binding, courses);
 		otherActivityMap = new BindableHashMap<>(binding, otherActivities);
-		recurringClassMap = new BindableHashMap<>(binding, recurringClasses);
-		oneTimeClassMap = new BindableHashMap<>(binding, oneTimeClasses);
+		professorsMap = new BindableHashMap<>(binding, professors);
+
+		recurringClassesMap = new BindableHashMap<>(binding, recurringClasses);
+		oneTimeClassesMap = new BindableHashMap<>(binding, oneTimeClasses);
 		personalCoursesMap = new BindableHashMap<>(binding, personalCourses);
 		personalActivitiesMap = new BindableHashMap<>(binding, personalOtherActivities);
+		personalFilesMap = new BindableHashMap<>(binding, personalFiles);
 	}
 
 	public void loadAll(String entityKey) {
-		if (entityKey != null) {
-			loadProfessor(entityKey);
-		}
+		firebaseApi.getProfessorService()
+				.getById(entityKey, true)
+				.onSuccess(professor -> {
+					currentProfile = professor.clone();
 
-		loadCourses();
+					removeNonExistingEntities(recurringClassesMap, professor.getRecurringClasses());
+					removeNonExistingEntities(oneTimeClassesMap, professor.getOneTimeClasses());
+					removeNonExistingEntities(personalActivitiesMap, professor.getOtherActivities());
+					removeNonExistingEntities(personalCoursesMap, professor.getCourses());
+					removeNonExistingEntities(personalFilesMap, professor.getFileMetadataKeys());
+
+					List<String> recurringClassesToLoad = new ArrayList<>(professor.getRecurringClasses());
+					List<String> oneTimeClassesToLoad = new ArrayList<>(professor.getOneTimeClasses());
+					List<String> activitiesToLoad = new ArrayList<>(professor.getOtherActivities());
+					List<String> coursesToLoad = new ArrayList<>(professor.getCourses());
+					List<String> filesToLoad = new ArrayList<>(professor.getFileMetadataKeys());
+
+					if (binding.getProfessor() != null) {
+						recurringClassesToLoad.removeAll(binding.getProfessor().getRecurringClasses());
+						oneTimeClassesToLoad.removeAll(binding.getProfessor().getOneTimeClasses());
+						activitiesToLoad.removeAll(binding.getProfessor().getOtherActivities());
+						coursesToLoad.removeAll(binding.getProfessor().getCourses());
+						filesToLoad.removeAll(binding.getProfessor().getFileMetadataKeys());
+					}
+
+					loadRecurringClasses(recurringClassesToLoad);
+					loadOneTimeClasses(oneTimeClassesToLoad);
+					loadCourses(coursesToLoad);
+					loadOtherActivities(activitiesToLoad);
+					loadFiles(filesToLoad);
+
+					if (professor.getImageMetadataKey() == null ||
+							professor.getImageMetadataKey().length() == 0) {
+						binding.setProfileImageContent(null);
+					}
+					else if (binding.getProfessor() == null ||
+							binding.getProfessor()
+									.getImageMetadataKey() == null ||
+							!binding.getProfessor()
+									.getImageMetadataKey()
+									.equals(professor.getImageMetadataKey())) {
+						loadImage(professor.getImageMetadataKey());
+					}
+
+					binding.setProfessor(professor);
+				})
+				.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading the professor.",
+						new Exception("Loading professor: " + error.getMessage()),
+						LOGGER)
+				);
+
 		loadOtherActivities();
+		loadCourses();
 		loadProfessors();
 	}
 
-	private void computeClasses() {
-		ProfessorViewModel professor = binding.getProfessor();
-
-		oneTimeClassKeys.clear();
-		recurringClassKeys.clear();
-
-		if (professor != null) {
-			for (CourseViewModel course : courseMap.values()) {
-				if (professor.getCourses().contains(course.getKey())) {
-					computeClassesForDiscipline(course);
-				}
-			}
-			for (OtherActivityViewModel otherActivity : otherActivityMap.values()) {
-				if (professor.getOtherActivities().contains(otherActivity.getKey())) {
-					computeClassesForDiscipline(otherActivity);
-				}
-			}
-		}
-
-		loadRecurringClasses();
-		loadOneTimeClasses();
+	private void loadProfessors() {
+		firebaseApi.getProfessorService()
+				.getAll()
+				.onComplete(receivedProfessors -> professorsMap = new BindableHashMap<>(binding, professors, receivedProfessors),
+						error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
 	}
 
-	private void computeClassesForDiscipline(DisciplineViewModel<?> discipline) {
-		oneTimeClassKeys.addAll(discipline.getOneTimeClasses());
-		recurringClassKeys.addAll(discipline.getRecurringClasses());
+	private void loadFiles(List<String> fileIds) {
+		for (String fileId : fileIds) {
+			firebaseApi.getFileMetadataService()
+					.getById(fileId, true)
+					.onSuccess(personalFilesMap::put);
+		}
+	}
+
+	private void loadCourses(List<String> courseIds) {
+		for (String courseId : courseIds) {
+			firebaseApi.getCourseService()
+					.getById(courseId, true)
+					.onSuccess(personalCoursesMap::put);
+		}
+	}
+
+	private void loadOtherActivities(List<String> activityIds) {
+		for (String activityId : activityIds) {
+			firebaseApi.getOtherActivityService()
+					.getById(activityId, true)
+					.onSuccess(personalActivitiesMap::put);
+		}
 	}
 
 	private void loadCourses() {
-		if (binding.getCourses() == null) {
-			firebaseApi.getCourseService()
-					.getAll()
-					.onComplete(receivedCourses -> {
-								courseMap = new BindableHashMap<>(binding, courses, receivedCourses);
-								computeClasses();
-							},
-							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
-		}
+		firebaseApi.getCourseService()
+				.getAll()
+				.onComplete(receivedCourses -> courseMap = new BindableHashMap<>(binding, courses, receivedCourses),
+						error -> activity.logAndShowErrorSnack("An error occurred while loading courses.", error, LOGGER));
 	}
 
 	private void loadOtherActivities() {
-		if (binding.getOtherActivities() == null) {
-			firebaseApi.getOtherActivityService()
-					.getAll()
-					.onComplete(receivedOtherActivities -> {
-								otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities);
-								computeClasses();
-							},
-							error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
+		firebaseApi.getOtherActivityService()
+				.getAll()
+				.onComplete(receivedOtherActivities -> otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities),
+						error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
+	}
+
+	private void loadRecurringClasses(List<String> recurringClassIds) {
+		for (String recurringClassId : recurringClassIds) {
+			firebaseApi.getRecurringClassService()
+					.getById(recurringClassId, true)
+					.onSuccess(recurringClassesMap::put);
 		}
 	}
 
-	private void loadProfessors() {
-		if (binding.getProfessors() == null) {
-			firebaseApi.getProfessorService()
-					.getAll()
-					.onComplete(binding::setProfessors,
-							error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
+	private void loadOneTimeClasses(List<String> oneTimeClassIds) {
+		for (String oneTimeClassId : oneTimeClassIds) {
+			firebaseApi.getOneTimeClassService()
+					.getById(oneTimeClassId, true)
+					.onSuccess(oneTimeClassesMap::put);
 		}
 	}
 
-	private void loadRecurringClasses() {
-		if (binding.getRecurringClasses() == null) {
-			for (String recurringClassKey : recurringClassKeys) {
-				firebaseApi.getRecurringClassService()
-						.getById(recurringClassKey, true)
-						.onSuccess(recurringClass -> {
-							if (binding.getProfessor().getRecurringClasses().contains(recurringClass.getKey())) {
-								recurringClassMap.put(recurringClass);
-							}
-							else {
-								recurringClassMap.remove(recurringClass);
-							}
-						})
-						.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading regular classes.", error, LOGGER));
-			}
+	private void loadImage(String imageMetadataId) {
+		if (imageMetadataId != null) {
+			firebaseApi.getFileMetadataService()
+					.getById(imageMetadataId, true)
+					.onSuccess(metadata ->
+							firebaseApi.getFileContentService()
+									.getById(metadata.getFileContentKey(), true)
+									.onSuccess(binding::setProfileImageContent)
+									.onError(error -> activity.logAndShowErrorSnack(
+											"Unable to load your profile image",
+											error,
+											LOGGER)))
+					.onError(error -> activity.logAndShowErrorSnack(
+							"Unable to load your profile image",
+							error,
+							LOGGER));
 		}
 	}
 
-	private void loadOneTimeClasses() {
-		if (binding.getOneTimeClasses() == null) {
-			for (String oneTimeClassKey : oneTimeClassKeys) {
-				firebaseApi.getOneTimeClassService()
-						.getById(oneTimeClassKey, true)
-						.onSuccess(oneTimeClass -> {
-							if (binding.getProfessor().getOneTimeClasses().contains(oneTimeClass.getKey())) {
-								oneTimeClassMap.put(oneTimeClass);
-							}
-							else {
-								oneTimeClassMap.remove(oneTimeClass);
-							}
-						})
-						.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading special classes.", error, LOGGER));
-			}
-		}
-	}
-
-	private void loadProfessor(String key) {
+	public void update(ProfessorViewModel professorViewModel) {
 		firebaseApi.getProfessorService()
-				.getById(key, true)
-				.onSuccess(professor -> {
-					binding.setProfessor(professor);
-					computeClasses();
-
-					if (professor.getImageMetadataKey() != null) {
-						loadProfileImage(professor.getImageMetadataKey());
-					}
-				})
-				.onError(error -> activity.logAndShowErrorSnack("Error loading your personal data", error, LOGGER));
-	}
-
-	private void loadProfileImage(String profileImageKey) {
-		firebaseApi.getFileMetadataService()
-				.getById(profileImageKey, true)
-				.onSuccess(metadata -> firebaseApi.getFileContentService()
-						.getById(metadata.getFileContentKey(), true)
-						.onSuccess(binding::setProfileImageContent)
-						.onError(error -> activity.logAndShowErrorSnack(
-								"Unable to load the profile image",
-								error,
-								LOGGER)))
-				.onError(error -> activity.logAndShowErrorSnack(
-						"Unable to load the profile image",
-						error,
-						LOGGER));
+				.save(professorViewModel)
+				.onSuccess(none -> activity.showSnackBar("Successfully updated your profile!", 1000));
 	}
 }

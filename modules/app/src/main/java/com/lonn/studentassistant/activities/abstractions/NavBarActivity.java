@@ -14,17 +14,18 @@ import androidx.core.app.NavUtils;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
 
-public abstract class NavBarActivity extends FirebaseConnectedActivity implements NavigationView.OnNavigationItemSelectedListener {
+public abstract class NavBarActivity<T extends EntityViewModel<? extends Person>> extends FileManagingActivity<T> implements NavigationView.OnNavigationItemSelectedListener {
 	private int logoutCount = 0;
 
 	public NavBarActivity() {
@@ -100,7 +101,8 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 			}
 			else {
 				logoutCount = 0;
-				FirebaseAuth.getInstance().signOut();
+				firebaseApi.getAuthenticationService()
+						.logout();
 				super.onBackPressed();
 			}
 		}
@@ -120,11 +122,6 @@ public abstract class NavBarActivity extends FirebaseConnectedActivity implement
 	private void initializeNavBar() {
 		Toolbar toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-
-		FloatingActionButton fab = findViewById(R.id.fab);
-		fab.setOnClickListener((view) -> {
-			showSnackBar("Refreshing everything...", 1000);
-		});
 
 		DrawerLayout drawer = findViewById(R.id.drawer_layout);
 		ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

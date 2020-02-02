@@ -7,6 +7,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel"/>
+
         <variable
             name="entityViewModel"
             type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
@@ -50,7 +52,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -82,7 +84,7 @@
             android:layout_marginBottom="4dp"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{entityViewModel.permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; unlinkable!=null &amp;&amp; unlinkable? View.VISIBLE:View.GONE}"
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; unlinkable!=null &amp;&amp; unlinkable &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL)? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/entityField1"
@@ -95,7 +97,7 @@
             android:layout_marginBottom="4dp"
             android:onClick="tapRemove"
             android:scaleType="fitCenter"
-            android:visibility="@{entityViewModel.permissionLevel > 0 &amp;&amp; editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? View.VISIBLE:View.GONE}"
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL) &amp;&amp; deletable? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/entityField1"

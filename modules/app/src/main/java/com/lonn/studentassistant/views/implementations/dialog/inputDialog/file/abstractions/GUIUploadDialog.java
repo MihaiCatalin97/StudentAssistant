@@ -12,6 +12,7 @@ import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivi
 
 import static android.app.Activity.RESULT_OK;
 import static android.content.Intent.createChooser;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.lonn.studentassistant.utils.file.FileUtils.getFileTypeFromMime;
 
 public abstract class GUIUploadDialog extends FileUploadDialog {
@@ -32,8 +33,7 @@ public abstract class GUIUploadDialog extends FileUploadDialog {
 
 		if (getWindow() != null) {
 			int desiredWidth = firebaseConnectedActivity.getResources().getDisplayMetrics().widthPixels * 9 / 10;
-			int desiredHeight = firebaseConnectedActivity.getResources().getDisplayMetrics().heightPixels / 2;
-			getWindow().setLayout(desiredWidth, desiredHeight);
+			getWindow().setLayout(desiredWidth, WRAP_CONTENT);
 		}
 	}
 

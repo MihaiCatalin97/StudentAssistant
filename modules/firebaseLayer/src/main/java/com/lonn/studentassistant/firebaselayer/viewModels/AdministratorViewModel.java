@@ -3,7 +3,9 @@ package com.lonn.studentassistant.firebaselayer.viewModels;
 import androidx.databinding.Bindable;
 
 import com.lonn.studentassistant.firebaselayer.entities.Administrator;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.PersonViewModel;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +20,7 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public final class AdministratorViewModel extends EntityViewModel<Administrator> {
+public final class AdministratorViewModel extends PersonViewModel<Administrator> {
 	@Bindable
 	private String firstName;
 	@Bindable
@@ -28,10 +30,16 @@ public final class AdministratorViewModel extends EntityViewModel<Administrator>
 	@Bindable
 	private String phoneNumber;
 	@Bindable
-	private String imageMetadataKey;
+	private List<String> fileMetadataKeys;
 
 	@Override
 	public AdministratorViewModel clone() {
 		return (AdministratorViewModel) super.clone();
+	}
+
+	public AdministratorViewModel setImageMetadataKey(String imageMetadataKey) {
+		this.imageMetadataKey = imageMetadataKey;
+
+		return this;
 	}
 }

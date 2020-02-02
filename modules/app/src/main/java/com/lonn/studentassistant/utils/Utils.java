@@ -25,7 +25,10 @@ public class Utils {
 	private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd.MM.YYYY");
 
 	public static String hideStudentId(String studentId) {
-		return padLeft(studentId.substring(studentId.length() - 4), '*', studentId.length());
+		if (studentId.length() > 4) {
+			return padLeft(studentId.substring(studentId.length() - 4), '*', studentId.length());
+		}
+		return studentId;
 	}
 
 	public static String dateToStringDate(Date date) {

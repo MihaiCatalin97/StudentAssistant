@@ -13,6 +13,10 @@
         <variable
             name="otherActivities"
             type="java.util.Collection&lt;OtherActivityViewModel&gt;" />
+
+        <variable
+            name="permissionLevel"
+            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +51,7 @@
                     android:childEntities="@{otherActivities}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:entityName="@{`other activity`}"
-                    android:permissionLevel="@{1}"
+                    android:permissionLevel="@{permissionLevel}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{false}" />
 

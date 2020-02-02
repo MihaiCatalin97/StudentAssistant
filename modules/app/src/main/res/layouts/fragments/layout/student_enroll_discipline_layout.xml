@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="enrollRequestSent"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/dim_16dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/DarkSubtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{enrollRequestSent?`You have already send an enrollment request for this discipline`:`You are not enrolled in this discipline`, default=`You are not enrolled in this discipline`}" />
+
+        <Button
+            style="@style/BlueRoundButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dim_8dp"
+            android:enabled="@{!enrollRequestSent}"
+            android:text="Send enrollment request" />
+
+    </LinearLayout>
+</layout>

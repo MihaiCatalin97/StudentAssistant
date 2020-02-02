@@ -32,9 +32,12 @@ import java.util.List;
 
 import lombok.Getter;
 
+import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
+
 public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
-	private Context context;
+
 	@Getter
 	CourseEntityActivityLayoutBinding binding;
 	private CourseEntityActivityFirebaseDispatcher dispatcher;
@@ -52,7 +55,6 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		super.onCreate(savedInstanceState);
 
 		dispatcher = new CourseEntityActivityFirebaseDispatcher(this);
-		context = findViewById(R.id.laboratoriesCategory).getContext();
 
 		((ScrollViewCategory) findViewById(R.id.laboratoriesCategory)).setOnAddAction(() -> {
 			Intent laboratoryInputActivityIntent = new Intent(this,
@@ -146,7 +148,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						}
 					}
 
-					StudentSelectionDialog dialog = new StudentSelectionDialog(context);
+					StudentSelectionDialog dialog = new StudentSelectionDialog(this);
 
 					dialog.setTitle("Select students")
 							.setInputHint("Enter student name or ID")
@@ -179,7 +181,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						}
 					}
 
-					ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(context);
+					ProfessorSelectionDialog dialog = new ProfessorSelectionDialog(this);
 
 					dialog.setTitle("Select professors")
 							.setInputHint("Enter professor name")
@@ -211,7 +213,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						}
 					}
 
-					CourseRecurringClassInputDialog dialog = new CourseRecurringClassInputDialog(context,
+					CourseRecurringClassInputDialog dialog = new CourseRecurringClassInputDialog(this,
 							activityEntity,
 							disciplineProfessors);
 
@@ -242,7 +244,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						}
 					}
 
-					CourseOneTimeClassInputDialog dialog = new CourseOneTimeClassInputDialog(context,
+					CourseOneTimeClassInputDialog dialog = new CourseOneTimeClassInputDialog(this,
 							activityEntity,
 							disciplineProfessors);
 
@@ -261,7 +263,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showStudentRemoveDialog(StudentViewModel student) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("Remove student from course?")
 				.setMessage("Are you sure you wish to remove this student from the course?")
 				.setPositiveButton("Remove", (dialog, which) -> {
@@ -279,7 +281,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showProfessorRemoveDialog(ProfessorViewModel professor) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("Remove professor from course?")
 				.setMessage("Are you sure you wish to remove this professor from the course?")
 				.setPositiveButton("Remove", (dialog, which) -> {
@@ -296,7 +298,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showFileDeletionDialog(FileMetadataViewModel file) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("File deletion")
 				.setMessage("Are you sure you wish to delete this file?")
 				.setPositiveButton("Delete", (dialog, which) -> {
@@ -313,7 +315,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showLaboratoryDeletionDialog(LaboratoryViewModel laboratory) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("Delete laboratory?")
 				.setMessage("Are you sure you wish to delete this laboratory?\n" +
 						"This action will also delete the grades and files associated to this laboratory!")
@@ -331,7 +333,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showRecurringClassDeletionDialog(RecurringClassViewModel recurringClass) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("Delete class from course?")
 				.setMessage("Are you sure you wish to delete this class from the course?")
 				.setPositiveButton("Delete", (dialog, which) -> {
@@ -349,7 +351,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	}
 
 	private void showOneTimeClassDeletionDialog(OneTimeClassViewModel oneTimeClass) {
-		new AlertDialog.Builder(context, R.style.DialogTheme)
+		new AlertDialog.Builder(this, R.style.DialogTheme)
 				.setTitle("Delete class from course?")
 				.setMessage("Are you sure you wish to delete this class from the course?")
 				.setPositiveButton("Delete", (dialog, which) -> {
@@ -372,5 +374,42 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 				.setNegativeButton("Cancel", null)
 				.create()
 				.show();
+	}
+
+	void updateBindingVariables() {
+		if (firebaseApi.getAuthenticationService().getAccountType().equals(STUDENT)) {
+			binding.setUserIsStudent(true);
+
+			if (getBinding().getEntity() != null) {
+				String loggedPersonUUID = firebaseApi.getAuthenticationService()
+						.getLoggedPersonUUID();
+
+				binding.setEnrollRequestSent(getBinding()
+						.getEntity()
+						.getPendingStudents()
+						.contains(loggedPersonUUID));
+
+				binding.setEnrolled(getBinding()
+						.getEntity()
+						.getStudents()
+						.contains(loggedPersonUUID));
+
+				binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+						.getPermissionLevel(binding.getEntity()));
+			}
+		}
+		else {
+			binding.setUserIsStudent(false);
+			binding.setEnrolled(false);
+			binding.setEnrollRequestSent(false);
+			binding.setPermissionLevel(firebaseApi.getAuthenticationService()
+					.getPermissionLevel(binding.getEntity()));
+
+			binding.setEditing(binding.getPermissionLevel().isAtLeast(WRITE) && binding.getEditing() != null && binding.getEditing() ?
+					binding.getEditing()
+					: false);
+
+			isEditing = binding.getEditing();
+		}
 	}
 }

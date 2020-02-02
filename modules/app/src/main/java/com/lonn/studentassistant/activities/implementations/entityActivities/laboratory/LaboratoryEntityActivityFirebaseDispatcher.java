@@ -28,6 +28,9 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends EntityActivityDi
 	}
 
 	void loadAll(String laboratoryKey) {
+		firebaseApi.getAuthenticationService()
+				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
+
 		firebaseApi.getLaboratoryService()
 				.getById(laboratoryKey, true)
 				.onSuccess(laboratory -> {
@@ -38,6 +41,8 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends EntityActivityDi
 
 					loadGrades(laboratory.getGradeKeys());
 					loadFiles(laboratory.getFileMetadataKeys());
+
+					entityActivity.updateBindingVariables();
 				});
 	}
 
