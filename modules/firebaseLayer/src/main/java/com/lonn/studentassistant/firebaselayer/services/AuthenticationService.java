@@ -51,10 +51,10 @@ import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_FULL;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PARTIAL;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PUBLIC;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ADD_AGGREGATED;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ENROLL;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_PARTIAL;
 
 public class AuthenticationService {
@@ -270,10 +270,7 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (((StudentViewModel) loggedPerson).getCourses().contains(course.getKey())) {
-				return READ_PARTIAL;
-			}
-			return READ_PUBLIC;
+			return WRITE_ENROLL;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(course.getKey())) {
@@ -293,10 +290,7 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (((StudentViewModel) loggedPerson).getOtherActivities().contains(activity.getKey())) {
-				return READ_FULL;
-			}
-			return READ_FULL;
+			return WRITE_ENROLL;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getOtherActivities().contains(activity.getKey())) {
@@ -339,9 +333,11 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
+			if (file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+				return WRITE;
+			}
 			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-					file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
 				return READ_FULL;
 			}
 			return NONE;
@@ -368,9 +364,11 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
+			if (file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+				return WRITE;
+			}
 			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-					file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
 				return READ_FULL;
 			}
 			return NONE;

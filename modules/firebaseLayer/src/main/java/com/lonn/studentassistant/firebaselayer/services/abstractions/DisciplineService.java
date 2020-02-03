@@ -292,6 +292,69 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 		return result;
 	}
 
+	public Future<Void, Exception> addEnrollmentRequest(V discipline, String studentKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (!discipline.getPendingStudents().contains(studentKey) &&
+				!discipline.getStudents().contains(studentKey)) {
+			discipline.getPendingStudents().add(studentKey);
+
+			save(discipline).onError(result::completeExceptionally)
+					.onSuccess(result::complete);
+		}
+		else {
+			if (discipline.getPendingStudents().contains(studentKey)) {
+				result.completeExceptionally(new Exception("You have already send an enrollment request"));
+			}
+			else {
+				result.completeExceptionally(new Exception("You are already enrolled"));
+			}
+		}
+
+		return result;
+	}
+
+	public Future<Void, Exception> approveEnrollmentRequest(V discipline, String studentKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (discipline.getPendingStudents().contains(studentKey) &&
+				!discipline.getStudents().contains(studentKey)) {
+
+			discipline.getPendingStudents().remove(studentKey);
+			discipline.getStudents().add(studentKey);
+
+			save(discipline).onError(result::completeExceptionally)
+					.onSuccess(result::complete);
+		}
+		else {
+			if (!discipline.getPendingStudents().contains(studentKey)) {
+				result.completeExceptionally(new Exception("Could not find the enrollment request"));
+			}
+			else {
+				result.completeExceptionally(new Exception("This student is already enrolled"));
+			}
+		}
+
+		return result;
+	}
+
+
+	public Future<Void, Exception> deleteEnrollmentRequest(V discipline, String studentKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (discipline.getPendingStudents().contains(studentKey)) {
+			discipline.getPendingStudents().remove(studentKey);
+
+			save(discipline).onError(result::completeExceptionally)
+					.onSuccess(result::complete);
+		}
+		else {
+			result.completeExceptionally(new Exception("Could not find the enrollment request"));
+		}
+
+		return result;
+	}
+
 	protected abstract void linkToStudent(String studentKey, String disciplineKey);
 
 	protected abstract void linkToProfessor(String professorKey, String disciplineKey);

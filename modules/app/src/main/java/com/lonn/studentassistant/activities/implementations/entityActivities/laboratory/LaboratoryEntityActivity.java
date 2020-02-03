@@ -99,7 +99,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 	protected void deleteFile(String laboratoryKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getLaboratoryService().deleteAndUnlinkFile(laboratoryKey, fileMetadata.getKey())
 				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
-				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
+				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {

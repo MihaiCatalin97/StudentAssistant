@@ -78,6 +78,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 				CourseViewModel::getStudents,
 				firebaseApi.getStudentService(),
 				course);
+
+		updateCourseRelatedEntities(studentMap,
+				CourseViewModel::getPendingStudents,
+				firebaseApi.getStudentService(),
+				course);
 	}
 
 	private void updateProfessors(CourseViewModel course) {

@@ -12,9 +12,10 @@ public enum PermissionLevel {
 	READ_PUBLIC(1),
 	READ_PARTIAL(2),
 	READ_FULL(3),
-	WRITE_ADD_AGGREGATED(4),
-	WRITE_PARTIAL(5),
-	WRITE(6);
+	WRITE_ENROLL(4),
+	WRITE_ADD_AGGREGATED(5),
+	WRITE_PARTIAL(6),
+	WRITE(7);
 
 	private int permission;
 

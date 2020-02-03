@@ -85,7 +85,7 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 	protected void deleteFile(String activityKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getOtherActivityService().deleteAndUnlinkFile(activityKey, fileMetadata.getKey())
 				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
-				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
+				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {

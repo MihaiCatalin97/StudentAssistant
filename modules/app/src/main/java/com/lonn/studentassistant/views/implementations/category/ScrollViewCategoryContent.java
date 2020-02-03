@@ -27,6 +27,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 	private Comparator<EntityView> entityViewComparator = ASCENDING_TITLE_COMPARATOR;
 	private Consumer<T> onDelete;
 	private Consumer<T> onRemove;
+	private Consumer<T> onApprove;
 	private Boolean unlinkable;
 	private Boolean deletable;
 
@@ -54,6 +55,16 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 				runnable.run();
 			}
 		});
+	}
+
+	public void setOnApproveAction(Consumer<T> onApprove) {
+		if (onRemove != null) {
+			this.onApprove = onApprove;
+
+			for (EntityView<T> entityView : childEntityViews.values()) {
+				entityView.setOnApproveTap(onRemove);
+			}
+		}
 	}
 
 	public void addOrUpdateEntity(T entity, EntityViewType viewType, PermissionLevel permissionLevel,
@@ -114,6 +125,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		subCategory.setDeletable(deletable);
 		subCategory.setOnDeleteAction(onDelete);
 		subCategory.setOnRemoveAction(onRemove);
+		subCategory.setOnApproveAction(onApprove);
 	}
 
 	public void setEntityViewComparator(Comparator<EntityView> entityViewComparator) {

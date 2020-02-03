@@ -10,9 +10,12 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.activities.abstractions.MainActivity;
 import com.lonn.studentassistant.databinding.StudentActivityMainLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
+import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.StudentImageUploadDialog;
@@ -40,6 +43,22 @@ public class StudentActivity extends MainActivity<StudentViewModel> {
 		findViewById(R.id.fabSaveChanges).setOnClickListener(view -> onSaveTapped());
 		findViewById(R.id.fabDiscardChanges).setOnClickListener(view -> onDiscardTapped());
 		findViewById(R.id.fabDelete).setVisibility(GONE);
+
+		((ScrollViewCategory<CourseViewModel>) findViewById(R.id.personalCoursesCategory)).setOnRemoveAction(course ->
+				firebaseApi.getCourseService()
+						.removeStudent(course, binding.getStudent())
+						.onSuccess(none -> showSnackBar("Successfully removed yourself from the course", 1000))
+						.onError(error -> logAndShowErrorSnack("An error occurred while removing yourself from the course",
+								error,
+								LOGGER)));
+
+		((ScrollViewCategory<OtherActivityViewModel>) findViewById(R.id.personalActivitiesCategory)).setOnRemoveAction(activity ->
+				firebaseApi.getOtherActivityService()
+						.removeStudent(activity, binding.getStudent())
+						.onSuccess(none -> showSnackBar("Successfully removed yourself from the activity", 1000))
+						.onError(error -> logAndShowErrorSnack("An error occurred while removing yourself from the activity",
+								error,
+								LOGGER)));
 
 		dispatcher.loadAll(personId);
 	}

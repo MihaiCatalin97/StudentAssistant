@@ -23,6 +23,7 @@ import java.util.List;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PUBLIC;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ADD_AGGREGATED;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ENROLL;
 import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
 import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
 
@@ -72,7 +73,7 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
 	public Future<Void, Exception> save(U entityViewModel) {
 		Future<Void, Exception> result = new Future<>();
 
-		if (getPermissionLevel(adapter.adapt(entityViewModel)).isAtLeast(WRITE_ADD_AGGREGATED)) {
+		if (getPermissionLevel(adapter.adapt(entityViewModel)).isAtLeast(WRITE_ENROLL)) {
 			firebaseConnection.execute(new SaveRequest<>()
 					.databaseTable(getDatabaseTable())
 					.entity(adapter.adapt(entityViewModel))
@@ -89,7 +90,7 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
 	}
 
 	public FirebaseTask<Void, V> save(T entity) {
-		if (getPermissionLevel(entity).isAtLeast(WRITE)) {
+		if (getPermissionLevel(entity).isAtLeast(WRITE_ENROLL)) {
 			return new FirebaseVoidTask<>(firebaseConnection,
 					new SaveRequest<T, V>()
 							.databaseTable(getDatabaseTable())

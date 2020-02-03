@@ -43,6 +43,8 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	protected Consumer<T> onDeleteTap;
 	@Setter
 	protected Consumer<T> onRemoveTap;
+	@Setter
+	protected Consumer<T> onApproveTap;
 
 	public EntityView(Context context, EntityViewType viewType, PermissionLevel permissionLevel,
 					  T entityViewModel) {
@@ -80,6 +82,13 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 						onDeleteTap.consume(entityViewModel);
 				});
 			}
+
+			if (findViewById(R.id.entityApproveButton) != null) {
+				findViewById(R.id.entityApproveButton).setOnClickListener((view) -> {
+					if (onApproveTap != null)
+						onApproveTap.consume(entityViewModel);
+				});
+			}
 		}
 	}
 
@@ -100,6 +109,9 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 		if (entityViewModel instanceof GradeViewModel) {
 			return R.layout.grade_laboratory_table_row;
+		}
+		if (onApproveTap != null) {
+			return R.layout.approvable_entity_layout;
 		}
 
 		return R.layout.entity_constraint_layout_view;
@@ -138,6 +150,9 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
 			((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);
+		}
+		else if (onApproveTap != null) {
+			((EntityConstraintLayoutViewBinding) binding).setEntityViewModel(model);
 		}
 		else {
 			((EntityConstraintLayoutViewBinding) binding).setEntityViewModel(model);

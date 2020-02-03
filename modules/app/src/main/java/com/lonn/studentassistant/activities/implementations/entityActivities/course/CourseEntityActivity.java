@@ -96,13 +96,41 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		((ScrollViewCategory<OneTimeClassViewModel>) findViewById(R.id.oneTimeClassesCategory))
 				.setOnDeleteAction(this::showOneTimeClassDeletionDialog);
 
+		findViewById(R.id.disciplineEnrollButton).setOnClickListener(view ->
+				firebaseApi.getCourseService()
+						.addEnrollmentRequest(getActivityEntity(), firebaseApi.getAuthenticationService().getLoggedPersonUUID())
+						.onSuccess(none -> showSnackBar("Enroll request sent", 1000))
+						.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER)));
+
+		for (ScrollViewCategory<StudentViewModel> subcategory : ((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory))
+				.getContent()
+				.getSubcategories()) {
+			if (subcategory.getViewModel().getCategoryTitle().toLowerCase().contains("pending")) {
+				subcategory.setOnApproveAction(student ->
+						firebaseApi.getCourseService()
+								.approveEnrollmentRequest(getActivityEntity(), student.getKey())
+								.onSuccess(none -> showSnackBar("Approved enrollment request", 1000))
+								.onError(error -> logAndShowErrorSnack("An error occurred!",
+										error,
+										LOGGER)));
+
+				subcategory.setOnDeleteAction(student ->
+						firebaseApi.getCourseService()
+								.deleteEnrollmentRequest(getActivityEntity(), student.getKey())
+								.onSuccess(none -> showSnackBar("Deleted enrollment request", 1000))
+								.onError(error -> logAndShowErrorSnack("An error occurred!",
+										error,
+										LOGGER)));
+			}
+		}
+
 		loadAll(entityKey);
 	}
 
 	protected void deleteFile(String courseKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getCourseService().deleteAndUnlinkFile(courseKey, fileMetadata.getKey())
 				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
-				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
+				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
 	}
 
 	protected FileUploadDialog getFileUploadDialogInstance() {

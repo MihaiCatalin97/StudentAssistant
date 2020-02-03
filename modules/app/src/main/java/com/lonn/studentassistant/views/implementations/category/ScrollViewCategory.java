@@ -323,6 +323,14 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		this.getContent().setOnAddTap(runnable);
 	}
 
+	public void setOnApproveAction(Consumer<T> runnable) {
+		for (ScrollViewCategory subcategory : getContent().getSubcategories()) {
+			subcategory.setOnApproveAction(runnable);
+		}
+
+		this.getContent().setOnApproveAction(runnable);
+	}
+
 	public void setOnRemoveAction(Consumer<T> onRemoveTap) {
 		for (ScrollViewCategory<T> subcategory : content.getSubcategories()) {
 			subcategory.setOnRemoveAction(onRemoveTap);

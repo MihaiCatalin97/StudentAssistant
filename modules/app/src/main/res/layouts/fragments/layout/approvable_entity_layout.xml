@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:onClick="tapScrollViewEntityLayout">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+
+        <variable
+            name="entityViewModel"
+            type="com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel" />
+
+        <variable
+            name="editing"
+            type="Boolean" />
+
+        <variable
+            name="unlinkable"
+            type="Boolean" />
+
+        <variable
+            name="deletable"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/CategoryEntityWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/entityImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="Entity image"
+            android:scaleType="fitCenter"
+            android:visibility="@{entityViewModel.image == null? View.GONE : View.VISIBLE}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@{entityViewModel.image}" />
+
+        <TextView
+            android:id="@+id/entityField1"
+            style="@style/CategoryEntityTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:text="@{entityViewModel.field1}"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toRightOf="@id/entityImage"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/entityField2"
+            style="@style/CategoryEntityText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{entityViewModel.field2}"
+            android:visibility="@{(entityViewModel.field2LineCount == 0)? View.GONE : View.VISIBLE}"
+            app:layout_constraintLeft_toRightOf="@id/entityImage"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toBottomOf="@id/entityField1" />
+
+        <TextView
+            android:id="@+id/entityField3"
+            style="@style/CategoryEntityText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{entityViewModel.field3}"
+            android:visibility="@{(entityViewModel.field3LineCount == 0)? View.GONE : View.VISIBLE}"
+            app:layout_constraintLeft_toRightOf="@id/entityImage"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toBottomOf="@id/entityField2" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entityApproveButton"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{(editing==null || !editing) &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL)? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/entityField3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
+            app:srcCompat="@android:drawable/ic_input_add" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entityRemoveButton"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; unlinkable!=null &amp;&amp; unlinkable &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL)? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/entityField3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
+            app:srcCompat="@drawable/ic_close" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entityDeleteButton"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL) &amp;&amp; deletable? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/entityField3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

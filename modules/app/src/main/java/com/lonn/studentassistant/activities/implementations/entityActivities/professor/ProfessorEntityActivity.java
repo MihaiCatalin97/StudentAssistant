@@ -108,7 +108,7 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 	protected void deleteFile(String professorKey, FileMetadataViewModel fileMetadata) {
 		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadata.getKey())
 				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
-				.onError(error -> logAndShowErrorSnack("An error occured!", error, LOGGER));
+				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
 	}
 
 	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
