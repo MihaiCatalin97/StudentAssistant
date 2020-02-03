@@ -10,9 +10,9 @@ import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 public enum PermissionLevel {
 	NONE(0),
 	READ_PUBLIC(1),
-	READ_PARTIAL(2),
-	READ_FULL(3),
-	WRITE_ENROLL(4),
+	WRITE_ENROLL(2),
+	READ_PARTIAL(3),
+	READ_FULL(4),
 	WRITE_ADD_AGGREGATED(5),
 	WRITE_PARTIAL(6),
 	WRITE(7);

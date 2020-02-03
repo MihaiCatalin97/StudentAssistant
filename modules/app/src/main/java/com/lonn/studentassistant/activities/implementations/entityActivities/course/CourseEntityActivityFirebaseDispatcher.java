@@ -16,6 +16,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityVie
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.logging.Logger;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.lonn.studentassistant.BR.files;
@@ -23,7 +24,6 @@ import static com.lonn.studentassistant.BR.laboratories;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
-import static com.lonn.studentassistant.BR.students;
 
 class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivityFirebaseDispatcher.class);
@@ -45,12 +45,20 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		oneTimeClassesMap = new BindableHashMap<>(entityActivity.getBinding(), oneTimeClasses);
 		filesMap = new BindableHashMap<>(entityActivity.getBinding(), files);
 		laboratoryMap = new BindableHashMap<>(entityActivity.getBinding(), laboratories);
-		studentMap = new BindableHashMap<>(entityActivity.getBinding(), students);
+		studentMap = new BindableHashMap<>(entityActivity.getBinding(), com.lonn.studentassistant.BR.students);
 	}
 
 	void loadAll(String courseKey) {
 		firebaseApi.getAuthenticationService()
-				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
+				.setOnLoggedPersonChange(person -> {
+					entityActivity.updateBindingVariables();
+
+					filesMap.clear();
+					studentMap.clear();
+
+					updateFiles(entityActivity.getActivityEntity());
+					updateStudents(entityActivity.getActivityEntity());
+				});
 
 		firebaseApi.getCourseService().getById(courseKey, true)
 				.onSuccess(course -> {
@@ -75,12 +83,11 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 
 	private void updateStudents(CourseViewModel course) {
 		updateCourseRelatedEntities(studentMap,
-				CourseViewModel::getStudents,
-				firebaseApi.getStudentService(),
-				course);
-
-		updateCourseRelatedEntities(studentMap,
-				CourseViewModel::getPendingStudents,
+				crs -> {
+					List<String> allStudents = new LinkedList<>(crs.getStudents());
+					allStudents.addAll(crs.getPendingStudents());
+					return allStudents;
+				},
 				firebaseApi.getStudentService(),
 				course);
 	}

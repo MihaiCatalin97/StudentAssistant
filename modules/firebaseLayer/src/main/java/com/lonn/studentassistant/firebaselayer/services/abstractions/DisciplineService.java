@@ -236,7 +236,10 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 		discipline.getStudents().remove(student.getKey());
 
 		save(discipline).onError(result::completeExceptionally)
-				.onSuccess(result::complete);
+				.onSuccess(none -> {
+					unlinkToStudent(student, discipline.getKey());
+					result.complete(none);
+				});
 
 		unlinkToStudent(student, discipline.getKey());
 
@@ -249,26 +252,12 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 		discipline.getProfessors().remove(professor.getKey());
 
 		save(discipline).onError(result::completeExceptionally)
-				.onSuccess(result::complete);
+				.onSuccess(none -> {
+					unlinkToProfessor(professor, discipline.getKey());
+					result.complete(none);
+				});
 
 		unlinkToProfessor(professor, discipline.getKey());
-
-		return result;
-	}
-
-	public Future<Void, Exception> removeStudent(String disciplineKey, StudentViewModel student) {
-		Future<Void, Exception> result = new Future<>();
-
-		getById(disciplineKey, false)
-				.onSuccess(discipline -> {
-					discipline.getStudents().remove(student.getKey());
-
-					save(discipline).onError(result::completeExceptionally)
-							.onSuccess(result::complete);
-
-					unlinkToStudent(student, discipline.getKey());
-				})
-				.onError(result::completeExceptionally);
 
 		return result;
 	}
@@ -282,7 +271,10 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 						discipline.getProfessors().remove(professor.getKey());
 
 						save(discipline).onError(result::completeExceptionally)
-								.onSuccess(result::complete);
+								.onSuccess(none -> {
+									unlinkToProfessor(professor, discipline.getKey());
+									result.complete(none);
+								});
 
 						unlinkToProfessor(professor, discipline.getKey());
 					}
@@ -299,8 +291,12 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 				!discipline.getStudents().contains(studentKey)) {
 			discipline.getPendingStudents().add(studentKey);
 
-			save(discipline).onError(result::completeExceptionally)
-					.onSuccess(result::complete);
+			save(discipline)
+					.onSuccess(none -> {
+						unlinkToStudent(studentKey, discipline.getKey());
+						result.complete(none);
+					})
+					.onError(result::completeExceptionally);
 		}
 		else {
 			if (discipline.getPendingStudents().contains(studentKey)) {
@@ -323,8 +319,12 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 			discipline.getPendingStudents().remove(studentKey);
 			discipline.getStudents().add(studentKey);
 
-			save(discipline).onError(result::completeExceptionally)
-					.onSuccess(result::complete);
+			save(discipline)
+					.onSuccess(none -> {
+						linkToStudent(studentKey, discipline.getKey());
+						result.complete(none);
+					})
+					.onError(result::completeExceptionally);
 		}
 		else {
 			if (!discipline.getPendingStudents().contains(studentKey)) {
@@ -360,6 +360,8 @@ public abstract class DisciplineService<T extends Discipline, V extends Discipli
 	protected abstract void linkToProfessor(String professorKey, String disciplineKey);
 
 	protected abstract void unlinkToStudent(StudentViewModel student, String disciplineKey);
+
+	protected abstract void unlinkToStudent(String studentKey, String disciplineKey);
 
 	protected abstract void unlinkToProfessor(ProfessorViewModel professor, String disciplineKey);
 }

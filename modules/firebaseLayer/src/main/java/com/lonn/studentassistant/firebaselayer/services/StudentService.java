@@ -115,6 +115,56 @@ public class StudentService extends PersonService<Student, StudentViewModel> {
 		return result;
 	}
 
+	public Future<Void, Exception> removeCourse(String studentKey, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(studentKey, false)
+				.onSuccess(student -> {
+					if (student == null) {
+						result.completeExceptionally(new Exception("No student found"));
+					}
+					else {
+						if (student.getCourses().contains(courseKey)) {
+							student.getCourses().remove(courseKey);
+							save(student)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	public Future<Void, Exception> removeActivity(String studentKey, String activityKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(studentKey, false)
+				.onSuccess(student -> {
+					if (student == null) {
+						result.completeExceptionally(new Exception("No student found"));
+					}
+					else {
+						if (student.getOtherActivities().contains(activityKey)) {
+							student.getOtherActivities().remove(activityKey);
+							save(student)
+									.onSuccess(result::complete)
+									.onError(result::completeExceptionally);
+						}
+						else {
+							result.complete(null);
+						}
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
 	public Future<StudentViewModel, Exception> getByStudentId(String studentId, boolean subscribe) {
 		Future<StudentViewModel, Exception> result = new Future<>();
 

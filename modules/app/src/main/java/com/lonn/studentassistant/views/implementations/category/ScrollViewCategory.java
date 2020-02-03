@@ -13,6 +13,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.animations.ExpandAnimation;
 import com.lonn.studentassistant.databinding.CategoryLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
@@ -59,10 +60,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		init(context);
 	}
 
-	public void setCanAdd(Boolean canAdd){
-		binding.setCanAdd(canAdd);
-	}
-
 	public void setIsTable(Boolean isTable) {
 		if (isTable == null) {
 			isTable = false;
@@ -71,6 +68,19 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 
 		for (ScrollViewCategory category : content.subcategoryViews.values()) {
 			category.setIsTable(isTable);
+		}
+	}
+
+	public void setPermissionLevel(PermissionLevel permissionLevel) {
+		viewModel.setPermissionLevel(permissionLevel);
+		hideIfEmpty();
+
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.setPermissionLevel(permissionLevel);
+		}
+
+		for (EntityView<T> childEntityView : content.childEntityViews.values()) {
+			childEntityView.setPermissionLevel(permissionLevel);
 		}
 	}
 
@@ -99,6 +109,18 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		binding.setShowAddButtonFirstLayer(showAddButtonFirstLayer);
 	}
 
+	public void setCanAdd(Boolean canAdd) {
+		binding.setCanAdd(canAdd);
+	}
+
+	public void setCanApprove(Boolean canApprove) {
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.setCanApprove(canApprove);
+		}
+
+		content.setCanApprove(canApprove);
+	}
+
 	public void setUnlinkable(Boolean unlinkable) {
 		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
 			subcategory.setUnlinkable(unlinkable);
@@ -116,6 +138,8 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	}
 
 	public void setChildCategories(Collection<CategoryViewModel<T>> categories) {
+		content.setCanApprove(viewModel.isCanApprove());
+
 		getViewModel().setChildCategories(categories);
 		List<ScrollViewCategory<T>> categoriesToBeRemoved = new LinkedList<>();
 		Collection<CategoryViewModel<T>> categoriesToBeAdded = new LinkedList<>();
@@ -158,7 +182,9 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 				viewModel.getChildEntities().remove(removedEntityKey);
 			}
 		}
+
 		setIsTable(binding.getIsTable());
+		setCanApprove(viewModel.isCanApprove());
 		addCategoriesToContent(categoriesToBeAdded);
 
 		hideIfEmpty();
@@ -229,15 +255,19 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 			scrollViewCategory.setEditing(binding.getEditing());
 			scrollViewCategory.setShowAddButtonFirstLayer(binding.getShowAddButtonFirstLayer());
 			scrollViewCategory.setIsTable(binding.getIsTable());
+			scrollViewCategory.setCanApprove(viewModel.isCanApprove());
 
 			content.addSubcategory(scrollViewCategory);
 		}
 	}
 
 	private void addOrUpdateEntity(T entity) {
+		content.setCanApprove(viewModel.isCanApprove());
+
 		if (viewModel.getShouldContain().test(entity)) {
 			if (getViewModel().isEndCategory()) {
 				viewModel.addEntity(entity);
+
 				content.addOrUpdateEntity(entity,
 						viewModel.getViewType(),
 						viewModel.getPermissionLevel(),
@@ -254,9 +284,16 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 	private void removeNonExistingEntities(Collection<T> entities) {
 		List<String> entitiesToRemove = new LinkedList<>(viewModel.getChildEntities().keySet());
 
-		if (entities != null) {
+		if (entities != null && entities.size() > 0) {
 			for (T receivedEntity : entities) {
 				entitiesToRemove.remove(receivedEntity.getKey());
+			}
+
+			for (T receivedEntity : entities) {
+				if (!viewModel.getShouldContain().test(receivedEntity) &&
+						viewModel.getChildEntities().containsKey(receivedEntity.getKey())) {
+					entitiesToRemove.add(receivedEntity.getKey());
+				}
 			}
 		}
 
@@ -323,12 +360,12 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		this.getContent().setOnAddTap(runnable);
 	}
 
-	public void setOnApproveAction(Consumer<T> runnable) {
-		for (ScrollViewCategory subcategory : getContent().getSubcategories()) {
-			subcategory.setOnApproveAction(runnable);
+	public void setOnApproveAction(Consumer<T> consumer) {
+		for (ScrollViewCategory<T> subcategory : getContent().getSubcategories()) {
+			subcategory.setOnApproveAction(consumer);
 		}
 
-		this.getContent().setOnApproveAction(runnable);
+		this.getContent().setOnApproveAction(consumer);
 	}
 
 	public void setOnRemoveAction(Consumer<T> onRemoveTap) {

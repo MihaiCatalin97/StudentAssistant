@@ -68,6 +68,10 @@ public class CourseService extends DisciplineService<Course, CourseViewModel> {
 		professorService.addCourse(professorKey, disciplineKey);
 	}
 
+	protected void unlinkToStudent(String studentKey, String disciplineKey) {
+		studentService.removeCourse(studentKey, disciplineKey);
+	}
+
 	protected void unlinkToStudent(StudentViewModel student, String disciplineKey) {
 		if (student.getCourses().contains(disciplineKey)) {
 			student.getCourses().remove(disciplineKey);

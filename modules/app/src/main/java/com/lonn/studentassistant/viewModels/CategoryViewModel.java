@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.Getter;
+
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.views.EntityViewType.FULL;
 
@@ -26,6 +28,8 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	private EntityViewType viewType = FULL;
 	private boolean showHeader = true;
 	private boolean showEmpty = true;
+	@Getter
+	private boolean canApprove = false;
 	private PermissionLevel permissionLevel = NONE;
 	private String categoryTitle = "Category Title";
 	private String entityName = "entityViewModel";
@@ -67,6 +71,13 @@ public class CategoryViewModel<T extends EntityViewModel<? extends BaseEntity>> 
 	public Comparator<EntityView> getEntitiesComparator() {
 		return entitiesComparator;
 	}
+
+	public CategoryViewModel<T> setCanApprove(Boolean canApprove) {
+		this.canApprove = canApprove;
+		this.notifyPropertyChanged(BR.categoryModel);
+		return this;
+	}
+
 
 	public CategoryViewModel<T> setEntitiesComparator(Comparator<EntityView> entitiesComparator) {
 		this.entitiesComparator = entitiesComparator;

@@ -225,6 +225,16 @@ public class BindingAdapters {
 		category.setEditing(editing);
 	}
 
+	@BindingAdapter("android:canApprove")
+	public static void bindCanApprove(ScrollViewCategory category,
+									  Boolean canApprove) {
+		if (canApprove == null) {
+			canApprove = false;
+		}
+
+		category.setCanApprove(canApprove);
+	}
+
 	@BindingAdapter("android:unlinkable")
 	public static void bindUnlinkable(ScrollViewCategory category,
 									  Boolean unlinkable) {
@@ -268,8 +278,7 @@ public class BindingAdapters {
 	@BindingAdapter("android:permissionLevel")
 	public static void setPermissionLevel(ScrollViewCategory category,
 										  PermissionLevel permissionLevel) {
-		category.getViewModel()
-				.setPermissionLevel(permissionLevel);
+		category.setPermissionLevel(permissionLevel);
 	}
 
 	@BindingAdapter("android:entityName")

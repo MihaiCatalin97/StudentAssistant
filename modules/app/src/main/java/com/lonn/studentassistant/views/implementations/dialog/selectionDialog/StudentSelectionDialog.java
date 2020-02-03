@@ -37,12 +37,19 @@ public class StudentSelectionDialog extends EntitySelectionDialog<StudentViewMod
 	}
 
 	public String entityToDisplayMainString(StudentViewModel student) {
-		return student.getFirstName() + " " + student.getLastName();
+		if (student.getFirstName() != null && student.getLastName() != null) {
+			return student.getFirstName() + " " + student.getLastName();
+		}
+		return "(unregistered student)";
 	}
 
 	public String entityToDisplaySecondaryString(StudentViewModel student) {
-		return student.getStudentId() + "\n" + student.getCycleSpecializationYear().toString() + "\n" +
-				"Year " + student.getCycleSpecializationYear().getYear();
+		if (student.getCycleSpecializationYear() != null) {
+			return student.getStudentId() + "\n" + student.getCycleSpecializationYear().toString() + "\n" +
+					"Year " + student.getCycleSpecializationYear().getYear();
+		}
+
+		return student.getStudentId();
 	}
 
 	private void createFilterLayouts() {

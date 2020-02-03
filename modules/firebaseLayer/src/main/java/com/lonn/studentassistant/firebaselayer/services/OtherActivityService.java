@@ -2,7 +2,6 @@ package com.lonn.studentassistant.firebaselayer.services;
 
 import com.lonn.studentassistant.firebaselayer.adapters.OtherActivityAdapter;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
-import com.lonn.studentassistant.firebaselayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
 import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnection;
@@ -45,6 +44,10 @@ public class OtherActivityService extends DisciplineService<OtherActivity, Other
 
 	protected void linkToProfessor(String professorKey, String disciplineKey) {
 		professorService.addActivity(professorKey, disciplineKey);
+	}
+
+	protected void unlinkToStudent(String studentKey, String disciplineKey) {
+		studentService.removeActivity(studentKey, disciplineKey);
 	}
 
 	protected void unlinkToStudent(StudentViewModel student, String disciplineKey) {

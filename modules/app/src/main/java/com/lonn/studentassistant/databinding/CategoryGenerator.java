@@ -3,6 +3,7 @@ package com.lonn.studentassistant.databinding;
 import com.lonn.studentassistant.firebaselayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
 import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
@@ -163,9 +164,10 @@ public class CategoryGenerator {
 				.setPermissionLevel(parentCategory.getPermissionLevel())
 				.setShowEmpty(parentCategory.isShowEmpty())
 				.setShowHeader(true)
+				.setCanApprove(true)
 				.setShouldContain((student) -> {
 					if (courseViewModel == null) {
-						return true;
+						return false;
 					}
 
 					return courseViewModel.getPendingStudents().contains(student.getKey());

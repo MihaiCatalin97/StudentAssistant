@@ -7,7 +7,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel"/>
+        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
 
         <variable
             name="entityViewModel"
@@ -23,6 +23,10 @@
 
         <variable
             name="deletable"
+            type="Boolean" />
+
+        <variable
+            name="canApprove"
             type="Boolean" />
     </data>
 
@@ -52,7 +56,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintRight_toLeftOf="@id/entityApproveButton"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -63,7 +67,7 @@
             android:text="@{entityViewModel.field2}"
             android:visibility="@{(entityViewModel.field2LineCount == 0)? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintRight_toLeftOf="@id/entityApproveButton"
             app:layout_constraintTop_toBottomOf="@id/entityField1" />
 
         <TextView
@@ -74,8 +78,21 @@
             android:text="@{entityViewModel.field3}"
             android:visibility="@{(entityViewModel.field3LineCount == 0)? View.GONE : View.VISIBLE}"
             app:layout_constraintLeft_toRightOf="@id/entityImage"
-            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintRight_toLeftOf="@id/entityApproveButton"
             app:layout_constraintTop_toBottomOf="@id/entityField2" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/entityApproveButton"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
+            android:onClick="tapRemove"
+            android:scaleType="fitCenter"
+            android:visibility="@{(editing==null || !editing) &amp;&amp; canApprove!=null &amp;&amp; canApprove &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL)? View.VISIBLE:View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/entityField3"
+            app:layout_constraintRight_toLeftOf="@id/entityRemoveButton"
+            app:layout_constraintTop_toTopOf="@id/entityField1"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/entityRemoveButton"
@@ -86,7 +103,7 @@
             android:scaleType="fitCenter"
             android:visibility="@{editing!=null &amp;&amp; editing &amp;&amp; unlinkable!=null &amp;&amp; unlinkable &amp;&amp; entityViewModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL)? View.VISIBLE:View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/entityField3"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/entityDeleteButton"
             app:layout_constraintTop_toTopOf="@id/entityField1"
             app:srcCompat="@drawable/ic_close" />
 

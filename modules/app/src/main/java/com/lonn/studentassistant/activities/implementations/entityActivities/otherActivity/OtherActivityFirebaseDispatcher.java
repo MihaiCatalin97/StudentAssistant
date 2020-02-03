@@ -2,14 +2,21 @@ package com.lonn.studentassistant.activities.implementations.entityActivities.ot
 
 import com.lonn.studentassistant.activities.abstractions.EntityActivityDispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
+import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.services.OtherActivityService;
+import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.logging.Logger;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.lonn.studentassistant.BR.files;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
@@ -39,7 +46,15 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 
 	void loadAll(String entityKey) {
 		firebaseApi.getAuthenticationService()
-				.setOnLoggedPersonChange(person -> entityActivity.updateBindingVariables());
+				.setOnLoggedPersonChange(person -> {
+					entityActivity.updateBindingVariables();
+
+					filesMap.clear();
+					studentMap.clear();
+
+					updateFiles(entityActivity.getActivityEntity());
+					updateStudents(entityActivity.getActivityEntity());
+				});
 
 		firebaseApi.getOtherActivityService()
 				.getById(entityKey, true)
@@ -47,38 +62,11 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 					entityActivity.setActivityEntity(activity);
 					entityActivity.updateBindingVariables();
 
-					removeNonExistingEntities(professorMap, activity.getProfessors());
-					removeNonExistingEntities(recurringClassesMap, activity.getRecurringClasses());
-					removeNonExistingEntities(oneTimeClassesMap, activity.getOneTimeClasses());
-					removeNonExistingEntities(filesMap, activity.getFileMetadataKeys());
-
-					for (String professorId : activity.getProfessors()) {
-						firebaseApi.getProfessorService()
-								.getById(professorId, true)
-								.onSuccess(professorMap::put);
-					}
-
-					for (String recurringClassId : activity.getRecurringClasses()) {
-						firebaseApi.getRecurringClassService()
-								.getById(recurringClassId, true)
-								.onSuccess(recurringClassesMap::put);
-					}
-
-					for (String oneTimeClassId : activity.getOneTimeClasses()) {
-						firebaseApi.getOneTimeClassService()
-								.getById(oneTimeClassId, true)
-								.onSuccess(oneTimeClassesMap::put);
-					}
-
-					for (String fileId : activity.getFileMetadataKeys()) {
-						firebaseApi.getFileMetadataService()
-								.getById(fileId, true)
-								.onSuccess(filesMap::put);
-					}
-
-					if (shouldUpdateStudents(activity)) {
-						updateStudents(activity);
-					}
+					updateProfessors(activity);
+					updateRecurringClasses(activity);
+					updateOneTimeClasses(activity);
+					updateFiles(activity);
+					updateStudents(activity);
 
 					entityActivity.updateBindingVariables();
 				})
@@ -87,23 +75,63 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 						LOGGER));
 	}
 
-	private boolean shouldUpdateStudents(OtherActivityViewModel activity) {
-		return this.entityActivity.getBinding().getStudents() == null ||
-				this.entityActivity.getBinding().getStudents().size() != activity.getStudents().size() ||
-				!this.entityActivity.getBinding().getStudents().keySet()
-						.containsAll(activity.getStudents());
+	private void updateStudents(OtherActivityViewModel otherActivity) {
+		updateCourseRelatedEntities(studentMap,
+				crs -> {
+					List<String> allStudents = new LinkedList<>(crs.getStudents());
+					allStudents.addAll(crs.getPendingStudents());
+					return allStudents;
+				},
+				firebaseApi.getStudentService(),
+				otherActivity);
 	}
 
-	private void updateStudents(OtherActivityViewModel activity) {
-		removeNonExistingEntities(studentMap, activity.getStudents());
-		for (String studentKey : activity.getStudents()) {
-			firebaseApi.getStudentService()
-					.getById(studentKey, true)
-					.onSuccess(student -> {
-						if (activity.getStudents().contains(student.getKey())) {
-							studentMap.put(student);
-						}
-					});
+	private void updateProfessors(OtherActivityViewModel otherActivity) {
+		updateCourseRelatedEntities(professorMap,
+				OtherActivityViewModel::getProfessors,
+				firebaseApi.getProfessorService(),
+				otherActivity);
+	}
+
+	private void updateOneTimeClasses(OtherActivityViewModel otherActivity) {
+		updateCourseRelatedEntities(oneTimeClassesMap,
+				OtherActivityViewModel::getOneTimeClasses,
+				firebaseApi.getOneTimeClassService(),
+				otherActivity);
+	}
+
+	private void updateRecurringClasses(OtherActivityViewModel otherActivity) {
+		updateCourseRelatedEntities(recurringClassesMap,
+				OtherActivityViewModel::getRecurringClasses,
+				firebaseApi.getRecurringClassService(),
+				otherActivity);
+	}
+
+	private void updateFiles(OtherActivityViewModel otherActivity) {
+		updateCourseRelatedEntities(filesMap,
+				OtherActivityViewModel::getFileMetadataKeys,
+				firebaseApi.getFileMetadataService(),
+				otherActivity);
+	}
+
+	private <T extends BaseEntity, V extends EntityViewModel<T>> void updateCourseRelatedEntities(BindableHashMap<V> entityMap,
+																								  Function<OtherActivityViewModel,
+																										  List<String>> entityKeyGetter,
+																								  Service<T, Exception, V> entityService,
+																								  OtherActivityViewModel newActivity) {
+		removeNonExistingEntities(entityMap, entityKeyGetter.apply(newActivity));
+
+		for (String entityKey : entityKeyGetter.apply(newActivity)) {
+			if (!entityMap.keySet().contains(entityKey)) {
+				entityService.getById(entityKey, true)
+						.onSuccess(entity -> {
+							if (entityKeyGetter.apply(entityActivity.getBinding().getEntity())
+									.contains(entity.getKey())) {
+								entityMap.put(entity);
+							}
+						})
+						.onError(error -> entityMap.remove(entityKey));
+			}
 		}
 	}
 

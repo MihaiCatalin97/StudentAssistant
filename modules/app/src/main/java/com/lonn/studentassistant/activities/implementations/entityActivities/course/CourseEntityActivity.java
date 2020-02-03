@@ -81,9 +81,6 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		((ScrollViewCategory<LaboratoryViewModel>) findViewById(R.id.laboratoriesCategory))
 				.setOnDeleteAction(this::showLaboratoryDeletionDialog);
 
-		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory))
-				.setOnRemoveAction(this::showStudentRemoveDialog);
-
 		((ScrollViewCategory<FileMetadataViewModel>) findViewById(R.id.filesCategory))
 				.setOnDeleteAction(this::showFileDeletionDialog);
 
@@ -96,33 +93,36 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 		((ScrollViewCategory<OneTimeClassViewModel>) findViewById(R.id.oneTimeClassesCategory))
 				.setOnDeleteAction(this::showOneTimeClassDeletionDialog);
 
+		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory)).setOnRemoveAction(student -> {
+			if (binding.getEntity().getStudents().contains(student.getKey())) {
+				this.showStudentRemoveDialog(student);
+			}
+			else {
+				firebaseApi.getCourseService()
+						.deleteEnrollmentRequest(binding.getEntity(), student.getKey())
+						.onSuccess(none -> showSnackBar("Successfully removed enrollment request", 1000))
+						.onError(error -> logAndShowErrorSnack("An error occurred!",
+								error,
+								LOGGER));
+			}
+		});
+
+		((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory)).setOnApproveAction(student -> {
+			if (binding.getEntity().getPendingStudents().contains(student.getKey())) {
+				firebaseApi.getCourseService()
+						.approveEnrollmentRequest(binding.getEntity(), student.getKey())
+						.onSuccess(none -> showSnackBar("Successfully approved enrollment request", 1000))
+						.onError(error -> logAndShowErrorSnack("An error occurred!",
+								error,
+								LOGGER));
+			}
+		});
+
 		findViewById(R.id.disciplineEnrollButton).setOnClickListener(view ->
 				firebaseApi.getCourseService()
 						.addEnrollmentRequest(getActivityEntity(), firebaseApi.getAuthenticationService().getLoggedPersonUUID())
 						.onSuccess(none -> showSnackBar("Enroll request sent", 1000))
 						.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER)));
-
-		for (ScrollViewCategory<StudentViewModel> subcategory : ((ScrollViewCategory<StudentViewModel>) findViewById(R.id.studentCategory))
-				.getContent()
-				.getSubcategories()) {
-			if (subcategory.getViewModel().getCategoryTitle().toLowerCase().contains("pending")) {
-				subcategory.setOnApproveAction(student ->
-						firebaseApi.getCourseService()
-								.approveEnrollmentRequest(getActivityEntity(), student.getKey())
-								.onSuccess(none -> showSnackBar("Approved enrollment request", 1000))
-								.onError(error -> logAndShowErrorSnack("An error occurred!",
-										error,
-										LOGGER)));
-
-				subcategory.setOnDeleteAction(student ->
-						firebaseApi.getCourseService()
-								.deleteEnrollmentRequest(getActivityEntity(), student.getKey())
-								.onSuccess(none -> showSnackBar("Deleted enrollment request", 1000))
-								.onError(error -> logAndShowErrorSnack("An error occurred!",
-										error,
-										LOGGER)));
-			}
-		}
 
 		loadAll(entityKey);
 	}

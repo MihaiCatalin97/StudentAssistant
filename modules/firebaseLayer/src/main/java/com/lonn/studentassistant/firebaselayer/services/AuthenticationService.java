@@ -51,6 +51,7 @@ import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_FULL;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PARTIAL;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PUBLIC;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ADD_AGGREGATED;
@@ -82,6 +83,8 @@ public class AuthenticationService {
 	private GradeAdapter gradeAdapter = new GradeAdapter();
 
 	private Consumer<EntityViewModel> onLoggedPersonChange;
+	@Getter
+	private String loggedPersonUUID;
 
 	public void setOnLoggedPersonChange(Consumer<EntityViewModel> onLoggedPersonChange) {
 		this.onLoggedPersonChange = onLoggedPersonChange;
@@ -202,10 +205,11 @@ public class AuthenticationService {
 					.onSuccess(user -> {
 						if (user != null) {
 							this.accountType = user.getAccountType();
+							this.loggedPersonUUID = user.getPersonUUID();
 
 							switch (user.getAccountType()) {
 								case STUDENT: {
-									studentService.getById(user.getPersonUUID(), true)
+									studentService.getById(loggedPersonUUID, true)
 											.onSuccess(student -> {
 												if (this.getLoggedPerson() == null) {
 													this.setLoggedPerson(student);
@@ -219,7 +223,7 @@ public class AuthenticationService {
 									break;
 								}
 								case PROFESSOR: {
-									professorService.getById(user.getPersonUUID(), true)
+									professorService.getById(loggedPersonUUID, true)
 											.onSuccess(professor -> {
 												if (this.getLoggedPerson() == null) {
 													this.setLoggedPerson(professor);
@@ -233,7 +237,7 @@ public class AuthenticationService {
 									break;
 								}
 								case ADMINISTRATOR: {
-									administratorService.getById(user.getPersonUUID(), true)
+									administratorService.getById(loggedPersonUUID, true)
 											.onSuccess(administrator -> {
 												if (this.getLoggedPerson() == null) {
 													this.setLoggedPerson(administrator);
@@ -270,6 +274,9 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
+			if (course.getStudents().contains(loggedPersonUUID)) {
+				return READ_PARTIAL;
+			}
 			return WRITE_ENROLL;
 		}
 		if (accountType.equals(PROFESSOR)) {
@@ -290,6 +297,9 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
+			if (activity.getStudents().contains(loggedPersonUUID)) {
+				return READ_PARTIAL;
+			}
 			return WRITE_ENROLL;
 		}
 		if (accountType.equals(PROFESSOR)) {
@@ -333,7 +343,7 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+			if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
 				return WRITE;
 			}
 			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
@@ -345,7 +355,7 @@ public class AuthenticationService {
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
 					((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-					file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+					file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
 				return WRITE;
 			}
 
@@ -364,7 +374,7 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+			if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
 				return WRITE;
 			}
 			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
@@ -376,7 +386,7 @@ public class AuthenticationService {
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
 					((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-					file.getAssociatedEntityKey().equals(loggedPerson.getKey())) {
+					file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
 				return WRITE;
 			}
 			//Todo: Investigate how to change this if it is a double join
@@ -414,16 +424,14 @@ public class AuthenticationService {
 			return READ_PUBLIC;
 		}
 		if (accountType.equals(PROFESSOR)) {
-			if (loggedPerson != null) {
-				if (loggedPerson.getKey().equals(professor.getKey())) {
-					return WRITE_PARTIAL;
-				}
-				else if (listsHaveAtLeastOneElementInCommon(professor.getCourses(),
-						((ProfessorViewModel) loggedPerson).getCourses()) ||
-						listsHaveAtLeastOneElementInCommon(professor.getOtherActivities(),
-								((ProfessorViewModel) loggedPerson).getOtherActivities())) {
-					return WRITE_ADD_AGGREGATED;
-				}
+			if (loggedPersonUUID.equals(professor.getKey())) {
+				return WRITE_PARTIAL;
+			}
+			else if (loggedPerson != null && listsHaveAtLeastOneElementInCommon(professor.getCourses(),
+					((ProfessorViewModel) loggedPerson).getCourses()) ||
+					listsHaveAtLeastOneElementInCommon(professor.getOtherActivities(),
+							((ProfessorViewModel) loggedPerson).getOtherActivities())) {
+				return WRITE_ADD_AGGREGATED;
 			}
 			return READ_PUBLIC;
 		}
@@ -435,14 +443,22 @@ public class AuthenticationService {
 	}
 
 	public PermissionLevel getPermissionLevel(Student student) {
-		if (accountType == null || mAuth.getCurrentUser() == null) {
+		if (accountType == null || mAuth.getCurrentUser() == null ||
+				loggedPersonUUID == null || loggedPersonUUID.length() == 0) {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (loggedPerson != null && loggedPerson.getKey().equals(student.getKey())) {
-				return WRITE;
+			if (loggedPersonUUID.equals(student.getKey())) {
+				return WRITE_PARTIAL;
 			}
-			return READ_PUBLIC;
+			if (loggedPerson != null &&
+					(listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getCourses(),
+							student.getCourses()) ||
+							(listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getOtherActivities(),
+									student.getOtherActivities())))) {
+				return READ_PUBLIC;
+			}
+			return NONE;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			return WRITE;
@@ -459,7 +475,7 @@ public class AuthenticationService {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
-			if (loggedPerson != null && loggedPerson.getKey().equals(grade.getStudentKey())) {
+			if (loggedPerson != null && loggedPersonUUID.equals(grade.getStudentKey())) {
 				return READ_PUBLIC;
 			}
 			return NONE;
@@ -511,10 +527,6 @@ public class AuthenticationService {
 
 	public PermissionLevel getPermissionLevel(GradeViewModel grade) {
 		return getPermissionLevel(gradeAdapter.adapt(grade));
-	}
-
-	public String getLoggedPersonUUID() {
-		return loggedPerson.getKey();
 	}
 
 	private boolean listsHaveAtLeastOneElementInCommon(List<String> list1, List<String> list2) {

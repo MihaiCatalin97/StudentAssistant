@@ -30,6 +30,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 	private Consumer<T> onApprove;
 	private Boolean unlinkable;
 	private Boolean deletable;
+	private Boolean canApprove;
 
 	public ScrollViewCategoryContent(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -47,24 +48,6 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		removeView(category);
 
 		subcategoryViews.remove(category.getViewModel().getCategoryTitle());
-	}
-
-	public void setOnAddTap(Runnable runnable) {
-		findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> {
-			if(runnable != null) {
-				runnable.run();
-			}
-		});
-	}
-
-	public void setOnApproveAction(Consumer<T> onApprove) {
-		if (onRemove != null) {
-			this.onApprove = onApprove;
-
-			for (EntityView<T> entityView : childEntityViews.values()) {
-				entityView.setOnApproveTap(onRemove);
-			}
-		}
 	}
 
 	public void addOrUpdateEntity(T entity, EntityViewType viewType, PermissionLevel permissionLevel,
@@ -85,11 +68,15 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 			if (onRemove != null) {
 				entityView.setOnRemoveTap(onRemove);
 			}
+			if (onApprove != null) {
+				entityView.setOnApproveTap(onApprove);
+			}
 
 			entityView.setEditing(editing);
 
 			entityView.setUnlinkable(unlinkable);
 			entityView.setDeletable(deletable);
+			entityView.setCanApprove(canApprove);
 		}
 		else {
 			entityView.updateEntity(entity);
@@ -115,6 +102,14 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		}
 	}
 
+	public void setCanApprove(Boolean canApprove) {
+		this.canApprove = canApprove;
+
+		for (EntityView childEntity : childEntityViews.values()) {
+			childEntity.setCanApprove(canApprove);
+		}
+	}
+
 	public void addSubcategory(ScrollViewCategory<T> subCategory) {
 		subcategoryViews.put(subCategory.getViewModel().getCategoryTitle(),
 				subCategory);
@@ -123,6 +118,7 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 
 		subCategory.setUnlinkable(unlinkable);
 		subCategory.setDeletable(deletable);
+		subCategory.setCanApprove(canApprove);
 		subCategory.setOnDeleteAction(onDelete);
 		subCategory.setOnRemoveAction(onRemove);
 		subCategory.setOnApproveAction(onApprove);
@@ -173,6 +169,24 @@ public class ScrollViewCategoryContent<T extends EntityViewModel<? extends BaseE
 		}
 
 		return this.getChildCount() - 1;
+	}
+
+	public void setOnAddTap(Runnable runnable) {
+		findViewById(R.id.layoutCategoryAdd).setOnClickListener(v -> {
+			if(runnable != null) {
+				runnable.run();
+			}
+		});
+	}
+
+	public void setOnApproveAction(Consumer<T> onApprove) {
+		if (onRemove != null) {
+			this.onApprove = onApprove;
+
+			for (EntityView<T> entityView : childEntityViews.values()) {
+				entityView.setOnApproveTap(onRemove);
+			}
+		}
 	}
 
 	public void setOnDeleteTap(Consumer<T> onDelete) {

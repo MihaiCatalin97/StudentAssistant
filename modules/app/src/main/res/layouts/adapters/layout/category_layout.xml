@@ -89,7 +89,7 @@
                 layout="@layout/category_entity_operations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{!(canAdd != null &amp;&amp; !canAdd) &amp;&amp; categoryModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_ADD_AGGREGATED) &amp;&amp; (showAddButtonFirstLayer? !categoryModel.endCategory : categoryModel.endCategory) &amp;&amp; editing != null &amp;&amp; editing? View.VISIBLE  : View.GONE}"
+                android:visibility="@{!(canAdd != null &amp;&amp; !canAdd) &amp;&amp; categoryModel.permissionLevel.isAtLeast(PermissionLevel.WRITE_PARTIAL) &amp;&amp; (showAddButtonFirstLayer? !categoryModel.endCategory : categoryModel.endCategory) &amp;&amp; editing != null &amp;&amp; editing? View.VISIBLE  : View.GONE}"
                 app:categoryModel="@{categoryModel}"
                 app:isTable="@{isTable}" />
 

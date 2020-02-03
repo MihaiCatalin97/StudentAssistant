@@ -162,6 +162,7 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
                     android:editing="@{editing}"
                     android:entityName="@{`students`}"
+                    android:showAddButtonFirstLayer="@{true}"
                     android:permissionLevel="@{permissionLevel}"
                     android:showEmpty="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"

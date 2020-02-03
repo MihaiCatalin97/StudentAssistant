@@ -92,6 +92,12 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 	}
 
+	public void setPermissionLevel(PermissionLevel permissionLevel) {
+		this.permissionLevel = permissionLevel;
+		model.permissionLevel = permissionLevel;
+		setDataBindingVariable(model);
+	}
+
 	public void updateEntity(T newEntity) {
 		entityViewModel = newEntity;
 
@@ -109,9 +115,6 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 		if (entityViewModel instanceof GradeViewModel) {
 			return R.layout.grade_laboratory_table_row;
-		}
-		if (onApproveTap != null) {
-			return R.layout.approvable_entity_layout;
 		}
 
 		return R.layout.entity_constraint_layout_view;
@@ -139,6 +142,14 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 		}
 
 		binding.setVariable(com.lonn.studentassistant.BR.deletable, delete);
+	}
+
+	public void setCanApprove(Boolean canApprove) {
+		if (canApprove == null) {
+			canApprove = false;
+		}
+
+		binding.setVariable(com.lonn.studentassistant.BR.canApprove, canApprove);
 	}
 
 	private void setDataBindingVariable(ScrollViewEntityViewModel model) {

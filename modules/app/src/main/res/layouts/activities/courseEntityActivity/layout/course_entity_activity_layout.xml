@@ -94,8 +94,8 @@
                     android:background="@{editing? @drawable/edit_text_background : null}"
                     android:focusable="@{editing}"
                     android:hint="Enter name"
-                    android:onClick="tapEditText"
                     android:importantForAutofill="no"
+                    android:onClick="tapEditText"
                     android:text="@={entity.name}" />
 
                 <TextView
@@ -118,8 +118,8 @@
                     android:background="@{editing? @drawable/edit_text_background : null}"
                     android:focusable="@{editing}"
                     android:hint="Enter description"
-                    android:onClick="tapEditText"
                     android:importantForAutofill="no"
+                    android:onClick="tapEditText"
                     android:text="@={entity.description}" />
 
                 <TextView
@@ -137,9 +137,9 @@
                     android:focusable="@{editing}"
                     android:hint="Enter website"
                     android:importantForAutofill="no"
+                    android:onClick="tapLink"
                     android:text="@={entity.website}"
-                    android:visibility="@{entity.websiteVisible}"
-                    android:onClick="tapLink"/>
+                    android:visibility="@{entity.websiteVisible}" />
 
                 <include
                     layout="@layout/student_enroll_discipline_layout"
