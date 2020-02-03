@@ -1,0 +1,7 @@
+Machine Learning pe partea de cursuri optionale pentru a indruma studentul
+Adaugarea de note la examene (sesiune si partiale)
+Adaugarea unei formule de promovare a cursului
+Notificari la update-uri de cursuri / alte activitati / note / orar
+Sistem de mesagerie
+Functionalitate de forgot password
+Design improvements
