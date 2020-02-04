@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,8 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 		Snackbar snackbar;
 
 		snackbar = Snackbar.make(findViewById(android.R.id.content), message, length);
+		((TextView)snackbar.getView().findViewById(R.id.snackbar_text))
+				.setMaxLines(5);
 
 		snackbar.show();
 	}
@@ -134,7 +137,7 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 			logger.error(errorMessage, exception);
 		}
 
-		showSnackBar(completeErrorMessage, 2000);
+		showSnackBar(completeErrorMessage, 3000);
 	}
 
 	private void startEntityActivity(Context context,

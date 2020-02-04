@@ -6,11 +6,13 @@ import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.Date;
+import java.util.UUID;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import static com.lonn.studentassistant.firebaselayer.Utils.generateHashDigest;
 import static java.util.UUID.randomUUID;
 
 @Data
@@ -22,15 +24,24 @@ public class RegistrationTokenViewModel extends EntityViewModel<RegistrationToke
 	private Date expiresAt;
 
 	public RegistrationTokenViewModel() {
-		setKey(randomUUID().toString());
+		String uuid = UUID.randomUUID().toString();
+
+		String stringToHash = uuid.substring(uuid.length() - 6);
+		setToken(stringToHash);
+
 		expiresAt = new Date();
 		expiresAt.setTime(expiresAt.getTime() + Utils.DAY_MILLISECONDS);
 	}
 
 	@Override
-	public RegistrationTokenViewModel setKey(String key) {
+	public RegistrationTokenViewModel setKey(String key){
 		super.setKey(key);
-		token = getKey().substring(getKey().length() - 6);
+		return this;
+	}
+
+	public RegistrationTokenViewModel setToken(String token) {
+		super.setKey(generateHashDigest(token));
+		this.token = token;
 		return this;
 	}
 }

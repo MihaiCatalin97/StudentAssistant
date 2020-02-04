@@ -48,6 +48,22 @@
         <variable
             name="editingProfile"
             type="Boolean" />
+
+        <variable
+            name="nextScheduleClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="nextExam"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="timeToNextClass"
+            type="Long" />
+
+        <variable
+            name="timeToNextExam"
+            type="Long" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -66,7 +82,12 @@
             layout="@layout/professor_activity_home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:professor="@{professor}"
+            app:nextExam="@{nextExam}"
+            app:nextScheduleClass="@{nextScheduleClass}"
+            app:timeToNextClass="@{timeToNextClass}"
+            app:timeToNextExam="@{timeToNextExam}" />
 
         <include
             android:id="@+id/layoutProfile"

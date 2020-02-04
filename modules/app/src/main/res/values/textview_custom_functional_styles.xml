@@ -38,19 +38,19 @@
     <style name="EntityActivityContentHiddenEditText" parent="EntityActivityContentText">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@drawable/edit_text_color</item>
-        <item name="android:inputType">textMultiLine</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
     </style>
 
     <style name="EntityActivityTitleHiddenEditText" parent="EntityActivityTitle">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@drawable/edit_text_color</item>
-        <item name="android:inputType">textMultiLine</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
     </style>
 
     <style name="EntityActivitySubtitleHiddenEditText" parent="EntityActivitySubtitle">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:textColor">@drawable/edit_text_color</item>
-        <item name="android:inputType">textMultiLine</item>
+        <item name="android:inputType">textMultiLine|textNoSuggestions</item>
     </style>
 
     <style name="ProfileActivityField" parent="DarkNormal">

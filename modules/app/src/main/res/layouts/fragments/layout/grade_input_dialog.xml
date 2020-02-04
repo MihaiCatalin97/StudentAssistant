@@ -56,6 +56,91 @@
             android:singleLine="true" />
     </LinearLayout>
 
+    <TextView
+        style="@style/DarkSubtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="start"
+        android:text="Grade type" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypeLaboratory"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Laboratory" />
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypePartialExam"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Partial exam" />
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypeExam"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Exam" />
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypeProject"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Project" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5">
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypePartialArrears"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Partial arrears" />
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypeExamArrears"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Exam arrears" />
+
+            <RadioButton
+                android:id="@+id/gradeInputDialogGradeTypeProjectArrears"
+                style="@style/DarkNormalShadowed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="Project arrears" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -64,12 +149,14 @@
         android:orientation="horizontal">
 
         <Button
+            style="@style/BlueRoundButton"
             android:id="@+id/buttonNegative"
             android:layout_width="100dp"
             android:layout_height="match_parent"
             android:text="Cancel" />
 
         <Button
+            style="@style/BlueRoundButton"
             android:id="@+id/buttonPositive"
             android:layout_width="100dp"
             android:layout_height="match_parent"

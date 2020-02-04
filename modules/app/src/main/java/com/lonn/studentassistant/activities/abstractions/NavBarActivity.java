@@ -132,10 +132,6 @@ public abstract class NavBarActivity<T extends EntityViewModel<? extends Person>
 
 		NavigationView navigationView = findViewById(R.id.nav_view);
 		navigationView.setNavigationItemSelectedListener(this);
-
-		NavHeaderMainBinding binding = NavHeaderMainBinding.bind(navigationView.getHeaderView(0));
-		FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-		//TODO: Load user
 	}
 
 	protected void executeWhenLayoutSettles(Runnable runnable) {
@@ -146,7 +142,7 @@ public abstract class NavBarActivity<T extends EntityViewModel<? extends Person>
 				viewTreeHandler.postDelayed(() -> {
 					runnable.run();
 					findViewById(R.id.layoutMain).getViewTreeObserver().removeOnGlobalLayoutListener(this);
-				}, 500);
+				}, 1000);
 			}
 		});
 	}

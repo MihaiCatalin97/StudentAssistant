@@ -15,13 +15,20 @@ import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorImageUploadDialog;
 
+import java.util.Date;
+
 import lombok.Getter;
+
+import static com.lonn.studentassistant.utils.schedule.Utils.dateOfNextClass;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextClass;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextExam;
 
 public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorActivity.class);
@@ -49,6 +56,7 @@ public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 				.setOnRemoveAction(this::showActivityRemoveDialog);
 
 		loadAll(personId);
+		startUpdatingNextClass();
 	}
 
 	@Override
@@ -73,11 +81,21 @@ public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 	}
 
 	public void onSaveTapped() {
-		dispatcher.update(binding.getProfessor());
-		binding.setEditingProfile(false);
+		hideKeyboard();
+
+		if (dispatcher.update(binding.getProfessor())) {
+			binding.setEditingProfile(false);
+		}
 	}
 
 	protected void onDiscardTapped() {
+		hideKeyboard();
+
+		if(binding.getProfessor().equals(dispatcher.getCurrentProfile())){
+			showSnackBar("No changes detected", 2000);
+			return;
+		}
+
 		binding.setProfessor(dispatcher.getCurrentProfile());
 		binding.setEditingProfile(false);
 	}
@@ -145,4 +163,81 @@ public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 						error,
 						LOGGER));
 	}
+
+	protected void startUpdatingNextClass() {
+		delayHandler.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				updateNextClassTime.run();
+				updateNextExamTime.run();
+
+				delayHandler.postDelayed(this, CLASS_TIME_UPDATE_PERIOD);
+			}
+		}, CLASS_TIME_UPDATE_PERIOD);
+	}
+
+	protected void setNextClass(ScheduleClassViewModel nextClass) {
+		binding.setNextScheduleClass(nextClass);
+		Date dateOfNextClass = dateOfNextClass(nextClass);
+
+		if (dateOfNextClass != null) {
+			binding.setTimeToNextClass(dateOfNextClass.getTime() - new Date().getTime());
+		}
+	}
+
+	protected void setNextExam(ScheduleClassViewModel nextExam) {
+		binding.setNextExam(nextExam);
+		Date dateOfNextExam = dateOfNextClass(nextExam);
+
+		if (dateOfNextExam != null) {
+			binding.setTimeToNextExam(dateOfNextExam.getTime() - new Date().getTime());
+		}
+	}
+
+	private Runnable updateNextClassTime = () -> {
+		if (binding.getNextScheduleClass() != null &&
+				binding.getTimeToNextClass() != null) {
+			long timeToNextClass = binding.getTimeToNextClass();
+
+			timeToNextClass -= CLASS_TIME_UPDATE_PERIOD;
+
+			if (timeToNextClass < 0) {
+				binding.setNextScheduleClass(null);
+			}
+			else {
+				binding.setTimeToNextClass(timeToNextClass);
+			}
+		}
+
+		if (binding.getRecurringClasses() != null &&
+				binding.getOneTimeClasses() != null &&
+				binding.getNextScheduleClass() == null) {
+			setNextClass(getNextClass(binding.getRecurringClasses().values(),
+					binding.getOneTimeClasses().values()));
+		}
+	};
+
+	private Runnable updateNextExamTime = () -> {
+		if (binding.getNextScheduleClass() != null &&
+				binding.getTimeToNextExam() != null) {
+			long timeToNextExam = binding.getTimeToNextExam();
+
+			timeToNextExam -= CLASS_TIME_UPDATE_PERIOD;
+
+			if (timeToNextExam < 0) {
+				binding.setNextExam(null);
+			}
+			else {
+				binding.setTimeToNextExam(timeToNextExam);
+			}
+		}
+
+		if (binding.getRecurringClasses() != null &&
+				binding.getOneTimeClasses() != null &&
+				binding.getNextExam() == null) {
+			setNextExam(getNextExam(binding.getOneTimeClasses().values()));
+		}
+	};
+
+	private static final int CLASS_TIME_UPDATE_PERIOD = 1000;
 }

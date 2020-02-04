@@ -59,6 +59,7 @@ class OtherActivityFirebaseDispatcher extends EntityActivityDispatcher<OtherActi
 		firebaseApi.getOtherActivityService()
 				.getById(entityKey, true)
 				.onSuccess(activity -> {
+					currentEntity = activity.clone();
 					entityActivity.setActivityEntity(activity);
 					entityActivity.updateBindingVariables();
 

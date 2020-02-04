@@ -62,6 +62,7 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 
 		firebaseApi.getCourseService().getById(courseKey, true)
 				.onSuccess(course -> {
+					currentEntity = course.clone();
 					activity.setActivityEntity(course);
 					entityActivity.updateBindingVariables();
 

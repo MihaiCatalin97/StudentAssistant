@@ -214,7 +214,7 @@ public class Utils {
 		if (name == null)
 			return R.drawable.default_person_image_male;
 
-		if (name.charAt(name.length() - 1) == 'a') {
+		if (name.length() > 0 && name.charAt(name.length() - 1) == 'a') {
 			return R.drawable.default_person_image_female;
 		}
 

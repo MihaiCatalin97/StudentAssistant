@@ -57,9 +57,9 @@
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     app:defaultImage="@{Utils.getDefaultPersonImageForName(professor.firstName)}"
+                    app:editing="@{editing}"
                     app:image="@{profileImageContent.fileContentBase64}"
-                    app:size="@{200}"
-                    app:editing="@{editing}"/>
+                    app:size="@{200}" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -76,6 +76,7 @@
                         android:hint="@{editing &amp;&amp; (professor.firstName == null || professor.firstName.length() == 0)? `First name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={professor.firstName}"
                         android:textStyle="bold" />
 
@@ -96,6 +97,7 @@
                         android:hint="@{editing &amp;&amp; (professor.lastName == null || professor.lastName.length() == 0)? `Last name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={professor.lastName}"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -111,6 +113,7 @@
                     android:hint="@{editing &amp;&amp; (professor.rank == null || professor.rank.length() == 0)? `Enter level` : ``}"
                     android:importantForAutofill="no"
                     android:onClick="tapEditText"
+                    android:singleLine="true"
                     android:text="@={professor.rank}"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -141,6 +144,7 @@
                         android:hint="@{editing &amp;&amp; (professor.email == null || professor.email.length() == 0)? `Enter level` : `(none)`}"
                         android:inputType="textEmailAddress"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={professor.email}" />
 
                 </LinearLayout>
@@ -169,6 +173,7 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (professor.website == null || professor.website.length() == 0)? `Enter website` : `(none)`}"
                         android:inputType="textUri"
+                        android:singleLine="true"
                         android:onClick="tapEditText"
                         android:text="@={professor.website}" />
                 </LinearLayout>
@@ -197,6 +202,7 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (professor.cabinet == null || professor.cabinet.length() == 0)? `Enter cabinet` : `(none)`}"
                         android:inputType="text"
+                        android:singleLine="true"
                         android:onClick="tapEditText"
                         android:text="@={professor.cabinet}" />
                 </LinearLayout>
@@ -225,8 +231,9 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (professor.phoneNumber == null || professor.phoneNumber.length() == 0)? `Enter phone number` : `(none)`}"
                         android:inputType="phone"
+                        android:singleLine="true"
                         android:onClick="tapEditText"
-                        android:text="@{professor.phoneNumber}" />
+                        android:text="@={professor.phoneNumber}" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -266,8 +273,8 @@
                         android:childEntities="@{personalOtherActivities}"
                         android:editing="@{editing}"
                         android:permissionLevel="@{PermissionLevel.WRITE_PARTIAL}"
-                        android:unlinkable="@{true}"
-                        android:showEmpty="@{true}" />
+                        android:showEmpty="@{true}"
+                        android:unlinkable="@{true}" />
 
                 </LinearLayout>
 

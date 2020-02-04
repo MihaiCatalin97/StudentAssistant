@@ -18,6 +18,9 @@ import static com.lonn.studentassistant.BR.files;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.otherActivities;
 import static com.lonn.studentassistant.BR.recurringClasses;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
 
 class ProfessorEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivityFirebaseDispatcher.class);
@@ -46,6 +49,7 @@ class ProfessorEntityActivityFirebaseDispatcher extends EntityActivityDispatcher
 		firebaseApi.getProfessorService()
 				.getById(entityKey, true)
 				.onSuccess(professor -> {
+					currentEntity = professor.clone();
 					entityActivity.setActivityEntity(professor);
 
 					removeNonExistingEntities(otherActivityMap, professor.getOtherActivities());
@@ -141,5 +145,23 @@ class ProfessorEntityActivityFirebaseDispatcher extends EntityActivityDispatcher
 	@Override
 	public Logger getLogger() {
 		return LOGGER;
+	}
+
+	@Override
+	public boolean update(ProfessorViewModel professor){
+		if(!isValidEmail(professor.getEmail())){
+			activity.showSnackBar("Invalid email!", 2000);
+			return false;
+		}
+		if(!isValidPhoneNumber(professor.getPhoneNumber())){
+			activity.showSnackBar("Invalid phone number!", 2000);
+			return false;
+		}
+		if(!isValidName(professor.getFirstName() + " " + professor.getLastName())){
+			activity.showSnackBar("Invalid name!", 2000);
+			return false;
+		}
+
+		return super.update(professor);
 	}
 }

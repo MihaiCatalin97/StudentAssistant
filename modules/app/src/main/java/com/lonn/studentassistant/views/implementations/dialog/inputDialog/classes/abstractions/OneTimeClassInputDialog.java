@@ -23,6 +23,7 @@ import lombok.Getter;
 import static android.widget.Toast.LENGTH_LONG;
 import static java.util.Calendar.DAY_OF_MONTH;
 import static java.util.Calendar.HOUR_OF_DAY;
+import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 import static java.util.Calendar.getInstance;
@@ -82,6 +83,7 @@ public abstract class OneTimeClassInputDialog<T extends DisciplineViewModel> ext
 			Calendar classDateTime = getInstance();
 			classDateTime.setTime(date);
 			classDateTime.set(HOUR_OF_DAY, getStartHour() / 100);
+			classDateTime.set(MINUTE, getStartHour() % 100);
 
 			if (classDateTime.getTimeInMillis() < getInstance().getTimeInMillis()) {
 				Toast.makeText(getContext(), "You can't create a schedule class in the past", LENGTH_LONG).show();

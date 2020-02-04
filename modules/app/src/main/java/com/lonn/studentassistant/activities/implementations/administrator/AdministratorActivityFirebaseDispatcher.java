@@ -9,6 +9,8 @@ import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
+import com.lonn.studentassistant.validation.predicates.StringValidationPredicates;
+import com.lonn.studentassistant.validation.validators.Validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,9 @@ import static com.lonn.studentassistant.BR.courses;
 import static com.lonn.studentassistant.BR.otherActivities;
 import static com.lonn.studentassistant.BR.personalFiles;
 import static com.lonn.studentassistant.BR.professors;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
 
 class AdministratorActivityFirebaseDispatcher extends Dispatcher<AdministratorActivity, AdministratorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(AdministratorActivityFirebaseDispatcher.class);
@@ -128,9 +133,26 @@ class AdministratorActivityFirebaseDispatcher extends Dispatcher<AdministratorAc
 		}
 	}
 
-	public void update(AdministratorViewModel administratorViewModel) {
+	@Override
+	public boolean update(AdministratorViewModel administratorViewModel) {
+		if(!isValidEmail(administratorViewModel.getEmail())){
+			activity.showSnackBar("Invalid email!", 2000);
+			return false;
+		}
+		if(!isValidPhoneNumber(administratorViewModel.getPhoneNumber())){
+			activity.showSnackBar("Invalid phone number!", 2000);
+			return false;
+		}
+		if(!isValidName(administratorViewModel.getFirstName() + " " + administratorViewModel.getLastName())){
+			activity.showSnackBar("Invalid name!", 2000);
+			return false;
+		}
+
+
 		firebaseApi.getAdministratorService()
 				.save(administratorViewModel)
 				.onSuccess(none -> activity.showSnackBar("Successfully updated your profile!", 1000));
+
+		return true;
 	}
 }

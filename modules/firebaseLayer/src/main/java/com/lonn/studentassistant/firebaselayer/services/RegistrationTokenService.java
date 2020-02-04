@@ -1,5 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.services;
 
+import com.lonn.studentassistant.firebaselayer.Utils;
 import com.lonn.studentassistant.firebaselayer.adapters.RegistrationTokenAdapter;
 import com.lonn.studentassistant.firebaselayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
@@ -13,6 +14,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.RegistrationTokenViewM
 
 import java.util.Date;
 
+import static com.lonn.studentassistant.firebaselayer.Utils.generateHashDigest;
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.REGISTRATION_TOKENS;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
 
@@ -46,7 +48,7 @@ public class RegistrationTokenService extends Service<RegistrationToken, Excepti
 				.onSuccess(tokens -> {
 					if (tokens != null) {
 						for (RegistrationToken token : tokens) {
-							if (token.getToken().equals(tokenToFind)) {
+							if (token.getKey().equals(generateHashDigest(tokenToFind))) {
 								result.complete(adapter.adapt(token));
 								return;
 							}

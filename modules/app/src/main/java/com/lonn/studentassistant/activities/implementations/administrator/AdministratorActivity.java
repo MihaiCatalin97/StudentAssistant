@@ -24,7 +24,7 @@ import lombok.Getter;
 import static android.view.View.GONE;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
-import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.Regex.EMAIL_REGEX;
 
 public class AdministratorActivity extends MainActivity<AdministratorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(AdministratorActivity.class);
@@ -68,7 +68,7 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 		AccountType accountType = getSelectedAccountType();
 		String email = ((EditText) findViewById(R.id.registrationTokenEmailEditText)).getText().toString();
 
-		if (!isValidEmail(email)) {
+		if (!email.matches(EMAIL_REGEX)) {
 			showSnackBar("Invalid email", 1000);
 			return;
 		}
@@ -100,11 +100,21 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 	}
 
 	public void onSaveTapped() {
-		dispatcher.update(binding.getAdministrator());
-		binding.setEditingProfile(false);
+		hideKeyboard();
+
+		if (dispatcher.update(binding.getAdministrator())) {
+			binding.setEditingProfile(false);
+		}
 	}
 
 	protected void onDiscardTapped() {
+		hideKeyboard();
+
+		if(binding.getAdministrator().equals(dispatcher.getCurrentProfile())){
+			showSnackBar("No changes detected", 2000);
+			return;
+		}
+
 		binding.setAdministrator(dispatcher.getCurrentProfile());
 		binding.setEditingProfile(false);
 	}

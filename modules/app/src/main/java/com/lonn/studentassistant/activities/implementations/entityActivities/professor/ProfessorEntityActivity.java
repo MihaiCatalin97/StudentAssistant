@@ -136,7 +136,23 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 
 	@Override
 	protected void onSaveTapped() {
-		dispatcher.update(binding.getEntity());
+		hideKeyboard();
+
+		if (dispatcher.update(binding.getEntity())) {
+			binding.setEditing(false);
+		}
+	}
+
+	@Override
+	protected void onDiscardTapped() {
+		hideKeyboard();
+
+		if(binding.getEntity().equals(dispatcher.getCurrentEntity())){
+			showSnackBar("No changes detected", 2000);
+			return;
+		}
+
+		super.onDiscardTapped();
 	}
 
 	void updateBindingVariables() {

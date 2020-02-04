@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="com.lonn.studentassistant.utils.schedule.Utils" />
+
         <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
@@ -16,6 +18,10 @@
         <variable
             name="professors"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+
+        <variable
+            name="grades"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
@@ -44,6 +50,22 @@
         <variable
             name="editingProfile"
             type="Boolean" />
+
+        <variable
+            name="nextScheduleClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="nextExam"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="timeToNextClass"
+            type="Long" />
+
+        <variable
+            name="timeToNextExam"
+            type="Long" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -62,7 +84,12 @@
             layout="@layout/student_activity_home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:student="@{student}"
+            app:nextExam="@{nextExam}"
+            app:nextScheduleClass="@{nextScheduleClass}"
+            app:timeToNextClass="@{timeToNextClass}"
+            app:timeToNextExam="@{timeToNextExam}" />
 
         <include
             android:id="@+id/layoutProfile"
@@ -70,10 +97,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"
+            app:editing="@{editingProfile}"
             app:personalActivities="@{personalActivities}"
             app:personalCourses="@{personalCourses}"
             app:profileImageContent="@{profileImageContent}"
-            app:editing="@{editingProfile}"
             app:student="@{student}" />
 
         <include
@@ -90,7 +117,8 @@
             layout="@layout/student_activity_grades_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:grades="@{grades}"/>
 
         <include
             android:id="@+id/layoutMessages"

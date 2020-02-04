@@ -34,6 +34,7 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends EntityActivityDi
 		firebaseApi.getLaboratoryService()
 				.getById(laboratoryKey, true)
 				.onSuccess(laboratory -> {
+					currentEntity = laboratory.clone();
 					entityActivity.setActivityEntity(laboratory);
 
 					removeNonExistingEntities(fileMap, laboratory.getFileMetadataKeys());
@@ -78,7 +79,7 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends EntityActivityDi
 	}
 
 	@Override
-	public void update(LaboratoryViewModel laboratory) {
+	public boolean update(LaboratoryViewModel laboratory) {
 		if (laboratory.getWeekNumber() != entityActivity.getActivityEntity().getWeekNumber()) {
 			firebaseApi.getLaboratoryService()
 					.getByCourseKeyAndWeek(laboratory.getCourseKey(), laboratory.getWeekNumber(), false)
@@ -90,9 +91,11 @@ public class LaboratoryEntityActivityFirebaseDispatcher extends EntityActivityDi
 							entityActivity.showSnackBar("This course already has a laboratory for this week", 2000);
 						}
 					});
+
+			return true;
 		}
 		else {
-			super.update(laboratory);
+			return super.update(laboratory);
 		}
 	}
 }

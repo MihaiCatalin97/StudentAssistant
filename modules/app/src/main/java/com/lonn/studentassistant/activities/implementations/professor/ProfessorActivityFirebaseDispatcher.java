@@ -14,8 +14,6 @@ import com.lonn.studentassistant.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
-
 import static com.lonn.studentassistant.BR.courses;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.otherActivities;
@@ -24,6 +22,11 @@ import static com.lonn.studentassistant.BR.personalFiles;
 import static com.lonn.studentassistant.BR.personalOtherActivities;
 import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextClass;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextExam;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
 
 class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorActivityFirebaseDispatcher.class);
@@ -160,7 +163,12 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
 		for (String recurringClassId : recurringClassIds) {
 			firebaseApi.getRecurringClassService()
 					.getById(recurringClassId, true)
-					.onSuccess(recurringClassesMap::put);
+					.onSuccess(recurringClass -> {
+						recurringClassesMap.put(recurringClass);
+						activity.setNextClass(getNextClass(recurringClassesMap.values(),
+								oneTimeClassesMap.values()));
+						activity.setNextExam(getNextExam(oneTimeClassesMap.values()));
+					});
 		}
 	}
 
@@ -168,7 +176,12 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
 		for (String oneTimeClassId : oneTimeClassIds) {
 			firebaseApi.getOneTimeClassService()
 					.getById(oneTimeClassId, true)
-					.onSuccess(oneTimeClassesMap::put);
+					.onSuccess(oneTimeClass -> {
+						oneTimeClassesMap.put(oneTimeClass);
+						activity.setNextClass(getNextClass(recurringClassesMap.values(),
+								oneTimeClassesMap.values()));
+						activity.setNextExam(getNextExam(oneTimeClassesMap.values()));
+					});
 		}
 	}
 
@@ -191,9 +204,25 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
 		}
 	}
 
-	public void update(ProfessorViewModel professorViewModel) {
+	@Override
+	public boolean update(ProfessorViewModel professorViewModel) {
+		if(!isValidEmail(professorViewModel.getEmail())){
+			activity.showSnackBar("Invalid email!", 2000);
+			return false;
+		}
+		if(!isValidPhoneNumber(professorViewModel.getPhoneNumber())){
+			activity.showSnackBar("Invalid phone number!", 2000);
+			return false;
+		}
+		if(!isValidName(professorViewModel.getFirstName() + " " + professorViewModel.getLastName())){
+			activity.showSnackBar("Invalid name!", 2000);
+			return false;
+		}
+
 		firebaseApi.getProfessorService()
 				.save(professorViewModel)
 				.onSuccess(none -> activity.showSnackBar("Successfully updated your profile!", 1000));
+
+		return true;
 	}
 }

@@ -10,11 +10,18 @@ import com.lonn.studentassistant.logging.Logger;
 import java.util.LinkedList;
 import java.util.List;
 
+import lombok.Getter;
+
 import static com.lonn.studentassistant.BR.editing;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
 
 public abstract class EntityActivityDispatcher<T extends EntityViewModel<? extends BaseEntity>> {
 	protected FirebaseApi firebaseApi;
 	protected EntityActivity<T> activity;
+	@Getter
+	protected T currentEntity;
 
 	protected EntityActivityDispatcher(EntityActivity<T> activity) {
 		this.activity = activity;
@@ -31,7 +38,7 @@ public abstract class EntityActivityDispatcher<T extends EntityViewModel<? exten
 		}
 	}
 
-	public void update(T entity) {
+	public boolean update(T entity) {
 		if (entity != activity.activityEntity) {
 			activity.showSnackBar("Updating the " + getEntityName() + "...");
 
@@ -45,10 +52,13 @@ public abstract class EntityActivityDispatcher<T extends EntityViewModel<? exten
 					.onError(error -> activity.logAndShowErrorSnack("An error occurred while updating the " + getEntityName(),
 							error,
 							getLogger()));
+
+			return true;
 		}
 		else {
 			activity.showSnackBar("No changes detected in the " + getEntityName(), 1000);
 			activity.getBinding().setVariable(editing, false);
+			return true;
 		}
 	}
 

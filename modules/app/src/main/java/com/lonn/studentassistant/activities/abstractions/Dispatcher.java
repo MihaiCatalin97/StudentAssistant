@@ -33,5 +33,5 @@ public abstract class Dispatcher<T extends FirebaseConnectedActivity, V extends 
 		}
 	}
 
-	public abstract void update(V profile);
+	public abstract boolean update(V profile);
 }

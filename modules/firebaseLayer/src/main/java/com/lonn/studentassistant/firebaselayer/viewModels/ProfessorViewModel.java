@@ -8,6 +8,7 @@ import androidx.databinding.Bindable;
 import com.lonn.studentassistant.firebaselayer.entities.Professor;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.PersonViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -26,8 +27,6 @@ import lombok.experimental.Accessors;
 public class ProfessorViewModel extends PersonViewModel<Professor> {
 	@Bindable
 	private String firstName, lastName, rank, email, phoneNumber, website, cabinet;
-	@Bindable
-	private String professorImage;
 	private List<String> courses;
 	private List<String> otherActivities;
 	private List<String> oneTimeClasses;
@@ -84,7 +83,21 @@ public class ProfessorViewModel extends PersonViewModel<Professor> {
 	@NonNull
 	@Override
 	public ProfessorViewModel clone() {
-		return (ProfessorViewModel) super.clone();
+		return new ProfessorViewModel()
+				.setKey(getKey())
+				.setFirstName(firstName)
+				.setLastName(lastName)
+				.setRank(rank)
+				.setEmail(email)
+				.setWebsite(website)
+				.setPhoneNumber(phoneNumber)
+				.setCabinet(cabinet)
+				.setImageMetadataKey(imageMetadataKey)
+				.setFileMetadataKeys(new ArrayList<>(fileMetadataKeys))
+				.setRecurringClasses(new ArrayList<>(recurringClasses))
+				.setOneTimeClasses(new ArrayList<>(oneTimeClasses))
+				.setCourses(new ArrayList<>(courses))
+				.setOtherActivities(new ArrayList<>(otherActivities));
 	}
 
 	@NonNull

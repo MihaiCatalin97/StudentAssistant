@@ -11,6 +11,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.administrator.AdministratorActivity;
 import com.lonn.studentassistant.activities.implementations.professor.ProfessorActivity;
+import com.lonn.studentassistant.activities.implementations.register.ForgotPasswordActivity;
 import com.lonn.studentassistant.activities.implementations.register.accountChoice.AccountChoiceActivity;
 import com.lonn.studentassistant.activities.implementations.student.StudentActivity;
 import com.lonn.studentassistant.logging.Logger;
@@ -54,6 +55,11 @@ public class LoginActivity extends FirebaseConnectedActivity {
 
 	public void tapDebugButton(View v) {
 		Intent debugIntent = new Intent(this, DebugActivity.class);
+		startActivity(debugIntent);
+	}
+
+	public void tapForgotPasswordButton(View v) {
+		Intent debugIntent = new Intent(this, ForgotPasswordActivity.class);
 		startActivity(debugIntent);
 	}
 

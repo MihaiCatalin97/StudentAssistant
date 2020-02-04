@@ -50,9 +50,9 @@
                     android:layout_width="200dp"
                     android:layout_height="200dp"
                     app:defaultImage="@{Utils.getDefaultPersonImageForName(administrator.firstName)}"
+                    app:editing="@{editing}"
                     app:image="@{profileImageContent.fileContentBase64}"
-                    app:size="@{200}"
-                    app:editing="@{editing}"/>
+                    app:size="@{200}" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -69,6 +69,7 @@
                         android:hint="@{editing &amp;&amp; (administrator.firstName == null || administrator.firstName.length() == 0)? `First name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={administrator.firstName}"
                         android:textStyle="bold" />
 
@@ -89,6 +90,7 @@
                         android:hint="@{editing &amp;&amp; (administrator.lastName == null || administrator.lastName.length() == 0)? `Last name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={administrator.lastName}"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -119,6 +121,7 @@
                         android:hint="@{editing &amp;&amp; (administrator.email == null || administrator.email.length() == 0)? `Enter level` : `(none)`}"
                         android:inputType="textEmailAddress"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={administrator.email}" />
                 </LinearLayout>
 
@@ -147,7 +150,8 @@
                         android:hint="@{editing &amp;&amp; (administrator.phoneNumber == null || administrator.phoneNumber.length() == 0)? `Enter phone number` : `(none)`}"
                         android:inputType="phone"
                         android:onClick="tapEditText"
-                        android:text="@{administrator.phoneNumber}" />
+                        android:singleLine="true"
+                        android:text="@={administrator.phoneNumber}" />
                 </LinearLayout>
 
                 <LinearLayout

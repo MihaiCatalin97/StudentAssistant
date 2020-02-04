@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.viewModels;
 
 import com.lonn.studentassistant.firebaselayer.entities.Grade;
+import com.lonn.studentassistant.firebaselayer.entities.enums.GradeType;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.Date;
@@ -25,6 +26,8 @@ public final class GradeViewModel extends EntityViewModel<Grade> {
 	private String laboratoryKey;
 	private String courseKey;
 	private Date date;
+	private GradeType gradeType;
+	private int laboratoryNumber;
 
 	@Override
 	public GradeViewModel setKey(String key) {

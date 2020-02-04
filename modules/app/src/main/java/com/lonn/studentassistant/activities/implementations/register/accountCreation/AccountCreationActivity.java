@@ -50,7 +50,10 @@ public abstract class AccountCreationActivity<T extends EntityViewModel<? extend
 				.password(newAccountCredentials.getPassword())
 				.personUUID(personProfile.getKey())
 				.accountType(accountType)
-				.onSuccess((user) -> createOrUpdateProfile(personProfile))
+				.onSuccess((user) -> {
+					firebaseApi.getAuthenticationService().setAccountType(accountType);
+					createOrUpdateProfile(personProfile);
+				})
 				.onError((exception) -> showSnackBar(exception.getMessage(), 1000)));
 	}
 
@@ -82,9 +85,14 @@ public abstract class AccountCreationActivity<T extends EntityViewModel<? extend
 					showSnackBar("Account created successfully!", 1000);
 					executeWithDelay(this::backToLogin, 2000);
 				})
-				.onError(error -> logAndShowErrorSnack("An error occurred while setting up your profile",
-						error,
-						LOGGER));
+				.onError(error -> {
+					firebaseApi.getAuthenticationService()
+							.deleteFirebaseAccount();
+
+					logAndShowErrorSnack("An error occurred while setting up your profile",
+							error,
+							LOGGER);
+				});
 
 		if (registrationToken != null) {
 			firebaseApi.getRegistrationTokenService().deleteByToken(registrationToken);

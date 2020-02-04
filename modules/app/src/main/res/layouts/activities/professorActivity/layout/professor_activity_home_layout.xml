@@ -1,12 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ScreenLayoutWrapped"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
+    <data>
+
+        <import type="com.lonn.studentassistant.utils.schedule.Utils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="nextScheduleClass"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="nextExam"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+
+        <variable
+            name="timeToNextClass"
+            type="Long" />
+
+        <variable
+            name="timeToNextExam"
+            type="Long" />
+
+        <variable
+            name="professor"
+            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+    </data>
+
+    <ScrollView
+        style="@style/ScrollViewFading"
+        android:background="@drawable/gradient_page_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Professor Home Page" />
+        android:layout_height="match_parent">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            style="@style/ScreenLayoutWrapped"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/DarkSubtitleShadowed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_16dp"
+                android:gravity="start"
+                android:text="@{`Welcome, ` + professor.firstName + `!`}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_16dp"
+                android:layout_marginBottom="@dimen/dim_16dp"
+                android:background="@drawable/dark_stroke_solid_background"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dark_color_bar"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:text="Next class"
+                    android:textColor="#FFF" />
+
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginTop="@dimen/dim_16dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:text="@{nextScheduleClass == null?`You don't have any upcoming classes!` : nextScheduleClass.disciplineName}" />
+
+                <TextView
+                    style="@style/DarkNormalShadowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:text="@{nextScheduleClass.type + ` in ` + nextScheduleClass.rooms}"
+                    android:visibility="@{nextScheduleClass == null?View.GONE: View.VISIBLE}" />
+
+                <TextView
+                    style="@style/DarkNormalShadowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:layout_marginBottom="@dimen/dim_16dp"
+                    android:layout_marginTop="@dimen/dim_10dp"
+                    android:gravity="center"
+                    android:text="@{`Starts in\n` + Utils.timeToDate(timeToNextClass)}"
+                    android:textStyle="bold"
+                    android:visibility="@{nextScheduleClass == null?View.GONE: View.VISIBLE}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dim_16dp"
+                android:layout_marginBottom="@dimen/dim_16dp"
+                android:background="@drawable/dark_stroke_solid_background"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/dark_color_bar"
+                    android:gravity="start"
+                    android:padding="8dp"
+                    android:text="Next exam"
+                    android:textColor="#FFF" />
+
+                <TextView
+                    style="@style/DarkSubtitleShadowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginTop="@dimen/dim_16dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:text="@{nextExam == null? `You don't have any upcoming exams!`:nextExam.disciplineName}"
+                    android:visibility="@{nextExam == null?View.GONE: View.VISIBLE}" />
+
+                <TextView
+                    style="@style/DarkNormalShadowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:text="@{nextExam.type + ` in ` + nextExam.rooms}"
+                    android:visibility="@{nextExam == null?View.GONE: View.VISIBLE}" />
+
+                <TextView
+                    style="@style/DarkNormalShadowed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dim_10dp"
+                    android:layout_marginTop="@dimen/dim_10dp"
+                    android:layout_marginRight="@dimen/dim_10dp"
+                    android:layout_marginBottom="@dimen/dim_16dp"
+                    android:gravity="center"
+                    android:text="@{`Starts in\n` + Utils.timeToDate(timeToNextExam)}"
+                    android:textStyle="bold"
+                    android:visibility="@{nextExam == null?View.GONE: View.VISIBLE}" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

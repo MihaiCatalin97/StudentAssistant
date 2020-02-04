@@ -64,9 +64,8 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 		loadAll(entityKey);
 
-
-		gradeInputDialog = new GradeInputDialogBuilder(this)
-				.positiveButtonAction(() -> {
+		gradeInputDialog = new GradeInputDialog(this)
+				.setPositiveButtonAction(() -> {
 					try {
 						int grade = parseInt(gradeInputDialog.getGradeEditText().getText()
 								.toString());
@@ -92,8 +91,7 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 					catch (NumberFormatException exception) {
 						logAndShowErrorToast("Invalid grade", exception, LOGGER);
 					}
-				})
-				.create();
+				});
 	}
 
 	protected void deleteFile(String laboratoryKey, FileMetadataViewModel fileMetadata) {

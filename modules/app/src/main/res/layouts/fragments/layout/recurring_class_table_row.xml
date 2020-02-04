@@ -67,36 +67,46 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark" />
 
-        <TextView
-            style="@style/DarkBlueShadowedH3"
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"
-            android:gravity="center"
-            android:lines="@{recurringClass.typeNumberOfLines}"
-            android:padding="2dp"
-            android:text="@{recurringClass.formattedType}"
-            app:autoSizeMaxTextSize="14sp"
-            app:autoSizeMinTextSize="10sp"
-            app:autoSizeTextType="uniform" />
+            android:layout_weight="0.25"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-        <RelativeLayout
-            android:layout_width="2dp"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimaryDark" />
+            <TextView
+                style="@style/DarkBlueShadowedH3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:padding="2dp"
+                android:singleLine="true"
+                android:text="@{recurringClass.formattedType}"
+                app:autoSizeMaxTextSize="14sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeTextType="uniform" />
 
-        <TextView
-            style="@style/DarkBlueShadowedH3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.10"
-            android:gravity="center"
-            android:lines="@{recurringClass.numberOfRooms}"
-            android:padding="2dp"
-            android:text="@{recurringClass.rooms}"
-            app:autoSizeMaxTextSize="12sp"
-            app:autoSizeMinTextSize="8sp"
-            app:autoSizeTextType="uniform" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorPrimaryDark" />
+
+            <TextView
+                style="@style/DarkBlueShadowedH3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.50"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:text="@{recurringClass.rooms}"
+                app:autoSizeMaxTextSize="12sp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeTextType="uniform" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="2dp"

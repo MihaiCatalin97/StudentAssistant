@@ -64,7 +64,7 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 			result += rooms.get(i);
 
 			if (i + 1 < rooms.size()) {
-				result += "\n";
+				result += ", ";
 			}
 		}
 

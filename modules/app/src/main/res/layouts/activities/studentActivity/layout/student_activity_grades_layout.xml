@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ScreenLayoutWrapped"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-    <TextView
+    <data>
+
+        <variable
+            name="grades"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Grades" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            style="@style/DarkTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your Grades" />
+
+        <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:childEntities="@{grades}"
+            android:isTable="@{true}"
+            android:shouldContain="@{(grade) -> true}" />
+
+    </LinearLayout>
+</layout>

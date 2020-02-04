@@ -8,7 +8,6 @@ public class RegistrationTokenAdapter extends ViewModelAdapter<RegistrationToken
 	public RegistrationTokenViewModel adapt(RegistrationToken token) {
 		return new RegistrationTokenViewModel()
 				.setAccountType(token.getAccountType())
-				.setKey(token.getKey())
 				.setExpiresAt(token.getExpiresAt())
 				.setToken(token.getToken());
 	}
@@ -18,10 +17,6 @@ public class RegistrationTokenAdapter extends ViewModelAdapter<RegistrationToken
 				.setToken(tokenViewModel.getToken())
 				.setExpiresAt(tokenViewModel.getExpiresAt())
 				.setAccountType(tokenViewModel.getAccountType());
-
-		if (tokenViewModel.getKey() != null) {
-			result.setKey(tokenViewModel.getKey());
-		}
 
 		return result;
 	}

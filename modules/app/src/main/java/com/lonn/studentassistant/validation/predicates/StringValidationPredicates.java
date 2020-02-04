@@ -2,9 +2,12 @@ package com.lonn.studentassistant.validation.predicates;
 
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
-import com.lonn.studentassistant.validation.Regex;
 
 import static com.lonn.studentassistant.validation.Regex.EMAIL_REGEX;
+import static com.lonn.studentassistant.validation.Regex.INITIAL_REGEX;
+import static com.lonn.studentassistant.validation.Regex.NAME_REGEX;
+import static com.lonn.studentassistant.validation.Regex.PASSWORD_REGEX;
+import static com.lonn.studentassistant.validation.Regex.PHONE_NUMBER_REGEX;
 
 public class StringValidationPredicates {
 	public static <T> Predicate<T> nonEmptyStringPredicate(Function<T, String> getter) {
@@ -16,19 +19,19 @@ public class StringValidationPredicates {
 	}
 
 	public static <T> Predicate<T> isValidPhoneNumber(Function<T, String> getter) {
-		return emptyOrMatchesRegex(getter, Regex.PHONE_NUMBER_REGEX);
+		return emptyOrMatchesRegex(getter, PHONE_NUMBER_REGEX);
 	}
 
 	public static <T> Predicate<T> isValidInitial(Function<T, String> getter) {
-		return emptyOrMatchesRegex(getter, Regex.INITIAL_REGEX);
+		return emptyOrMatchesRegex(getter, INITIAL_REGEX);
 	}
 
 	public static <T> Predicate<T> isValidName(Function<T, String> getter) {
-		return nonEmptyAndMatchesRegex(getter, Regex.NAME_REGEX);
+		return nonEmptyAndMatchesRegex(getter, NAME_REGEX);
 	}
 
 	public static <T> Predicate<T> isValidPassword(Function<T, String> getter) {
-		return nonEmptyAndMatchesRegex(getter, Regex.PASSWORD_REGEX);
+		return nonEmptyAndMatchesRegex(getter, PASSWORD_REGEX);
 	}
 
 	public static <T> Predicate<T> equalsMatchingCase(Function<T, String> getter,
@@ -36,8 +39,16 @@ public class StringValidationPredicates {
 		return nonEmptyAndEqualsMatchingCase(getter, valueToMatch);
 	}
 
+	public static Boolean isValidName(String fullName) {
+		return nonEmptyAndMatchesRegex(fullName, NAME_REGEX);
+	}
+
 	public static Boolean isValidEmail(String email) {
 		return emptyOrMatchesRegex(email, EMAIL_REGEX);
+	}
+
+	public static Boolean isValidPhoneNumber(String phoneNumber) {
+		return emptyOrMatchesRegex(phoneNumber, PHONE_NUMBER_REGEX);
 	}
 
 	private static <T> Predicate<T> nonEmptyAndEqualsMatchingCase(Function<T, String> getter,
@@ -62,5 +73,11 @@ public class StringValidationPredicates {
 	private static Boolean emptyOrMatchesRegex(String value,
 											   String regex) {
 		return value == null || value.isEmpty() || value.matches(regex);
+	}
+
+	private static Boolean nonEmptyAndMatchesRegex(String value,
+												   String regex) {
+		return value != null && !value.isEmpty()
+				&& value.matches(regex);
 	}
 }

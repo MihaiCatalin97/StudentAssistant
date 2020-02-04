@@ -109,7 +109,9 @@ public abstract class MainActivity<T extends EntityViewModel<? extends Person>> 
 		executeWhenLayoutSettles(() -> {
 			View loadingScreen = findViewById(R.id.loadingScreen);
 
-			if (loadingScreen != null) {
+			if (loadingScreen != null &&
+					loadingScreenVisible) {
+				loadingScreenVisible = false;
 				AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
 				fadeOut.setFillBefore(true);
 				fadeOut.setFillAfter(true);
@@ -140,4 +142,6 @@ public abstract class MainActivity<T extends EntityViewModel<? extends Person>> 
 	protected abstract ProfileImageUploadDialog getImageUploadDialog();
 
 	protected abstract void deleteProfileImage();
+
+	private boolean loadingScreenVisible = true;
 }

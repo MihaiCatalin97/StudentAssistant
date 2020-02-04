@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 public class Regex {
 	public static final String PASSWORD_REGEX = "(.){1,}";
 	public static final String PHONE_NUMBER_REGEX = "\\+?[0-9]{10,12}";
-	public static final String GROUP_REGEX = "[ABEX][1-8]";
 	public static final String INITIAL_REGEX = "([A-Z](\\.)?)+";
 	private static final String ONE_WORD_NAME_REGEX = "([A-Z][a-z]+)";
 	public static final String NAME_REGEX = ONE_WORD_NAME_REGEX + "([ \\-]" + ONE_WORD_NAME_REGEX + ")*";

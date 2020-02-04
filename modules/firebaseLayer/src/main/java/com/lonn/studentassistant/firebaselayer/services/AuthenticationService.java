@@ -45,6 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
@@ -66,6 +67,7 @@ public class AuthenticationService {
 	@Getter
 	private EntityViewModel loggedPerson;
 	@Getter
+	@Setter
 	private AccountType accountType;
 	private UserService userService;
 	private ProfessorService professorService;
@@ -84,7 +86,7 @@ public class AuthenticationService {
 
 	private Consumer<EntityViewModel> onLoggedPersonChange;
 	@Getter
-	private String loggedPersonUUID;
+	private String loggedPersonUUID = "";
 
 	public void setOnLoggedPersonChange(Consumer<EntityViewModel> onLoggedPersonChange) {
 		this.onLoggedPersonChange = onLoggedPersonChange;
@@ -110,6 +112,21 @@ public class AuthenticationService {
 		professorService = ProfessorService.getInstance(firebaseConnection);
 		administratorService = AdministratorService.getInstance(firebaseConnection);
 		studentService = StudentService.getInstance(firebaseConnection);
+	}
+
+	public Future<Void, Exception> deleteFirebaseAccount() {
+		Future<Void, Exception> result = new Future<>();
+		FirebaseUser currentUser = mAuth.getCurrentUser();
+
+		if(currentUser != null) {
+			currentUser.delete()
+					.onSuccessTask(task -> {
+						result.complete(null);
+						return null;
+					});
+		}
+
+		return result;
 	}
 
 	public FirebaseTask<FirebaseUser, Throwable> register(final String personUUID,
@@ -359,7 +376,6 @@ public class AuthenticationService {
 				return WRITE;
 			}
 
-			//Todo: Investigate how to change this if it is a double join
 			return WRITE;
 		}
 		if (accountType.equals(ADMINISTRATOR)) {
@@ -381,7 +397,8 @@ public class AuthenticationService {
 					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
 				return READ_FULL;
 			}
-			return NONE;
+
+			return WRITE;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
@@ -427,13 +444,16 @@ public class AuthenticationService {
 			if (loggedPersonUUID.equals(professor.getKey())) {
 				return WRITE_PARTIAL;
 			}
-			else if (loggedPerson != null && listsHaveAtLeastOneElementInCommon(professor.getCourses(),
+			if (loggedPerson != null && listsHaveAtLeastOneElementInCommon(professor.getCourses(),
 					((ProfessorViewModel) loggedPerson).getCourses()) ||
 					listsHaveAtLeastOneElementInCommon(professor.getOtherActivities(),
 							((ProfessorViewModel) loggedPerson).getOtherActivities())) {
 				return WRITE_ADD_AGGREGATED;
 			}
-			return READ_PUBLIC;
+			if (loggedPerson == null) {
+				return WRITE_PARTIAL;
+			}
+			return WRITE_ADD_AGGREGATED;
 		}
 		if (accountType.equals(ADMINISTRATOR)) {
 			return WRITE;
@@ -443,8 +463,7 @@ public class AuthenticationService {
 	}
 
 	public PermissionLevel getPermissionLevel(Student student) {
-		if (accountType == null || mAuth.getCurrentUser() == null ||
-				loggedPersonUUID == null || loggedPersonUUID.length() == 0) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
 			return NONE;
 		}
 		if (accountType.equals(STUDENT)) {
@@ -458,7 +477,11 @@ public class AuthenticationService {
 									student.getOtherActivities())))) {
 				return READ_PUBLIC;
 			}
-			return NONE;
+			if (loggedPerson == null) {
+				return WRITE_PARTIAL;
+			}
+			return READ_PUBLIC;
+
 		}
 		if (accountType.equals(PROFESSOR)) {
 			return WRITE;

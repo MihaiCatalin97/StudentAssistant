@@ -22,6 +22,11 @@ import static com.lonn.studentassistant.BR.personalActivities;
 import static com.lonn.studentassistant.BR.personalCourses;
 import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextClass;
+import static com.lonn.studentassistant.utils.schedule.Utils.getNextExam;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidEmail;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidName;
+import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidPhoneNumber;
 
 class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, StudentViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(StudentActivityFirebaseDispatcher.class);
@@ -155,6 +160,9 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, Stud
 						else {
 							recurringClassMap.remove(recurringClass);
 						}
+						activity.setNextClass(getNextClass(recurringClassMap.values(),
+								oneTimeClassMap.values()));
+						activity.setNextExam(getNextExam(oneTimeClassMap.values()));
 					})
 					.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading regular classes.", error, LOGGER));
 		}
@@ -171,6 +179,9 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, Stud
 						else {
 							oneTimeClassMap.remove(oneTimeClass);
 						}
+						activity.setNextClass(getNextClass(recurringClassMap.values(),
+								oneTimeClassMap.values()));
+						activity.setNextExam(getNextExam(oneTimeClassMap.values()));
 					})
 					.onError(error -> activity.logAndShowErrorSnack("An error occurred while loading special classes.", error, LOGGER));
 		}
@@ -181,22 +192,20 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, Stud
 				.getById(key, true)
 				.onSuccess(student -> {
 					currentProfile = student.clone();
-					binding.setStudent(student);
-					computePersonalCourses();
-					computePersonalActivities();
 
 					if (student.getImageMetadataKey() == null ||
 							student.getImageMetadataKey().length() == 0) {
 						binding.setProfileImageContent(null);
 					}
 					else if (binding.getStudent() == null ||
-							binding.getStudent()
-									.getImageMetadataKey() == null ||
-							!binding.getStudent()
-									.getImageMetadataKey()
+							!binding.getStudent().getImageMetadataKey()
 									.equals(student.getImageMetadataKey())) {
 						loadImage(student.getImageMetadataKey());
 					}
+
+					binding.setStudent(student);
+					computePersonalCourses();
+					computePersonalActivities();
 				})
 				.onError(error -> activity.logAndShowErrorSnack("Error loading your personal data", error, LOGGER));
 	}
@@ -217,9 +226,25 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, Stud
 						LOGGER));
 	}
 
-	public void update(StudentViewModel studentViewModel) {
+	@Override
+	public boolean update(StudentViewModel studentViewModel) {
+		if (!isValidEmail(studentViewModel.getEmail())) {
+			activity.showSnackBar("Invalid email!", 2000);
+			return false;
+		}
+		if (!isValidPhoneNumber(studentViewModel.getPhoneNumber())) {
+			activity.showSnackBar("Invalid phone number!", 2000);
+			return false;
+		}
+		if (!isValidName(studentViewModel.getFirstName() + " " + studentViewModel.getLastName())) {
+			activity.showSnackBar("Invalid name!", 2000);
+			return false;
+		}
+
 		firebaseApi.getStudentService()
 				.save(studentViewModel)
 				.onSuccess(none -> activity.showSnackBar("Successfully updated your profile!", 1000));
+
+		return true;
 	}
 }

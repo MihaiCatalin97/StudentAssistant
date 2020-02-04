@@ -67,12 +67,12 @@
                         style="@style/EntityActivityTitleHiddenEditText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{false}"
                         android:gravity="end"
                         android:hint="@{editing &amp;&amp; (student.firstName == null || student.firstName.length() == 0)? `First name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={student.firstName}"
                         android:textStyle="bold" />
 
@@ -87,12 +87,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{false}"
                         android:gravity="start"
                         android:hint="@{editing &amp;&amp; (student.lastName == null || student.lastName.length() == 0)? `Last name` : ``}"
                         android:importantForAutofill="no"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={student.lastName}"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -109,7 +109,7 @@
                         style="@style/DarkBlueShadowedH3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.25"
                         android:gravity="end|center"
                         android:text="Email: " />
 
@@ -117,13 +117,19 @@
                         style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (student.email == null || student.email.length() == 0)? `Enter level` : `(none)`}"
                         android:inputType="textEmailAddress"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={student.email}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -137,7 +143,7 @@
                         style="@style/DarkBlueShadowedH3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.25"
                         android:gravity="end|center"
                         android:text="Website: " />
 
@@ -145,13 +151,19 @@
                         style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (student.website == null || student.website.length() == 0)? `Enter website` : `(none)`}"
                         android:inputType="textUri"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@={student.website}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -165,7 +177,7 @@
                         style="@style/DarkBlueShadowedH3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.25"
                         android:gravity="end|center"
                         android:text="Phone number: " />
 
@@ -173,13 +185,19 @@
                         style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (student.phoneNumber == null || student.phoneNumber.length() == 0)? `Enter phone number` : `(none)`}"
                         android:inputType="phone"
+                        android:singleLine="true"
                         android:onClick="tapEditText"
                         android:text="@={student.phoneNumber}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -193,7 +211,7 @@
                         style="@style/DarkBlueShadowedH3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.25"
                         android:gravity="end|center"
                         android:text="Year: " />
 
@@ -202,13 +220,19 @@
                         style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{false}"
                         android:hint="@{editing &amp;&amp; (student.cycleSpecializationYear == null)? `Enter year` : `(none)`}"
                         android:inputType="phone"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@{student.cycleSpecializationYear.toString()}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -222,7 +246,7 @@
                         style="@style/DarkBlueShadowedH3"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.25"
                         android:gravity="end|center"
                         android:text="Group: " />
 
@@ -231,13 +255,19 @@
                         style="@style/ProfileActivityField"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.5"
                         android:background="@{editing? @drawable/edit_text_background : null}"
                         android:focusable="@{false}"
                         android:hint="@{editing &amp;&amp; (student.group == null || student.group.length() == 0)? `Enter group` : `(none)`}"
                         android:inputType="phone"
                         android:onClick="tapEditText"
+                        android:singleLine="true"
                         android:text="@{student.group}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
                 </LinearLayout>
 
                 <LinearLayout
