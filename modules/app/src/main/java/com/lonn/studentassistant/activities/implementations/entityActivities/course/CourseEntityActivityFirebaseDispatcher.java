@@ -7,6 +7,7 @@ import com.lonn.studentassistant.firebaselayer.services.CourseService;
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -20,10 +21,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static com.lonn.studentassistant.BR.files;
+import static com.lonn.studentassistant.BR.grades;
 import static com.lonn.studentassistant.BR.laboratories;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.professors;
 import static com.lonn.studentassistant.BR.recurringClasses;
+import static com.lonn.studentassistant.BR.students;
 
 class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivityFirebaseDispatcher.class);
@@ -33,6 +36,7 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 	private BindableHashMap<FileMetadataViewModel> filesMap;
 	private BindableHashMap<LaboratoryViewModel> laboratoryMap;
 	private BindableHashMap<StudentViewModel> studentMap;
+	private BindableHashMap<GradeViewModel> gradesMap;
 	private CourseEntityActivity entityActivity;
 
 	CourseEntityActivityFirebaseDispatcher(CourseEntityActivity entityActivity) {
@@ -45,7 +49,8 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		oneTimeClassesMap = new BindableHashMap<>(entityActivity.getBinding(), oneTimeClasses);
 		filesMap = new BindableHashMap<>(entityActivity.getBinding(), files);
 		laboratoryMap = new BindableHashMap<>(entityActivity.getBinding(), laboratories);
-		studentMap = new BindableHashMap<>(entityActivity.getBinding(), com.lonn.studentassistant.BR.students);
+		studentMap = new BindableHashMap<>(entityActivity.getBinding(), students);
+		gradesMap = new BindableHashMap<>(entityActivity.getBinding(), grades);
 	}
 
 	void loadAll(String courseKey) {
@@ -72,6 +77,7 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 					updateFiles(course);
 					updateStudents(course);
 					updateLaboratories(course);
+					updateGrades(course);
 
 					entityActivity.updateBindingVariables();
 				})
@@ -104,6 +110,13 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 		updateCourseRelatedEntities(laboratoryMap,
 				CourseViewModel::getLaboratories,
 				firebaseApi.getLaboratoryService(),
+				course);
+	}
+
+	private void updateGrades(CourseViewModel course) {
+		updateCourseRelatedEntities(gradesMap,
+				CourseViewModel::getGrades,
+				firebaseApi.getGradeService(),
 				course);
 	}
 

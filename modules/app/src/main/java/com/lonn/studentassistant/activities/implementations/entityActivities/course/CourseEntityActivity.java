@@ -13,6 +13,7 @@ import com.lonn.studentassistant.activities.implementations.entityActivities.lab
 import com.lonn.studentassistant.databinding.CourseEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -20,6 +21,8 @@ import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewMode
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.DialogBuilder;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.GradeInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.CourseOneTimeClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.CourseRecurringClassInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
@@ -32,8 +35,19 @@ import java.util.List;
 
 import lombok.Getter;
 
+import static android.widget.Toast.LENGTH_LONG;
+import static android.widget.Toast.LENGTH_SHORT;
+import static android.widget.Toast.makeText;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.EXAM;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.EXAM_ARREARS;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PARTIAL_ARREARS;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PARTIAL_EXAM;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PROJECT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PROJECT_ARREARS;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
+import static java.util.Arrays.asList;
+import static java.util.UUID.randomUUID;
 
 public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(CourseEntityActivity.class);
@@ -41,6 +55,7 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 	@Getter
 	CourseEntityActivityLayoutBinding binding;
 	private CourseEntityActivityFirebaseDispatcher dispatcher;
+	private GradeInputDialog gradeInputDialog;
 
 	protected void loadAll(String entityKey) {
 		dispatcher.loadAll(entityKey);
@@ -77,6 +92,23 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 
 		((ScrollViewCategory) findViewById(R.id.oneTimeClassesCategory))
 				.setOnAddAction(this::showOneTimeClassInputDialog);
+		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
+				new DialogBuilder<String>(this)
+						.withTitle("Add grades")
+						.withItems(asList("Add single grade", "Parse CSV"))
+						.withItemActions(asList((item) -> gradeInputDialog.show(),
+								(item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show()))
+						.show()
+		);
+
+		((ScrollViewCategory<GradeViewModel>) findViewById(R.id.gradesCategory)).setOnDeleteAction(grade ->
+				firebaseApi.getGradeService()
+						.deleteById(grade.getKey())
+						.onSuccess(none -> showSnackBar("Successfully deleted grade!", 2000))
+						.onError(error -> logAndShowErrorSnack("An error occured",
+								error,
+								LOGGER)));
+
 
 		((ScrollViewCategory<LaboratoryViewModel>) findViewById(R.id.laboratoriesCategory))
 				.setOnDeleteAction(this::showLaboratoryDeletionDialog);
@@ -125,6 +157,27 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 						.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER)));
 
 		loadAll(entityKey);
+
+		gradeInputDialog = new GradeInputDialog(this)
+				.setAvailableGradeTypes(asList(EXAM, PARTIAL_EXAM, PROJECT, EXAM_ARREARS, PARTIAL_ARREARS, PROJECT_ARREARS))
+				.setPositiveButtonAction((gradeParseResult) -> {
+					if (gradeParseResult.getError() != null) {
+						makeText(this, gradeParseResult.getError(), LENGTH_LONG).show();
+						return;
+					}
+
+					gradeParseResult.getGrade()
+							.setKey(randomUUID().toString())
+							.setCourseKey(binding.getEntity().getKey());
+
+					firebaseApi.getGradeService()
+							.saveAndLink(gradeParseResult.getGrade())
+							.onSuccess(none -> {
+								showSnackBar("Successfully added grade!", 1000);
+								gradeInputDialog.dismiss();
+							})
+							.onError(error -> logAndShowErrorToast("An error occurred while saving the grade", error, LOGGER));
+				});
 	}
 
 	protected void deleteFile(String courseKey, FileMetadataViewModel fileMetadata) {
@@ -439,5 +492,9 @@ public class CourseEntityActivity extends FileManagingActivity<CourseViewModel> 
 
 			isEditing = binding.getEditing();
 		}
+	}
+
+	protected CourseViewModel getBindingEntity() {
+		return getBinding().getEntity();
 	}
 }

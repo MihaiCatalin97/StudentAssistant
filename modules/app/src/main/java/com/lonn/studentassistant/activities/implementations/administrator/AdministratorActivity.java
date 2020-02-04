@@ -107,18 +107,6 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 		}
 	}
 
-	protected void onDiscardTapped() {
-		hideKeyboard();
-
-		if(binding.getAdministrator().equals(dispatcher.getCurrentProfile())){
-			showSnackBar("No changes detected", 2000);
-			return;
-		}
-
-		binding.setAdministrator(dispatcher.getCurrentProfile());
-		binding.setEditingProfile(false);
-	}
-
 	protected AdministratorFileUploadDialog getFileUploadDialogInstance() {
 		return new AdministratorFileUploadDialog(this, entityKey);
 	}
@@ -143,5 +131,9 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
 				.onError(error -> logAndShowErrorSnack("An error occurred while deleting your profile image",
 						error,
 						LOGGER));
+	}
+
+	protected AdministratorViewModel getBindingEntity(){
+		return getBinding().getAdministrator();
 	}
 }

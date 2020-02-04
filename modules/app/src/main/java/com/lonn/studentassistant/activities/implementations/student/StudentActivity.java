@@ -88,18 +88,6 @@ public class StudentActivity extends MainActivity<StudentViewModel> {
 		}
 	}
 
-	protected void onDiscardTapped() {
-		hideKeyboard();
-
-		if(binding.getStudent().equals(dispatcher.getCurrentProfile())){
-			showSnackBar("No changes detected", 2000);
-			return;
-		}
-
-		binding.setStudent(dispatcher.getCurrentProfile());
-		binding.setEditingProfile(false);
-	}
-
 	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
 		return null;
 	}
@@ -204,4 +192,8 @@ public class StudentActivity extends MainActivity<StudentViewModel> {
 	};
 
 	private static final int CLASS_TIME_UPDATE_PERIOD = 1000;
+
+	protected StudentViewModel getBindingEntity() {
+		return getBinding().getStudent();
+	}
 }

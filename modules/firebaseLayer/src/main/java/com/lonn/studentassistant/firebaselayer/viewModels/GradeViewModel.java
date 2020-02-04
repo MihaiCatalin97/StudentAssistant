@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 public final class GradeViewModel extends EntityViewModel<Grade> {
 	private String studentId;
 	private String studentKey;
-	private int grade;
+	private double grade;
 	private String laboratoryKey;
 	private String courseKey;
 	private Date date;

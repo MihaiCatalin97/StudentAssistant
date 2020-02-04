@@ -10,6 +10,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
@@ -406,5 +407,9 @@ public class OtherActivityEntityActivity extends FileManagingActivity<OtherActiv
 
 			isEditing = binding.getEditing();
 		}
+	}
+
+	protected OtherActivityViewModel getBindingEntity(){
+		return getBinding().getEntity();
 	}
 }

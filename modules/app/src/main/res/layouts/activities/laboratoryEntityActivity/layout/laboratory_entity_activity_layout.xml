@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".activities.implementations.entityActivities.course.CourseEntityActivity">
+    tools:context=".activities.abstractions.FirebaseConnectedActivity">
 
     <data>
 
@@ -64,6 +64,7 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (entity.title == null || entity.title.length() == 0)? `Enter title` : ` `}"
                         android:importantForAutofill="no"
+                        android:onClick="tapEditText"
                         android:text="@={entity.title}" />
 
                 </RelativeLayout>
@@ -88,6 +89,7 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (entity.week == null || entity.week.trim().length() == 0)? `Enter week` : ` `}"
                         android:importantForAutofill="no"
+                        android:onClick="tapEditText"
                         android:inputType="number"
                         android:text="@={entity.week}" />
 
@@ -107,6 +109,7 @@
                     android:focusable="@{editing}"
                     android:hint="@{editing &amp;&amp; (entity.description == null || entity.description.length() == 0)? `Enter description` : ` `}"
                     android:importantForAutofill="no"
+                    android:onClick="tapEditText"
                     android:text="@={entity.description}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
@@ -115,11 +118,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dim_16dp"
                     android:categoryTitle="@{`Grades`}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.GRADE_ASCENDING_ID_DATE_GRADE}"
                     android:childEntities="@{grades.values().size() > 0? grades.values() : null}"
                     android:editing="@{editing}"
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
                     android:deletable="@{true}"
+                    android:showEmpty="@{false}"
                     android:permissionLevel="@{permissionLevel}">
 
                     <include

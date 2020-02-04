@@ -55,6 +55,32 @@ public class CourseService extends DisciplineService<Course, CourseViewModel> {
 		return result;
 	}
 
+	public Future<Void, Exception> addGradeToCourse(String gradeKey, String courseKey) {
+		Future<Void, Exception> result = new Future<>();
+
+		getById(courseKey, false)
+				.onSuccess(course -> {
+					if (course == null) {
+						result.completeExceptionally(new Exception("Laboratory not found"));
+						return;
+					}
+
+					if (!course.getGrades().contains(gradeKey)) {
+						course.getGrades().add(gradeKey);
+
+						save(course)
+								.onSuccess(result::complete)
+								.onError(result::completeExceptionally);
+					}
+					else {
+						result.complete(null);
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
 	@Override
 	protected DatabaseTable<Course> getDatabaseTable() {
 		return COURSES;

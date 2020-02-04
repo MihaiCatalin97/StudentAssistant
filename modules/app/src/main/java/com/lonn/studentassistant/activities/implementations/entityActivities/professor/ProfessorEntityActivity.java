@@ -147,8 +147,9 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 	protected void onDiscardTapped() {
 		hideKeyboard();
 
-		if(binding.getEntity().equals(dispatcher.getCurrentEntity())){
+		if (binding.getEntity().equals(dispatcher.getCurrentEntity())) {
 			showSnackBar("No changes detected", 2000);
+			binding.setEditing(false);
 			return;
 		}
 
@@ -182,5 +183,9 @@ public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewM
 				.onError(error -> logAndShowErrorSnack("An error occurred while deleting your profile image",
 						error,
 						LOGGER));
+	}
+
+	protected ProfessorViewModel getBindingEntity() {
+		return getBinding().getEntity();
 	}
 }

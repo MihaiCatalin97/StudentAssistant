@@ -39,6 +39,10 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel&gt;" />
 
         <variable
+            name="grades"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+
+        <variable
             name="students"
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
 
@@ -160,6 +164,38 @@
                     android:showEmpty="@{false}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/gradesCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`Grades`}"
+                    android:childEntities="@{grades.values().size() > 0? grades.values() : null}"
+                    android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`grades`}"
+                    android:isTable="@{true}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showEmpty="@{false}">
+
+                    <include
+                        layout="@layout/grade_laboratory_table_header"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp" />
+
+                </com.lonn.studentassistant.views.implementations.category.ScrollViewCategory>
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/filesCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`Files`}"
+                    android:childEntities="@{files.values().size() > 0? files.values() : null}"
+                    android:deletable="@{true}"
+                    android:editing="@{editing}"
+                    android:entityName="@{`file`}"
+                    android:permissionLevel="@{permissionLevel}"
+                    android:showEmpty="@{false}" />
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/studentCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,18 +209,6 @@
                     android:showEmpty="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
                     android:unlinkable="@{true}" />
-
-                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
-                    android:id="@+id/filesCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:categoryTitle="@{`Files`}"
-                    android:childEntities="@{files.values().size() > 0? files.values() : null}"
-                    android:deletable="@{true}"
-                    android:editing="@{editing}"
-                    android:entityName="@{`file`}"
-                    android:permissionLevel="@{permissionLevel}"
-                    android:showEmpty="@{false}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/professorsCategory"

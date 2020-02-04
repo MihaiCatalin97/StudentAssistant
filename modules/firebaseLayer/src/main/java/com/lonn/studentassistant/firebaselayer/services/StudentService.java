@@ -12,6 +12,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
 import static java.util.UUID.randomUUID;
@@ -192,5 +193,15 @@ public class StudentService extends PersonService<Student, StudentViewModel> {
 
 	protected PermissionLevel getPermissionLevel(Student student) {
 		return authenticationService.getPermissionLevel(student);
+	}
+
+	public Future<List<String>, Exception> getGradesForStudentId(String studentId) {
+		Future<List<String>, Exception> result = new Future<>();
+
+		getByStudentId(studentId, false)
+				.onSuccess(student -> result.complete(student.getGradeKeys()))
+				.onError(result::completeExceptionally);
+
+		return result;
 	}
 }

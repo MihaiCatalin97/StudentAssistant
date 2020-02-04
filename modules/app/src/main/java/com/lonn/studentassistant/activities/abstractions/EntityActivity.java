@@ -14,6 +14,7 @@ import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityVie
 import lombok.Getter;
 
 import static com.lonn.studentassistant.BR.editing;
+import static com.lonn.studentassistant.BR.editingProfile;
 import static com.lonn.studentassistant.BR.entity;
 
 public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEntity>> extends FirebaseConnectedActivity {
@@ -52,6 +53,19 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 		}
 	}
 
+	protected void onDiscardTapped() {
+		hideKeyboard();
+		getBinding().setVariable(editing, false);
+		getBinding().setVariable(editingProfile, false);
+
+		if(getBindingEntity().equals(activityEntity)){
+			isEditing = false;
+			return;
+		}
+
+		getBinding().setVariable(entity, activityEntity);
+	}
+
 	public void setActivityEntity(T activityEntity) {
 		getBinding().setVariable(entity, activityEntity);
 		this.activityEntity = (T) activityEntity.clone();
@@ -65,12 +79,6 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 
 	protected abstract void onSaveTapped();
 
-	protected void onDiscardTapped() {
-		getBinding().setVariable(entity, activityEntity);
-		getBinding().setVariable(editing, false);
-		isEditing = false;
-	}
-
 	@Override
 	public void onBackPressed() {
 		if (isEditing) {
@@ -80,4 +88,6 @@ public abstract class EntityActivity<T extends EntityViewModel<? extends BaseEnt
 			super.onBackPressed();
 		}
 	}
+
+	protected abstract T getBindingEntity();
 }

@@ -18,11 +18,11 @@ import com.lonn.studentassistant.firebaselayer.requests.SaveRequest;
 import com.lonn.studentassistant.firebaselayer.services.AuthenticationService;
 import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.READ_PUBLIC;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ADD_AGGREGATED;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE_ENROLL;
 import static com.lonn.studentassistant.firebaselayer.predicates.Predicate.where;
 import static com.lonn.studentassistant.firebaselayer.predicates.fields.BaseEntityField.ID;
@@ -134,6 +134,35 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
 
 	protected List<U> transform(List<T> entities) {
 		return adapter.adapt(entities);
+	}
+
+	public Future<List<U>, Exception> getByIds(List<String> gradeKeys, boolean subscribe) {
+		Future<List<U>, Exception> result = new Future<>();
+		final List<U> grades = new LinkedList<>();
+		final List<Exception> errors = new LinkedList<>();
+
+		for (String gradeKey : gradeKeys) {
+			getById(gradeKey, subscribe)
+					.onSuccess(grade -> {
+						grades.add(grade);
+
+						if (grades.size() + errors.size() == gradeKeys.size()) {
+							result.complete(grades);
+						}
+					})
+					.onError(error -> {
+						errors.add(error);
+
+						if (errors.size() == gradeKeys.size()) {
+							result.completeExceptionally(errors.get(0));
+						}
+						if (grades.size() + errors.size() == gradeKeys.size()) {
+							result.complete(grades);
+						}
+					});
+		}
+
+		return result;
 	}
 
 	protected abstract DatabaseTable<T> getDatabaseTable();

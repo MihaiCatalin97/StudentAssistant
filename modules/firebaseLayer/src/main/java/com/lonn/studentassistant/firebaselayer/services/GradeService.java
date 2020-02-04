@@ -9,7 +9,10 @@ import com.lonn.studentassistant.firebaselayer.firebaseConnection.FirebaseConnec
 import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
 import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
 
+import java.util.List;
+
 import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.GRADES;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.LABORATORY;
 
 public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	private static GradeService instance;
@@ -46,27 +49,52 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 	public Future<Void, Exception> saveAndLink(GradeViewModel grade) {
 		Future<Void, Exception> result = new Future<>();
 
-		studentService.addGradeToStudent(grade)
-				.onSuccess(none -> {
-					save(grade)
-							.onSuccess(none2 -> {
-								linkToLaboratory(grade)
-										.onSuccess(none3 -> {
-													laboratoryService.getById(grade.getLaboratoryKey(), false)
-															.onSuccess(laboratory -> {
-																courseService.addStudent(grade.getStudentKey(),
-																		laboratory.getCourseKey());
-																result.complete(null);
-															});
-												}
-										)
-										.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
-												result,
-												error));
-							})
+		studentHasGradeType(grade)
+				.onSuccess(hasGrade -> {
+					if (hasGrade) {
+						result.completeExceptionally(new Exception("Student already has a grade for this " + grade.getGradeType().toString()));
+						return;
+					}
+
+					studentService.addGradeToStudent(grade)
+							.onSuccess(none -> save(grade)
+									.onSuccess(none2 -> {
+										linkGrade(grade).onSuccess(result::complete)
+												.onError(result::completeExceptionally);
+									})
+									.onError(result::completeExceptionally))
 							.onError(result::completeExceptionally);
 				})
 				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	private Future<Void, Exception> linkGrade(GradeViewModel grade) {
+		Future<Void, Exception> result = new Future<>();
+
+		if (grade.getLaboratoryKey() != null) {
+			linkToLaboratory(grade).onSuccess(none3 ->
+					laboratoryService.getById(grade.getLaboratoryKey(), false)
+							.onSuccess(laboratory -> {
+								courseService.addStudent(grade.getStudentKey(),
+										laboratory.getCourseKey());
+								result.complete(null);
+							})
+			)
+					.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
+							result,
+							error));
+		}
+		if (grade.getCourseKey() != null) {
+			linkToCourse(grade).onSuccess(none3 ->
+					courseService.addStudent(grade.getStudentKey(),
+							grade.getCourseKey()))
+					.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
+							result,
+							error));
+		}
+
 		return result;
 	}
 
@@ -74,6 +102,18 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 		Future<Void, Exception> result = new Future<>();
 
 		laboratoryService.addGradeToLaboratory(grade.getKey(), grade.getLaboratoryKey())
+				.onSuccess(result::complete)
+				.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
+						result,
+						error));
+
+		return result;
+	}
+
+	private Future<Void, Exception> linkToCourse(GradeViewModel grade) {
+		Future<Void, Exception> result = new Future<>();
+
+		courseService.addGradeToCourse(grade.getKey(), grade.getCourseKey())
 				.onSuccess(result::complete)
 				.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
 						result,
@@ -94,11 +134,20 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 								studentService.save(student);
 							});
 
-					laboratoryService.getById(grade.getLaboratoryKey(), false)
-							.onSuccess(laboratory -> {
-								laboratory.getGradeKeys().remove(entityId);
-								laboratoryService.save(laboratory);
-							});
+					if (grade.getLaboratoryKey() != null) {
+						laboratoryService.getById(grade.getLaboratoryKey(), false)
+								.onSuccess(laboratory -> {
+									laboratory.getGradeKeys().remove(entityId);
+									laboratoryService.save(laboratory);
+								});
+					}
+					if (grade.getCourseKey() != null) {
+						courseService.getById(grade.getCourseKey(), false)
+								.onSuccess(course -> {
+									course.getGrades().remove(entityId);
+									courseService.save(course);
+								});
+					}
 
 					super.deleteById(entityId)
 							.onSuccess(result::complete)
@@ -118,5 +167,44 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 
 	protected PermissionLevel getPermissionLevel(Grade grade) {
 		return authenticationService.getPermissionLevel(grade);
+	}
+
+	private Future<Boolean, Exception> studentHasGradeType(GradeViewModel grade) {
+		Future<Boolean, Exception> result = new Future<>();
+
+		studentService.getGradesForStudentId(grade.getStudentId())
+				.onSuccess(gradeKeys -> {
+					if (gradeKeys.size() > 0) {
+						getByIds(gradeKeys, false)
+								.onSuccess(grades -> result.complete(listContainsGradeOfSameType(grades, grade)))
+								.onError(result::completeExceptionally);
+					}
+					else {
+						result.complete(false);
+					}
+				})
+				.onError(result::completeExceptionally);
+
+		return result;
+	}
+
+	private boolean listContainsGradeOfSameType(List<GradeViewModel> gradeList, GradeViewModel grade) {
+		for (GradeViewModel gradeFromList : gradeList) {
+			if (gradesHaveSameType(gradeFromList, grade)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private boolean gradesHaveSameType(GradeViewModel grade1, GradeViewModel grade2) {
+		if (!grade1.getCourseKey().equals(grade2.getCourseKey())) {
+			return false;
+		}
+		if (grade1.getGradeType().equals(grade2.getGradeType())) {
+			return grade1.getGradeType().equals(LABORATORY) && grade1.getLaboratoryKey().equals(grade2.getLaboratoryKey());
+		}
+		return false;
 	}
 }

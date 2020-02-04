@@ -21,6 +21,7 @@ public final class CourseViewModel extends DisciplineViewModel<Course> {
 	private int pack;
 	private List<CycleSpecializationYear> cycleSpecializationYears;
 	private List<String> laboratories;
+	private List<String> grades;
 
 	@Bindable
 	public String getCourseType() {

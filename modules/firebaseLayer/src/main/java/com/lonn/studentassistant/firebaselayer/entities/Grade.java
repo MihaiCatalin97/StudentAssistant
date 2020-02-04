@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 public final class Grade extends BaseEntity {
-	private int value;
+	private double value;
 	private String studentId;
 	private String studentKey;
 	private String laboratoryKey;

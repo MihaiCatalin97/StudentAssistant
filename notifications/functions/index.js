@@ -61,3 +61,25 @@ exports.sendMail = functions.https.onCall((data, context) => {
         error : "not logged in"
     }
 });
+
+exports.sendGradeChangedNotificationToStudent = functions.database.ref('/dev/Students/{uid}/grades').onWrite(event=>{
+    const uuid = event.params.uid;
+    console.log(event);
+    console.log(uuid);
+    console.log(event.before.data);
+    console.log(event.after.data);
+
+    var users = admin.database().ref(`/dev/Users`);
+    return ref.once("value", function(snapshot){
+        const payload = {
+             notification: {
+                 title: 'You have been invited to a trip.',
+                 body: 'Tap here to check it out!'
+             }
+        };
+
+        console.log(users);
+   }, function (errorObject) {
+       console.log("The read failed: " + errorObject.code);
+   });
+});

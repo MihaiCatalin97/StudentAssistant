@@ -11,6 +11,7 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.activities.abstractions.MainActivity;
 import com.lonn.studentassistant.databinding.ProfessorActivityMainLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
@@ -86,18 +87,6 @@ public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 		if (dispatcher.update(binding.getProfessor())) {
 			binding.setEditingProfile(false);
 		}
-	}
-
-	protected void onDiscardTapped() {
-		hideKeyboard();
-
-		if(binding.getProfessor().equals(dispatcher.getCurrentProfile())){
-			showSnackBar("No changes detected", 2000);
-			return;
-		}
-
-		binding.setProfessor(dispatcher.getCurrentProfile());
-		binding.setEditingProfile(false);
 	}
 
 	private void showCourseRemoveDialog(CourseViewModel course) {
@@ -240,4 +229,8 @@ public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
 	};
 
 	private static final int CLASS_TIME_UPDATE_PERIOD = 1000;
+
+	protected ProfessorViewModel getBindingEntity(){
+		return getBinding().getProfessor();
+	}
 }

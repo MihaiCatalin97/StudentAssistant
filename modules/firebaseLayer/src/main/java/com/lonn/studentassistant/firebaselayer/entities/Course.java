@@ -17,12 +17,9 @@ import lombok.experimental.Accessors;
 public final class Course extends Discipline {
     private Integer pack;
     private List<String> laboratories = new LinkedList<>();
+    private List<String> grades = new LinkedList<>();
 
     private List<CycleSpecializationYear> cycleSpecializationYears = new ArrayList<>();
-
-    public void addCycleSpecializationYear(String cycleSpecializationYear) {
-        this.cycleSpecializationYears.add(CycleSpecializationYear.valueOf(cycleSpecializationYear));
-    }
 
     public Course addCycleSpecializationYear(CycleSpecializationYear cycleSpecializationYear) {
         this.cycleSpecializationYears.add(cycleSpecializationYear);

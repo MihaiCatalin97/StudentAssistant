@@ -98,7 +98,109 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/profileEmailLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="end|center"
+                        android:text="Student ID: " />
+
+                    <EditText
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{null}"
+                        android:focusable="@{false}"
+                        android:inputType="textEmailAddress"
+                        android:onClick="copyToClipboard"
+                        android:singleLine="true"
+                        android:text="@={student.studentId}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="end|center"
+                        android:text="Year: " />
+
+                    <EditText
+                        android:id="@+id/studentProfileYearInput"
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{false}"
+                        android:hint="@{editing &amp;&amp; (student.cycleSpecializationYear == null)? `Enter year` : `(none)`}"
+                        android:inputType="phone"
+                        android:onClick="tapEditText"
+                        android:singleLine="true"
+                        android:text="@{student.cycleSpecializationYear.toString()}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:weightSum="1">
+
+                    <TextView
+                        style="@style/DarkBlueShadowedH3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"
+                        android:gravity="end|center"
+                        android:text="Group: " />
+
+                    <EditText
+                        android:id="@+id/studentProfileGroupInput"
+                        style="@style/ProfileActivityField"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@{editing? @drawable/edit_text_background : null}"
+                        android:focusable="@{false}"
+                        android:hint="@{editing &amp;&amp; (student.group == null || student.group.length() == 0)? `Enter group` : `(none)`}"
+                        android:inputType="phone"
+                        android:onClick="tapEditText"
+                        android:singleLine="true"
+                        android:text="@{student.group}" />
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.25"/>
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
@@ -193,76 +295,6 @@
                         android:singleLine="true"
                         android:onClick="tapEditText"
                         android:text="@={student.phoneNumber}" />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:weightSum="1">
-
-                    <TextView
-                        style="@style/DarkBlueShadowedH3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:gravity="end|center"
-                        android:text="Year: " />
-
-                    <EditText
-                        android:id="@+id/studentProfileYearInput"
-                        style="@style/ProfileActivityField"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:background="@{editing? @drawable/edit_text_background : null}"
-                        android:focusable="@{false}"
-                        android:hint="@{editing &amp;&amp; (student.cycleSpecializationYear == null)? `Enter year` : `(none)`}"
-                        android:inputType="phone"
-                        android:onClick="tapEditText"
-                        android:singleLine="true"
-                        android:text="@{student.cycleSpecializationYear.toString()}" />
-
-                    <RelativeLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:weightSum="1">
-
-                    <TextView
-                        style="@style/DarkBlueShadowedH3"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.25"
-                        android:gravity="end|center"
-                        android:text="Group: " />
-
-                    <EditText
-                        android:id="@+id/studentProfileGroupInput"
-                        style="@style/ProfileActivityField"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:background="@{editing? @drawable/edit_text_background : null}"
-                        android:focusable="@{false}"
-                        android:hint="@{editing &amp;&amp; (student.group == null || student.group.length() == 0)? `Enter group` : `(none)`}"
-                        android:inputType="phone"
-                        android:onClick="tapEditText"
-                        android:singleLine="true"
-                        android:text="@{student.group}" />
 
                     <RelativeLayout
                         android:layout_width="0dp"

@@ -16,20 +16,19 @@ import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.DialogBuilder;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.GradeInputDialog;
-import com.lonn.studentassistant.views.implementations.dialog.inputDialog.GradeInputDialogBuilder;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.FileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.LaboratoryFileUploadDialog;
 
-import java.util.Date;
-
 import lombok.Getter;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.LABORATORY;
 import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
-import static java.lang.Integer.parseInt;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.UUID.randomUUID;
 
 public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryViewModel> {
@@ -55,33 +54,40 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 		((ScrollViewCategory) findViewById(R.id.gradesCategory)).setOnAddAction(() ->
 				new DialogBuilder<String>(this)
-						.withTitle("Add gradeKeys")
+						.withTitle("Add grades")
 						.withItems(asList("Add single grade", "Parse CSV"))
 						.withItemActions(asList((item) -> gradeInputDialog.show(),
 								(item) -> makeText(getBaseContext(), item, LENGTH_SHORT).show()))
 						.show()
 		);
 
+		((ScrollViewCategory<GradeViewModel>) findViewById(R.id.gradesCategory)).setOnDeleteAction(grade ->
+				firebaseApi.getGradeService()
+						.deleteById(grade.getKey())
+						.onSuccess(none -> showSnackBar("Successfully deleted grade!", 2000))
+						.onError(error -> logAndShowErrorSnack("An error occured",
+								error,
+								LOGGER)));
+
 		loadAll(entityKey);
 
 		gradeInputDialog = new GradeInputDialog(this)
-				.setPositiveButtonAction(() -> {
+				.setAvailableGradeTypes(singletonList(LABORATORY))
+				.setPositiveButtonAction((gradeParseResult) -> {
 					try {
-						int grade = parseInt(gradeInputDialog.getGradeEditText().getText()
-								.toString());
-						String studentId = gradeInputDialog.getStudentIdEditText().getText()
-								.toString();
+						if (gradeParseResult.getError() != null) {
+							makeText(this, gradeParseResult.getError(), LENGTH_LONG).show();
+							return;
+						}
 
-						GradeViewModel gradeViewModel = new GradeViewModel()
+						gradeParseResult.getGrade()
 								.setKey(randomUUID().toString())
-								.setGrade(grade)
-								.setStudentId(studentId)
-								.setDate(new Date())
 								.setCourseKey(binding.getEntity().getCourseKey())
-								.setLaboratoryKey(binding.getEntity().getKey());
+								.setLaboratoryKey(binding.getEntity().getKey())
+								.setLaboratoryNumber(binding.getEntity().getWeekNumber());
 
 						firebaseApi.getGradeService()
-								.saveAndLink(gradeViewModel)
+								.saveAndLink(gradeParseResult.getGrade())
 								.onSuccess(none -> {
 									showSnackBar("Successfully added grade!", 1000);
 									gradeInputDialog.dismiss();
@@ -146,5 +152,9 @@ public class LaboratoryEntityActivity extends FileManagingActivity<LaboratoryVie
 
 			isEditing = binding.getEditing();
 		}
+	}
+
+	protected LaboratoryViewModel getBindingEntity(){
+		return getBinding().getEntity();
 	}
 }

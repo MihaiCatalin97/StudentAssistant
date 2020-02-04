@@ -8,6 +8,7 @@ import static com.lonn.studentassistant.validation.Regex.INITIAL_REGEX;
 import static com.lonn.studentassistant.validation.Regex.NAME_REGEX;
 import static com.lonn.studentassistant.validation.Regex.PASSWORD_REGEX;
 import static com.lonn.studentassistant.validation.Regex.PHONE_NUMBER_REGEX;
+import static com.lonn.studentassistant.validation.Regex.STUDENT_ID_REGEX;
 
 public class StringValidationPredicates {
 	public static <T> Predicate<T> nonEmptyStringPredicate(Function<T, String> getter) {
@@ -49,6 +50,10 @@ public class StringValidationPredicates {
 
 	public static Boolean isValidPhoneNumber(String phoneNumber) {
 		return emptyOrMatchesRegex(phoneNumber, PHONE_NUMBER_REGEX);
+	}
+
+	public static Boolean isValidStudentId(String studentId) {
+		return nonEmptyAndMatchesRegex(studentId, STUDENT_ID_REGEX);
 	}
 
 	private static <T> Predicate<T> nonEmptyAndEqualsMatchingCase(Function<T, String> getter,

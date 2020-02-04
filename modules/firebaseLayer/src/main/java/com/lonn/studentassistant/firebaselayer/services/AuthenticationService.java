@@ -367,7 +367,7 @@ public class AuthenticationService {
 					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
 				return READ_FULL;
 			}
-			return NONE;
+			return READ_PUBLIC;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
@@ -398,7 +398,7 @@ public class AuthenticationService {
 				return READ_FULL;
 			}
 
-			return WRITE;
+			return READ_PUBLIC;
 		}
 		if (accountType.equals(PROFESSOR)) {
 			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||

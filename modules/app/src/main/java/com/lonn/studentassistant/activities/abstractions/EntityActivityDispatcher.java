@@ -39,7 +39,7 @@ public abstract class EntityActivityDispatcher<T extends EntityViewModel<? exten
 	}
 
 	public boolean update(T entity) {
-		if (entity != activity.activityEntity) {
+		if (!entity.equals(activity.activityEntity)) {
 			activity.showSnackBar("Updating the " + getEntityName() + "...");
 
 			getService()
