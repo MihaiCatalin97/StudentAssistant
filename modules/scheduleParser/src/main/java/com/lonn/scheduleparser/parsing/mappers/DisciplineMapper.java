@@ -2,7 +2,7 @@ package com.lonn.scheduleparser.parsing.mappers;
 
 import com.lonn.scheduleparser.parsing.abstractions.Mapper;
 import com.lonn.scheduleparser.parsing.tableParseResults.DisciplinesMainPageParseResult;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Discipline;
 
 import org.jsoup.nodes.Element;
 

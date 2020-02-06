@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.mappers;
 
 import com.lonn.scheduleparser.parsing.abstractions.Mapper;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor;
 
 import org.jsoup.nodes.Element;
 

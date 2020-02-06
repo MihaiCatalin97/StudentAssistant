@@ -1,6 +1,6 @@
 package com.lonn.scheduleparser.parsing.abstractions;
 
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

@@ -10,10 +10,10 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.ProfessorEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
@@ -21,8 +21,8 @@ import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.i
 
 import lombok.Getter;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel.WRITE;
 
 public class ProfessorEntityActivity extends FileManagingActivity<ProfessorViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(ProfessorEntityActivity.class);

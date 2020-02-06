@@ -8,27 +8,27 @@
 
         <import type="com.lonn.studentassistant.utils.Utils" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
         <variable
             name="professor"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel" />
 
         <variable
             name="personalFiles"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="personalCourses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel&gt;" />
 
         <variable
             name="personalOtherActivities"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
             name="profileImageContent"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
             name="editing"

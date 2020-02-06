@@ -8,8 +8,8 @@ import androidx.databinding.ViewDataBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 
 import lombok.Getter;
 

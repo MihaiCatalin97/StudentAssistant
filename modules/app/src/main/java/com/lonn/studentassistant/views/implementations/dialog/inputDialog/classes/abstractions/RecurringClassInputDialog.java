@@ -11,10 +11,10 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
-import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.DisciplineViewModel;
 
 import java.util.List;
 

@@ -2,13 +2,13 @@ package com.lonn.scheduleparser.parsing.services;
 
 import com.lonn.scheduleparser.parsing.Logger;
 import com.lonn.scheduleparser.parsing.abstractions.ParsingService;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.ScheduleClass;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

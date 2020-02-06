@@ -5,7 +5,7 @@
 
         <variable
             name="passedUsed"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.UserViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,10 +1,10 @@
 package com.lonn.studentassistant.utils.schedule;
 
-import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
-import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
-import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel;
 
 import java.util.Calendar;
 import java.util.Collection;
@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 import static com.lonn.studentassistant.firebaselayer.Utils.weekDayToCalendarWeekDay;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.ARREARS_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.PARTIAL_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.PRACTICAL_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.PRACTICAL_TEST_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType.PROJECTS_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay.getByInt;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.ARREARS_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.PARTIAL_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.PRACTICAL_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.PRACTICAL_TEST_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType.PROJECTS_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay.getByInt;
 import static java.util.Arrays.asList;
 
 public class Utils {

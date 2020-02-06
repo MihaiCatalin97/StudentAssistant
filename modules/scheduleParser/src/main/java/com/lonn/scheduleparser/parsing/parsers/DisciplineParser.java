@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.parsers;
 
 import com.lonn.scheduleparser.parsing.abstractions.Parser;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Discipline;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;

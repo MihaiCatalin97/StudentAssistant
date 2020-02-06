@@ -8,7 +8,7 @@
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel" />
 
         <variable
             name="otherActivities"
@@ -16,7 +16,7 @@
 
         <variable
             name="permissionLevel"
-            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+            type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

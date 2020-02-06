@@ -9,7 +9,7 @@
 
         <variable
             name="grade"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel" />
 
         <variable
             name="deletable"

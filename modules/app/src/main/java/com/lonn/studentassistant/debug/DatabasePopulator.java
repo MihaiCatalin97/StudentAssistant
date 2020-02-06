@@ -3,23 +3,23 @@ package com.lonn.studentassistant.debug;
 import com.lonn.scheduleparser.ParseResult;
 import com.lonn.scheduleparser.UAICScheduleParser;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
-import com.lonn.studentassistant.firebaselayer.viewModels.RegistrationTokenViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RegistrationTokenViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.PROFESSOR;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 public class DatabasePopulator {

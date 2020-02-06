@@ -5,7 +5,7 @@
 
         <variable
             name="grades"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel&gt;" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

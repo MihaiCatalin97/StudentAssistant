@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import androidx.appcompat.app.AlertDialog;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.EntityView;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;

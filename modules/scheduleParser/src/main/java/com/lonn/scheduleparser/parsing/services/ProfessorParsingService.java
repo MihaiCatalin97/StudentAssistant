@@ -3,7 +3,7 @@ package com.lonn.scheduleparser.parsing.services;
 import com.lonn.scheduleparser.parsing.abstractions.ParsingService;
 import com.lonn.scheduleparser.parsing.parsers.ProfessorParser;
 import com.lonn.scheduleparser.parsing.repositories.ProfessorRepository;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor;
 
 import java.util.List;
 import java.util.concurrent.Future;

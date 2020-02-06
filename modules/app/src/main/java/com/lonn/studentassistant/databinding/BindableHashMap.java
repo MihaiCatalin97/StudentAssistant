@@ -2,7 +2,7 @@ package com.lonn.studentassistant.databinding;
 
 import androidx.databinding.ViewDataBinding;
 
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.Collection;
 import java.util.HashMap;

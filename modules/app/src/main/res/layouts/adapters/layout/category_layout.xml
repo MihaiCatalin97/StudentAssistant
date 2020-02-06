@@ -6,9 +6,9 @@
 
         <import type="android.view.View" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
         <variable
             name="isTable"

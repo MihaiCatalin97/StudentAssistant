@@ -2,7 +2,7 @@ package com.lonn.scheduleparser.parsing.services;
 
 import com.lonn.scheduleparser.parsing.parsers.OtherActivityParser;
 import com.lonn.scheduleparser.parsing.repositories.OtherActivityRepository;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OtherActivity;
 
 public class OtherActivityParsingService extends DisciplineParsingService<OtherActivity> {
 	private static OtherActivityParsingService instance;

@@ -15,11 +15,11 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
-import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.DisciplineViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.StringInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.selectionDialog.ProfessorSelectionDialog;
 

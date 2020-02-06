@@ -2,7 +2,7 @@ package com.lonn.scheduleparser.parsing.services;
 
 import com.lonn.scheduleparser.parsing.parsers.OneTimeClassParser;
 import com.lonn.scheduleparser.parsing.repositories.OneTimeClassRepository;
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
 
 public class OneTimeClassParsingService extends ScheduleClassParsingService<OneTimeClass> {
 	private static OneTimeClassParsingService instance;

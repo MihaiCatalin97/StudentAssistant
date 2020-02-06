@@ -9,12 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.register.accountCreation.ProfessorAccountCreationActivity;
 import com.lonn.studentassistant.databinding.ProfessorProfileCreationActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.ProfessorValidator;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.PROFESSOR;
 import static java.util.UUID.randomUUID;
 
 public class ProfessorProfileCreationActivity extends ProfileCreationActivity<ProfessorViewModel> {

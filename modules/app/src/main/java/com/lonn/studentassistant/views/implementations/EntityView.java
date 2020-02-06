@@ -12,12 +12,12 @@ import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
 import com.lonn.studentassistant.databinding.GradeLaboratoryTableRowBinding;
 import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
 import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
-import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.EntityViewType;
 import com.lonn.studentassistant.views.abstractions.ScrollViewItem;
@@ -28,7 +28,7 @@ import lombok.Setter;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.lonn.studentassistant.BR.editing;
 import static com.lonn.studentassistant.BR.unlinkable;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.NONE;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
 
 public class EntityView<T extends EntityViewModel> extends ScrollViewItem {

@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.views.implementations;
 
-import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.LaboratoryViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Comparator;
 
 public class EntityViewComparatorHolder {

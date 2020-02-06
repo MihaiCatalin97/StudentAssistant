@@ -8,8 +8,8 @@ import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivi
 import com.lonn.studentassistant.activities.implementations.register.credentialsCheck.TokenCheckActivity;
 import com.lonn.studentassistant.activities.implementations.register.profileCreation.StudentProfileCreationActivity;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.PROFESSOR;
 
 public class AccountChoiceActivity extends FirebaseConnectedActivity {
 	public void tapRegistrationAccountTypeButton(View v) {

@@ -6,11 +6,11 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Professor" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor" />
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
@@ -26,7 +26,7 @@
 
         <variable
             name="permissionLevel"
-            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+            type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -1,17 +1,16 @@
 package com.lonn.studentassistant.databinding;
 
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
-import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
-import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
-import com.lonn.studentassistant.firebaselayer.entities.enums.Year;
-import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.Year;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.DisciplineViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
 
 import java.text.SimpleDateFormat;

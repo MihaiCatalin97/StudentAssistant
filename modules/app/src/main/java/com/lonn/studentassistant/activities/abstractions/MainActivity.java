@@ -8,8 +8,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Person;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 
 import static android.view.View.GONE;

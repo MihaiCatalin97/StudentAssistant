@@ -9,8 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.Student;
-import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
 
 import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;

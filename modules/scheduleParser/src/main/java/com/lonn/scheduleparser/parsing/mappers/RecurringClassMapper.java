@@ -1,6 +1,6 @@
 package com.lonn.scheduleparser.parsing.mappers;
 
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
 
 import org.jsoup.nodes.Element;
 

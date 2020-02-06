@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.mappers;
 
-import com.lonn.studentassistant.firebaselayer.entities.Course;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

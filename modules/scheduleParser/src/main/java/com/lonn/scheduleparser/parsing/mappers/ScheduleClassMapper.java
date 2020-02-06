@@ -2,8 +2,8 @@ package com.lonn.scheduleparser.parsing.mappers;
 
 import com.lonn.scheduleparser.parsing.abstractions.Mapper;
 import com.lonn.scheduleparser.parsing.tableParseResults.DisciplineScheduleParseResult;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.ScheduleClass;
-import com.lonn.studentassistant.firebaselayer.entities.enums.ScheduleClassType;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.ScheduleClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.ScheduleClassType;
 
 import org.jsoup.nodes.Element;
 

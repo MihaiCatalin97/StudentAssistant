@@ -13,7 +13,7 @@ import com.lonn.studentassistant.logging.Logger;
 
 import java.util.UUID;
 
-import static com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel.builder;
+import static com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.LaboratoryViewModel.builder;
 import static java.util.UUID.randomUUID;
 
 public class LaboratoryInputActivity extends FirebaseConnectedActivity {

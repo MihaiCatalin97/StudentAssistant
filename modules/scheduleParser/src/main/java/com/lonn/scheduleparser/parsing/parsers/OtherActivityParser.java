@@ -2,7 +2,7 @@ package com.lonn.scheduleparser.parsing.parsers;
 
 import com.lonn.scheduleparser.parsing.DocumentHolder;
 import com.lonn.scheduleparser.parsing.mappers.OtherActivityMapper;
-import com.lonn.studentassistant.firebaselayer.entities.OtherActivity;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OtherActivity;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

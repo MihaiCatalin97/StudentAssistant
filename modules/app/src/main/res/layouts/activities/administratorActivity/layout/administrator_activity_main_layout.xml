@@ -3,35 +3,35 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
             name="user"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.UserViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.UserViewModel" />
 
         <variable
             name="administrator"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel" />
 
         <variable
             name="courses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel&gt;" />
 
         <variable
             name="otherActivities"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="personalFiles"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="profileImageContent"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
             name="editingProfile"

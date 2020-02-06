@@ -2,10 +2,10 @@ package com.lonn.studentassistant.activities.implementations.entityActivities.la
 
 import com.lonn.studentassistant.activities.abstractions.EntityActivityDispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
-import com.lonn.studentassistant.firebaselayer.services.LaboratoryService;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.LaboratoryService;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.LaboratoryViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.List;

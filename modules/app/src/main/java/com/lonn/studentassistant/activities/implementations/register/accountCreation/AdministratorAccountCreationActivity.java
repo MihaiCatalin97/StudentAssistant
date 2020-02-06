@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.activities.implementations.register.accountCreation;
 
-import com.lonn.studentassistant.firebaselayer.entities.Administrator;
-import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
-import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Administrator;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel;
 
 public class AdministratorAccountCreationActivity extends AccountCreationActivity<AdministratorViewModel> {
 

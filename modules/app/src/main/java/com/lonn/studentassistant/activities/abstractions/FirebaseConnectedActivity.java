@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.businessLayer.api.FirebaseApi;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.viewModels.ScrollViewEntityViewModel;
 import com.lonn.studentassistant.views.implementations.EntityView;
@@ -28,7 +28,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import static android.widget.Toast.LENGTH_SHORT;
 import static android.widget.Toast.makeText;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {

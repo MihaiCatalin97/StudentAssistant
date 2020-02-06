@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.utils.file.CustomFileReader;
 

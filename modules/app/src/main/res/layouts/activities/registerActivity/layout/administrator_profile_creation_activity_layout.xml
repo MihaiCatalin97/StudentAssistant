@@ -5,7 +5,7 @@
 
         <variable
             name="personProfile"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

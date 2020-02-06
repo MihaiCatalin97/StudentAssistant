@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.activities.implementations.register.accountCreation;
 
-import com.lonn.studentassistant.firebaselayer.entities.Student;
-import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Student;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 
 public class StudentAccountCreationActivity extends AccountCreationActivity<StudentViewModel> {
 

@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.services;
 
 import com.lonn.scheduleparser.parsing.abstractions.ParsingService;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Discipline;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Discipline;
 
 import java.util.List;
 import java.util.concurrent.Future;

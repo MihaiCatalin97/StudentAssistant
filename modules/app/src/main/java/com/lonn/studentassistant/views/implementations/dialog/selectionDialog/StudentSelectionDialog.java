@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecialization;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecialization;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 
 import java.util.ArrayList;

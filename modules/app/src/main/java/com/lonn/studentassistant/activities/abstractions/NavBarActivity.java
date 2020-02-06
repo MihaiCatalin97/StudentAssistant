@@ -16,11 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.databinding.NavHeaderMainBinding;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.Person;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.Person;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 
 import static android.widget.Toast.LENGTH_SHORT;
 

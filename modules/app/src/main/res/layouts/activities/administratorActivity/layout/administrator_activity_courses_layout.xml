@@ -6,15 +6,15 @@
 
     <data>
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel" />
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
         <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.Course" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course" />
 
         <import type="com.lonn.studentassistant.views.EntityViewType" />
 
@@ -26,7 +26,7 @@
 
         <variable
             name="permissionLevel"
-            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+            type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

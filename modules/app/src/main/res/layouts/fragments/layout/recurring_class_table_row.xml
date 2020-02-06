@@ -7,7 +7,7 @@
 
         <variable
             name="recurringClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel" />
 
         <variable
             name="deletable"

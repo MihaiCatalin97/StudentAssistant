@@ -12,7 +12,7 @@
 
         <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
         <variable
             name="editing"
@@ -20,19 +20,19 @@
 
         <variable
             name="entity"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.LaboratoryViewModel" />
 
         <variable
             name="grades"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel&gt;" />
 
         <variable
             name="files"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="permissionLevel"
-            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+            type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
     </data>
 

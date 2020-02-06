@@ -11,9 +11,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.entities.enums.GradeType;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType;
 import com.lonn.studentassistant.firebaselayer.interfaces.Consumer;
-import com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,13 +27,13 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.EXAM_ARREARS;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.LABORATORY;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PARTIAL_ARREARS;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PARTIAL_EXAM;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PROJECT;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.GradeType.PROJECT_ARREARS;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.EXAM_ARREARS;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.LABORATORY;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.PARTIAL_ARREARS;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.PARTIAL_EXAM;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.PROJECT;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.GradeType.PROJECT_ARREARS;
 import static com.lonn.studentassistant.validation.predicates.StringValidationPredicates.isValidStudentId;
 import static java.lang.Double.parseDouble;
 import static lombok.AccessLevel.PRIVATE;

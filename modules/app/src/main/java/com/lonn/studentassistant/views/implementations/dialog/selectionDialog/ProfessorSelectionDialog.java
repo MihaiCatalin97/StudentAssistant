@@ -3,7 +3,7 @@ package com.lonn.studentassistant.views.implementations.dialog.selectionDialog;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static com.lonn.studentassistant.utils.Utils.displayWidth;

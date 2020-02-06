@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.repositories;
 
 import com.lonn.scheduleparser.parsing.abstractions.Repository;
-import com.lonn.studentassistant.firebaselayer.entities.Professor;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Professor;
 
 public class ProfessorRepository extends Repository<Professor> {
 	private static ProfessorRepository instance;

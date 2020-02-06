@@ -1,0 +1,28 @@
+package com.lonn.studentassistant.firebaselayer.businessLayer.adapters;
+
+import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.abstractions.ScheduleClassAdapter;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.firebaseConnection.FirebaseConnection;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+
+import static com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel.builder;
+
+public class RecurringClassAdapter extends ScheduleClassAdapter<RecurringClass, RecurringClassViewModel> {
+	public RecurringClassAdapter(FirebaseConnection firebaseConnection) {
+		super(firebaseConnection);
+	}
+
+	public RecurringClassViewModel adapt(RecurringClass recurringClass) {
+		return super.adapt(builder()
+				.day(recurringClass.getDay())
+				.parity(recurringClass.getParity())
+				.build(), recurringClass);
+	}
+
+	public RecurringClass adapt(RecurringClassViewModel recurringClassViewModel) {
+		return super.adapt(new RecurringClass()
+						.setDay(recurringClassViewModel.getDayInt())
+						.setParity(recurringClassViewModel.getParity()),
+				recurringClassViewModel);
+	}
+}

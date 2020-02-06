@@ -9,9 +9,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.DisciplineViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.DisciplineViewModel;
 import com.lonn.studentassistant.utils.Utils;
 
 import java.util.Calendar;

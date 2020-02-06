@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.lonn.studentassistant.R;
-import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.abstractions.OneTimeClassInputDialog;
 
 import java.util.List;

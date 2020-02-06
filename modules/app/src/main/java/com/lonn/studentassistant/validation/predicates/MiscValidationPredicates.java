@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.validation.predicates;
 
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
 import com.lonn.studentassistant.functionalIntefaces.Function;
 import com.lonn.studentassistant.functionalIntefaces.Predicate;
 

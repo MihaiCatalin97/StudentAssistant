@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.lonn.scheduleparser.parsing.abstractions.Parser;
 import com.lonn.scheduleparser.parsing.mappers.RecurringClassMapper;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

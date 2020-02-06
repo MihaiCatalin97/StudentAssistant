@@ -8,19 +8,19 @@
 
         <import type="com.lonn.studentassistant.utils.Utils" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
         <variable
             name="administrator"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel" />
 
         <variable
             name="profileImageContent"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
             name="personalFiles"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="editing"

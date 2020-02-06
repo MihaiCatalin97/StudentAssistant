@@ -1,6 +1,6 @@
 package com.lonn.scheduleparser.parsing.mappers;
 
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
 
 import org.jsoup.nodes.Element;
 

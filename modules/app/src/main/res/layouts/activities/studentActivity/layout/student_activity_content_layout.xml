@@ -5,47 +5,47 @@
 
         <import type="com.lonn.studentassistant.utils.schedule.Utils" />
 
-        <import type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel" />
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
 
         <variable
             name="student"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel" />
 
         <variable
             name="courses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="grades"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel&gt;" />
 
         <variable
             name="otherActivities"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
             name="personalCourses"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel&gt;" />
 
         <variable
             name="personalActivities"
-            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel&gt;" />
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel&gt;" />
 
         <variable
             name="profileImageContent"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
             name="editingProfile"
@@ -53,11 +53,11 @@
 
         <variable
             name="nextScheduleClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel" />
 
         <variable
             name="nextExam"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel" />
 
         <variable
             name="timeToNextClass"

@@ -9,13 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FileManagingActivity;
 import com.lonn.studentassistant.databinding.OtherActivityEntityActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.OtherActivityViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.OtherActivityOneTimeClassInputDialog;
@@ -30,8 +29,8 @@ import java.util.List;
 
 import lombok.Getter;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel.WRITE;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel.WRITE;
 
 public class OtherActivityEntityActivity extends FileManagingActivity<OtherActivityViewModel> {
 	private static final Logger LOGGER = Logger.ofClass(OtherActivityEntityActivity.class);

@@ -1,10 +1,10 @@
 package com.lonn.studentassistant.activities.abstractions;
 
 import com.lonn.studentassistant.databinding.BindableHashMap;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.entities.abstractions.BaseEntity;
-import com.lonn.studentassistant.firebaselayer.services.abstractions.Service;
-import com.lonn.studentassistant.firebaselayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.logging.Logger;
 
 import java.util.LinkedList;

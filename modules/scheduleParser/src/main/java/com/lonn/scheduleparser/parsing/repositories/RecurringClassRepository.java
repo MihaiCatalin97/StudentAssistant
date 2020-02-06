@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.repositories;
 
 import com.lonn.scheduleparser.parsing.abstractions.Repository;
-import com.lonn.studentassistant.firebaselayer.entities.RecurringClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.RecurringClass;
 
 public class RecurringClassRepository extends Repository<RecurringClass> {
 	private static RecurringClassRepository instance;

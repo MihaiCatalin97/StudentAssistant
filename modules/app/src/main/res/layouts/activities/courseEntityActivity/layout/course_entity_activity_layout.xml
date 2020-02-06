@@ -16,43 +16,43 @@
 
         <variable
             name="entity"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel" />
 
         <variable
             name="files"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
             name="professors"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel&gt;" />
 
         <variable
             name="oneTimeClasses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel&gt;" />
 
         <variable
             name="recurringClasses"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.RecurringClassViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.RecurringClassViewModel&gt;" />
 
         <variable
             name="laboratories"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.LaboratoryViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.LaboratoryViewModel&gt;" />
 
         <variable
             name="grades"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.GradeViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel&gt;" />
 
         <variable
             name="students"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel&gt;" />
 
         <variable
             name="pendingStudents"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel&gt;" />
 
         <variable
             name="allStudents"
-            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel&gt;" />
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel&gt;" />
 
         <variable
             name="editing"
@@ -72,7 +72,7 @@
 
         <variable
             name="permissionLevel"
-            type="com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel" />
+            type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
     </data>
 

@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.firebaselayer.config;
 
-import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.database.DatabaseTable;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -12,9 +12,9 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.activities.abstractions.MainActivity;
 import com.lonn.studentassistant.databinding.AdministratorActivityMainLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
-import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.AdministratorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.AdministratorImageUploadDialog;
@@ -22,8 +22,8 @@ import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.i
 import lombok.Getter;
 
 import static android.view.View.GONE;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.PROFESSOR;
 import static com.lonn.studentassistant.validation.Regex.EMAIL_REGEX;
 
 public class AdministratorActivity extends MainActivity<AdministratorViewModel> {

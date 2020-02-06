@@ -1,7 +1,7 @@
 package com.lonn.scheduleparser.parsing.repositories;
 
 import com.lonn.scheduleparser.parsing.abstractions.Repository;
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
 
 public class OneTimeClassRepository extends Repository<OneTimeClass> {
 	private static OneTimeClassRepository instance;

@@ -11,11 +11,11 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
 import com.lonn.studentassistant.activities.implementations.register.profileCreation.AdministratorProfileCreationActivity;
 import com.lonn.studentassistant.activities.implementations.register.profileCreation.ProfessorProfileCreationActivity;
-import com.lonn.studentassistant.firebaselayer.entities.enums.AccountType;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType;
 import com.lonn.studentassistant.logging.Logger;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.PROFESSOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.PROFESSOR;
 
 public class TokenCheckActivity extends FirebaseConnectedActivity {
 	private static final Logger LOGGER = Logger.ofClass(TokenCheckActivity.class);

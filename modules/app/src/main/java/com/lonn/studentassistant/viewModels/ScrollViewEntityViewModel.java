@@ -3,7 +3,7 @@ package com.lonn.studentassistant.viewModels;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 
-import com.lonn.studentassistant.firebaselayer.entities.enums.PermissionLevel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

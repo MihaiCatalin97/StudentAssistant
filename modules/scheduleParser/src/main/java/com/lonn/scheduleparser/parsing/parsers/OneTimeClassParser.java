@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.lonn.scheduleparser.parsing.abstractions.Parser;
 import com.lonn.scheduleparser.parsing.mappers.OneTimeClassMapper;
-import com.lonn.studentassistant.firebaselayer.entities.OneTimeClass;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

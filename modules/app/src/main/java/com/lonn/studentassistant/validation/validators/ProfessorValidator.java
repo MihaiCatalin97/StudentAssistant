@@ -1,6 +1,6 @@
 package com.lonn.studentassistant.validation.validators;
 
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

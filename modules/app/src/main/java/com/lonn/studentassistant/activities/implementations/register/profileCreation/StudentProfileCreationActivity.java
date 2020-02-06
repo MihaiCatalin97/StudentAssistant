@@ -11,15 +11,15 @@ import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.register.accountCreation.StudentAccountCreationActivity;
 import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
 import com.lonn.studentassistant.databinding.StudentProfileCreationActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
-import com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.api.FirebaseApi;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.StudentValidator;
 
 import static com.lonn.studentassistant.BR._all;
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.STUDENT;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.STUDENT;
 import static java.util.UUID.randomUUID;
 
 public class StudentProfileCreationActivity extends ProfileCreationActivity<StudentViewModel> {

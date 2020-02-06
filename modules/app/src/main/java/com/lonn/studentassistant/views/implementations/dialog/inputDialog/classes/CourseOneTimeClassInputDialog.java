@@ -6,9 +6,9 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.SingleChoiceListAdapter;
-import com.lonn.studentassistant.firebaselayer.entities.enums.CycleSpecializationYear;
-import com.lonn.studentassistant.firebaselayer.viewModels.CourseViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.ProfessorViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.ProfessorViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.classes.abstractions.OneTimeClassInputDialog;
 
 import java.util.List;

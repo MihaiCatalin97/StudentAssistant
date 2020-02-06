@@ -7,7 +7,7 @@
 
         <variable
             name="oneTimeClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.OneTimeClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel" />
 
         <variable
             name="deletable"

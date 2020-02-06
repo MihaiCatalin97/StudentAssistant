@@ -9,13 +9,12 @@ import androidx.databinding.DataBindingUtil;
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.activities.implementations.register.accountCreation.AdministratorAccountCreationActivity;
 import com.lonn.studentassistant.databinding.AdministratorProfileCreationActivityLayoutBinding;
-import com.lonn.studentassistant.firebaselayer.api.FirebaseApi;
-import com.lonn.studentassistant.firebaselayer.viewModels.AdministratorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.validation.ValidationResult;
 import com.lonn.studentassistant.validation.validators.AdministratorValidator;
 
-import static com.lonn.studentassistant.firebaselayer.entities.enums.AccountType.ADMINISTRATOR;
+import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType.ADMINISTRATOR;
 import static java.util.UUID.randomUUID;
 
 public class AdministratorProfileCreationActivity extends ProfileCreationActivity<AdministratorViewModel> {

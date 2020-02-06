@@ -1,8 +1,8 @@
 package com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations;
 
 import com.lonn.studentassistant.activities.abstractions.FirebaseConnectedActivity;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileContentViewModel;
-import com.lonn.studentassistant.firebaselayer.viewModels.FileMetadataViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 
 public class StudentImageUploadDialog extends ProfileImageUploadDialog {

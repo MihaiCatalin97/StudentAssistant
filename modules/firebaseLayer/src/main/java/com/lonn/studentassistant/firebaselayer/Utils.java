@@ -4,7 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.lonn.studentassistant.firebaselayer.entities.enums.WeekDay;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

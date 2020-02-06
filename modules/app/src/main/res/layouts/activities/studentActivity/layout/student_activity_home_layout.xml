@@ -9,11 +9,11 @@
 
         <variable
             name="nextScheduleClass"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel" />
 
         <variable
             name="nextExam"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.abstractions.ScheduleClassViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel" />
 
         <variable
             name="timeToNextClass"
@@ -25,7 +25,7 @@
 
         <variable
             name="student"
-            type="com.lonn.studentassistant.firebaselayer.viewModels.StudentViewModel" />
+            type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel" />
     </data>
 
     <ScrollView

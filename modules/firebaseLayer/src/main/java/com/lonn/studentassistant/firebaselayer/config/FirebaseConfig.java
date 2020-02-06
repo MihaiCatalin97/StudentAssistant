@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 
 import com.lonn.studentassistant.firebaselayer.R;
 import com.lonn.studentassistant.firebaselayer.Utils;
-import com.lonn.studentassistant.firebaselayer.database.DatabaseTable;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.database.DatabaseTable;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

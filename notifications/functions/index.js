@@ -1,4 +1,8 @@
 const functions = require('firebase-functions');
+const config = {
+    email: 'student.assistant00@gmail.com',
+    password: 'Studentassistant12'
+}
 
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
@@ -14,8 +18,8 @@ admin.initializeApp();
 let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'student.assistant00@gmail.com',
-        pass: 'Studentassistant12'
+        user: config.email,
+        pass: config.password
     }
 });
 
