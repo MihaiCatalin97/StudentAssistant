@@ -38,7 +38,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:contentDescription="Image"
+                android:contentDescription="@string/image"
                 android:scaleType="centerCrop"
                 app:defaultSrcCompat="@{defaultImage}"
                 app:layout_constraintLeft_toLeftOf="parent"
