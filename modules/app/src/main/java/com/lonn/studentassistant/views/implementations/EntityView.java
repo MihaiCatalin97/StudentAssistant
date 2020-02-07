@@ -9,6 +9,7 @@ import androidx.databinding.ViewDataBinding;
 
 import com.lonn.studentassistant.R;
 import com.lonn.studentassistant.databinding.EntityConstraintLayoutViewBinding;
+import com.lonn.studentassistant.databinding.GradeCourseTableRowBinding;
 import com.lonn.studentassistant.databinding.GradeLaboratoryTableRowBinding;
 import com.lonn.studentassistant.databinding.OneTimeClassTableRowBinding;
 import com.lonn.studentassistant.databinding.RecurringClassTableRowBinding;
@@ -30,6 +31,7 @@ import static com.lonn.studentassistant.BR.editing;
 import static com.lonn.studentassistant.BR.unlinkable;
 import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel.NONE;
 import static com.lonn.studentassistant.viewModels.ScrollViewEntityViewModelFactory.getScrollViewEntityViewModel;
+import static com.lonn.studentassistant.views.EntityViewType.PARTIAL;
 
 public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 	protected EntityViewType viewType;
@@ -114,7 +116,10 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 			return R.layout.recurring_class_table_row;
 		}
 		if (entityViewModel instanceof GradeViewModel) {
-			return R.layout.grade_laboratory_table_row;
+			if (viewType.equals(PARTIAL)) {
+				return R.layout.grade_laboratory_table_row;
+			}
+			return R.layout.grade_course_table_row;
 		}
 
 		return R.layout.entity_constraint_layout_view;
@@ -160,7 +165,12 @@ public class EntityView<T extends EntityViewModel> extends ScrollViewItem {
 			((RecurringClassTableRowBinding) binding).setRecurringClass((RecurringClassViewModel) entityViewModel);
 		}
 		else if (entityViewModel instanceof GradeViewModel) {
-			((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);
+			if (viewType.equals(PARTIAL)) {
+				((GradeLaboratoryTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);
+			}
+			else {
+				((GradeCourseTableRowBinding) binding).setGrade((GradeViewModel) entityViewModel);
+			}
 		}
 		else if (onApproveTap != null) {
 			((EntityConstraintLayoutViewBinding) binding).setEntityViewModel(model);

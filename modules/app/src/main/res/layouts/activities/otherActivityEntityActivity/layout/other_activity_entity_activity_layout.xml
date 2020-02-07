@@ -14,6 +14,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
         <variable
             name="entity"
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OtherActivityViewModel" />
@@ -165,6 +167,7 @@
                     android:showAddButtonFirstLayer="@{true}"
                     android:permissionLevel="@{permissionLevel}"
                     android:showEmpty="@{false}"
+                    android:viewType="@{userIsStudent? EntityViewType.PARTIAL : EntityViewType.FULL}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
                     android:unlinkable="@{true}" />
 

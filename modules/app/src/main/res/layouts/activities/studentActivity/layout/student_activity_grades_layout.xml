@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"
             android:childEntities="@{grades}"
             android:isTable="@{true}"
+            android:showHeader="@{false}"
             android:shouldContain="@{(grade) -> true}" />
 
     </LinearLayout>

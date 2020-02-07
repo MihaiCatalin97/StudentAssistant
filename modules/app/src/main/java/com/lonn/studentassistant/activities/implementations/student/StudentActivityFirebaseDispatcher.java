@@ -226,6 +226,10 @@ class StudentActivityFirebaseDispatcher extends Dispatcher<StudentActivity, Stud
 						LOGGER));
 	}
 
+	private void loadGrades(List<String> gradeKeys){
+
+	}
+
 	@Override
 	public boolean update(StudentViewModel studentViewModel) {
 		if (!isValidEmail(studentViewModel.getEmail())) {

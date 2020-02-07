@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static android.widget.Toast.makeText;
 
 public abstract class FirebaseConnectedActivity extends AppCompatActivity {
@@ -180,10 +182,10 @@ public abstract class FirebaseConnectedActivity extends AppCompatActivity {
 				completeErrorMessage += ":\n" + exception.getMessage();
 			}
 
-			LOGGER.error(errorMessage, exception);
+			logger.error(errorMessage, exception);
 		}
 
-		showSnackBar(completeErrorMessage, 2000);
+		Toast.makeText(this, completeErrorMessage, LENGTH_LONG).show();
 	}
 
 	public void tapLink(View view) {

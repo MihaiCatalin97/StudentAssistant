@@ -67,22 +67,14 @@ exports.sendMail = functions.https.onCall((data, context) => {
 });
 
 exports.sendGradeChangedNotificationToStudent = functions.database.ref('/dev/Students/{uid}/grades').onWrite(event=>{
-    const uuid = event.params.uid;
     console.log(event);
-    console.log(uuid);
-    console.log(event.before.data);
-    console.log(event.after.data);
+    console.log(event.before._data);
+    console.log(event.after._data);
+    console.log(event.params.uid);
 
     var users = admin.database().ref(`/dev/Users`);
-    return ref.once("value", function(snapshot){
-        const payload = {
-             notification: {
-                 title: 'You have been invited to a trip.',
-                 body: 'Tap here to check it out!'
-             }
-        };
-
-        console.log(users);
+    return users.once("value", function(snapshot){
+        console.log(snapshot);
    }, function (errorObject) {
        console.log("The read failed: " + errorObject.code);
    });

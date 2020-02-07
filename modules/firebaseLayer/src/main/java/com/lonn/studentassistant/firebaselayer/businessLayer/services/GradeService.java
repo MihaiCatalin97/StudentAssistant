@@ -52,7 +52,7 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 		studentHasGradeType(grade)
 				.onSuccess(hasGrade -> {
 					if (hasGrade) {
-						result.completeExceptionally(new Exception("Student already has a grade for this " + grade.getGradeType().toString()));
+						result.completeExceptionally(new Exception("Student already has a grade for this " + grade.getGradeType().toString().toLowerCase()));
 						return;
 					}
 
@@ -89,7 +89,8 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 		if (grade.getCourseKey() != null) {
 			linkToCourse(grade).onSuccess(none3 ->
 					courseService.addStudent(grade.getStudentKey(),
-							grade.getCourseKey()))
+							grade.getCourseKey())
+							.onSuccess(result::complete))
 					.onError(error -> deleteGradeAndCompleteExceptionally(grade.getKey(),
 							result,
 							error));
@@ -203,7 +204,10 @@ public class GradeService extends Service<Grade, Exception, GradeViewModel> {
 			return false;
 		}
 		if (grade1.getGradeType().equals(grade2.getGradeType())) {
-			return grade1.getGradeType().equals(LABORATORY) && grade1.getLaboratoryKey().equals(grade2.getLaboratoryKey());
+			if (grade1.getGradeType().equals(LABORATORY)) {
+				return grade1.getLaboratoryKey().equals(grade2.getLaboratoryKey());
+			}
+			return true;
 		}
 		return false;
 	}

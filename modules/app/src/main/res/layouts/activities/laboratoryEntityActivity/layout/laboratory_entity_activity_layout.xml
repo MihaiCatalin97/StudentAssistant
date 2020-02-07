@@ -14,6 +14,8 @@
 
         <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
 
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
         <variable
             name="editing"
             type="Boolean" />
@@ -89,8 +91,8 @@
                         android:focusable="@{editing}"
                         android:hint="@{editing &amp;&amp; (entity.week == null || entity.week.trim().length() == 0)? `Enter week` : ` `}"
                         android:importantForAutofill="no"
-                        android:onClick="tapEditText"
                         android:inputType="number"
+                        android:onClick="tapEditText"
                         android:text="@={entity.week}" />
 
                 </LinearLayout>
@@ -118,14 +120,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dim_16dp"
                     android:categoryTitle="@{`Grades`}"
-                    android:childEntityComparator="@{EntityViewComparatorHolder.GRADE_ASCENDING_ID_DATE_GRADE}"
                     android:childEntities="@{grades.values().size() > 0? grades.values() : null}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.GRADE_ASCENDING_ID_DATE_GRADE}"
+                    android:deletable="@{true}"
                     android:editing="@{editing}"
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
-                    android:deletable="@{true}"
+                    android:permissionLevel="@{permissionLevel}"
                     android:showEmpty="@{false}"
-                    android:permissionLevel="@{permissionLevel}">
+                    android:viewType="@{EntityViewType.PARTIAL}">
 
                     <include
                         layout="@layout/grade_laboratory_table_header"
@@ -140,8 +143,8 @@
                     android:layout_height="wrap_content"
                     android:categoryTitle="@{`Files`}"
                     android:childEntities="@{files.values().size() > 0? files.values() : null}"
-                    android:editing="@{editing}"
                     android:deletable="@{true}"
+                    android:editing="@{editing}"
                     android:entityName="@{`file`}"
                     android:permissionLevel="@{permissionLevel}" />
             </LinearLayout>

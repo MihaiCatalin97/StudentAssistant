@@ -51,7 +51,7 @@ public class ProfessorProfileCreationActivity extends ProfileCreationActivity<Pr
 		}
 
 		firebaseApi.getProfessorService()
-				.getByName(getPersonProfile().getFirstName(), getPersonProfile().getLastName())
+				.getByName(getPersonProfile().getFirstName(), getPersonProfile().getLastName(), false)
 				.onSuccess(professor -> {
 					if (professor != null) {
 						checkIfPersonHasAccountAndStartActivity(professor);

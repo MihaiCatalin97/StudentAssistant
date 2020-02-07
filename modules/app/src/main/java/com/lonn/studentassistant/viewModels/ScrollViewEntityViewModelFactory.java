@@ -84,23 +84,22 @@ public class ScrollViewEntityViewModelFactory {
 
 	private static ScrollViewEntityViewModel partial(StudentViewModel student) {
 		String title;
-		String subtitle = Utils.hideStudentId(student.getStudentId());
+		String subtitle = "";
 		String description = "";
 
-		if(student.getFirstName() == null && student.getLastName() == null){
+		if (student.getFirstName() == null && student.getLastName() == null) {
 			title = "(unregistered student)";
 		}
-		else{
+		else {
 			title = student.getFirstName() + " " + student.getLastName();
 		}
 
 		if (student.getCycleSpecializationYear() != null) {
-			description += student.getCycleSpecializationYear().toString() + "\n" +
-					Utils.yearToString(student.getCycleSpecializationYear().getYear());
+			subtitle += student.getCycleSpecializationYear().toString();
+		}
 
-			if (student.getGroup() != null) {
-				description += "\nGroup " + student.getGroup();
-			}
+		if (student.getGroup() != null) {
+			description = "Group " + student.getGroup();
 		}
 
 		return ScrollViewEntityViewModel.builder()
@@ -115,17 +114,16 @@ public class ScrollViewEntityViewModelFactory {
 		String subtitle = Utils.hideStudentId(student.getStudentId());
 		String description = "";
 
-		if(student.getFirstName() == null && student.getLastName() == null){
+		if (student.getFirstName() == null && student.getLastName() == null) {
 			title = "(unregistered student)";
 		}
-		else{
+		else {
 			title = student.getFirstName() + " " + student.getLastName();
 		}
 
 
 		if (student.getCycleSpecializationYear() != null) {
-			description += student.getCycleSpecializationYear().toString() + "\n" +
-					Utils.yearToString(student.getCycleSpecializationYear().getYear());
+			description += student.getCycleSpecializationYear().toString() + "\n";
 
 			if (student.getGroup() != null) {
 				description += "\nGroup " + student.getGroup();

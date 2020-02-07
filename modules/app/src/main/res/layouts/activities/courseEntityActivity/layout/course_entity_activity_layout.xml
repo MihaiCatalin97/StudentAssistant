@@ -14,6 +14,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
         <variable
             name="entity"
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel" />
@@ -174,10 +176,11 @@
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
                     android:permissionLevel="@{permissionLevel}"
+                    android:viewType="@{EntityViewType.FULL}"
                     android:showEmpty="@{false}">
 
                     <include
-                        layout="@layout/grade_laboratory_table_header"
+                        layout="@layout/grade_course_table_header"
                         android:layout_width="match_parent"
                         android:layout_height="50dp" />
 
@@ -208,7 +211,8 @@
                     android:showAddButtonFirstLayer="@{true}"
                     android:showEmpty="@{false}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.courseStudentCategories((CategoryViewModel) category, entity)}"
-                    android:unlinkable="@{true}" />
+                    android:unlinkable="@{true}"
+                    android:viewType="@{userIsStudent? EntityViewType.PARTIAL : EntityViewType.FULL}" />
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
                     android:id="@+id/professorsCategory"

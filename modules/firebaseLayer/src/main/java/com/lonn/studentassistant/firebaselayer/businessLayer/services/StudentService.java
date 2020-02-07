@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.database.DatabaseTableContainer.STUDENTS;
+import static com.lonn.studentassistant.firebaselayer.database.DatabaseTableContainer.STUDENTS;
+import static java.util.Collections.emptyList;
 import static java.util.UUID.randomUUID;
 
 public class StudentService extends PersonService<Student, StudentViewModel> {
@@ -199,7 +201,14 @@ public class StudentService extends PersonService<Student, StudentViewModel> {
 		Future<List<String>, Exception> result = new Future<>();
 
 		getByStudentId(studentId, false)
-				.onSuccess(student -> result.complete(student.getGradeKeys()))
+				.onSuccess(student -> {
+					if (student != null) {
+						result.complete(student.getGradeKeys());
+					}
+					else {
+						result.complete(emptyList());
+					}
+				})
 				.onError(result::completeExceptionally);
 
 		return result;

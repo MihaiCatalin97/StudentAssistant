@@ -60,9 +60,13 @@ class CourseEntityActivityFirebaseDispatcher extends EntityActivityDispatcher<Co
 
 					filesMap.clear();
 					studentMap.clear();
+					laboratoryMap.clear();
+					gradesMap.clear();
 
 					updateFiles(entityActivity.getActivityEntity());
 					updateStudents(entityActivity.getActivityEntity());
+					updateGrades(entityActivity.getActivityEntity());
+					updateLaboratories(entityActivity.getActivityEntity());
 				});
 
 		firebaseApi.getCourseService().getById(courseKey, true)
