@@ -16,6 +16,7 @@ public final class User extends BaseEntity {
 	private String userId;
 	private String personUUID;
 	private String email, name;
+	private String fcmToken;
 	private AccountType accountType;
 
 	@Exclude

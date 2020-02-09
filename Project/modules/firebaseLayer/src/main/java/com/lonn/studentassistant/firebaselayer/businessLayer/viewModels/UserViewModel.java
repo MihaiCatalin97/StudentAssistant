@@ -22,6 +22,7 @@ import lombok.experimental.Accessors;
 public final class UserViewModel extends EntityViewModel<User> {
 	@Bindable
 	private String email, name, personUUID;
+	private String fcmToken;
 	private AccountType accountType;
 
 	@Override

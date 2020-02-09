@@ -11,6 +11,7 @@ public class UserAdapter extends ViewModelAdapter<User, UserViewModel> {
 				.email(user.getEmail())
 				.accountType(user.getAccountType())
 				.name(user.getName())
+				.fcmToken(user.getFcmToken())
 				.build()
 				.setKey(user.getKey());
 	}
@@ -20,7 +21,8 @@ public class UserAdapter extends ViewModelAdapter<User, UserViewModel> {
 				.setPersonUUID(userViewModel.getPersonUUID())
 				.setAccountType(userViewModel.getAccountType())
 				.setEmail(userViewModel.getEmail())
-				.setName(userViewModel.getName());
+				.setName(userViewModel.getName())
+				.setFcmToken(userViewModel.getFcmToken());
 
 		if (userViewModel.getKey() != null) {
 			result.setKey(userViewModel.getKey());

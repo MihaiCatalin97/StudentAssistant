@@ -124,7 +124,6 @@ public class GradeInputDialog extends Dialog {
 		String studentId = studentIdEditText.getText().toString();
 
 		double grade = 0;
-		GradeParseResult result = new GradeParseResult();
 		String error = null;
 
 		try {
