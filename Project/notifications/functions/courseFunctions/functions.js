@@ -1,7 +1,5 @@
 const admin = require('firebase-admin');
-const notifications = require('../notificationFunctions/functions');
-const utils = require('../utils/functions');
-const users = require('../userFunctions/functions');
+const disciplines = require('../disciplineFunctions/functions');
 
 exports.getById = courseKey => {
     return admin.database().ref(`/dev/Courses/${courseKey}`).once("value")
@@ -14,49 +12,35 @@ exports.getById = courseKey => {
         });
 }
 
-exports.notifyStudentOnCourseFileAction = (courseKey, action) => {
-    return getCourseStudents(courseKey)
-        .then(students => {
-            return users.getTokensForPersonUUIDs(students);
-        })
-        .then(tokens => {
-            return notifications.sendNotifications(`File ${utils.getCompleteActionString(action).toLowerCase()} course`,
-                `A file has been ${utils.getCompleteActionString(action).toLowerCase()} ${course.disciplineName}!`,
-                tokens);
+exports.notifyStudentOnFileAction = (courseKey, action) => {
+    return this.getById(courseKey)
+        .then(course => {
+            return disciplines.notifyStudentOnFileAction(course, action, `course`);
         });
 }
 
-exports.notifyStudentOnCourseContainmentAction = (courseKey, studentKey, action) => {
-    const course = this.getById(courseKey);
-    const token = users.getTokenForPersonUUID(studentKey);
-
-    return Promise.all([course, token]).then(result => {
-        const receivedCourse = result[0];
-        const receivedToken = result[1];
-
-        return notifications.sendNotification(`${utils.getCompleteActionString(action)} course`,
-            `You have been ${utils.getCompleteActionString(action).toLowerCase()} ${receivedCourse.disciplineName}!`,
-            receivedToken);
-    });
+exports.notifyPersonOnContainmentAction = (courseKey, personKey, action) => {
+    return this.getById(courseKey)
+        .then(course => {
+            return disciplines.notifyPersonOnContainmentAction(course, personKey, action, `course`);
+        });
 }
 
-exports.notifyStudentOnCourseEnrollmentAction = (courseKey, studentKey) => {
-    const course = this.getById(courseKey);
-    const token = users.getTokenForPersonUUID(studentKey);
-
-    return Promise.all([course, token]).then(result => {
-        const receivedCourse = result[0];
-        const receivedToken = result[1];
-
-        const enrollmentAction = receivedCourse.students.includes(studentKey) ? `accepted` : `declined`;
-
-        return notifications.sendNotification(`Enrollment request ${enrollmentAction}`,
-            `Your enrollment request for the course ${receivedCourse.disciplineName} has been ${enrollmentAction}!`,
-            receivedToken);
-    });
+exports.notifyProfessorsOnEnrollmentAdded = (courseKey) => {
+    return this.getById(courseKey)
+        .then(course => {
+            return disciplines.notifyProfessorsOnEnrollmentAdded(course, `course`);
+        });
 }
 
-exports.getCourseStudents = courseKey => {
+exports.notifyStudentOnEnrollmentAction = (courseKey, studentKey) => {
+    return this.getById(courseKey)
+        .then(course => {
+            return disciplines.notifyStudentOnEnrollmentAction(course, studentKey, `course`);
+        });
+}
+
+exports.getStudents = courseKey => {
     return this.getById(courseKey).then(course => {
         return course.students;
     });

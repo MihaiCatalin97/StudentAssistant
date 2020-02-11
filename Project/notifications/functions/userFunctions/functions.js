@@ -1,3 +1,4 @@
+const notifications = require('../notificationFunctions/functions');
 const admin = require('firebase-admin');
 
 exports.getUserByPersonUUID = personUUID => {
@@ -28,6 +29,27 @@ exports.getTokenForPersonUUID = personUUID => {
         });
 }
 
+exports.getAllTokens = () => {
+    return admin.database().ref(`/dev/Users/`).once("value")
+        .then(snapshot => {
+            users = Object.values(snapshot.val());
+            const tokens = [];
+
+            for (let i = 0; i < users.length; i++) {
+                const token = users[i].fcmToken;
+
+                if(token){
+                    tokens.push(token);
+                }
+            }
+
+            return tokens;
+        })
+        .catch(error => {
+            console.log(`Error while reading all user tokens: `, error)
+        });
+}
+
 exports.getTokensForPersonUUIDs = personUUIDs => {
     const tokenPromises = [];
 
@@ -42,4 +64,11 @@ exports.getTokensForPersonUUIDs = personUUIDs => {
     }
 
     return Promise.all(tokenPromises);
+}
+
+exports.sendNotificationToUUIDs = (title, message, personUUIDs) => {
+    return this.getTokensForPersonUUIDs(personUUIDs)
+        .then(tokens => {
+            return notifications.sendNotifications(title, message, tokens);
+        });
 }

@@ -21,6 +21,7 @@ exports.sendNotification = (title, message, deviceToken) => {
 exports.sendNotifications = (title, message, deviceTokens) => {
     const payload = buildPayload(title, message);
     const notificationPromises = [];
+    deviceTokens = deviceTokens.filter((a, b) => deviceTokens.indexOf(a) === b);
 
     for (let i = 0; i < deviceTokens.length; i++) {
         if (deviceTokens[i]) {
