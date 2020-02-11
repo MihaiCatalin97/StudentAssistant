@@ -10,6 +10,7 @@ import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstract
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecialization;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.CycleSpecializationYear;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.Year;
 import com.lonn.studentassistant.viewModels.CategoryViewModel;
@@ -36,7 +37,7 @@ public class CategoryGenerator {
 					.setCategoryTitle(cycleSpecialization.toString())
 					.setEntityName(parentCategory.getEntityName())
 					.setViewType(parentCategory.getViewType())
-					.setPermissionLevel(parentCategory.getPermissionLevel())
+					.setPermissionLevel(PermissionLevel.READ_FULL)
 					.setShowEmpty(parentCategory.isShowEmpty())
 					.setShowHeader(true)
 					.setShouldContain((course) -> {
@@ -67,7 +68,7 @@ public class CategoryGenerator {
 					.setCategoryTitle(yearString)
 					.setEntityName(parentCategory.getEntityName())
 					.setViewType(parentCategory.getViewType())
-					.setPermissionLevel(parentCategory.getPermissionLevel())
+					.setPermissionLevel(PermissionLevel.READ_FULL)
 					.setShowEmpty(parentCategory.isShowEmpty())
 					.setShowHeader(true)
 					.setShouldContain((discipline) -> {

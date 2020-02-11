@@ -20,6 +20,8 @@
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
+
         <variable
             name="courses"
             type="java.util.Collection&lt;CourseViewModel&gt;" />
@@ -56,12 +58,16 @@
                 android:orientation="vertical">
 
                 <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/coursesCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:canAdd="@{true}"
                     android:childEntities="@{courses}"
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:editing="@{true}"
                     android:entityName="@{`course`}"
-                    android:permissionLevel="@{permissionLevel}"
+                    android:permissionLevel="@{PermissionLevel.WRITE}"
+                    android:showAddButtonFirstLayer="@{true}"
                     android:showEmpty="@{false}"
                     android:showHeader="@{false}"
                     android:subcategoryGeneratorFunction="@{(category) -> CategoryGenerator.studyCycleCategories((CategoryViewModel)category)}"

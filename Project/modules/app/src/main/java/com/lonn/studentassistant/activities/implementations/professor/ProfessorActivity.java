@@ -18,6 +18,8 @@ import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.Professo
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.ScheduleClassViewModel;
 import com.lonn.studentassistant.logging.Logger;
 import com.lonn.studentassistant.views.implementations.category.ScrollViewCategory;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.disciplines.ActivityInputDialog;
+import com.lonn.studentassistant.views.implementations.dialog.inputDialog.disciplines.CourseInputDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.abstractions.ProfileImageUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorFileUploadDialog;
 import com.lonn.studentassistant.views.implementations.dialog.inputDialog.file.implementations.ProfessorImageUploadDialog;
@@ -31,205 +33,252 @@ import static com.lonn.studentassistant.utils.schedule.Utils.getNextClass;
 import static com.lonn.studentassistant.utils.schedule.Utils.getNextExam;
 
 public class ProfessorActivity extends MainActivity<ProfessorViewModel> {
-	private static final Logger LOGGER = Logger.ofClass(ProfessorActivity.class);
-	@Getter
-	ProfessorActivityMainLayoutBinding binding;
-	protected Dispatcher<ProfessorActivity, ProfessorViewModel> dispatcher;
+    private static final Logger LOGGER = Logger.ofClass(ProfessorActivity.class);
+    private static final int CLASS_TIME_UPDATE_PERIOD = 1000;
+    protected Dispatcher<ProfessorActivity, ProfessorViewModel> dispatcher;
+    @Getter
+    ProfessorActivityMainLayoutBinding binding;
+    private Runnable updateNextClassTime = () -> {
+        if (binding.getNextScheduleClass() != null &&
+                binding.getTimeToNextClass() != null) {
+            long timeToNextClass = binding.getTimeToNextClass();
 
-	protected void loadAll(String entityKey) {
-		dispatcher.loadAll(entityKey);
-	}
+            timeToNextClass -= CLASS_TIME_UPDATE_PERIOD;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+            if (timeToNextClass < 0) {
+                binding.setNextScheduleClass(null);
+            }
+            else {
+                binding.setTimeToNextClass(timeToNextClass);
+            }
+        }
 
-		dispatcher = new ProfessorActivityFirebaseDispatcher(this);
+        if (binding.getRecurringClasses() != null &&
+                binding.getOneTimeClasses() != null &&
+                binding.getNextScheduleClass() == null) {
+            setNextClass(getNextClass(binding.getRecurringClasses().values(),
+                    binding.getOneTimeClasses().values()));
+        }
+    };
+    private Runnable updateNextExamTime = () -> {
+        if (binding.getNextScheduleClass() != null &&
+                binding.getTimeToNextExam() != null) {
+            long timeToNextExam = binding.getTimeToNextExam();
 
-		findViewById(R.id.fabEdit).setOnClickListener(view -> onEditTapped());
-		findViewById(R.id.fabSaveChanges).setOnClickListener(view -> onSaveTapped());
-		findViewById(R.id.fabDiscardChanges).setOnClickListener(view -> onDiscardTapped());
+            timeToNextExam -= CLASS_TIME_UPDATE_PERIOD;
 
-		((ScrollViewCategory<CourseViewModel>) findViewById(R.id.personalCoursesCategory))
-				.setOnRemoveAction(this::showCourseRemoveDialog);
-		((ScrollViewCategory<OtherActivityViewModel>) findViewById(R.id.personalActivitiesCategory))
-				.setOnRemoveAction(this::showActivityRemoveDialog);
+            if (timeToNextExam < 0) {
+                binding.setNextExam(null);
+            }
+            else {
+                binding.setTimeToNextExam(timeToNextExam);
+            }
+        }
 
-		loadAll(personId);
-		startUpdatingNextClass();
-	}
+        if (binding.getRecurringClasses() != null &&
+                binding.getOneTimeClasses() != null &&
+                binding.getNextExam() == null) {
+            setNextExam(getNextExam(binding.getOneTimeClasses().values()));
+        }
+    };
 
-	@Override
-	public void onBackPressed() {
-		if (binding.getEditingProfile() != null &&
-				binding.getEditingProfile()) {
-			binding.setEditingProfile(false);
-		}
-		else {
-			super.onBackPressed();
-		}
-	}
+    @Override
+    public void onBackPressed() {
+        if (binding.getEditingProfile() != null &&
+                binding.getEditingProfile()) {
+            binding.setEditingProfile(false);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
 
-	protected void inflateLayout() {
-		binding = DataBindingUtil.setContentView(this, R.layout.professor_activity_main_layout);
-	}
+    public void onEditTapped() {
+        boolean editing = binding.getEditingProfile() == null ? false : binding.getEditingProfile();
 
-	public void onEditTapped() {
-		boolean editing = binding.getEditingProfile() == null ? false : binding.getEditingProfile();
+        binding.setEditingProfile(!editing);
+    }
 
-		binding.setEditingProfile(!editing);
-	}
+    public void onSaveTapped() {
+        hideKeyboard();
 
-	public void onSaveTapped() {
-		hideKeyboard();
+        if (dispatcher.update(binding.getProfessor())) {
+            binding.setEditingProfile(false);
+        }
+    }
 
-		if (dispatcher.update(binding.getProfessor())) {
-			binding.setEditingProfile(false);
-		}
-	}
+    protected void loadAll(String entityKey) {
+        dispatcher.loadAll(entityKey);
+    }
 
-	private void showCourseRemoveDialog(CourseViewModel course) {
-		new AlertDialog.Builder(this, R.style.DialogTheme)
-				.setTitle("Removing course")
-				.setMessage("Are you sure you wish to remove yourself from this course?")
-				.setPositiveButton("Delete", (dialog, which) ->
-						firebaseApi.getProfessorService()
-								.removeCourse(binding.getProfessor(), course.getKey())
-								.onSuccess(none -> showSnackBar("Removed yourself from the course", 1000))
-								.onError(error -> logAndShowErrorSnack("An error occurred!",
-										error,
-										LOGGER)))
-				.setNegativeButton("Cancel", null)
-				.create()
-				.show();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-	private void showActivityRemoveDialog(OtherActivityViewModel otherActivity) {
-		new AlertDialog.Builder(this, R.style.DialogTheme)
-				.setTitle("Removing activity")
-				.setMessage("Are you sure you wish to remove yourself from this course?")
-				.setPositiveButton("Delete", (dialog, which) ->
-						firebaseApi.getProfessorService()
-								.removeActivity(binding.getProfessor(), otherActivity.getKey())
-								.onSuccess(none -> showSnackBar("Removed yourself from the activity", 1000))
-								.onError(error -> logAndShowErrorSnack("An error occurred!",
-										error,
-										LOGGER)))
-				.setNegativeButton("Cancel", null)
-				.create()
-				.show();
-	}
+        dispatcher = new ProfessorActivityFirebaseDispatcher(this);
 
-	protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
-		return new ProfessorFileUploadDialog(this, entityKey);
-	}
+        findViewById(R.id.fabEdit).setOnClickListener(view -> onEditTapped());
+        findViewById(R.id.fabSaveChanges).setOnClickListener(view -> onSaveTapped());
+        findViewById(R.id.fabDiscardChanges).setOnClickListener(view -> onDiscardTapped());
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		imageUploadDialog.setFile(requestCode, resultCode, data);
-	}
+        ((ScrollViewCategory<CourseViewModel>) findViewById(R.id.personalCoursesCategory))
+                .setOnRemoveAction(this::showCourseRemoveDialog);
+        ((ScrollViewCategory<OtherActivityViewModel>) findViewById(R.id.personalActivitiesCategory))
+                .setOnRemoveAction(this::showActivityRemoveDialog);
 
-	protected void deleteFile(String professorKey, FileMetadataViewModel fileMetadata) {
-		getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadata.getKey())
-				.onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
-				.onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
-	}
+        ((ScrollViewCategory) findViewById(R.id.coursesCategory)).setOnAddAction(() -> {
+            new CourseInputDialog(this)
+                    .setPositiveButtonAction(course -> {
+                        course.getProfessors().add(entityKey);
+                        firebaseApi.getCourseService()
+                                .save(course)
+                                .onSuccess(none -> {
+                                    ProfessorViewModel currentProfessor = (ProfessorViewModel) firebaseApi.getAuthenticationService()
+                                            .getLoggedPerson();
+                                    currentProfessor.getCourses().add(course.getKey());
 
-	protected void onDeleteTapped(Context context) {
-	}
+                                    firebaseApi.getProfessorService()
+                                            .save(currentProfessor)
+                                            .onSuccess(none2 -> showSnackBar("Successfully created course", 1500))
+                                            .onError(error -> logAndShowErrorSnack("An error occurred while linking you to the course",
+                                                    error,
+                                                    LOGGER));
+                                })
+                                .onError(error -> logAndShowErrorSnack("An error occurred while creating the course",
+                                        error,
+                                        LOGGER));
+                    })
+                    .show();
+        });
 
-	protected ProfileImageUploadDialog getImageUploadDialog() {
-		return new ProfessorImageUploadDialog(this, personId);
-	}
+        ((ScrollViewCategory) findViewById(R.id.activitiesCategory)).setOnAddAction(() -> {
+            new ActivityInputDialog(this)
+                    .setPositiveButtonAction(activity -> {
+                        activity.getProfessors().add(entityKey);
+                        firebaseApi.getOtherActivityService()
+                                .save(activity)
+                                .onSuccess(none -> {
+                                    ProfessorViewModel currentProfessor = (ProfessorViewModel) firebaseApi.getAuthenticationService()
+                                            .getLoggedPerson();
+                                    currentProfessor.getOtherActivities().add(activity.getKey());
 
-	protected void deleteProfileImage() {
-		firebaseApi.getProfessorService()
-				.deleteImage(personId, binding.getProfessor().getImageMetadataKey())
-				.onSuccess(none -> showSnackBar("Successfully deleted your profile image", 1000))
-				.onError(error -> logAndShowErrorSnack("An error occurred while deleting your profile image",
-						error,
-						LOGGER));
-	}
+                                    firebaseApi.getProfessorService()
+                                            .save(currentProfessor)
+                                            .onSuccess(none2 -> showSnackBar("Successfully created activity", 1500))
+                                            .onError(error -> logAndShowErrorSnack("An error occurred while linking you to the activity",
+                                                    error,
+                                                    LOGGER));
+                                })
+                                .onError(error -> logAndShowErrorSnack("An error occurred while creating the activity",
+                                        error,
+                                        LOGGER));
+                    })
+                    .show();
+        });
 
-	protected void startUpdatingNextClass() {
-		delayHandler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				updateNextClassTime.run();
-				updateNextExamTime.run();
+        loadAll(personId);
+        startUpdatingNextClass();
+    }
 
-				delayHandler.postDelayed(this, CLASS_TIME_UPDATE_PERIOD);
-			}
-		}, CLASS_TIME_UPDATE_PERIOD);
-	}
+    protected void inflateLayout() {
+        binding = DataBindingUtil.setContentView(this, R.layout.professor_activity_main_layout);
+    }
 
-	protected void setNextClass(ScheduleClassViewModel nextClass) {
-		binding.setNextScheduleClass(nextClass);
-		Date dateOfNextClass = dateOfNextClass(nextClass);
+    protected ProfessorFileUploadDialog getFileUploadDialogInstance() {
+        return new ProfessorFileUploadDialog(this, entityKey);
+    }
 
-		if (dateOfNextClass != null) {
-			binding.setTimeToNextClass(dateOfNextClass.getTime() - new Date().getTime());
-		}
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageUploadDialog.setFile(requestCode, resultCode, data);
+    }
 
-	protected void setNextExam(ScheduleClassViewModel nextExam) {
-		binding.setNextExam(nextExam);
-		Date dateOfNextExam = dateOfNextClass(nextExam);
+    protected void deleteFile(String professorKey, FileMetadataViewModel fileMetadata) {
+        getFirebaseApi().getProfessorService().deleteAndUnlinkFile(professorKey, fileMetadata.getKey())
+                .onSuccess(none -> showSnackBar("Successfully deleted " + fileMetadata.getFullFileName(), 1000))
+                .onError(error -> logAndShowErrorSnack("An error occurred!", error, LOGGER));
+    }
 
-		if (dateOfNextExam != null) {
-			binding.setTimeToNextExam(dateOfNextExam.getTime() - new Date().getTime());
-		}
-	}
+    protected void onDeleteTapped(Context context) {
+    }
 
-	private Runnable updateNextClassTime = () -> {
-		if (binding.getNextScheduleClass() != null &&
-				binding.getTimeToNextClass() != null) {
-			long timeToNextClass = binding.getTimeToNextClass();
+    protected ProfileImageUploadDialog getImageUploadDialog() {
+        return new ProfessorImageUploadDialog(this, personId);
+    }
 
-			timeToNextClass -= CLASS_TIME_UPDATE_PERIOD;
+    protected void deleteProfileImage() {
+        firebaseApi.getProfessorService()
+                .deleteImage(personId, binding.getProfessor().getImageMetadataKey())
+                .onSuccess(none -> showSnackBar("Successfully deleted your profile image", 1000))
+                .onError(error -> logAndShowErrorSnack("An error occurred while deleting your profile image",
+                        error,
+                        LOGGER));
+    }
 
-			if (timeToNextClass < 0) {
-				binding.setNextScheduleClass(null);
-			}
-			else {
-				binding.setTimeToNextClass(timeToNextClass);
-			}
-		}
+    protected void startUpdatingNextClass() {
+        delayHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateNextClassTime.run();
+                updateNextExamTime.run();
 
-		if (binding.getRecurringClasses() != null &&
-				binding.getOneTimeClasses() != null &&
-				binding.getNextScheduleClass() == null) {
-			setNextClass(getNextClass(binding.getRecurringClasses().values(),
-					binding.getOneTimeClasses().values()));
-		}
-	};
+                delayHandler.postDelayed(this, CLASS_TIME_UPDATE_PERIOD);
+            }
+        }, CLASS_TIME_UPDATE_PERIOD);
+    }
 
-	private Runnable updateNextExamTime = () -> {
-		if (binding.getNextScheduleClass() != null &&
-				binding.getTimeToNextExam() != null) {
-			long timeToNextExam = binding.getTimeToNextExam();
+    protected void setNextClass(ScheduleClassViewModel nextClass) {
+        binding.setNextScheduleClass(nextClass);
+        Date dateOfNextClass = dateOfNextClass(nextClass);
 
-			timeToNextExam -= CLASS_TIME_UPDATE_PERIOD;
+        if (dateOfNextClass != null) {
+            binding.setTimeToNextClass(dateOfNextClass.getTime() - new Date().getTime());
+        }
+    }
 
-			if (timeToNextExam < 0) {
-				binding.setNextExam(null);
-			}
-			else {
-				binding.setTimeToNextExam(timeToNextExam);
-			}
-		}
+    protected void setNextExam(ScheduleClassViewModel nextExam) {
+        binding.setNextExam(nextExam);
+        Date dateOfNextExam = dateOfNextClass(nextExam);
 
-		if (binding.getRecurringClasses() != null &&
-				binding.getOneTimeClasses() != null &&
-				binding.getNextExam() == null) {
-			setNextExam(getNextExam(binding.getOneTimeClasses().values()));
-		}
-	};
+        if (dateOfNextExam != null) {
+            binding.setTimeToNextExam(dateOfNextExam.getTime() - new Date().getTime());
+        }
+    }
 
-	private static final int CLASS_TIME_UPDATE_PERIOD = 1000;
+    protected ProfessorViewModel getBindingEntity() {
+        return getBinding().getProfessor();
+    }
 
-	protected ProfessorViewModel getBindingEntity(){
-		return getBinding().getProfessor();
-	}
+    private void showCourseRemoveDialog(CourseViewModel course) {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle("Removing course")
+                .setMessage("Are you sure you wish to remove yourself from this course?")
+                .setPositiveButton("Delete", (dialog, which) ->
+                        firebaseApi.getProfessorService()
+                                .removeCourse(binding.getProfessor(), course.getKey())
+                                .onSuccess(none -> showSnackBar("Removed yourself from the course", 1000))
+                                .onError(error -> logAndShowErrorSnack("An error occurred!",
+                                        error,
+                                        LOGGER)))
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    private void showActivityRemoveDialog(OtherActivityViewModel otherActivity) {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle("Removing activity")
+                .setMessage("Are you sure you wish to remove yourself from this course?")
+                .setPositiveButton("Delete", (dialog, which) ->
+                        firebaseApi.getProfessorService()
+                                .removeActivity(binding.getProfessor(), otherActivity.getKey())
+                                .onSuccess(none -> showSnackBar("Removed yourself from the activity", 1000))
+                                .onError(error -> logAndShowErrorSnack("An error occurred!",
+                                        error,
+                                        LOGGER)))
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
 }

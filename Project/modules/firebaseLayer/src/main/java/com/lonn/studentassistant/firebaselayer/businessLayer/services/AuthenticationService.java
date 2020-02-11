@@ -225,7 +225,8 @@ public class AuthenticationService {
             return WRITE_ENROLL;
         }
         if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getCourses().contains(course.getKey())) {
+            if (((ProfessorViewModel) loggedPerson).getCourses().contains(course.getKey()) ||
+                    course.getProfessors().contains(loggedPersonUUID)) {
                 return WRITE;
             }
             return READ_PUBLIC;
@@ -248,7 +249,8 @@ public class AuthenticationService {
             return WRITE_ENROLL;
         }
         if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getOtherActivities().contains(activity.getKey())) {
+            if (((ProfessorViewModel) loggedPerson).getOtherActivities().contains(activity.getKey()) ||
+                    activity.getProfessors().contains(loggedPersonUUID)) {
                 return WRITE;
             }
             return READ_FULL;
@@ -568,7 +570,8 @@ public class AuthenticationService {
         }
     }
 
-    private boolean listsHaveAtLeastOneElementInCommon(List<String> list1, List<String> list2) {
+    private boolean listsHaveAtLeastOneElementInCommon
+            (List<String> list1, List<String> list2) {
         List<String> auxList = new LinkedList<>(list1);
 
         auxList.removeAll(list2);
