@@ -5,6 +5,8 @@
 
         <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
 
+        <import type="com.lonn.studentassistant.utils.Utils" />
+
         <variable
             name="administrator"
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel" />
@@ -50,7 +52,10 @@
             layout="@layout/administrator_activity_home_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible" />
+            android:visibility="visible"
+            app:administrator="@{administrator}"
+            app:coursesWithoutProfessors="@{Utils.getCoursesWithoutProfessors(courses)}"
+            app:otherActivitiesWithoutProfessors="@{Utils.getActivitiesWithoutProfessors(otherActivities)}" />
 
         <include
             android:id="@+id/layoutProfile"
@@ -62,13 +67,6 @@
             app:editing="@{editingProfile}"
             app:personalFiles="@{personalFiles}"
             app:profileImageContent="@{profileImageContent}" />
-
-        <include
-            android:id="@+id/layoutMessages"
-            layout="@layout/administrator_activity_messages_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="invisible" />
 
         <include
             android:id="@+id/layoutProfessors"
