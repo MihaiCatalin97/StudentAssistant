@@ -106,25 +106,7 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
     }
 
     public void parseSchedule(View v) {
-        UAICScheduleParser uaicScheduleParser = new UAICScheduleParser();
-
-        newSingleThreadExecutor().submit(() -> {
-            showSnackBar("Parsing UAIC schedule");
-
-            try {
-                ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
-
-                saveCourses(parseResult.getCourses());
-                saveProfessors(parseResult.getProfessors());
-                saveOtherActivities(parseResult.getOtherActivities());
-                saveOneTimeClasses(parseResult.getOneTimeClasses());
-                saveRecurringClasses(parseResult.getRecurringClasses());
-            } catch (InterruptedException | ExecutionException exception) {
-                showSnackBar("An error occurred while parsing the schedule!",
-                        1000);
-                LOGGER.error("Failed to parse UAIC schedule", exception);
-            }
-        });
+        showScheduleParseDialog();
     }
 
     protected void loadAll(String entityKey) {
@@ -178,24 +160,24 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
         ((ScrollViewCategory) findViewById(R.id.announcementsCategories)).setOnAddAction(() -> {
             AnnouncementInputDialog announcementInputDialog = new AnnouncementInputDialog(this);
             announcementInputDialog.setPositiveButtonAction(announcement -> {
-                        if (announcement.getTitle().length() == 0) {
-                            showSnackBar("Enter an announcement title", 1500);
-                            return;
-                        }
+                if (announcement.getTitle().length() == 0) {
+                    showSnackBar("Enter an announcement title", 1500);
+                    return;
+                }
 
-                        if (announcement.getMessage().length() == 0) {
-                            showSnackBar("Enter an announcement message", 1500);
-                            return;
-                        }
+                if (announcement.getMessage().length() == 0) {
+                    showSnackBar("Enter an announcement message", 1500);
+                    return;
+                }
 
-                        firebaseApi.getAnnouncementService()
-                                .save(announcement)
-                                .onSuccess(none -> showSnackBar("Announcement saved successfully", 1500))
-                                .onError(error -> logAndShowErrorSnack("An error occurred",
-                                        error,
-                                        LOGGER));
+                firebaseApi.getAnnouncementService()
+                        .save(announcement)
+                        .onSuccess(none -> showSnackBar("Announcement saved successfully", 1500))
+                        .onError(error -> logAndShowErrorSnack("An error occurred",
+                                error,
+                                LOGGER));
                 announcementInputDialog.dismiss();
-                    }).show();
+            }).show();
         });
 
         ((ScrollViewCategory<AnnouncementViewModel>) findViewById(R.id.announcementsCategories))
@@ -255,6 +237,37 @@ public class AdministratorActivity extends MainActivity<AdministratorViewModel> 
                             .deleteMetadataAndContent(file.getKey())
                             .onSuccess(none -> showSnackBar("Successfully deleted file!", 1500))
                             .onError(error -> logAndShowErrorSnack("An error occurred", error, LOGGER));
+                })
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    private void showScheduleParseDialog() {
+        new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle("Schedule parse")
+                .setMessage("Are you sure you wish to parse the UAIC schedule web page?\nThis is intended to be an intialization operation and will create duplicates if the parsed entities already exist.")
+                .setPositiveButton("Parse", (dialog, which) -> {
+
+                    UAICScheduleParser uaicScheduleParser = new UAICScheduleParser();
+
+                    newSingleThreadExecutor().submit(() -> {
+                        showSnackBar("Parsing UAIC schedule");
+
+                        try {
+                            ParseResult parseResult = uaicScheduleParser.parseUAICSchedule().get();
+
+                            saveCourses(parseResult.getCourses());
+                            saveProfessors(parseResult.getProfessors());
+                            saveOtherActivities(parseResult.getOtherActivities());
+                            saveOneTimeClasses(parseResult.getOneTimeClasses());
+                            saveRecurringClasses(parseResult.getRecurringClasses());
+                        } catch (InterruptedException | ExecutionException exception) {
+                            showSnackBar("An error occurred while parsing the schedule!",
+                                    1000);
+                            LOGGER.error("Failed to parse UAIC schedule", exception);
+                        }
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .create()
