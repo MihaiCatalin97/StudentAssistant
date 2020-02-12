@@ -8,7 +8,7 @@ import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstract
 import java.util.List;
 
 public interface IService<T extends BaseEntity, V extends Exception, U extends EntityViewModel<T>> {
-    FirebaseTask<List<U>, V> getAll();
+    Future<List<U>, Exception> getAll(boolean subscribe);
 
     Future<U, Exception> getById(String id, boolean subscribe);
 

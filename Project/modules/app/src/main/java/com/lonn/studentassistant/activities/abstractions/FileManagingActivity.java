@@ -28,7 +28,7 @@ public abstract class FileManagingActivity<T extends EntityViewModel<? extends B
 	public static final int UPLOAD_FILE_REQUEST_CODE = 10000;
 	public static final int UPLOAD_IMAGE_REQUEST_CODE = 10001;
 	private static final Logger LOGGER = Logger.ofClass(FileManagingActivity.class);
-	private FileUploadDialog fileUploadDialog;
+	protected FileUploadDialog fileUploadDialog;
 	private FileMetadataViewModel fileToDownload;
 
 	public boolean tapScrollViewEntityLayout(View v) {

@@ -48,6 +48,14 @@
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
+            name="announcements"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel&gt;" />
+
+        <variable
+            name="administrativeFiles"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
             name="editingProfile"
             type="Boolean" />
 
@@ -148,7 +156,9 @@
             layout="@layout/student_activity_administrative_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:administrativeFiles="@{administrativeFiles}"
+            app:announcements="@{announcements}"/>
 
         <include
             android:id="@+id/layoutOtherActivities"

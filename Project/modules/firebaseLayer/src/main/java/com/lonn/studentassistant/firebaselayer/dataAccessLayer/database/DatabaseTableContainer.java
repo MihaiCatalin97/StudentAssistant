@@ -1,6 +1,7 @@
 package com.lonn.studentassistant.firebaselayer.dataAccessLayer.database;
 
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Administrator;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Announcement;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileMetadata;
@@ -28,6 +29,7 @@ public class DatabaseTableContainer {
 	public static final DatabaseTable<FileContent> FILE_CONTENT;
 	public static final DatabaseTable<Laboratory> LABORATORIES;
 	public static final DatabaseTable<RegistrationToken> REGISTRATION_TOKENS;
+	public static final DatabaseTable<Announcement> ANNOUNCEMENTS;
 
 	static {
 		ADMINISTRATORS = new DatabaseTable<>(Administrator.class, "Administrators");
@@ -43,5 +45,6 @@ public class DatabaseTableContainer {
 		FILE_CONTENT = new DatabaseTable<>(FileContent.class, "Files/Content");
 		LABORATORIES = new DatabaseTable<>(Laboratory.class, "Laboratories");
 		REGISTRATION_TOKENS = new DatabaseTable<>(RegistrationToken.class, "RegistrationTokens");
+		ANNOUNCEMENTS = new DatabaseTable<>(Announcement.class, "Announcements");
 	}
 }

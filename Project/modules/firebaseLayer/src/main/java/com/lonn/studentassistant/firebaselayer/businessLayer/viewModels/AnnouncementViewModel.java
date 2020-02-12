@@ -1,11 +1,11 @@
 package com.lonn.studentassistant.firebaselayer.businessLayer.viewModels;
 
-import androidx.databinding.Bindable;
-
-import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Announcement;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType;
 
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -21,20 +21,16 @@ import lombok.experimental.Accessors;
 @AllArgsConstructor
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-public final class FileContentViewModel extends EntityViewModel<FileContent> {
-	private String fileMetadataKey;
-	private String fileContentBase64;
-	private String associatedEntityKey;
-	private List<AccountType> targetedGroups;
+public class AnnouncementViewModel extends EntityViewModel<Announcement> {
+    private String administratorKey;
+    private List<AccountType> targetedGroups;
+    private String title;
+    private String message;
+    private Date date;
 
-	@Override
-	public FileContentViewModel setKey(String key) {
-		super.setKey(key);
-		return this;
-	}
-
-	@Override
-	public FileContentViewModel clone() {
-		return (FileContentViewModel) super.clone();
-	}
+    @Override
+    public AnnouncementViewModel setKey(String key) {
+        super.setKey(key);
+        return this;
+    }
 }

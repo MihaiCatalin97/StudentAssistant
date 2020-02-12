@@ -93,7 +93,7 @@ public class CustomFileReader {
 			cursor.close();
 		}
 
-		if (name != null) {
+		if (name != null && name.contains(".")) {
 			return name.substring(0, name.lastIndexOf("."));
 		}
 

@@ -4,9 +4,10 @@ import android.os.Handler;
 
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.abstractions.ViewModelAdapter;
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.Future;
-import com.lonn.studentassistant.firebaselayer.businessLayer.api.tasks.FirebaseListTask;
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.tasks.FirebaseTask;
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.tasks.FirebaseVoidTask;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.AuthenticationService;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.abstractions.BaseEntity;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel;
@@ -15,8 +16,6 @@ import com.lonn.studentassistant.firebaselayer.dataAccessLayer.requests.DeleteAl
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.requests.DeleteByIdRequest;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.requests.GetRequest;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.requests.SaveRequest;
-import com.lonn.studentassistant.firebaselayer.businessLayer.services.AuthenticationService;
-import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -37,12 +36,34 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         this.firebaseConnection = firebaseConnection;
     }
 
-    public FirebaseTask<List<U>, V> getAll() {
-        return new FirebaseListTask<T, U, V>(firebaseConnection,
-                new GetRequest<T, V>().databaseTable(getDatabaseTable()))
-                .setTransformer(this::transform);
+    @Override
+    public Future<List<U>, Exception> getAll(boolean subscribe) {
+        Future<List<U>, Exception> result = new Future<>();
+
+        firebaseConnection.execute(new GetRequest<T, V>()
+                .databaseTable(getDatabaseTable())
+                .subscribe(subscribe)
+                .onSuccess(entities -> {
+                    if (entities != null) {
+                        List<T> visibleEntities = new LinkedList<>();
+
+                        for (T entity : entities) {
+                            if (getPermissionLevel(entity).isAtLeast(READ_PUBLIC)) {
+                                visibleEntities.add(entity);
+                            }
+                        }
+
+                        result.complete(transform(visibleEntities));
+                    }
+                    else {
+                        result.completeExceptionally(new Exception("Entity not found"));
+                    }
+                }));
+
+        return result;
     }
 
+    @Override
     public Future<U, Exception> getById(String id, boolean subscribe) {
         Future<U, Exception> result = new Future<>();
 
@@ -67,6 +88,7 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         return result;
     }
 
+    @Override
     public Future<Void, Exception> save(U entityViewModel) {
         Future<Void, Exception> result = new Future<>();
 
@@ -86,6 +108,7 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         return result;
     }
 
+    @Override
     public FirebaseTask<Void, V> save(T entity) {
         if (getPermissionLevel(entity).isAtLeast(WRITE_ENROLL)) {
             return new FirebaseVoidTask<>(firebaseConnection,
@@ -98,12 +121,14 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         }
     }
 
+    @Override
     public FirebaseTask<Void, Exception> deleteAll() {
         return new FirebaseVoidTask<>(firebaseConnection,
                 new DeleteAllRequest()
                         .databaseTable(getDatabaseTable()));
     }
 
+    @Override
     public Future<Void, Exception> deleteById(String id) {
         Future<Void, Exception> result = new Future<>();
 
@@ -125,6 +150,7 @@ public abstract class Service<T extends BaseEntity, V extends Exception, U exten
         return result;
     }
 
+    @Override
     public Future<List<U>, Exception> getByIds(List<String> gradeKeys, boolean subscribe) {
         Future<List<U>, Exception> result = new Future<>();
         final List<U> grades = new LinkedList<>();

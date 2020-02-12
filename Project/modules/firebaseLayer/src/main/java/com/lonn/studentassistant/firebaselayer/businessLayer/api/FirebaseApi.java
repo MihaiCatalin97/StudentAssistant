@@ -2,6 +2,7 @@ package com.lonn.studentassistant.firebaselayer.businessLayer.api;
 
 import android.content.Context;
 
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.AnnouncementService;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.firebaseConnection.FirebaseConnection;
 import com.lonn.studentassistant.firebaselayer.businessLayer.services.AdministratorService;
 import com.lonn.studentassistant.firebaselayer.businessLayer.services.AuthenticationService;
@@ -55,6 +56,8 @@ public class FirebaseApi {
 	private RoomService roomService;
 	@Getter
 	private RegistrationTokenService registrationTokenService;
+	@Getter
+	private AnnouncementService announcementService;
 
 	private FirebaseApi(Context applicationContext) {
 		FirebaseConnection firebaseConnection = FirebaseConnection.getInstance(applicationContext);
@@ -76,6 +79,7 @@ public class FirebaseApi {
 		gradeService = GradeService.getInstance(firebaseConnection);
 		roomService = RoomService.getInstance(firebaseConnection);
 		registrationTokenService = RegistrationTokenService.getInstance(firebaseConnection);
+		announcementService = AnnouncementService.getInstance(firebaseConnection);
 	}
 
 	public static FirebaseApi getApi(Context context) {

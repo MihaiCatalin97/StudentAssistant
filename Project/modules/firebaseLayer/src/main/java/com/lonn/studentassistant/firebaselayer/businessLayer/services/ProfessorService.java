@@ -291,8 +291,8 @@ public class ProfessorService extends PersonService<Professor, ProfessorViewMode
 	public Future<ProfessorViewModel, Exception> getByName(String firstName, String lastName, boolean subscribe) {
 		Future<ProfessorViewModel, Exception> result = new Future<>();
 
-		getAll().subscribe(subscribe)
-				.onComplete(professors -> {
+		getAll(subscribe)
+				.onSuccess(professors -> {
 					for (ProfessorViewModel professor : professors) {
 						if (professor.getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
 								professor.getLastName().toLowerCase().equals(lastName.toLowerCase())) {
@@ -302,8 +302,8 @@ public class ProfessorService extends PersonService<Professor, ProfessorViewMode
 					}
 
 					result.complete(null);
-				},
-				result::completeExceptionally);
+				})
+				.onError(result::completeExceptionally);
 
 		return result;
 	}

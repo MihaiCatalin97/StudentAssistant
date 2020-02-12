@@ -7,6 +7,9 @@ import androidx.databinding.Bindable;
 import com.lonn.studentassistant.firebaselayer.FileUtils;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileMetadata;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.AccountType;
+
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,6 +36,8 @@ public final class FileMetadataViewModel extends EntityViewModel<FileMetadata> {
 	private long fileSize;
 	@Bindable
 	private String fileType;
+	@Bindable
+	private List<AccountType> targetedGroups;
 
 	@Bindable
 	public String getFileSize() {

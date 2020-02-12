@@ -2,13 +2,13 @@ package com.lonn.studentassistant.firebaselayer.businessLayer.services;
 
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.OneTimeClassAdapter;
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.Future;
+import com.lonn.studentassistant.firebaselayer.businessLayer.services.abstractions.Service;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.database.DatabaseTable;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.OneTimeClass;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.WeekDay;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.firebaseConnection.FirebaseConnection;
-import com.lonn.studentassistant.firebaselayer.businessLayer.services.abstractions.Service;
-import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -22,178 +22,180 @@ import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.e
 import static java.util.Calendar.DAY_OF_WEEK;
 
 public class OneTimeClassService extends Service<OneTimeClass, Exception, OneTimeClassViewModel> {
-	private static OneTimeClassService instance;
-	private CourseService courseService;
-	private OtherActivityService otherActivityService;
-	private ProfessorService professorService;
+    private static OneTimeClassService instance;
+    private CourseService courseService;
+    private OtherActivityService otherActivityService;
+    private ProfessorService professorService;
 
-	private OneTimeClassService(FirebaseConnection firebaseConnection) {
-		super(firebaseConnection);
-		adapter = new OneTimeClassAdapter(firebaseConnection);
-	}
+    private OneTimeClassService(FirebaseConnection firebaseConnection) {
+        super(firebaseConnection);
+        adapter = new OneTimeClassAdapter(firebaseConnection);
+    }
 
-	public static OneTimeClassService getInstance(FirebaseConnection firebaseConnection) {
-		if (instance == null) {
-			instance = new OneTimeClassService(firebaseConnection);
-			instance.init();
-		}
+    public static OneTimeClassService getInstance(FirebaseConnection firebaseConnection) {
+        if (instance == null) {
+            instance = new OneTimeClassService(firebaseConnection);
+            instance.init();
+        }
 
-		return instance;
-	}
+        return instance;
+    }
 
-	protected void init() {
-		super.init();
-		adapter = new OneTimeClassAdapter(firebaseConnection);
-		courseService = CourseService.getInstance(firebaseConnection);
-		professorService = ProfessorService.getInstance(firebaseConnection);
-		otherActivityService = OtherActivityService.getInstance(firebaseConnection);
-	}
+    @Override
+    public Future<Void, Exception> deleteById(String oneTimeClassId) {
+        Future<Void, Exception> result = new Future<>();
 
-	@Override
-	protected OneTimeClassViewModel transform(OneTimeClass oneTimeClass) {
-		OneTimeClassViewModel result = super.transform(oneTimeClass);
+        getById(oneTimeClassId, false)
+                .onSuccess(oneTimeClass -> {
+                    if (oneTimeClass == null) {
+                        result.completeExceptionally(new Exception("No class found"));
+                    }
+                    else {
+                        super.deleteById(oneTimeClassId)
+                                .onSuccess(result::complete)
+                                .onError(result::completeExceptionally);
 
-		CourseService.getInstance(firebaseConnection)
-				.getById(oneTimeClass.getDiscipline(), true)
-				.onSuccess((discipline) -> {
-					result.setDisciplineName(discipline.getName());
-					result.notifyPropertyChanged(_all);
-				});
+                        for (String professorKey : oneTimeClass.getProfessors()) {
+                            professorService.removeOneTimeClass(professorKey, oneTimeClassId);
+                        }
 
-		OtherActivityService.getInstance(firebaseConnection)
-				.getById(oneTimeClass.getDiscipline(), true)
-				.onSuccess((discipline) -> {
-					result.setDisciplineName(discipline.getName());
-					result.notifyPropertyChanged(_all);
-				});
+                        courseService.removeOneTimeClass(oneTimeClass.getDiscipline(),
+                                oneTimeClassId);
+                        otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
+                                oneTimeClassId);
+                    }
+                })
+                .onError(result::completeExceptionally);
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public Future<Void, Exception> deleteById(String oneTimeClassId) {
-		Future<Void, Exception> result = new Future<>();
+    public Future<Void, Exception> delete(OneTimeClass oneTimeClass) {
+        Future<Void, Exception> result = new Future<>();
 
-		getById(oneTimeClassId, false)
-				.onSuccess(oneTimeClass -> {
-					if (oneTimeClass == null) {
-						result.completeExceptionally(new Exception("No class found"));
-					}
-					else {
-						super.deleteById(oneTimeClassId)
-								.onSuccess(result::complete)
-								.onError(result::completeExceptionally);
+        if (oneTimeClass == null) {
+            result.completeExceptionally(new Exception("No class found"));
+        }
+        else {
+            super.deleteById(oneTimeClass.getKey())
+                    .onSuccess(result::complete)
+                    .onError(result::completeExceptionally);
 
-						for (String professorKey : oneTimeClass.getProfessors()) {
-							professorService.removeOneTimeClass(professorKey, oneTimeClassId);
-						}
+            for (String professorKey : oneTimeClass.getProfessors()) {
+                professorService.removeRecurringClass(professorKey, oneTimeClass.getKey());
+            }
 
-						courseService.removeOneTimeClass(oneTimeClass.getDiscipline(),
-								oneTimeClassId);
-						otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
-								oneTimeClassId);
-					}
-				})
-				.onError(result::completeExceptionally);
+            courseService.removeRecurringClass(oneTimeClass.getDiscipline(),
+                    oneTimeClass.getKey());
+            otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
+                    oneTimeClass.getKey());
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public Future<Void, Exception> delete(OneTimeClass oneTimeClass) {
-		Future<Void, Exception> result = new Future<>();
+    public Future<List<OneTimeClassViewModel>, Exception> getByRoomAndDay(String room,
+                                                                          WeekDay day) {
+        Future<List<OneTimeClassViewModel>, Exception> result = new Future<>();
 
-		if (oneTimeClass == null) {
-			result.completeExceptionally(new Exception("No class found"));
-		}
-		else {
-			super.deleteById(oneTimeClass.getKey())
-					.onSuccess(result::complete)
-					.onError(result::completeExceptionally);
+        getAll(false)
+                .onSuccess(classes -> {
+                    List<OneTimeClassViewModel> returnedClasses = new LinkedList<>();
 
-			for (String professorKey : oneTimeClass.getProfessors()) {
-				professorService.removeRecurringClass(professorKey, oneTimeClass.getKey());
-			}
+                    for (OneTimeClassViewModel oneTimeClass : classes) {
+                        Calendar classDate = Calendar.getInstance();
+                        classDate.setTime(oneTimeClass.getDate());
 
-			courseService.removeRecurringClass(oneTimeClass.getDiscipline(),
-					oneTimeClass.getKey());
-			otherActivityService.removeOneTimeClass(oneTimeClass.getDiscipline(),
-					oneTimeClass.getKey());
-		}
+                        if (classDate.get(DAY_OF_WEEK) == weekDayToCalendarWeekDay(day) &&
+                                oneTimeClass.getRooms().contains(room)) {
+                            returnedClasses.add(oneTimeClass);
+                        }
+                    }
 
-		return result;
-	}
+                    result.complete(returnedClasses);
+                })
+                .onError(result::completeExceptionally);
 
-	public Future<List<OneTimeClassViewModel>, Exception> getByRoomAndDay(String room,
-																		  WeekDay day) {
-		Future<List<OneTimeClassViewModel>, Exception> result = new Future<>();
+        return result;
+    }
 
-		getAll().subscribe(false)
-				.onComplete(classes -> {
-					List<OneTimeClassViewModel> returnedClasses = new LinkedList<>();
+    public Future<List<OneTimeClassViewModel>, Exception> getByRoomAndDate(String room,
+                                                                           Date date) {
+        Future<List<OneTimeClassViewModel>, Exception> result = new Future<>();
 
-					for (OneTimeClassViewModel oneTimeClass : classes) {
-						Calendar classDate = Calendar.getInstance();
-						classDate.setTime(oneTimeClass.getDate());
+        getAll(false)
+                .onSuccess(classes -> {
+                    List<OneTimeClassViewModel> returnedClasses = new LinkedList<>();
 
-						if (classDate.get(DAY_OF_WEEK) == weekDayToCalendarWeekDay(day) &&
-								oneTimeClass.getRooms().contains(room)) {
-							returnedClasses.add(oneTimeClass);
-						}
-					}
+                    for (OneTimeClassViewModel oneTimeClass : classes) {
+                        if (oneTimeClass.getDate().equals(date) &&
+                                oneTimeClass.getRooms().contains(room)) {
+                            returnedClasses.add(oneTimeClass);
+                        }
+                    }
 
-					result.complete(returnedClasses);
-				}, result::completeExceptionally);
+                    result.complete(returnedClasses);
+                })
+                .onError(result::completeExceptionally);
 
-		return result;
-	}
+        return result;
+    }
 
-	public Future<List<OneTimeClassViewModel>, Exception> getByRoomAndDate(String room,
-																		   Date date) {
-		Future<List<OneTimeClassViewModel>, Exception> result = new Future<>();
+    @Override
+    public Future<Void, Exception> save(OneTimeClassViewModel oneTimeClass) {
+        Future<Void, Exception> result = new Future<>();
 
-		getAll().subscribe(false)
-				.onComplete(classes -> {
-					List<OneTimeClassViewModel> returnedClasses = new LinkedList<>();
+        super.save(oneTimeClass)
+                .onSuccess(none -> {
+                    result.complete(null);
 
-					for (OneTimeClassViewModel oneTimeClass : classes) {
-						if (oneTimeClass.getDate().equals(date) &&
-								oneTimeClass.getRooms().contains(room)) {
-							returnedClasses.add(oneTimeClass);
-						}
-					}
+                    courseService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
+                    otherActivityService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
 
-					result.complete(returnedClasses);
-				}, result::completeExceptionally);
+                    for (String professorKey : oneTimeClass.getProfessors()) {
+                        professorService.addOneTimeClass(professorKey, oneTimeClass.getKey());
+                    }
+                })
+                .onError(result::completeExceptionally);
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	public Future<Void, Exception> save(OneTimeClassViewModel oneTimeClass) {
-		Future<Void, Exception> result = new Future<>();
+    protected void init() {
+        super.init();
+        adapter = new OneTimeClassAdapter(firebaseConnection);
+        courseService = CourseService.getInstance(firebaseConnection);
+        professorService = ProfessorService.getInstance(firebaseConnection);
+        otherActivityService = OtherActivityService.getInstance(firebaseConnection);
+    }
 
-		super.save(oneTimeClass)
-				.onSuccess(none -> {
-					result.complete(null);
+    @Override
+    protected OneTimeClassViewModel transform(OneTimeClass oneTimeClass) {
+        OneTimeClassViewModel result = super.transform(oneTimeClass);
 
-					courseService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
-					otherActivityService.addOneTimeClass(oneTimeClass.getDiscipline(), oneTimeClass.getKey());
+        CourseService.getInstance(firebaseConnection)
+                .getById(oneTimeClass.getDiscipline(), true)
+                .onSuccess((discipline) -> {
+                    result.setDisciplineName(discipline.getName());
+                    result.notifyPropertyChanged(_all);
+                });
 
-					for (String professorKey : oneTimeClass.getProfessors()) {
-						professorService.addOneTimeClass(professorKey, oneTimeClass.getKey());
-					}
-				})
-				.onError(result::completeExceptionally);
+        OtherActivityService.getInstance(firebaseConnection)
+                .getById(oneTimeClass.getDiscipline(), true)
+                .onSuccess((discipline) -> {
+                    result.setDisciplineName(discipline.getName());
+                    result.notifyPropertyChanged(_all);
+                });
 
-		return result;
-	}
+        return result;
+    }
 
-	@Override
-	protected DatabaseTable<OneTimeClass> getDatabaseTable() {
-		return ONE_TIME_CLASSES;
-	}
+    @Override
+    protected DatabaseTable<OneTimeClass> getDatabaseTable() {
+        return ONE_TIME_CLASSES;
+    }
 
-	protected PermissionLevel getPermissionLevel(OneTimeClass fileMetadata) {
-		return WRITE;
-	}
+    protected PermissionLevel getPermissionLevel(OneTimeClass fileMetadata) {
+        return WRITE;
+    }
 }

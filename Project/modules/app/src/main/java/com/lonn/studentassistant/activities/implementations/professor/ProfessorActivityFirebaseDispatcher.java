@@ -3,6 +3,7 @@ package com.lonn.studentassistant.activities.implementations.professor;
 import com.lonn.studentassistant.activities.abstractions.Dispatcher;
 import com.lonn.studentassistant.databinding.BindableHashMap;
 import com.lonn.studentassistant.databinding.ProfessorActivityMainLayoutBinding;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.OneTimeClassViewModel;
@@ -14,6 +15,8 @@ import com.lonn.studentassistant.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.lonn.studentassistant.BR.administrativeFiles;
+import static com.lonn.studentassistant.BR.announcements;
 import static com.lonn.studentassistant.BR.courses;
 import static com.lonn.studentassistant.BR.oneTimeClasses;
 import static com.lonn.studentassistant.BR.otherActivities;
@@ -41,6 +44,8 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
     private BindableHashMap<CourseViewModel> personalCoursesMap;
     private BindableHashMap<OtherActivityViewModel> personalActivitiesMap;
     private BindableHashMap<FileMetadataViewModel> personalFilesMap;
+    private BindableHashMap<AnnouncementViewModel> announcementMap;
+    private BindableHashMap<FileMetadataViewModel> administrativeFilesMap;
 
     ProfessorActivityFirebaseDispatcher(ProfessorActivity professorActivity) {
         super(professorActivity);
@@ -113,12 +118,8 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
         loadOtherActivities();
         loadCourses();
         loadProfessors();
-    }
-
-    private void setNextClasses(){
-        activity.setNextClass(getNextClass(recurringClassesMap.values(),
-                oneTimeClassesMap.values()));
-        activity.setNextExam(getNextExam(oneTimeClassesMap.values()));
+        loadAnnouncements();
+        loadAdministrativeFiles();
     }
 
     @Override
@@ -143,11 +144,17 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
         return true;
     }
 
+    private void setNextClasses() {
+        activity.setNextClass(getNextClass(recurringClassesMap.values(),
+                oneTimeClassesMap.values()));
+        activity.setNextExam(getNextExam(oneTimeClassesMap.values()));
+    }
+
     private void loadProfessors() {
         firebaseApi.getProfessorService()
-                .getAll()
-                .onComplete(receivedProfessors -> professorsMap = new BindableHashMap<>(binding, professors, receivedProfessors),
-                        error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
+                .getAll(true)
+                .onSuccess(receivedProfessors -> professorsMap = new BindableHashMap<>(binding, professors, receivedProfessors))
+                .onError(error -> activity.logAndShowErrorSnack("An error occurred while loading professors.", error, LOGGER));
     }
 
     private void loadFiles(List<String> fileIds) {
@@ -176,16 +183,16 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
 
     private void loadCourses() {
         firebaseApi.getCourseService()
-                .getAll()
-                .onComplete(receivedCourses -> courseMap = new BindableHashMap<>(binding, courses, receivedCourses),
-                        error -> activity.logAndShowErrorSnack("An error occurred while loading courses.", error, LOGGER));
+                .getAll(true)
+                .onSuccess(receivedCourses -> courseMap = new BindableHashMap<>(binding, courses, receivedCourses))
+                .onError(error -> activity.logAndShowErrorSnack("An error occurred while loading courses.", error, LOGGER));
     }
 
     private void loadOtherActivities() {
         firebaseApi.getOtherActivityService()
-                .getAll()
-                .onComplete(receivedOtherActivities -> otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities),
-                        error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
+                .getAll(true)
+                .onSuccess(receivedOtherActivities -> otherActivityMap = new BindableHashMap<>(binding, otherActivities, receivedOtherActivities))
+                .onError(error -> activity.logAndShowErrorSnack("An error occurred while loading activities.", error, LOGGER));
     }
 
     private void loadRecurringClasses(List<String> recurringClassIds) {
@@ -237,5 +244,21 @@ class ProfessorActivityFirebaseDispatcher extends Dispatcher<ProfessorActivity, 
                             error,
                             LOGGER));
         }
+    }
+
+    private void loadAnnouncements() {
+        firebaseApi.getAnnouncementService()
+                .getAll(true)
+                .onSuccess(receivedAnnouncements -> announcementMap = new BindableHashMap<>(binding, announcements, receivedAnnouncements))
+                .onError(error -> activity.logAndShowErrorSnack("An error occurred while loading announcements.", error, LOGGER));
+    }
+
+    private void loadAdministrativeFiles() {
+        firebaseApi.getFileMetadataService()
+                .getByAssociatedEntityKey("ADMINISTRATIVE", true)
+                .onSuccess(receivedFiles ->
+                        administrativeFilesMap = new BindableHashMap<>(binding, administrativeFiles, receivedFiles))
+                .onError(error ->
+                        activity.logAndShowErrorSnack("An error occurred while loading administrative files.", error, LOGGER));
     }
 }

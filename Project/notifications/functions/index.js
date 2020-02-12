@@ -156,7 +156,6 @@ exports.sendSpecialScheduleRemovedNotification =
 
 exports.sendCourseAddedNotification =
     functions.database.ref('/dev/Courses/{uid}').onCreate((change, context) => {
-        console.log(change._data);
         return users.getAllTokens()
             .then(tokens => {
                 return notifications.sendNotifications("Course added to Student Assistant",
@@ -167,7 +166,6 @@ exports.sendCourseAddedNotification =
 
 exports.sendCourseDeletedNotification =
     functions.database.ref('/dev/Courses/{uid}').onDelete((change, context) => {
-        console.log(change._data);
         return users.getAllTokens()
             .then(tokens => {
                 return notifications.sendNotifications("Course deleted from Student Assistant",
@@ -178,7 +176,6 @@ exports.sendCourseDeletedNotification =
 
 exports.sendActivityAddedNotification =
     functions.database.ref('/dev/Otheractivities/{uid}').onCreate((change, context) => {
-        console.log(change._data);
         return users.getAllTokens()
             .then(tokens => {
                 return notifications.sendNotifications("Activity added to Student Assistant",
@@ -189,11 +186,67 @@ exports.sendActivityAddedNotification =
 
 exports.sendActivityDeletedNotification =
     functions.database.ref('/dev/Otheractivities/{uid}').onDelete((change, context) => {
-        console.log(change._data);
         return users.getAllTokens()
             .then(tokens => {
                 return notifications.sendNotifications("Activity deleted from Student Assistant",
                     `The activity ${change._data.disciplineName} has been deleted from the application.`,
                     tokens);
             });
+    });
+
+exports.sendAdministrativeFileAddedNotification =
+    functions.database.ref('/dev/Files/metadata/{uid}').onCreate((change, context) => {
+        targetedGroups = Object.values(change._data.targetedGroups);
+        targetedGroups = targetedGroups.concat(`ADMINISTRATOR`);
+
+        let title = "Administrative file added";
+        let message = "A new administrative file has been added";
+
+        return users.getTokensForAccountTypes(targetedGroups)
+            .then(tokens => {
+                return notifications.sendNotifications(title, message, tokens);
+            })
+    });
+
+exports.sendAdministrativeFileDeletedNotification =
+    functions.database.ref('/dev/Files/metadata/{uid}').onDelete((change, context) => {
+        targetedGroups = Object.values(change._data.targetedGroups);
+        targetedGroups = targetedGroups.concat(`ADMINISTRATOR`);
+
+        let title = "Administrative file deleted";
+        let message = "An administrative file has been deleted";
+
+        return users.getTokensForAccountTypes(targetedGroups)
+            .then(tokens => {
+                return notifications.sendNotifications(title, message, tokens);
+            })
+    });
+
+
+exports.sendAnnouncementAddedNotification =
+    functions.database.ref('/dev/Announcements/{uid}').onCreate((change, context) => {
+        targetedGroups = Object.values(change._data.targetedGroups);
+        targetedGroups = targetedGroups.concat(`ADMINISTRATOR`);
+
+        let title = "Announcement added";
+        let message = "A new administrative announcement has been added";
+
+        return users.getTokensForAccountTypes(targetedGroups)
+            .then(tokens => {
+                return notifications.sendNotifications(title, message, tokens);
+            })
+    });
+
+exports.sendAnnouncementFileDeletedNotification =
+    functions.database.ref('/dev/Announcements/{uid}').onDelete((change, context) => {
+        targetedGroups = Object.values(change._data.targetedGroups);
+        targetedGroups = targetedGroups.concat(`ADMINISTRATOR`);
+        
+        let title = "Announcement deleted";
+        let message = "An administrative announcement has been deleted";
+
+        return users.getTokensForAccountTypes(targetedGroups)
+            .then(tokens => {
+                return notifications.sendNotifications(title, message, tokens);
+            })
     });

@@ -1,12 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ScreenLayoutWrapped"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.implementations.administrator.AdministratorActivity">
 
-    <TextView
+    <data>
+
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel" />
+
+        <import type="com.lonn.studentassistant.databinding.CategoryGenerator" />
+
+        <import type="com.lonn.studentassistant.viewModels.CategoryViewModel" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course" />
+
+        <import type="com.lonn.studentassistant.views.EntityViewType" />
+
+        <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
+
+        <import type="com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel" />
+
+        <variable
+            name="announcements"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel&gt;" />
+
+        <variable
+            name="administrativeFiles"
+            type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
+    </data>
+
+    <LinearLayout
+        style="@style/ScreenLayoutWrapped"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Administrative" />
+        android:orientation="vertical">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/titleAdministrativeLayout"
+            style="@style/DarkTitleShadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Administrative" />
+
+        <TextView
+            style="@style/DarkNormalShadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dim_8dp"
+            android:layout_marginTop="@dimen/dim_8dp"
+            android:gravity="start"
+            android:text="This page contains administrative information published by the administrators of the application." />
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/announcementsCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`Announcements`}"
+                    android:childEntities="@{announcements}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:entityName="@{`announcement`}"
+                    android:permissionLevel="@{PermissionLevel.READ_FULL}" />
+
+                <com.lonn.studentassistant.views.implementations.category.ScrollViewCategory
+                    android:id="@+id/administrativeFilesCategories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:categoryTitle="@{`Administrative Files`}"
+                    android:childEntities="@{administrativeFiles}"
+                    android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_TITLE_COMPARATOR}"
+                    android:entityName="@{`file`}"
+                    android:permissionLevel="@{PermissionLevel.READ_FULL}" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

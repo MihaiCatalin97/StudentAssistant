@@ -50,6 +50,14 @@
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
         <variable
+            name="announcements"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel&gt;" />
+
+        <variable
+            name="administrativeFiles"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
             name="editingProfile"
             type="Boolean" />
 
@@ -115,6 +123,8 @@
                 app:professors="@{professors.values()}"
                 app:profileImageContent="@{profileImageContent}"
                 app:recurringClasses="@{recurringClasses.values()}"
+                app:announcements="@{announcements.values()}"
+                app:administrativeFiles="@{administrativeFiles.values()}"
                 app:student="@{student}"
                 app:timeToNextClass="@{timeToNextClass}"
                 app:timeToNextExam="@{timeToNextExam}" />

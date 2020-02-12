@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.AdministratorAdapter;
+import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.AnnouncementAdapter;
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.CourseAdapter;
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.FileContentAdapter;
 import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.FileMetadataAdapter;
@@ -17,6 +18,7 @@ import com.lonn.studentassistant.firebaselayer.businessLayer.adapters.StudentAda
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.Future;
 import com.lonn.studentassistant.firebaselayer.businessLayer.api.tasks.FirebaseTask;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AdministratorViewModel;
+import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.CourseViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel;
@@ -27,6 +29,7 @@ import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.Professo
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.StudentViewModel;
 import com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.abstractions.EntityViewModel;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Administrator;
+import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Announcement;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.Course;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileContent;
 import com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.FileMetadata;
@@ -84,6 +87,7 @@ public class AuthenticationService {
     private ProfessorAdapter professorAdapter = new ProfessorAdapter();
     private StudentAdapter studentAdapter = new StudentAdapter();
     private GradeAdapter gradeAdapter = new GradeAdapter();
+    private AnnouncementAdapter announcementAdapter = new AnnouncementAdapter();
 
     private Consumer<EntityViewModel> onLoggedPersonChange;
     @Getter
@@ -297,6 +301,10 @@ public class AuthenticationService {
                     ((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
                 return READ_FULL;
             }
+            if (file.getTargetedGroups().size() > 0 &&
+                    !file.getTargetedGroups().contains(STUDENT)) {
+                return NONE;
+            }
             return READ_PUBLIC;
         }
         if (accountType.equals(PROFESSOR)) {
@@ -305,7 +313,10 @@ public class AuthenticationService {
                     file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
                 return WRITE;
             }
-
+            if (file.getTargetedGroups().size() > 0 &&
+                    !file.getTargetedGroups().contains(PROFESSOR)) {
+                return NONE;
+            }
             return WRITE;
         }
         if (accountType.equals(ADMINISTRATOR)) {
@@ -327,7 +338,10 @@ public class AuthenticationService {
                     ((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
                 return READ_FULL;
             }
-
+            if (file.getTargetedGroups().size() > 0 &&
+                    !file.getTargetedGroups().contains(STUDENT)) {
+                return NONE;
+            }
             return READ_PUBLIC;
         }
         if (accountType.equals(PROFESSOR)) {
@@ -336,7 +350,10 @@ public class AuthenticationService {
                     file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
                 return WRITE;
             }
-            //Todo: Investigate how to change this if it is a double join
+            if (file.getTargetedGroups().size() > 0 &&
+                    !file.getTargetedGroups().contains(PROFESSOR)) {
+                return NONE;
+            }
             return WRITE;
         }
         if (accountType.equals(ADMINISTRATOR)) {
@@ -446,6 +463,29 @@ public class AuthenticationService {
         return NONE;
     }
 
+    public PermissionLevel getPermissionLevel(Announcement announcement) {
+        if (accountType == null || mAuth.getCurrentUser() == null) {
+            return NONE;
+        }
+        if (accountType.equals(STUDENT)) {
+            if (loggedPerson != null && announcement.getTargetedGroups().contains(STUDENT)) {
+                return READ_FULL;
+            }
+            return NONE;
+        }
+        if (accountType.equals(PROFESSOR)) {
+            if (loggedPerson != null && announcement.getTargetedGroups().contains(PROFESSOR)) {
+                return READ_FULL;
+            }
+            return NONE;
+        }
+        if (accountType.equals(ADMINISTRATOR)) {
+            return WRITE;
+        }
+
+        return NONE;
+    }
+
     public PermissionLevel getPermissionLevel(CourseViewModel course) {
         return getPermissionLevel(courseAdapter.adapt(course));
     }
@@ -480,6 +520,10 @@ public class AuthenticationService {
 
     public PermissionLevel getPermissionLevel(GradeViewModel grade) {
         return getPermissionLevel(gradeAdapter.adapt(grade));
+    }
+
+    public PermissionLevel getPermissionLevel(AnnouncementViewModel announcement) {
+        return getPermissionLevel(announcementAdapter.adapt(announcement));
     }
 
     private void init(FirebaseConnection firebaseConnection) {

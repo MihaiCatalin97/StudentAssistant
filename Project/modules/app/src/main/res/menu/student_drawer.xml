@@ -36,6 +36,10 @@
                 android:id="@+id/nav_otherActivities"
                 android:icon="@drawable/ic_menu_other_activities"
                 android:title="Other Activities" />
+            <item
+                android:id="@+id/nav_administrative"
+                android:icon="@drawable/ic_menu_administrative"
+                android:title="Administrative" />
         </menu>
     </item>
 

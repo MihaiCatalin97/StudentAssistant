@@ -30,6 +30,14 @@
             type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
 
         <variable
+            name="announcements"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.AnnouncementViewModel&gt;" />
+
+        <variable
+            name="administrativeFiles"
+            type="java.util.Map&lt;String, com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileMetadataViewModel&gt;" />
+
+        <variable
             name="profileImageContent"
             type="com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.FileContentViewModel" />
 
@@ -77,7 +85,9 @@
                 app:otherActivities="@{otherActivities.values()}"
                 app:personalFiles="@{personalFiles.values()}"
                 app:professors="@{professors.values()}"
-                app:profileImageContent="@{profileImageContent}" />
+                app:announcements="@{announcements.values()}"
+                app:administrativeFiles="@{administrativeFiles.values()}"
+                app:profileImageContent="@{profileImageContent}"/>
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
