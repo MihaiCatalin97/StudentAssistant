@@ -10,6 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.lonn.studentassistant.R;
 
+import java.util.Random;
+
 public class CustomFirebaseMessagingService extends FirebaseMessagingService {
 
 	@Override
@@ -28,6 +30,6 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
 		NotificationManager notificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		notificationManager.notify(0, notificationBuilder.build());
+		notificationManager.notify(new Random().nextInt(10000), notificationBuilder.build());
 	}
 }

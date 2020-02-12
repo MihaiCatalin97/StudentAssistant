@@ -56,10 +56,13 @@ exports.notifyPersonOnScheduleAction = (scheduleClass, action, scheduleClassType
 
 const sendScheduleActionNotification = (discipline, groups, action, disciplineType, scheduleClassType) => {
     if (discipline) {
-        return sendScheduleActionNotificationToGroups(activity, groups, action, disciplineType, scheduleClassType)
-            .then(promise => {
-                return sendScheduleActionNotificationToProfessors(activity, action, disciplineType, scheduleClassType);
-            });
+        if (discipline.students) {
+            return sendScheduleActionNotificationToGroups(discipline, groups, action, disciplineType, scheduleClassType)
+                .then(promise => {
+                    return sendScheduleActionNotificationToProfessors(discipline, action, disciplineType, scheduleClassType);
+                });
+        }
+        return sendScheduleActionNotificationToProfessors(discipline, action, disciplineType, scheduleClassType);
     }
     return null;
 }

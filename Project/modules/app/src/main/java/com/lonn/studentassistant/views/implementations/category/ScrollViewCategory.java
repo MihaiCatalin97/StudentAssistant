@@ -198,10 +198,6 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 
 		removeNonExistingEntities(entities);
-
-		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
-			subcategory.removeNonExistingEntities(entities);
-		}
 	}
 
 	protected void initContent() {
@@ -303,6 +299,10 @@ public class ScrollViewCategory<T extends EntityViewModel<? extends BaseEntity>>
 		}
 
 		hideIfEmpty();
+
+		for (ScrollViewCategory<T> subcategory : content.subcategoryViews.values()) {
+			subcategory.removeNonExistingEntities(entities);
+		}
 	}
 
 	private void hideIfEmpty() {

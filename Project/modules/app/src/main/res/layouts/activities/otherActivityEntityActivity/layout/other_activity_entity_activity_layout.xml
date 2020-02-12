@@ -209,6 +209,7 @@
                     android:childEntityComparator="@{EntityViewComparatorHolder.ASCENDING_FIELD1_COMPARATOR}"
                     android:deletable="@{true}"
                     android:editing="@{editing}"
+                    android:entityName="@{`one time class`}"
                     android:permissionLevel="@{permissionLevel}"
                     android:showAddButtonFirstLayer="@{oneTimeClasses.values().size() == 0?false:true}"
                     android:showEmpty="@{true}"

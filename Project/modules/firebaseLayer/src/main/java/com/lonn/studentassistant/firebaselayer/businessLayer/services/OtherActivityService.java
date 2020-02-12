@@ -62,6 +62,10 @@ public class OtherActivityService extends DisciplineService<OtherActivity, Other
 		professorService.save(professor);
 	}
 
+	protected void unlinkToProfessor(String professorKey, String disciplineKey) {
+		professorService.removeActivity(professorKey, disciplineKey);
+	}
+
 	protected PermissionLevel getPermissionLevel(OtherActivity activity) {
 		return authenticationService.getPermissionLevel(activity);
 	}

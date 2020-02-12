@@ -34,6 +34,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingEnd="8dp"
+            android:paddingStart="8dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -49,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="Start hour:" />
+                    android:text="Start\nhour:" />
 
                 <TextView
                     android:id="@+id/classDialogStartHour"
@@ -83,7 +85,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="start"
-                    android:text="End hour:" />
+                    android:text="End\nhour:" />
 
                 <TextView
                     android:id="@+id/classDialogEndHourInput"

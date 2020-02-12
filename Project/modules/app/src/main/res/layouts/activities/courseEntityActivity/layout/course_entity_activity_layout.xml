@@ -176,8 +176,8 @@
                     android:entityName="@{`grades`}"
                     android:isTable="@{true}"
                     android:permissionLevel="@{permissionLevel}"
-                    android:viewType="@{EntityViewType.FULL}"
-                    android:showEmpty="@{false}">
+                    android:showEmpty="@{false}"
+                    android:viewType="@{EntityViewType.FULL}">
 
                     <include
                         layout="@layout/grade_course_table_header"
@@ -254,7 +254,7 @@
                     android:entityName="@{`one time class`}"
                     android:isTable="@{true}"
                     android:permissionLevel="@{permissionLevel}"
-                    android:showAddButtonFirstLayer="@{true}"
+                    android:showAddButtonFirstLayer="@{oneTimeClasses.values().size() == 0?false : true}"
                     android:showEmpty="@{true}"
                     android:subcategoryDynamicGeneratorFunction="@{(category) -> CategoryGenerator.oneTimeScheduleCategories((CategoryViewModel) category, oneTimeClasses.values())}" />
             </LinearLayout>

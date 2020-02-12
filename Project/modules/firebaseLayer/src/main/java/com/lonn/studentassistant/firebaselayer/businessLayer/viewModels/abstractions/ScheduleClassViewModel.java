@@ -30,7 +30,6 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 	public String disciplineName = "";
 	@Bindable
 	public ScheduleClassType type;
-	@Bindable
 	public List<String> groups;
 
 	public int getStartHourInt() {
@@ -54,6 +53,21 @@ public abstract class ScheduleClassViewModel<T extends ScheduleClass> extends En
 	@Bindable
 	public String getHours() {
 		return getStartHour() + "\n" + getEndHour();
+	}
+
+	@Bindable
+	public String getGroupsStr() {
+		String result = "";
+
+		for (int i = 0; i < groups.size(); i++) {
+			result += groups.get(i);
+
+			if (i + 1 < groups.size()) {
+				result += ", ";
+			}
+		}
+
+		return result;
 	}
 
 	@Bindable

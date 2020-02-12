@@ -168,7 +168,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:visibility="@{!editing &amp;&amp; (entity.phoneNumber == null || entity.phoneNumber.length() == 0)? View.GONE : View.VISIBLE}">
+                    android:visibility="@{(!editing &amp;&amp; (entity.phoneNumber == null || entity.phoneNumber.length() == 0)) || permissionLevel.isAtLeast(PermissionLevel.READ_FULL)? View.GONE : View.VISIBLE}">
 
                     <TextView
                         style="@style/EntityActivityContentText"

@@ -20,7 +20,7 @@
 
     <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="55dp"
         android:layout_marginTop="-2dp"
         android:background="@drawable/table_line"
         android:gravity="center"
@@ -35,7 +35,7 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.10"
+            android:layout_weight="0.15"
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
@@ -49,24 +49,46 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark" />
 
-        <TextView
-            style="@style/DarkBlueShadowedH3"
+
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.55f}"
-            android:gravity="center"
-            android:maxLines="@{3}"
-            android:padding="2dp"
-            android:text="@{recurringClass.disciplineName}"
-            app:autoSizeMaxTextSize="15sp"
-            app:autoSizeMinTextSize="12sp"
-            app:autoSizeTextType="uniform" />
+            android:layout_weight="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.40f:0.50f}"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                style="@style/DarkBlueShadowedH3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.65"
+                android:gravity="center"
+                android:maxLines="2"
+                android:padding="2dp"
+                android:text="@{recurringClass.disciplineName}"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeTextType="uniform" />
+
+            <TextView
+                style="@style/DarkBlueShadowedH3"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.35"
+                android:gravity="center"
+                android:singleLine="true"
+                android:padding="2dp"
+                android:text="@{recurringClass.formattedType}"
+                app:autoSizeMaxTextSize="15sp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeTextType="uniform" />
+
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@color/colorPrimaryDark" />
-
 
         <LinearLayout
             android:layout_width="0dp"
@@ -82,16 +104,11 @@
                 android:layout_weight="0.5"
                 android:gravity="center"
                 android:padding="2dp"
-                android:singleLine="true"
-                android:text="@{recurringClass.formattedType}"
-                app:autoSizeMaxTextSize="14sp"
+                android:maxLines="1"
+                android:text="@{recurringClass.groupsStr.length() == 0? `All groups`: recurringClass.groupsStr}"
+                app:autoSizeMaxTextSize="18sp"
                 app:autoSizeMinTextSize="10sp"
                 app:autoSizeTextType="uniform" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/colorPrimaryDark" />
 
             <TextView
                 style="@style/DarkBlueShadowedH3"
@@ -102,8 +119,8 @@
                 android:maxLines="2"
                 android:padding="2dp"
                 android:text="@{recurringClass.rooms}"
-                app:autoSizeMaxTextSize="12sp"
-                app:autoSizeMinTextSize="8sp"
+                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMinTextSize="10sp"
                 app:autoSizeTextType="uniform" />
 
         </LinearLayout>

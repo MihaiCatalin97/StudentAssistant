@@ -73,8 +73,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10dp"
-                    android:layout_marginTop="@dimen/dim_16dp"
+                    android:layout_marginTop="@{@dimen/dim_16dp}"
                     android:layout_marginRight="@dimen/dim_10dp"
+                    android:layout_marginBottom="@{nextScheduleClass == null? @dimen/dim_16dp : @dimen/dim_0dp}"
                     android:text="@{nextScheduleClass == null?`You don't have any upcoming classes!` : nextScheduleClass.disciplineName}" />
 
                 <TextView
@@ -95,7 +96,7 @@
                     android:layout_marginLeft="@dimen/dim_10dp"
                     android:layout_marginTop="@dimen/dim_10dp"
                     android:layout_marginRight="@dimen/dim_10dp"
-                    android:layout_marginBottom="@dimen/dim_16dp"
+                    android:layout_marginBottom="@{@dimen/dim_16dp}"
                     android:gravity="center"
                     android:text="@{`Starts in\n` + Utils.timeToDate(timeToNextClass)}"
                     android:textStyle="bold"
@@ -127,10 +128,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dim_10dp"
-                    android:layout_marginTop="@dimen/dim_16dp"
+                    android:layout_marginTop="@{@dimen/dim_16dp}"
                     android:layout_marginRight="@dimen/dim_10dp"
-                    android:text="@{nextExam == null? `You don't have any upcoming exams!`:nextExam.disciplineName}"
-                    android:visibility="@{nextExam == null?View.GONE: View.VISIBLE}" />
+                    android:layout_marginBottom="@{nextExam == null? @dimen/dim_16dp : @dimen/dim_0dp}"
+                    android:text="@{nextExam == null? `You don't have any upcoming exams!`:nextExam.disciplineName}" />
 
                 <TextView
                     style="@style/DarkNormalShadowed"
@@ -150,7 +151,7 @@
                     android:layout_marginLeft="@dimen/dim_10dp"
                     android:layout_marginTop="@dimen/dim_10dp"
                     android:layout_marginRight="@dimen/dim_10dp"
-                    android:layout_marginBottom="@dimen/dim_16dp"
+                    android:layout_marginBottom="@{@dimen/dim_16dp}"
                     android:gravity="center"
                     android:text="@{`Starts in\n` + Utils.timeToDate(timeToNextExam)}"
                     android:textStyle="bold"
