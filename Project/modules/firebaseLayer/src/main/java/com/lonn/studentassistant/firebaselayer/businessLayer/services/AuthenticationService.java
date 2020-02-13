@@ -64,562 +64,566 @@ import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.e
 import static com.lonn.studentassistant.firebaselayer.dataAccessLayer.entities.enums.PermissionLevel.WRITE_PARTIAL;
 
 public class AuthenticationService {
-    private static final RequestLogger LOGGER = new RequestLogger();
-    private static AuthenticationService instance;
-    private FirebaseAuth mAuth;
-    private FirebaseConnection firebaseConnection;
-    @Getter
-    private EntityViewModel loggedPerson;
-    @Getter
-    @Setter
-    private AccountType accountType;
-    private UserService userService;
-    private ProfessorService professorService;
-    private AdministratorService administratorService;
-    private StudentService studentService;
+	private static final RequestLogger LOGGER = new RequestLogger();
+	private static AuthenticationService instance;
+	private FirebaseAuth mAuth;
+	private FirebaseConnection firebaseConnection;
+	@Getter
+	private EntityViewModel loggedPerson;
+	@Getter
+	@Setter
+	private AccountType accountType;
+	private UserService userService;
+	private ProfessorService professorService;
+	private AdministratorService administratorService;
+	private StudentService studentService;
 
-    private CourseAdapter courseAdapter = new CourseAdapter();
-    private OtherActivityAdapter otherActivityAdapter = new OtherActivityAdapter();
-    private LaboratoryAdapter laboratoryAdapter = new LaboratoryAdapter();
-    private FileMetadataAdapter fileMetadataAdapter = new FileMetadataAdapter();
-    private FileContentAdapter fileContentAdapter = new FileContentAdapter();
-    private AdministratorAdapter administratorAdapter = new AdministratorAdapter();
-    private ProfessorAdapter professorAdapter = new ProfessorAdapter();
-    private StudentAdapter studentAdapter = new StudentAdapter();
-    private GradeAdapter gradeAdapter = new GradeAdapter();
-    private AnnouncementAdapter announcementAdapter = new AnnouncementAdapter();
+	private CourseAdapter courseAdapter = new CourseAdapter();
+	private OtherActivityAdapter otherActivityAdapter = new OtherActivityAdapter();
+	private LaboratoryAdapter laboratoryAdapter = new LaboratoryAdapter();
+	private FileMetadataAdapter fileMetadataAdapter = new FileMetadataAdapter();
+	private FileContentAdapter fileContentAdapter = new FileContentAdapter();
+	private AdministratorAdapter administratorAdapter = new AdministratorAdapter();
+	private ProfessorAdapter professorAdapter = new ProfessorAdapter();
+	private StudentAdapter studentAdapter = new StudentAdapter();
+	private GradeAdapter gradeAdapter = new GradeAdapter();
+	private AnnouncementAdapter announcementAdapter = new AnnouncementAdapter();
 
-    private Consumer<EntityViewModel> onLoggedPersonChange;
-    @Getter
-    private String loggedPersonUUID = "";
+	private Consumer<EntityViewModel> onLoggedPersonChange;
+	@Getter
+	private String loggedPersonUUID = "";
 
-    private AuthenticationService(FirebaseConnection firebaseConnection) {
-        this.firebaseConnection = firebaseConnection;
-        mAuth = FirebaseAuth.getInstance();
-    }
+	private AuthenticationService(FirebaseConnection firebaseConnection) {
+		this.firebaseConnection = firebaseConnection;
+		mAuth = FirebaseAuth.getInstance();
+	}
 
-    public static AuthenticationService getInstance(FirebaseConnection firebaseConnection) {
-        if (instance == null) {
-            instance = new AuthenticationService(firebaseConnection);
-            instance.init(firebaseConnection);
-        }
+	public static AuthenticationService getInstance(FirebaseConnection firebaseConnection) {
+		if (instance == null) {
+			instance = new AuthenticationService(firebaseConnection);
+			instance.init(firebaseConnection);
+		}
 
-        return instance;
-    }
+		return instance;
+	}
 
-    public void setOnLoggedPersonChange(Consumer<EntityViewModel> onLoggedPersonChange) {
-        this.onLoggedPersonChange = onLoggedPersonChange;
-    }
+	public void setOnLoggedPersonChange(Consumer<EntityViewModel> onLoggedPersonChange) {
+		this.onLoggedPersonChange = onLoggedPersonChange;
+	}
 
-    public Future<Void, Exception> deleteFirebaseAccount() {
-        Future<Void, Exception> result = new Future<>();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+	public Future<Void, Exception> deleteFirebaseAccount() {
+		Future<Void, Exception> result = new Future<>();
+		FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        if (currentUser != null) {
-            currentUser.delete()
-                    .onSuccessTask(task -> {
-                        result.complete(null);
-                        return null;
-                    });
-        }
+		if (currentUser != null) {
+			currentUser.delete()
+					.onSuccessTask(task -> {
+						result.complete(null);
+						return null;
+					});
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    public FirebaseTask<FirebaseUser, Throwable> register(final String personUUID,
-                                                          final String email,
-                                                          final String password) {
-        return new FirebaseTask<FirebaseUser, Throwable>(firebaseConnection) {
-            @Override
-            public void onComplete(Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onError) {
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnSuccessListener((authResult) -> {
-                            FirebaseUser newUser = authResult.getUser();
-                            if (newUser != null) {
-                                LOGGER.logRegisterSuccess(newUser.getEmail(), newUser.getUid());
+	public FirebaseTask<FirebaseUser, Throwable> register(final String personUUID,
+														  final String email,
+														  final String password) {
+		return new FirebaseTask<FirebaseUser, Throwable>(firebaseConnection) {
+			@Override
+			public void onComplete(Consumer<FirebaseUser> onSuccess, Consumer<Throwable> onError) {
+				mAuth.createUserWithEmailAndPassword(email, password)
+						.addOnSuccessListener((authResult) -> {
+							FirebaseUser newUser = authResult.getUser();
+							if (newUser != null) {
+								LOGGER.logRegisterSuccess(newUser.getEmail(), newUser.getUid());
 
-                                User registeringUser = new User()
-                                        .setUserId(newUser.getUid())
-                                        .setPersonUUID(personUUID);
+								User registeringUser = new User()
+										.setUserId(newUser.getUid())
+										.setPersonUUID(personUUID);
 
-                                FirebaseInstanceId.getInstance()
-                                        .getInstanceId()
-                                        .addOnSuccessListener(instanceIdResult -> {
-                                            String newToken = instanceIdResult.getToken();
-                                            registeringUser.setFcmToken(newToken);
-                                            userService.save(registeringUser);
-                                        });
+								FirebaseInstanceId.getInstance()
+										.getInstanceId()
+										.addOnSuccessListener(instanceIdResult -> {
+											String newToken = instanceIdResult.getToken();
+											registeringUser.setFcmToken(newToken);
+											userService.save(registeringUser);
+										});
 
-                                userService.save(registeringUser)
-                                        .onComplete((none) -> {
-                                                    LOGGER.logRegistrationLinkingSuccess(newUser.getUid(),
-                                                            personUUID);
-                                                    onSuccess.consume(newUser);
-                                                },
-                                                (exception) -> {
-                                                    if (exception.getMessage() != null) {
-                                                        LOGGER.logRegistrationLinkingFail(newUser.getUid(),
-                                                                personUUID,
-                                                                exception.getMessage());
-                                                        newUser.delete();
+								userService.save(registeringUser)
+										.onComplete((none) -> {
+													LOGGER.logRegistrationLinkingSuccess(newUser.getUid(),
+															personUUID);
+													onSuccess.consume(newUser);
+												},
+												(exception) -> {
+													if (exception.getMessage() != null) {
+														LOGGER.logRegistrationLinkingFail(newUser.getUid(),
+																personUUID,
+																exception.getMessage());
+														newUser.delete();
 
-                                                        if (onError != null) {
-                                                            onError.consume(exception);
-                                                        }
-                                                    }
-                                                });
-                            }
-                            else {
-                                onError.consume(new Exception("An error occurred!"));
-                            }
-                        })
-                        .addOnFailureListener((exception) -> {
-                            LOGGER.logRegisterFail(email, exception.getMessage());
+														if (onError != null) {
+															onError.consume(exception);
+														}
+													}
+												});
+							}
+							else {
+								onError.consume(new Exception("An error occurred!"));
+							}
+						})
+						.addOnFailureListener((exception) -> {
+							LOGGER.logRegisterFail(email, exception.getMessage());
 
-                            if (onError != null) {
-                                onError.consume(exception);
-                            }
-                        });
-            }
-        };
-    }
+							if (onError != null) {
+								onError.consume(exception);
+							}
+						});
+			}
+		};
+	}
 
-    public FirebaseTask<Void, Throwable> login(final String email,
-                                               final String password) {
-        return new FirebaseTask<Void, Throwable>(firebaseConnection) {
-            @Override
-            public void onComplete(Consumer<Void> onSuccess, @Nullable Consumer<Throwable> onError) {
-                mAuth.signInWithEmailAndPassword(email, password)
-                        .addOnSuccessListener((authResult) -> {
-                            LOGGER.logLoginSuccess(email);
+	public FirebaseTask<Void, Throwable> login(final String email,
+											   final String password) {
+		return new FirebaseTask<Void, Throwable>(firebaseConnection) {
+			@Override
+			public void onComplete(Consumer<Void> onSuccess, @Nullable Consumer<Throwable> onError) {
+				mAuth.signInWithEmailAndPassword(email, password)
+						.addOnSuccessListener((authResult) -> {
+							LOGGER.logLoginSuccess(email);
 
-                            setCurrentLoggedPersons(authResult.getUser())
-                                    .onSuccess(onSuccess)
-                                    .onError(error -> {
-                                        if (onError != null) {
-                                            onError.consume(error);
-                                        }
-                                    });
-                        })
-                        .addOnFailureListener((exception) -> {
-                            LOGGER.logLoginFail(email, exception.getMessage());
+							setCurrentLoggedPersons(authResult.getUser())
+									.onSuccess(onSuccess)
+									.onError(error -> {
+										if (onError != null) {
+											onError.consume(error);
+										}
+									});
+						})
+						.addOnFailureListener((exception) -> {
+							LOGGER.logLoginFail(email, exception.getMessage());
 
-                            if (onError != null) {
-                                onError.consume(null);
-                            }
-                        });
-            }
-        };
-    }
+							if (onError != null) {
+								onError.consume(null);
+							}
+						});
+			}
+		};
+	}
 
-    public void logout() {
-        FirebaseAuth.getInstance().signOut();
-        loggedPerson = null;
-        accountType = null;
-    }
+	public void logout() {
+		FirebaseAuth.getInstance().signOut();
+		loggedPerson = null;
+		accountType = null;
+	}
 
-    public PermissionLevel getPermissionLevel(Course course) {
-        if (accountType == null || loggedPerson == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (course.getStudents().contains(loggedPersonUUID)) {
-                return READ_PARTIAL;
-            }
-            return WRITE_ENROLL;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getCourses().contains(course.getKey()) ||
-                    course.getProfessors().contains(loggedPersonUUID)) {
-                return WRITE;
-            }
-            return READ_PUBLIC;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Course course) {
+		if (accountType == null || loggedPerson == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (course.getStudents().contains(loggedPersonUUID)) {
+				return READ_PARTIAL;
+			}
+			return WRITE_ENROLL;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (((ProfessorViewModel) loggedPerson).getCourses().contains(course.getKey()) ||
+					course.getProfessors().contains(loggedPersonUUID)) {
+				return WRITE;
+			}
+			return READ_PUBLIC;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(OtherActivity activity) {
-        if (accountType == null || loggedPerson == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (activity.getStudents().contains(loggedPersonUUID)) {
-                return READ_PARTIAL;
-            }
-            return WRITE_ENROLL;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getOtherActivities().contains(activity.getKey()) ||
-                    activity.getProfessors().contains(loggedPersonUUID)) {
-                return WRITE;
-            }
-            return READ_FULL;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(OtherActivity activity) {
+		if (accountType == null || loggedPerson == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (activity.getStudents().contains(loggedPersonUUID)) {
+				return READ_PARTIAL;
+			}
+			return WRITE_ENROLL;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (((ProfessorViewModel) loggedPerson).getOtherActivities().contains(activity.getKey()) ||
+					activity.getProfessors().contains(loggedPersonUUID)) {
+				return WRITE;
+			}
+			return READ_FULL;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Laboratory laboratory) {
-        if (accountType == null || loggedPerson == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (((StudentViewModel) loggedPerson).getCourses().contains(laboratory.getCourse())) {
-                return READ_FULL;
-            }
-            return NONE;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getCourses().contains(laboratory.getCourse())) {
-                return WRITE;
-            }
-            return NONE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Laboratory laboratory) {
+		if (accountType == null || loggedPerson == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (((StudentViewModel) loggedPerson).getCourses().contains(laboratory.getCourse())) {
+				return READ_FULL;
+			}
+			return NONE;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (((ProfessorViewModel) loggedPerson).getCourses().contains(laboratory.getCourse())) {
+				return WRITE;
+			}
+			return NONE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(FileMetadata file) {
-        if (accountType == null || loggedPerson == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
-                return WRITE;
-            }
-            if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-                    ((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
-                return READ_FULL;
-            }
-            if (file.getTargetedGroups().size() > 0 &&
-                    !file.getTargetedGroups().contains(STUDENT)) {
-                return NONE;
-            }
-            return READ_PUBLIC;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-                    ((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-                    file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
-                return WRITE;
-            }
-            if (file.getTargetedGroups().size() > 0 &&
-                    !file.getTargetedGroups().contains(PROFESSOR)) {
-                return NONE;
-            }
-            return WRITE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(FileMetadata file) {
+		if (accountType == null || loggedPerson == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
+				return WRITE;
+			}
+			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
+					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
+				return READ_FULL;
+			}
+			if (file.getTargetedGroups() != null &&
+					file.getTargetedGroups().size() > 0 &&
+					!file.getTargetedGroups().contains(STUDENT)) {
+				return NONE;
+			}
+			return READ_PUBLIC;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
+					((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
+					file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
+				return WRITE;
+			}
+			if (file.getTargetedGroups() != null &&
+					file.getTargetedGroups().size() > 0 &&
+					!file.getTargetedGroups().contains(PROFESSOR)) {
+				return NONE;
+			}
+			return WRITE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(FileContent file) {
-        if (accountType == null || loggedPerson == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
-                return WRITE;
-            }
-            if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-                    ((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
-                return READ_FULL;
-            }
-            if (file.getTargetedGroups().size() > 0 &&
-                    !file.getTargetedGroups().contains(STUDENT)) {
-                return NONE;
-            }
-            return READ_PUBLIC;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
-                    ((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
-                    file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
-                return WRITE;
-            }
-            if (file.getTargetedGroups().size() > 0 &&
-                    !file.getTargetedGroups().contains(PROFESSOR)) {
-                return NONE;
-            }
-            return WRITE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(FileContent file) {
+		if (accountType == null || loggedPerson == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
+				return WRITE;
+			}
+			if (((StudentViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
+					((StudentViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey())) {
+				return READ_FULL;
+			}
+			if (file.getTargetedGroups() != null &&
+					file.getTargetedGroups().size() > 0 &&
+					!file.getTargetedGroups().contains(STUDENT)) {
+				return NONE;
+			}
+			return READ_PUBLIC;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (((ProfessorViewModel) loggedPerson).getCourses().contains(file.getAssociatedEntityKey()) ||
+					((ProfessorViewModel) loggedPerson).getOtherActivities().contains(file.getAssociatedEntityKey()) ||
+					file.getAssociatedEntityKey().equals(loggedPersonUUID)) {
+				return WRITE;
+			}
+			if (file.getTargetedGroups() != null &&
+					file.getTargetedGroups().size() > 0 &&
+					!file.getTargetedGroups().contains(PROFESSOR)) {
+				return NONE;
+			}
+			return WRITE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Administrator administrator) {
-        if (accountType == null || mAuth.getCurrentUser() == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            return NONE;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            return NONE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Administrator administrator) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			return NONE;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			return NONE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Professor professor) {
-        if (accountType == null || mAuth.getCurrentUser() == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            return READ_PUBLIC;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (loggedPersonUUID.equals(professor.getKey())) {
-                return WRITE_PARTIAL;
-            }
-            if (loggedPerson != null && listsHaveAtLeastOneElementInCommon(professor.getCourses(),
-                    ((ProfessorViewModel) loggedPerson).getCourses()) ||
-                    listsHaveAtLeastOneElementInCommon(professor.getOtherActivities(),
-                            ((ProfessorViewModel) loggedPerson).getOtherActivities())) {
-                return WRITE_ADD_AGGREGATED;
-            }
-            if (loggedPerson == null) {
-                return WRITE_PARTIAL;
-            }
-            return WRITE_ADD_AGGREGATED;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Professor professor) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			return READ_PUBLIC;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (loggedPersonUUID.equals(professor.getKey())) {
+				return WRITE_PARTIAL;
+			}
+			if (loggedPerson != null && (listsHaveAtLeastOneElementInCommon(professor.getCourses(),
+					((ProfessorViewModel) loggedPerson).getCourses()) ||
+					listsHaveAtLeastOneElementInCommon(professor.getOtherActivities(),
+							((ProfessorViewModel) loggedPerson).getOtherActivities()))) {
+				return WRITE_ADD_AGGREGATED;
+			}
+			if (loggedPerson == null) {
+				return WRITE_PARTIAL;
+			}
+			return WRITE_ADD_AGGREGATED;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Student student) {
-        if (accountType == null || mAuth.getCurrentUser() == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (loggedPersonUUID.equals(student.getKey())) {
-                return WRITE_PARTIAL;
-            }
-            if (loggedPerson != null &&
-                    (listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getCourses(),
-                            student.getCourses()) ||
-                            (listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getOtherActivities(),
-                                    student.getOtherActivities())))) {
-                return READ_PUBLIC;
-            }
-            if (loggedPerson == null) {
-                return WRITE_PARTIAL;
-            }
-            return READ_PUBLIC;
+	public PermissionLevel getPermissionLevel(Student student) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (loggedPersonUUID.equals(student.getKey())) {
+				return WRITE_PARTIAL;
+			}
+			if (loggedPerson != null &&
+					(listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getCourses(),
+							student.getCourses()) ||
+							(listsHaveAtLeastOneElementInCommon(((StudentViewModel) loggedPerson).getOtherActivities(),
+									student.getOtherActivities())))) {
+				return READ_PUBLIC;
+			}
+			if (loggedPerson == null) {
+				return WRITE_PARTIAL;
+			}
+			return READ_PUBLIC;
 
-        }
-        if (accountType.equals(PROFESSOR)) {
-            return WRITE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+		}
+		if (accountType.equals(PROFESSOR)) {
+			return WRITE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Grade grade) {
-        if (accountType == null || mAuth.getCurrentUser() == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (loggedPerson != null && loggedPersonUUID.equals(grade.getStudentKey())) {
-                return READ_PUBLIC;
-            }
-            return NONE;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (loggedPerson != null && ((ProfessorViewModel) loggedPerson).getCourses().contains(grade.getCourseKey())) {
-                return WRITE;
-            }
-            return NONE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Grade grade) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (loggedPerson != null && loggedPersonUUID.equals(grade.getStudentKey())) {
+				return READ_PUBLIC;
+			}
+			return NONE;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (loggedPerson != null && ((ProfessorViewModel) loggedPerson).getCourses().contains(grade.getCourseKey())) {
+				return WRITE;
+			}
+			return NONE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(Announcement announcement) {
-        if (accountType == null || mAuth.getCurrentUser() == null) {
-            return NONE;
-        }
-        if (accountType.equals(STUDENT)) {
-            if (loggedPerson != null && announcement.getTargetedGroups().contains(STUDENT)) {
-                return READ_FULL;
-            }
-            return NONE;
-        }
-        if (accountType.equals(PROFESSOR)) {
-            if (loggedPerson != null && announcement.getTargetedGroups().contains(PROFESSOR)) {
-                return READ_FULL;
-            }
-            return NONE;
-        }
-        if (accountType.equals(ADMINISTRATOR)) {
-            return WRITE;
-        }
+	public PermissionLevel getPermissionLevel(Announcement announcement) {
+		if (accountType == null || mAuth.getCurrentUser() == null) {
+			return NONE;
+		}
+		if (accountType.equals(STUDENT)) {
+			if (loggedPerson != null && announcement.getTargetedGroups().contains(STUDENT)) {
+				return READ_FULL;
+			}
+			return NONE;
+		}
+		if (accountType.equals(PROFESSOR)) {
+			if (loggedPerson != null && announcement.getTargetedGroups().contains(PROFESSOR)) {
+				return READ_FULL;
+			}
+			return NONE;
+		}
+		if (accountType.equals(ADMINISTRATOR)) {
+			return WRITE;
+		}
 
-        return NONE;
-    }
+		return NONE;
+	}
 
-    public PermissionLevel getPermissionLevel(CourseViewModel course) {
-        return getPermissionLevel(courseAdapter.adapt(course));
-    }
+	public PermissionLevel getPermissionLevel(CourseViewModel course) {
+		return getPermissionLevel(courseAdapter.adapt(course));
+	}
 
-    public PermissionLevel getPermissionLevel(OtherActivityViewModel activity) {
-        return getPermissionLevel(otherActivityAdapter.adapt(activity));
-    }
+	public PermissionLevel getPermissionLevel(OtherActivityViewModel activity) {
+		return getPermissionLevel(otherActivityAdapter.adapt(activity));
+	}
 
-    public PermissionLevel getPermissionLevel(LaboratoryViewModel laboratory) {
-        return getPermissionLevel(laboratoryAdapter.adapt(laboratory));
-    }
+	public PermissionLevel getPermissionLevel(LaboratoryViewModel laboratory) {
+		return getPermissionLevel(laboratoryAdapter.adapt(laboratory));
+	}
 
-    public PermissionLevel getPermissionLevel(FileMetadataViewModel file) {
-        return getPermissionLevel(fileMetadataAdapter.adapt(file));
-    }
+	public PermissionLevel getPermissionLevel(FileMetadataViewModel file) {
+		return getPermissionLevel(fileMetadataAdapter.adapt(file));
+	}
 
-    public PermissionLevel getPermissionLevel(FileContentViewModel file) {
-        return getPermissionLevel(fileContentAdapter.adapt(file));
-    }
+	public PermissionLevel getPermissionLevel(FileContentViewModel file) {
+		return getPermissionLevel(fileContentAdapter.adapt(file));
+	}
 
-    public PermissionLevel getPermissionLevel(AdministratorViewModel administrator) {
-        return getPermissionLevel(administratorAdapter.adapt(administrator));
-    }
+	public PermissionLevel getPermissionLevel(AdministratorViewModel administrator) {
+		return getPermissionLevel(administratorAdapter.adapt(administrator));
+	}
 
-    public PermissionLevel getPermissionLevel(ProfessorViewModel professor) {
-        return getPermissionLevel(professorAdapter.adapt(professor));
-    }
+	public PermissionLevel getPermissionLevel(ProfessorViewModel professor) {
+		return getPermissionLevel(professorAdapter.adapt(professor));
+	}
 
-    public PermissionLevel getPermissionLevel(StudentViewModel student) {
-        return getPermissionLevel(studentAdapter.adapt(student));
-    }
+	public PermissionLevel getPermissionLevel(StudentViewModel student) {
+		return getPermissionLevel(studentAdapter.adapt(student));
+	}
 
-    public PermissionLevel getPermissionLevel(GradeViewModel grade) {
-        return getPermissionLevel(gradeAdapter.adapt(grade));
-    }
+	public PermissionLevel getPermissionLevel(GradeViewModel grade) {
+		return getPermissionLevel(gradeAdapter.adapt(grade));
+	}
 
-    public PermissionLevel getPermissionLevel(AnnouncementViewModel announcement) {
-        return getPermissionLevel(announcementAdapter.adapt(announcement));
-    }
+	public PermissionLevel getPermissionLevel(AnnouncementViewModel announcement) {
+		return getPermissionLevel(announcementAdapter.adapt(announcement));
+	}
 
-    private void init(FirebaseConnection firebaseConnection) {
-        userService = UserService.getInstance(firebaseConnection);
+	private void init(FirebaseConnection firebaseConnection) {
+		userService = UserService.getInstance(firebaseConnection);
 
-        professorService = ProfessorService.getInstance(firebaseConnection);
-        administratorService = AdministratorService.getInstance(firebaseConnection);
-        studentService = StudentService.getInstance(firebaseConnection);
-    }
+		professorService = ProfessorService.getInstance(firebaseConnection);
+		administratorService = AdministratorService.getInstance(firebaseConnection);
+		studentService = StudentService.getInstance(firebaseConnection);
+	}
 
-    private Future<Void, Exception> setCurrentLoggedPersons(FirebaseUser firebaseUser) {
-        Future<Void, Exception> result = new Future<>();
+	private Future<Void, Exception> setCurrentLoggedPersons(FirebaseUser firebaseUser) {
+		Future<Void, Exception> result = new Future<>();
 
-        if (firebaseUser != null) {
-            userService.getById(firebaseUser.getUid(), true)
-                    .onSuccess(user -> {
-                        FirebaseInstanceId.getInstance()
-                                .getInstanceId()
-                                .addOnSuccessListener(instanceIdResult -> {
-                                    String newToken = instanceIdResult.getToken();
-                                    user.setFcmToken(newToken);
-                                    userService.save(user);
-                                });
+		if (firebaseUser != null) {
+			userService.getById(firebaseUser.getUid(), true)
+					.onSuccess(user -> {
+						FirebaseInstanceId.getInstance()
+								.getInstanceId()
+								.addOnSuccessListener(instanceIdResult -> {
+									String newToken = instanceIdResult.getToken();
+									user.setFcmToken(newToken);
+									userService.save(user);
+								});
 
-                        if (user != null) {
-                            this.accountType = user.getAccountType();
-                            this.loggedPersonUUID = user.getPersonUUID();
+						if (user != null) {
+							this.accountType = user.getAccountType();
+							this.loggedPersonUUID = user.getPersonUUID();
 
-                            switch (user.getAccountType()) {
-                                case STUDENT: {
-                                    studentService.getById(loggedPersonUUID, true)
-                                            .onSuccess(student -> {
-                                                if (this.getLoggedPerson() == null) {
-                                                    this.setLoggedPerson(student);
-                                                    result.complete(null);
-                                                }
-                                                else {
-                                                    this.setLoggedPerson(student);
-                                                }
-                                            })
-                                            .onError(result::completeExceptionally);
-                                    break;
-                                }
-                                case PROFESSOR: {
-                                    professorService.getById(loggedPersonUUID, true)
-                                            .onSuccess(professor -> {
-                                                if (this.getLoggedPerson() == null) {
-                                                    this.setLoggedPerson(professor);
-                                                    result.complete(null);
-                                                }
-                                                else {
-                                                    this.setLoggedPerson(professor);
-                                                }
-                                            })
-                                            .onError(result::completeExceptionally);
-                                    break;
-                                }
-                                case ADMINISTRATOR: {
-                                    administratorService.getById(loggedPersonUUID, true)
-                                            .onSuccess(administrator -> {
-                                                if (this.getLoggedPerson() == null) {
-                                                    this.setLoggedPerson(administrator);
-                                                    result.complete(null);
-                                                }
-                                                else {
-                                                    this.setLoggedPerson(administrator);
-                                                }
-                                            })
-                                            .onError(result::completeExceptionally);
-                                    break;
-                                }
-                            }
-                        }
-                    });
-        }
-        else {
-            result.completeExceptionally(new Exception("No firebase user received"));
-        }
+							switch (user.getAccountType()) {
+								case STUDENT: {
+									studentService.getById(loggedPersonUUID, true)
+											.onSuccess(student -> {
+												if (this.getLoggedPerson() == null) {
+													this.setLoggedPerson(student);
+													result.complete(null);
+												}
+												else {
+													this.setLoggedPerson(student);
+												}
+											})
+											.onError(result::completeExceptionally);
+									break;
+								}
+								case PROFESSOR: {
+									professorService.getById(loggedPersonUUID, true)
+											.onSuccess(professor -> {
+												if (this.getLoggedPerson() == null) {
+													this.setLoggedPerson(professor);
+													result.complete(null);
+												}
+												else {
+													this.setLoggedPerson(professor);
+												}
+											})
+											.onError(result::completeExceptionally);
+									break;
+								}
+								case ADMINISTRATOR: {
+									administratorService.getById(loggedPersonUUID, true)
+											.onSuccess(administrator -> {
+												if (this.getLoggedPerson() == null) {
+													this.setLoggedPerson(administrator);
+													result.complete(null);
+												}
+												else {
+													this.setLoggedPerson(administrator);
+												}
+											})
+											.onError(result::completeExceptionally);
+									break;
+								}
+							}
+						}
+					});
+		}
+		else {
+			result.completeExceptionally(new Exception("No firebase user received"));
+		}
 
-        return result;
-    }
+		return result;
+	}
 
-    private void setLoggedPerson(EntityViewModel loggedPerson) {
-        this.loggedPerson = loggedPerson;
+	private void setLoggedPerson(EntityViewModel loggedPerson) {
+		this.loggedPerson = loggedPerson;
 
-        if (onLoggedPersonChange != null) {
-            onLoggedPersonChange.consume(loggedPerson);
-        }
-    }
+		if (onLoggedPersonChange != null) {
+			onLoggedPersonChange.consume(loggedPerson);
+		}
+	}
 
-    private boolean listsHaveAtLeastOneElementInCommon
-            (List<String> list1, List<String> list2) {
-        List<String> auxList = new LinkedList<>(list1);
+	private boolean listsHaveAtLeastOneElementInCommon
+			(List<String> list1, List<String> list2) {
+		List<String> auxList = new LinkedList<>(list1);
 
-        auxList.removeAll(list2);
+		auxList.removeAll(list2);
 
-        return auxList.size() != list1.size();
-    }
+		return auxList.size() != list1.size();
+	}
 }

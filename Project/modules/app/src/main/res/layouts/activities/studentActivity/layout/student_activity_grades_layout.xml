@@ -7,6 +7,8 @@
 
         <import type="com.lonn.studentassistant.views.implementations.EntityViewComparatorHolder" />
 
+        <import type="android.view.View"/>
+
         <variable
             name="grades"
             type="java.util.Collection&lt;com.lonn.studentassistant.firebaselayer.businessLayer.viewModels.GradeViewModel&gt;" />
@@ -34,6 +36,14 @@
             android:shouldContain="@{(grade) -> true}"
             android:showHeader="@{false}"
             android:viewType="@{EntityViewType.FULL}" />
+
+        <TextView
+            style="@style/DarkSubtitleShadowed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You don't have any grades so far!"
+            android:layout_marginTop="@dimen/dim_32dp"
+            android:visibility="@{grades == null || grades.size() == 0? View.VISIBLE : View.GONE}"/>
 
     </LinearLayout>
 </layout>

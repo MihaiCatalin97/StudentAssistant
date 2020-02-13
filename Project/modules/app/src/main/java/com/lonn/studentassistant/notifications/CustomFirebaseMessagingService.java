@@ -1,8 +1,10 @@
 package com.lonn.studentassistant.notifications;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.media.RingtoneManager;
+import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
@@ -18,6 +20,18 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
 	public void onMessageReceived(RemoteMessage message) {
 		super.onMessageReceived(message);
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			CharSequence name = "Student Assistant notifications";
+			String description = "Student Assistant notifications";
+			int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+			NotificationChannel channel = new NotificationChannel("STUDENT_ASSISTANT", name, importance);
+			channel.setDescription(description);
+
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
+
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "STUDENT_ASSISTANT")
 				.setContentTitle(message.getNotification().getTitle())
 				.setContentText(message.getNotification().getBody())
@@ -30,6 +44,6 @@ public class CustomFirebaseMessagingService extends FirebaseMessagingService {
 		NotificationManager notificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		notificationManager.notify(new Random().nextInt(10000), notificationBuilder.build());
+		notificationManager.notify(new Random().nextInt(10), notificationBuilder.build());
 	}
 }

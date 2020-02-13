@@ -35,12 +35,12 @@
             style="@style/DarkBlueShadowedH3"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.15"
+            android:layout_weight="0.12"
             android:gravity="center"
             android:lines="2"
             android:padding="2dp"
             android:text="@{oneTimeClass.hours}"
-            app:autoSizeMaxTextSize="18sp"
+            app:autoSizeMaxTextSize="14sp"
             app:autoSizeMinTextSize="6sp"
             app:autoSizeTextType="uniform" />
 
@@ -52,7 +52,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.45f:0.50f}"
+            android:layout_weight="@{editing!=null &amp;&amp; editing &amp;&amp; deletable!=null &amp;&amp; deletable? 0.48f:0.53f}"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -105,7 +105,7 @@
                 android:padding="2dp"
                 android:maxLines="1"
                 android:text="@{oneTimeClass.groupsStr.length() == 0? `All groups`: oneTimeClass.groupsStr}"
-                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMaxTextSize="14sp"
                 app:autoSizeMinTextSize="10sp"
                 app:autoSizeTextType="uniform" />
 
@@ -118,7 +118,7 @@
                 android:maxLines="2"
                 android:padding="2dp"
                 android:text="@{oneTimeClass.rooms}"
-                app:autoSizeMaxTextSize="18sp"
+                app:autoSizeMaxTextSize="14sp"
                 app:autoSizeMinTextSize="10sp"
                 app:autoSizeTextType="uniform" />
 

@@ -111,7 +111,7 @@
                     android:layout_marginStart="@dimen/dim_8dp"
                     android:layout_marginTop="@dimen/dim_8dp"
                     android:gravity="start"
-                    android:text="This action is intended as an initialization of the application and it will create duplicates if executed multiple times/"
+                    android:text="This action is intended as an initialization of the application and it will create duplicates if executed multiple times!"
                     android:textStyle="bold" />
 
                 <RelativeLayout
