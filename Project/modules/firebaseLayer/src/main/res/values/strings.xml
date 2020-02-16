@@ -1,7 +1,0 @@
-<resources>
-    <string name="app_name">firebaseLayer</string>
-    <string name="email_username">student.assistant00@gmail.com</string>
-    <string name="email_password">Studentassistant12</string>
-    <string name="email_host">smtp.gmail.com</string>
-    <integer name="email_port">587</integer>
-</resources>
