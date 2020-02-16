@@ -17,21 +17,19 @@ let transporter = nodemailer.createTransport({
 exports.sendInvitationEmail = (to, accountType, token, expiresAt) => {
     const mailOptions = {
         from: 'Student Assistant <student.assistant00@gmail.com>',
-        to: dest,
+        to: to,
         subject: 'Student Assistant - Invitation',
-        html: `<p style="font-size: 18px;">Hello, ` + accountType + `</p>
-                    <br />
-                    <p style="font-size: 16px;">You have been invited to create an ` + accountType + ` account in the Student Assistant application.</p>
-                    <p style="font-size: 16px;">To register, please use this token: ` + token + `</p>
+        html: `<p style="font-size: 18px;">Hello, ` + accountType + `!</p>
+                    <p style="font-size: 16px;">You have been invited to create an ` + accountType + ` account in the Student Assistant application.</br>
+                    To register, please use this token: <b><i>` + token + `</i></b></p>
                     <p style="font-size: 16px;">Beware, this is a confidential, single-use token and it will expire at ` + expiresAt + `</p>
-                    <p style="font-size: 16px;"><b>Download the app from:</b></p>\n
-                    <a">(app store link)</a>
+                    <p style="font-size: 16px;"><b>Download the app from:</b></br> <a">(app store link)</a></p>\n
                 `
     };
 
     return sendEmail(mailOptions)
         .catch((error) => {
-            console.log("An error occurred while sending the registration token(" + accountType + ", " + token + ") to " + dest + ":\n" + error);
+            console.log("An error occurred while sending the registration token(" + accountType + ", " + token + ") to " + to + ":\n" + error);
 
             return {
                 result: "error",
@@ -39,7 +37,7 @@ exports.sendInvitationEmail = (to, accountType, token, expiresAt) => {
             }
         })
         .then(() => {
-            console.log("Successfully sent the registration token(" + accountType + ", " + token + ") to " + dest);
+            console.log("Successfully sent the registration token(" + accountType + ", " + token + ") to " + to);
             return {
                 result: "success"
             }
